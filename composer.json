@@ -1,0 +1,15 @@
+{
+  "name": "eurotext/wp-tm4mpl",
+  "description": "WordPress Plugin to connect to the Eurotext REST API.",
+  "license": "proprietary",
+  "config": {
+    "sort-packages": true
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5",
+    "sourcerer-mike/wp-readme-validator": "dev-master",
+    "squizlabs/php_codesniffer": "~2.7",
+    "wimg/php-compatibility": "^7.0",
+    "wp-coding-standards/wpcs": "dev-master"
+  }
+}
