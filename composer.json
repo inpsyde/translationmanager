@@ -5,6 +5,11 @@
   "config": {
     "sort-packages": true
   },
+  "autoload": {
+    "files": [
+      "bootstrap.php"
+    ]
+  },
   "require-dev": {
     "phpunit/phpunit": "~5",
     "sourcerer-mike/wp-readme-validator": "dev-master",
