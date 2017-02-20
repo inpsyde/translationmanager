@@ -20,8 +20,11 @@ assert bin/test-min.sh
 
 vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs
 
+# Hook PHPCompatibility in PHPCS.
+# Need to be hard link due to class loading with relative path inside PHPCompatibility.
 phpCompPath="vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility"
-rm -r $phpCompPath && cp -av vendor/wimg/php-compatibility/. $phpCompPath > /dev/null
+[[ -d ${phpCompPath} ]] && rm -r ${phpCompPath}
+cp -av vendor/wimg/php-compatibility/. ${phpCompPath} > /dev/null
 assert vendor/bin/phpcs -s --standard=phpcs.xml includes
 
 exit $exitCode
