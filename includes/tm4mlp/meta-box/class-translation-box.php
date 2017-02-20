@@ -17,6 +17,12 @@ class Translation_Box {
 	}
 
 	public function dispatch() {
-		echo 'hi';
+		/** @var string $template */
+		$template = tm4mlp_get_template( 'admin/meta-box/translation-box.php' );
+		if ( ! $template || ! file_exists( $template ) ) {
+			return;
+		}
+
+		require $template;
 	}
 }
