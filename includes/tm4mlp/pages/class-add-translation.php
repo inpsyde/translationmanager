@@ -33,9 +33,10 @@ class Add_Translation {
 			throw new \InvalidArgumentException( 'Post with ID ' . (int) $id . ' not found' );
 		}
 
-		$data = apply_filters( 'tm4mlp_sanitize_post', $post->to_array(), $post );
+		$data = apply_filters( 'tm4mlp_sanitize_post', array( $post->post_type => $post->to_array() ), $post );
 
 		// TODO Send data to Etrapi
+		var_dump( $data );
 
 		wp_insert_post(
 			array(

@@ -1,28 +1,38 @@
 <?php
 
+/**
+ * @param array    $data
+ * @param \WP_Post $original_post
+ *
+ * @return array
+ */
 function tm4mlp_sanitize_post( $data, $original_post ) {
-	unset( $data['ID'] );
-	unset( $data['post_author'] );
-	unset( $data['post_date'] );
-	unset( $data['post_date_gmt'] );
-	unset( $data['post_status'] );
-	unset( $data['comment_status'] );
-	unset( $data['ping_status'] );
-	unset( $data['post_password'] );
-	unset( $data['to_ping'] );
-	unset( $data['pinged'] );
-	unset( $data['post_modified'] );
-	unset( $data['post_modified_gmt'] );
-	unset( $data['post_parent'] );
-	unset( $data['menu_order'] );
-	unset( $data['post_type'] );
-	unset( $data['post_mime_type'] );
-	unset( $data['comment_count'] );
-	unset( $data['filter'] );
-	unset( $data['ancestors'] );
-	unset( $data['page_template'] );
-	unset( $data['post_category'] );
-	unset( $data['tags_input'] );
+	$post_data = $data[ $original_post->post_type ];
+
+	unset( $post_data['ID'] );
+	unset( $post_data['post_author'] );
+	unset( $post_data['post_date'] );
+	unset( $post_data['post_date_gmt'] );
+	unset( $post_data['post_status'] );
+	unset( $post_data['comment_status'] );
+	unset( $post_data['ping_status'] );
+	unset( $post_data['post_password'] );
+	unset( $post_data['to_ping'] );
+	unset( $post_data['pinged'] );
+	unset( $post_data['post_modified'] );
+	unset( $post_data['post_modified_gmt'] );
+	unset( $post_data['post_parent'] );
+	unset( $post_data['menu_order'] );
+	unset( $post_data['post_type'] );
+	unset( $post_data['post_mime_type'] );
+	unset( $post_data['comment_count'] );
+	unset( $post_data['filter'] );
+	unset( $post_data['ancestors'] );
+	unset( $post_data['page_template'] );
+	unset( $post_data['post_category'] );
+	unset( $post_data['tags_input'] );
+
+	$data['post'] = $post_data;
 
 	return $data;
 }
