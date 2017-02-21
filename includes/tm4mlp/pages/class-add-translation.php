@@ -33,7 +33,9 @@ class Add_Translation {
 			throw new \InvalidArgumentException( 'Post with ID ' . (int) $id . ' not found' );
 		}
 
-		$data = apply_filters( 'tm4mlp_sanitize_post', array( $post->post_type => $post->to_array() ), $post );
+		$order_id = tm4mlp_api_order(
+			apply_filters( 'tm4mlp_sanitize_post', array( $post->post_type => $post->to_array() ), $post )
+		);
 
 		wp_insert_post(
 			array(
@@ -41,6 +43,7 @@ class Add_Translation {
 				'post_title'           => 'stub',
 				'_tm4mlp_related_type' => 'post',
 				'_tm4mlp_related_id'   => $id,
+				'_tm4mlp_order_id'     => $order_id,
 			)
 		);
 	}
