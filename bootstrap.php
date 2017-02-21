@@ -14,7 +14,7 @@ spl_autoload_register( array( new \Tm4mlp\Loader(), 'load_class' ) );
  * @return string Absolute path to the template.
  */
 function tm4mlp_get_template( $name ) {
-	$path = TM4MPL_DIR . DIRECTORY_SEPARATOR . $name;
+	$path = TM4MLP_DIR . DIRECTORY_SEPARATOR . $name;
 
 	return apply_filters( 'tm4mlp_get_template', $path, $name );
 }
