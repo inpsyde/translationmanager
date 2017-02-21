@@ -32,7 +32,7 @@ function tm4mlp_sanitize_post( $data, $original_post ) {
 	unset( $post_data['post_category'] );
 	unset( $post_data['tags_input'] );
 
-	$data['post'] = $post_data;
+	$data[ $original_post->post_type ] = $post_data;
 
 	return $data;
 }
