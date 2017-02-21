@@ -24,3 +24,12 @@ require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 foreach ( glob( TM4MLP_DIR . '/includes/*.php' ) as $feature ) {
 	require_once $feature;
 }
+
+if ( ! is_admin() ) {
+	return;
+}
+
+// In admin context we load some more.
+foreach ( glob( TM4MLP_DIR . '/includes/admin/*.php' ) as $feature ) {
+	require_once $feature;
+}

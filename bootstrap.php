@@ -20,3 +20,5 @@ function tm4mlp_get_template( $name ) {
 }
 
 const TM4MLP_CAP_TRANSLATION_REQUEST = 'edit_others_pages';
+const TM4MLP_TRANS_STATUS            = 'tm4mlp_trans_status';
+const TM4MLP_TRANS_STATUS_PENDING    = 'tm4mlp_pending';

@@ -1,9 +1,5 @@
 <?php
 
-const TM4MLP_TRANS_STATUS = 'tm4mlp_trans_status';
-
-const TM4MLP_TRANS_STATUS_PENDING = 'tm4mlp_pending';
-
 function tm4mlp_cpt_trans_status() {
 	register_post_type(
 		TM4MLP_TRANS_STATUS,
@@ -32,9 +28,7 @@ function tm4mlp_trans_stat_clean() {
 add_action( 'admin_menu', 'tm4mlp_trans_stat_clean' );
 
 // Register Custom Status
-function tm4mlp_trans_status_ordered() {
-	global $pagenow;
-
+function tm4mlp_trans_status_pending() {
 	if ( TM4MLP_TRANS_STATUS != tm4mlp_get_current_post_type() ) {
 		// Not in context of t4mlp_trans_status post type.
 		return;
@@ -52,4 +46,4 @@ function tm4mlp_trans_status_ordered() {
 	register_post_status( TM4MLP_TRANS_STATUS_PENDING, $args );
 }
 
-add_action( 'init', 'tm4mlp_trans_status_ordered', 0 );
+add_action( 'current_screen', 'tm4mlp_trans_status_pending', 10 );
