@@ -9,7 +9,6 @@
 function tm4mlp_sanitize_post( $data, $original_post ) {
 	$post_data = $data[ $original_post->post_type ];
 
-	unset( $post_data['ID'] );
 	unset( $post_data['post_author'] );
 	unset( $post_data['post_date'] );
 	unset( $post_data['post_date_gmt'] );
