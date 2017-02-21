@@ -16,5 +16,11 @@
         <!-- Discurage following VIP functions as long as this is not a VIP plugin. -->
         <exclude name="WordPress.VIP.RestrictedFunctions" />
 
+        <!-- As long as this issue is open: -->
+        <!-- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues/849 -->
+        <exclude name="WordPress.VIP.ValidatedSanitizedInput.InputNotValidated" />
+        <exclude name="WordPress.VIP.ValidatedSanitizedInput.InputNotSanitized" />
+        <exclude name="WordPress.VIP.SuperGlobalInputUsage.AccessDetected" />
+
     </rule>
 </ruleset>

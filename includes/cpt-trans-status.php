@@ -26,4 +26,5 @@ function tm4mlp_trans_stat_clean() {
 	remove_meta_box( 'submitdiv', TM4MLP_TRANSLATION_STATUS_POST_TYPE, 'side' );
 	remove_meta_box( 'slugdiv', TM4MLP_TRANSLATION_STATUS_POST_TYPE, 'normal' );
 }
+
 add_action( 'admin_menu', 'tm4mlp_trans_stat_clean' );

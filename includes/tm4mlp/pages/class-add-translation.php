@@ -8,17 +8,18 @@ class Add_Translation {
 			wp_die( __( 'You are not allowed to do this' ) );
 		}
 
-		$method = 'handle_' . $_GET['type'];
+		$type   = trim( strval( wp_unslash( $_GET['type'] ) ) ); // Input var okay
+		$method = 'handle_' . $type;
 
 		if ( ! method_exists( $this, $method ) ) {
-			wp_die( __( 'Can not handle ' . $_GET['type'] ) );
+			wp_die( __( 'Can not handle ' . $type ) );
 		}
 
-		if ( ! isset( $_GET['id'] ) || ! $_GET['id'] ) {
+		if ( ! isset( $_GET['id'] ) || ! intval( $_GET['id'] ) ) {
 			wp_die( __( 'Something went wrong - missing ID.' ) );
 		}
 
-		$this->$method( $_GET['id'] );
+		$this->$method( intval( $_GET['id'] ) ); // Input var okay
 	}
 
 	protected function handle_post( $id ) {
@@ -33,12 +34,12 @@ class Add_Translation {
 		// TODO Send data to Etrapi
 
 		wp_insert_post(
-			[
+			array(
 				'post_type'            => TM4MLP_TRANSLATION_STATUS_POST_TYPE,
 				'post_title'           => 'stub',
 				'_tm4mlp_related_type' => 'post',
 				'_tm4mlp_related_id'   => $id,
-			]
+			)
 		);
 	}
 }
