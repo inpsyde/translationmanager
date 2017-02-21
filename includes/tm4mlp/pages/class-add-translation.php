@@ -8,18 +8,22 @@ class Add_Translation {
 			wp_die( __( 'You are not allowed to do this' ) );
 		}
 
-		$type   = trim( strval( wp_unslash( $_GET['type'] ) ) ); // Input var okay
+		if ( ! isset( $_GET['type'] ) ) { // Input var okay
+			wp_die( __( 'Something went wrong - missing type.' ) );
+		}
+
+		$type   = sanitize_key( $_GET['type'] ); // Input var okay
 		$method = 'handle_' . $type;
 
 		if ( ! method_exists( $this, $method ) ) {
-			wp_die( __( 'Can not handle ' . $type ) );
+			wp_die( __( 'Invalid type' ) );
 		}
 
-		if ( ! isset( $_GET['id'] ) || ! intval( $_GET['id'] ) ) {
+		if ( ! isset( $_GET['id'] ) || ! intval( $_GET['id'] ) ) { // Input var okay
 			wp_die( __( 'Something went wrong - missing ID.' ) );
 		}
 
-		$this->$method( intval( $_GET['id'] ) ); // Input var okay
+		$this->$method( intval( $_GET['id'] ) ); // Input var okay; WPCS: sanitization okay
 	}
 
 	protected function handle_post( $id ) {
