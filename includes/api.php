@@ -1,7 +1,11 @@
 <?php
 
-function tm4mlp_api_url() {
-	return get_option( 'tm4mlp_api_url', 'http://inpsyde.local:8000' );
+function tm4mlp_api_url( $path = null ) {
+	if ( null !== $path ) {
+		$path = '/' . $path . '.json';
+	}
+
+	return get_option( 'tm4mlp_api_url', 'http://inpsyde.local:8000/api' . $path );
 }
 
 /**
@@ -11,7 +15,7 @@ function tm4mlp_api_url() {
  */
 function tm4mlp_api_order( $data ) {
 	$response = wp_remote_request(
-		tm4mlp_api_url(),
+		tm4mlp_api_url( 'order' ),
 		array(
 			'method' => 'PUT',
 			'header' => array(
