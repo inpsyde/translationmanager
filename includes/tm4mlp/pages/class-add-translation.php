@@ -39,16 +39,15 @@ class Add_Translation {
 
 		wp_insert_post(
 			array(
-				'post_type'  => TM4MLP_TRANS_STATUS,
-				'post_title' => sprintf(
-					__('Translation of "%s"', 'tm4mlp'),
+				'post_type'   => TM4MLP_TRANS_STATUS,
+				'post_title'  => sprintf(
+					__( 'Translation of "%s"', 'tm4mlp' ),
 					$post->post_title
 				),
 				'post_status' => TM4MLP_TRANS_STATUS_PENDING,
-				'meta_input' => array(
-					'_tm4mlp_related_type' => 'post',
-					'_tm4mlp_related_id'   => $id,
-					'_tm4mlp_order_id'     => $order_id,
+				'meta_input'  => array(
+					'_tm4mlp_related_' . $post->post_type => $id,
+					'_tm4mlp_order_id'                    => $order_id,
 				)
 			)
 		);
