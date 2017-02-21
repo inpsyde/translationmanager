@@ -19,6 +19,11 @@ function tm4mlp_get_template( $name ) {
 	return apply_filters( 'tm4mlp_get_template', $path, $name );
 }
 
+// Set constants during runtime.
+define( 'TM4MLP_DIR', dirname( TM4MLP_FILE ) );
+define( 'TM4MLP_FILENAME', basename( TM4MLP_DIR ) . '/' . basename( TM4MLP_FILE ) );
+
+// Set constants during compile time.
 const TM4MLP_CAP_TRANSLATION_REQUEST = 'edit_others_pages';
 const TM4MLP_TRANS_STATUS            = 'tm4mlp_trans_status';
 const TM4MLP_TRANS_STATUS_PENDING    = 'tm4mlp_pending';
