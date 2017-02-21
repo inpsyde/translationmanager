@@ -35,9 +35,6 @@ class Add_Translation {
 
 		$data = apply_filters( 'tm4mlp_sanitize_post', array( $post->post_type => $post->to_array() ), $post );
 
-		// TODO Send data to Etrapi
-		var_dump( $data );
-
 		wp_insert_post(
 			array(
 				'post_type'            => TM4MLP_TRANSLATION_STATUS_POST_TYPE,
