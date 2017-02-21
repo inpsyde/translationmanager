@@ -18,3 +18,5 @@ function tm4mlp_get_template( $name ) {
 
 	return apply_filters( 'tm4mlp_get_template', $path, $name );
 }
+
+const TM4MLP_CAP_TRANSLATION_REQUEST = 'edit_others_pages';

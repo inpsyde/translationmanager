@@ -14,7 +14,7 @@ function tm4mlp_cpt_trans_status() {
 				'create_posts' => false,
 			),
 			'map_meta_cap' => true,
-			'supports' => [''],
+			'supports' => array( '' ),
 		)
 	);
 }
