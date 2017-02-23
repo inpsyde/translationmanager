@@ -16,7 +16,7 @@ define( 'TM4MLP_FILE', __FILE__ );
 
 require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-// register_activation_hook( TM4MPL_API_FILE, array( '\\Eurotext\\Admin\\Setup', 'plugin_activate' ) );
+register_activation_hook( TM4MLP_FILENAME, 'tm4mlp_activate' );
 
 // Then everything else.
 foreach ( glob( TM4MLP_DIR . '/includes/*.php' ) as $feature ) {

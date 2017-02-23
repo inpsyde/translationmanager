@@ -19,6 +19,19 @@ function tm4mlp_get_template( $name ) {
 	return apply_filters( 'tm4mlp_get_template', $path, $name );
 }
 
+/**
+ * Activation function.
+ *
+ * Proxy to the plugin activation.
+ * This is a function so that it can be unregistered by other plugins
+ * as objects can not be unregistered
+ * and static methods are considered as bad coding style / hard to test.
+ */
+function tm4mlp_activate() {
+	$setup = new \Tm4mlp\Admin\Setup();
+	$setup->plugin_activate();
+}
+
 // Set constants during runtime.
 define( 'TM4MLP_DIR', dirname( TM4MLP_FILE ) );
 define( 'TM4MLP_FILENAME', basename( TM4MLP_DIR ) . '/' . basename( TM4MLP_FILE ) );
