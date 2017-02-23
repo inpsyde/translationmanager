@@ -13,6 +13,7 @@ Domain Path: /languages
 */
 
 define( 'TM4MLP_FILE', __FILE__ );
+define( 'TM4MLP_VERSION', '1.0.0' );
 
 require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
