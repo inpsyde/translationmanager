@@ -45,5 +45,33 @@ Use the `TM4MLP_SANITIZE_POST` const to be forward compatible.
 This filter is documented in the method
 `\Tm4mlp\Pages\Add_Translation::handle_post()`.
 
-The `tm4mlp_api_translation_update` 
+The `tm4mlp_api_translation_update` receives data like this (JSON):
 
+    {
+      "__meta": {
+        "id": 1,
+        "source-language": "de-DE",
+        "target-language": "fr-FR",
+      },
+      "0": {
+        "__meta": {
+          "id": 1,
+          "entity": "post",
+          "type": "post"
+        },
+        "post_title": "Le titre.",
+        "post_content": "Le contenu."
+      },
+      "1": {
+        "__meta": {
+          "id": 1,
+          "entity": "post",
+          "type": "page"
+        },
+        "post_title": "La page",
+        "post_content": "Le contenu de page."
+      }
+    }
+
+An example for development can be found at the API on the path "/api/stub/translation.json".
+More documentation about this action can be found in the `tm4mlp_api_fetch` function.
