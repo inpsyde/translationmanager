@@ -49,9 +49,9 @@ The `tm4mlp_api_translation_update` receives data like this (JSON):
 
     {
       "__meta": {
-        "id": 1,
-        "source-language": "de-DE",
-        "target-language": "fr-FR",
+        "id": 1, (ID as given by REST-API)
+        "source": { id: 5, language: "de-DE", label: "Deutsch" }, (see below for `tm4mlp_get_current_language` filter)
+        "target": { id: 6, language: 'fr-FR', label: "Francais" }, (see below for `tm4mlp_get_languages` filter)
       },
       "0": {
         "__meta": {
@@ -75,3 +75,15 @@ The `tm4mlp_api_translation_update` receives data like this (JSON):
 
 An example for development can be found at the API on the path "/api/stub/translation.json".
 More documentation about this action can be found in the `tm4mlp_api_fetch` function.
+
+Set languages via `tm4mlp_get_languages` filter like this:
+
+    [
+        'lang_id' => 'Lang label',
+        5 => [ 'lang_code' => 'de-DE', 'label' => Deutsch' ],
+        'en-GB' => 'English',
+    ]
+
+The ID can be whatever you need in your translation plugin.
+You also may want to give us the current language via the `tm4mlp_get_current_language`,
+so that he translation agency and you afterwards know the origin language.

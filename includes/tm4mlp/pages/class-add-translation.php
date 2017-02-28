@@ -29,10 +29,12 @@ class Add_Translation {
 	protected function handle_post( $id ) {
 		$post = get_post( $id );
 
-
 		if ( is_wp_error( $post ) ) {
 			throw new \InvalidArgumentException( 'Post with ID ' . (int) $id . ' not found' );
 		}
+
+		$data           = $post->to_array();
+		$data['__meta'] = array();
 
 		/**
 		 * Sanitizes the translation source data.
@@ -40,15 +42,16 @@ class Add_Translation {
 		 * Within this hook the data can be reduced
 		 * or enriched by other plugins / modules.
 		 *
-		 * @see tm4mlp_sanitize_post()
+		 * @see   tm4mlp_sanitize_post()
 		 *
 		 * @since 1.0.0
 		 *
 		 * @param array    $data The current sanitized data which will be send in for translation.
 		 * @param \WP_Post $post The target post which needs to be translated.
 		 */
-		$sanitized_data = apply_filters( 'tm4mlp_sanitize_post', array( $post->post_type => $post->to_array() ), $post );
-		$order_id       = tm4mlp_api_order( $sanitized_data );
+		$data = apply_filters( 'tm4mlp_sanitize_post', $data, $post );
+
+		$order_id = tm4mlp_api_order( $data );
 
 		$id = wp_insert_post(
 			array(
