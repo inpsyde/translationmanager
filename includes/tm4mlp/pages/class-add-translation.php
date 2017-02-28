@@ -29,23 +29,35 @@ class Add_Translation {
 	protected function handle_post( $id ) {
 		$post = get_post( $id );
 
+
 		if ( is_wp_error( $post ) ) {
 			throw new \InvalidArgumentException( 'Post with ID ' . (int) $id . ' not found' );
 		}
 
-		$order_id = tm4mlp_api_order(
-			apply_filters( 'tm4mlp_sanitize_post', array( $post->post_type => $post->to_array() ), $post )
-		);
+		/**
+		 * Sanitizes the translation source data.
+		 *
+		 * Within this hook the data can be reduced
+		 * or enriched by other plugins / modules.
+		 *
+		 * @see tm4mlp_sanitize_post()
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array    $data The current sanitized data which will be send in for translation.
+		 * @param \WP_Post $post The target post which needs to be translated.
+		 */
+		$sanitized_data = apply_filters( 'tm4mlp_sanitize_post', array( $post->post_type => $post->to_array() ), $post );
+		$order_id       = tm4mlp_api_order( $sanitized_data );
 
-		wp_insert_post(
+		$id = wp_insert_post(
 			array(
-				'post_type'   => TM4MLP_TRANS_STATUS,
-				'post_title'  => sprintf(
+				'post_type'  => TM4MLP_CART,
+				'post_title' => sprintf(
 					__( 'Translation of "%s"', 'tm4mlp' ),
 					$post->post_title
 				),
-				'post_status' => TM4MLP_TRANS_STATUS_PENDING,
-				'meta_input'  => array(
+				'meta_input' => array(
 					'_tm4mlp_related_' . $post->post_type => $id,
 					'_tm4mlp_order_id'                    => $order_id,
 				)

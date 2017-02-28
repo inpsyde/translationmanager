@@ -30,10 +30,21 @@ function tm4mlp_sanitize_post( $data, $original_post ) {
 	unset( $post_data['page_template'] );
 	unset( $post_data['post_category'] );
 	unset( $post_data['tags_input'] );
+	unset( $post_data['post_content_filtered'] );
+
+	if (!isset($post_data['__meta'])) {
+		$post_data['__meta'] = array();
+	}
+
+	$post_data['__meta']['ID'] = $post_data['ID'];
+	unset($post_data['ID']);
+
+	$post_data['__meta']['guid'] = $post_data['guid'];
+	unset($post_data['guid']);
 
 	$data[ $original_post->post_type ] = $post_data;
 
 	return $data;
 }
 
-add_filter( 'tm4mlp_sanitize_post', 'tm4mlp_sanitize_post', 10, 2 );
+add_filter( TM4MLP_SANITIZE_POST, 'tm4mlp_sanitize_post', 10, 2 );

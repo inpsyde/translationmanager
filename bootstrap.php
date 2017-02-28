@@ -37,6 +37,9 @@ define( 'TM4MLP_DIR', dirname( TM4MLP_FILE ) );
 define( 'TM4MLP_FILENAME', basename( TM4MLP_DIR ) . '/' . basename( TM4MLP_FILE ) );
 
 // Set constants during compile time.
+const TM4MLP_API_PROCESS_ORDER       = 'tm4mlp_api_process_order';
 const TM4MLP_CAP_TRANSLATION_REQUEST = 'edit_others_pages';
+const TM4MLP_CART                    = 'tm4mlp_cart';
+const TM4MLP_SANITIZE_POST           = 'tm4mlp_sanitize_post';
 const TM4MLP_TRANS_STATUS            = 'tm4mlp_trans_status';
 const TM4MLP_TRANS_STATUS_PENDING    = 'tm4mlp_pending';

@@ -21,3 +21,29 @@ Furthermore you'll find classes/methods (like `...\Admin\Setup::plugin_activate`
 and (proxy-)functions just calling them (like `..._admin_plugin_activate()`) which seems odd.
 This is intended as function names can be easily removed from hooks
 and filters compared to objects (with some arbitrary SPL object hash).
+
+
+## Writing modules
+
+Sometimes modules for 3rd party plugins are needed.
+Either if they are used for additional data to translate
+or if they shall be informed about new translations.
+Writing modules is easy (here: for the plugin "akismet"):
+
+1. Create a file with the plugin slug like "modules/akismet.php"
+2. Write code as usual for WordPress using hooks and filter.
+3. This file will only be loaded if the other plugin ("akismet")is activated.
+
+Simple as that.
+It is okay to create sub-folders and more beyond the "modules" directory.
+Within your module you might be interested in those filter/actions:
+
+### Filter
+ 
+The `tm4mlp_sanitize_post` sanitizes data before it is send in for translation.
+Use the `TM4MLP_SANITIZE_POST` const to be forward compatible.
+This filter is documented in the method
+`\Tm4mlp\Pages\Add_Translation::handle_post()`.
+
+The `tm4mlp_api_translation_update` 
+
