@@ -31,6 +31,17 @@ composer.lock
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
 
+.idea/copyright/
+.idea/deployment.xml
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/modules.xml
+.idea/php.xml
+.idea/tm4mlp.iml
+.idea/vcs.xml
+.idea/webResources.xml
+.idea/codeStyleSettings.xml
+
 ## File-based project format:
 *.iws
 
