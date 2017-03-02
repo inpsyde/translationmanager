@@ -36,7 +36,7 @@ function tm4mlp_cart_clean() {
 
 add_action( 'admin_head', 'tm4mlp_cart_clean' );
 
-function tm4mlp_bulk_actions( $actions ) {
+function tm4mlp_bulk_actions_cart( $actions ) {
 	unset( $actions['edit'] );
 
 	if ( isset( $actions['trash'] ) ) {
@@ -46,7 +46,7 @@ function tm4mlp_bulk_actions( $actions ) {
 	return $actions;
 }
 
-add_filter( 'bulk_actions-edit-' . TM4MLP_CART, 'tm4mlp_bulk_actions' );
+add_filter( 'bulk_actions-edit-' . TM4MLP_CART, 'tm4mlp_bulk_actions_cart' );
 
 /**
  * Cart items have no trash.
@@ -79,15 +79,77 @@ function tm4mlp_cart_row_actions( $actions, $post ) {
 
 add_filter( 'post_row_actions', 'tm4mlp_cart_row_actions', 10, 2 );
 
-function tm4mlp_cart_footer() {
+function tm4mlp_cart_footer( $which ) {
+	if ( 'bottom' != $which ) {
+//		return;
+	}
 
+	if ( 'edit-' . TM4MLP_CART != get_current_screen()->id ) {
+		return;
+	}
+
+	require tm4mlp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
 }
 
-add_action( 'admin_footer', 'tm4mlp_cart_footer' );
+add_action( 'manage_posts_extra_tablenav', 'tm4mlp_cart_footer' );
 
-add_filter('views_edit-' . TM4MLP_CART,'my_filter');
+add_action( 'load-edit.php', 'tm4mlp_order_translation' );
 
-function my_filter($views){
-	$views['import'] = '<a href="#" class="primary">Import</a>';
-	return $views;
+function tm4mlp_order_translation() {
+	if ( ! get_current_screen() || TM4MLP_CART != get_current_screen()->post_type ) {
+		// Not our context so we ignore it.
+		return;
+	}
+
+	if ( ! isset( $_GET['tm4mlp_order_translation'] ) ) {
+		// Cart table but order button not clicked so we ignore it.
+		return;
+	}
+
+	// List of post IDs / cart items.
+	$cart_items = array();
+
+	if ( isset( $_GET['post'] ) && $_GET['post'] ) {
+		$cart_items = $_GET['post'];
+	}
+
+	if ( ! $cart_items ) {
+		$cart_items = get_posts(
+			array(
+				'posts_per_page' => - 1,
+				'post_type'      => TM4MLP_CART,
+			)
+		);
+	}
+
+	// Create order post
+	$order_id = wp_insert_post(
+		array(
+			'post_title' => sprintf(
+				__( '%d items on %s', 'tm4mlp' ),
+				count( $cart_items ),
+				date( 'Y-m-d' )
+			),
+			'post_type'  => TM4MLP_ORDER,
+		)
+	);
+
+	if ( is_wp_error( $order_id ) ) {
+		tm4mlp_die();
+	}
+
+	// Add entities to new parent.
+	foreach ( $cart_items as $cart_item ) {
+		wp_update_post(
+			array(
+				'ID'          => $cart_item,
+				'post_parent' => $order_id,
+				'post_type'   => 'tm4mlp_order',
+			)
+		);
+	}
+
+	wp_redirect(
+		get_admin_url( null, 'post.php?action=edit&post=' . $order_id )
+	);
 }
