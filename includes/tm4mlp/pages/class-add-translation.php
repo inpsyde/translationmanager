@@ -35,6 +35,7 @@ class Add_Translation {
 
 		$data           = $post->to_array();
 		$data['__meta'] = array();
+		$site_id        = get_current_site()->id;
 
 		/**
 		 * Sanitizes the translation source data.
@@ -48,8 +49,9 @@ class Add_Translation {
 		 *
 		 * @param array    $data The current sanitized data which will be send in for translation.
 		 * @param \WP_Post $post The target post which needs to be translated.
+		 * @param int      $site_id
 		 */
-		$data = apply_filters( 'tm4mlp_sanitize_post', $data, $post );
+		$data = apply_filters( 'tm4mlp_sanitize_post', $data, $post, $site_id );
 
 		$order_id = tm4mlp_api_order( $data );
 
