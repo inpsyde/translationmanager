@@ -44,10 +44,6 @@ function tm4mlp_die( $message = '', $title = '', $args = array() ) {
 	wp_die( $message, $title, $args );
 }
 
-// Set constants during runtime.
-define( 'TM4MLP_DIR', dirname( TM4MLP_FILE ) );
-define( 'TM4MLP_FILENAME', basename( TM4MLP_DIR ) . '/' . basename( TM4MLP_FILE ) );
-
 // Set constants during compile time.
 const TM4MLP_API_PROCESS_ORDER       = 'tm4mlp_api_process_order';
 const TM4MLP_CAP_TRANSLATION_REQUEST = 'edit_others_pages';

@@ -101,7 +101,9 @@ function tm4mlp_order_translation() {
 		return;
 	}
 
-	if ( ! isset( $_GET['tm4mlp_order_translation'] ) ) {
+	$request = $_GET; // Input var ok.
+
+	if ( ! isset( $request['tm4mlp_order_translation'] ) ) {
 		// Cart table but order button not clicked so we ignore it.
 		return;
 	}
@@ -109,8 +111,8 @@ function tm4mlp_order_translation() {
 	// List of post IDs / cart items.
 	$cart_items = array();
 
-	if ( isset( $_GET['post'] ) && $_GET['post'] ) {
-		$cart_items = $_GET['post'];
+	if ( isset( $request['post'] ) && $request['post'] ) {
+		$cart_items = array_map( 'intval', $request['post'] );
 	}
 
 	if ( ! $cart_items ) {
