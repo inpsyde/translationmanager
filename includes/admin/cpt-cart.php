@@ -127,11 +127,15 @@ function tm4mlp_order_translation() {
 	}
 
 	if ( ! $cart_items ) {
-		$cart_items = get_posts(
-			array(
-				'posts_per_page' => - 1,
-				'post_type'      => TM4MLP_CART,
-			)
+		$cart_items = wp_list_pluck(
+			get_posts(
+				array(
+					'posts_per_page' => - 1,
+					'post_type'      => TM4MLP_CART,
+					'post_status'    => 'any',
+				)
+			),
+			'ID'
 		);
 	}
 
@@ -139,9 +143,9 @@ function tm4mlp_order_translation() {
 	$order_id = wp_insert_post(
 		array(
 			'post_title' => sprintf(
-				__( '%d items on %s', 'tm4mlp' ),
-				count( $cart_items ),
-				date( 'Y-m-d' )
+				__( 'Project %s (%d items)', 'tm4mlp' ),
+				date( 'Y-m-d' ),
+				count( $cart_items )
 			),
 			'post_type'  => TM4MLP_ORDER,
 		)
