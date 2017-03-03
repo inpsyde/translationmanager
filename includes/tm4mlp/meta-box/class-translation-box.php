@@ -34,18 +34,6 @@ class Translation_Box {
 	 * @return mixed|void
 	 */
 	public function get_languages() {
-		return apply_filters(
-			'tm4mlp_get_languages',
-			array(
-				array(
-					'lang_code' => 'de-DE',
-					'label' => 'Deutsch'
-				),
-				array(
-					'lang_code' => 'en-GB',
-					'label' => 'English'
-				),
-			)
-		);
+		return apply_filters( 'tm4mlp_get_languages', array() );
 	}
 }

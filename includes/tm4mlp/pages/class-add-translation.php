@@ -54,18 +54,28 @@ class Add_Translation {
 
 		$post_type_labels = get_post_type_labels( get_post_type_object( $post->post_type ) );
 
-		wp_insert_post(
-			array(
-				'post_type'  => TM4MLP_CART,
-				'post_title' => sprintf(
-					__( '%s: "%s"', 'tm4mlp' ),
-					$post_type_labels->singular_name,
-					$post->post_title
-				),
-				'meta_input' => array(
-					'_tm4mlp_related_' . $post->post_type => $id,
+		$languages      = array( 0, 1 );
+		$valid_languages = tm4mlp_get_languages();
+
+		foreach ( $languages as $language_id ) {
+			if ( ! isset( $valid_languages[ $language_id ] ) ) {
+				continue;
+			}
+
+			$id = wp_insert_post(
+				array(
+					'post_type'  => TM4MLP_CART,
+					'post_title' => sprintf(
+						__( '%s: "%s"', 'tm4mlp' ),
+						$post_type_labels->singular_name,
+						$post->post_title
+					),
+					'meta_input' => array(
+						'_tm4mlp_related_' . $post->post_type => $id,
+						'_target_language'                    => $valid_languages[$language_id]['lang_code'],
+					)
 				)
-			)
-		);
+			);
+		}
 	}
 }
