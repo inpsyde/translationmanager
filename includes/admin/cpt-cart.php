@@ -91,11 +91,12 @@ function tm4mlp_cart_row_actions( $actions, $post ) {
 add_filter( 'post_row_actions', 'tm4mlp_cart_row_actions', 10, 2 );
 
 function tm4mlp_cart_footer( $which ) {
-	if ( 'bottom' != $which ) {
-//		return;
+	if ( 'edit-' . TM4MLP_CART != get_current_screen()->id ) {
+		return;
 	}
 
-	if ( 'edit-' . TM4MLP_CART != get_current_screen()->id ) {
+	global $wp_query;
+	if ( $wp_query->post_count <= 0 ) {
 		return;
 	}
 
