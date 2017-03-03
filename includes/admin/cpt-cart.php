@@ -175,3 +175,18 @@ add_action(
 		}
 	}
 );
+
+add_action(
+	'parse_query',
+	function ( $wp_query ) {
+		if ( ! $wp_query->is_main_query()
+		     || TM4MLP_ORDER != $wp_query->get( 'post_type' )
+		     || ! get_current_screen()
+		     || get_current_screen()->parent_base
+		) {
+			return;
+		}
+
+		$wp_query->set( 'post_parent', 0 );
+	}
+);
