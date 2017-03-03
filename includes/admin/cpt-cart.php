@@ -5,6 +5,9 @@ function tm4mlp_cpt_cart() {
 		TM4MLP_CART,
 		array(
 			'label'        => __( 'Cart', 'tm4mlp' ),
+			'labels' => array(
+				'name' => __('Your inquiry', 'tm4mlp'),
+			),
 			'description'  => __( 'What you are about to order.', 'tm4mlp' ),
 			'public'       => true,
 			'capabilities' => array(
