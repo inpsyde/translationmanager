@@ -13,7 +13,7 @@ class Translation_Box {
 			static::ID,
 			__( 'Inquiry for translation', 'tm4mlp' ),
 			array( $this, 'dispatch' ),
-			apply_filters( 'tm4mlp_translation_box_screen', null ),
+			apply_filters( 'tm4mlp_translation_box_screen', [ 'post', 'page' ] ),
 			self::CONTEXT
 		);
 	}
