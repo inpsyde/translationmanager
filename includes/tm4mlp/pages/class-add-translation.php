@@ -3,6 +3,9 @@
 namespace Tm4mlp\Pages;
 
 class Add_Translation {
+	/**
+	 * @see ::handle_post()
+	 */
 	public function dispatch() {
 		if ( ! current_user_can( TM4MLP_CAP_TRANSLATION_REQUEST ) ) {
 			wp_die( __( 'You are not allowed to do this' ) );
@@ -24,6 +27,19 @@ class Add_Translation {
 		}
 
 		$this->$method( intval( $_GET['id'] ) ); // Input var okay; WPCS: sanitization okay
+
+		// Redirect to cart.
+		wp_redirect(
+			get_admin_url(
+				null,
+				'edit.php?' . http_build_query(
+					array(
+						'post_type' => TM4MLP_CART,
+						'success'   => __( 'Item added to cart.', 'tm4mlp' )
+					)
+				)
+			)
+		);
 	}
 
 	protected function handle_post( $id ) {
@@ -35,6 +51,7 @@ class Add_Translation {
 
 		$data           = $post->to_array();
 		$data['__meta'] = array();
+		// TODO current site is not available in this scope.
 		$site_id        = get_current_site()->id;
 
 		/**
@@ -47,24 +64,24 @@ class Add_Translation {
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param array    $data The current sanitized data which will be send in for translation.
-		 * @param \WP_Post $post The target post which needs to be translated.
-		 * @param int      $site_id
+		 * @param array    $data    The current sanitized data which will be send in for translation.
+		 * @param \WP_Post $post    The target post which needs to be translated.
+		 * @param int      $site_id Id of the current site.
 		 */
-		$data = apply_filters( 'tm4mlp_sanitize_post', $data, $post, $site_id );
+		// TODO $data = apply_filters( 'tm4mlp_sanitize_post', $data, $post, $site_id );
 
-		$order_id = tm4mlp_api_order( $data );
+		$post_type_labels = get_post_type_labels( get_post_type_object( $post->post_type ) );
 
-		$id = wp_insert_post(
+		wp_insert_post(
 			array(
 				'post_type'  => TM4MLP_CART,
 				'post_title' => sprintf(
-					__( 'Translation of "%s"', 'tm4mlp' ),
+					__( '%s: "%s"', 'tm4mlp' ),
+					$post_type_labels->singular_name,
 					$post->post_title
 				),
 				'meta_input' => array(
 					'_tm4mlp_related_' . $post->post_type => $id,
-					'_tm4mlp_order_id'                    => $order_id,
 				)
 			)
 		);

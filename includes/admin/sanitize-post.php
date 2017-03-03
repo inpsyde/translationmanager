@@ -7,7 +7,7 @@
  * @return array
  */
 function tm4mlp_sanitize_post( $data, $original_post ) {
-	$post_data = $data[ $original_post->post_type ];
+	$post_data = $data;
 
 	unset( $post_data['post_author'] );
 	unset( $post_data['post_date'] );

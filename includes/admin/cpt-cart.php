@@ -71,8 +71,11 @@ add_action( 'trashed_post', 'tm4mlp_cart_trashed' );
  */
 function tm4mlp_cart_row_actions( $actions, $post ) {
 	if ( $post && TM4MLP_CART != $post->post_type ) {
-		return $actions;
+	return $actions;
+
 	}
+
+	// TODO: Delete/Remove only.
 
 	return array();
 }
@@ -140,8 +143,12 @@ function tm4mlp_order_translation() {
 		tm4mlp_die();
 	}
 
-	// Add entities to new parent.
+	// Gather order data
+	// and add entities to new parent.
+	$order_data = array();
 	foreach ( $cart_items as $cart_item ) {
+//		$order_data[] = apply_filters( TM4MLP_SANITIZE_POST, $cart_item );
+
 		wp_update_post(
 			array(
 				'ID'          => $cart_item,
@@ -151,7 +158,20 @@ function tm4mlp_order_translation() {
 		);
 	}
 
+//	do_action( TM4MLP_API_PROCESS_ORDER, $order_data );
+
 	wp_redirect(
 		get_admin_url( null, 'post.php?action=edit&post=' . $order_id )
 	);
 }
+
+add_action(
+	'admin_head',
+	function () {
+		if ( isset( $_GET['success'] ) ) {
+			echo '<div class="notice notice-success is-dismissible" ><p >'
+			     . esc_html__( $_GET['success'] )
+			     . '</p></div>';
+		}
+	}
+);
