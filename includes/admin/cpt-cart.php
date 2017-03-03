@@ -198,8 +198,10 @@ function tm4mlp_order_translation() {
 	do_action( TM4MLP_API_PROCESS_ORDER, $order_data, $order_id );
 
 	wp_redirect(
-		get_admin_url( null, 'post.php?action=edit&post=' . $order_id )
+		get_admin_url( get_current_blog_id(), 'edit.php?post_type=' . TM4MLP_ORDER )
 	);
+
+	wp_die( null, '', array( 'response' => 302 ) );
 }
 
 add_action(
@@ -236,3 +238,36 @@ add_filter( 'display_post_states', function ( $post_states, $post ) {
 
 	return array();
 }, 10, 2 );
+
+add_filter(
+	'manage_' . TM4MLP_CART . '_posts_columns',
+	function ( $columns ) {
+		unset( $columns['author'] );
+		unset( $columns['categories'] );
+		unset( $columns['tags'] );
+		unset( $columns['comments'] );
+		unset( $columns['date'] );
+
+		$columns['target_language'] = __( 'Target language', 'tm4mlp' );
+
+		return $columns;
+	}
+);
+
+add_filter(
+	'manage_' . TM4MLP_CART . '_posts_custom_column',
+	function ( $column, $post_id ) {
+		switch ( $column ) {
+			case "target_language":
+				echo esc_html(
+					tm4mlp_get_language_label(
+						get_post_meta( $post_id, '_target_language', true )
+					)
+				);
+
+				break;
+		}
+	},
+	10,
+	2
+);

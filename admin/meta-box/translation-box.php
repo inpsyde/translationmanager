@@ -5,6 +5,7 @@
 	     style="width: 80%; margin: 0.5em 0;">
 </a>
 
+<!-- TODO values need to be transferred. -->
 <div style="line-height: 2em;">
 	<?php foreach ( $this->get_languages() as $key => $language ): ?>
 		<div>
