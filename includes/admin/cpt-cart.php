@@ -39,6 +39,7 @@ add_action( 'admin_head', 'tm4mlp_cart_clean' );
 function tm4mlp_bulk_actions_cart( $actions ) {
 	unset( $actions['edit'] );
 
+
 	if ( isset( $actions['trash'] ) ) {
 		$actions['trash'] = __( 'Remove from cart', 'tm4mlp' );
 	}
@@ -54,9 +55,9 @@ add_filter( 'bulk_actions-edit-' . TM4MLP_CART, 'tm4mlp_bulk_actions_cart' );
  * @param $post_id
  */
 function tm4mlp_cart_trashed( $post_id ) {
-	$post = get_post( $post_id );
+	$post_type = get_post_type( $post_id );
 
-	if ( TM4MLP_CART != $post->post_type ) {
+	if ( TM4MLP_CART != $post_type ) {
 		return;
 	}
 
@@ -71,13 +72,17 @@ add_action( 'trashed_post', 'tm4mlp_cart_trashed' );
  */
 function tm4mlp_cart_row_actions( $actions, $post ) {
 	if ( $post && TM4MLP_CART != $post->post_type ) {
-	return $actions;
-
+		return $actions;
 	}
 
-	// TODO: Delete/Remove only.
-
-	return array();
+	// Delete/Remove only.
+	return array(
+		'trash' => str_replace(
+			'>Trash<',
+			'>'.  __('Remove from cart', 'tm4mlp') .'<',
+			$actions['trash']
+		)
+	);
 }
 
 add_filter( 'post_row_actions', 'tm4mlp_cart_row_actions', 10, 2 );
@@ -143,11 +148,40 @@ function tm4mlp_order_translation() {
 		tm4mlp_die();
 	}
 
+	global $current_site;
+
+	$site_id = get_current_blog_id();
+	if ( $current_site ) {
+		$site_id = $current_site->id;
+	}
+
 	// Gather order data
 	// and add entities to new parent.
 	$order_data = array();
 	foreach ( $cart_items as $cart_item ) {
-//		$order_data[] = apply_filters( TM4MLP_SANITIZE_POST, $cart_item );
+		$post = get_post( $cart_item );
+
+		if ( ! $post instanceof \WP_Post ) {
+			// TODO little messy here
+			// TODO what about other types?
+			continue;
+		}
+
+		/**
+		 * Sanitizes the translation source data.
+		 *
+		 * Within this hook the data can be reduced
+		 * or enriched by other plugins / modules.
+		 *
+		 * @see   tm4mlp_sanitize_post()
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param array    $data    The current sanitized data which will be send in for translation.
+		 * @param \WP_Post $post    The target post which needs to be translated.
+		 * @param int      $site_id Id of the current site.
+		 */
+		$order_data[] = apply_filters( TM4MLP_SANITIZE_POST, $post->to_array(), $site_id );
 
 		wp_update_post(
 			array(
@@ -158,7 +192,7 @@ function tm4mlp_order_translation() {
 		);
 	}
 
-//	do_action( TM4MLP_API_PROCESS_ORDER, $order_data );
+	do_action( TM4MLP_API_PROCESS_ORDER, $order_data, $order_id );
 
 	wp_redirect(
 		get_admin_url( null, 'post.php?action=edit&post=' . $order_id )

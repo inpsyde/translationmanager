@@ -27,4 +27,25 @@ class Translation_Box {
 
 		require $template;
 	}
+
+	/**
+	 * @todo Fetch real languages.
+	 *
+	 * @return mixed|void
+	 */
+	public function get_languages() {
+		return apply_filters(
+			'tm4mlp_get_languages',
+			array(
+				array(
+					'lang_code' => 'de-DE',
+					'label' => 'Deutsch'
+				),
+				array(
+					'lang_code' => 'en-GB',
+					'label' => 'English'
+				),
+			)
+		);
+	}
 }

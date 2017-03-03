@@ -51,24 +51,6 @@ class Add_Translation {
 
 		$data           = $post->to_array();
 		$data['__meta'] = array();
-		// TODO current site is not available in this scope.
-		$site_id        = get_current_site()->id;
-
-		/**
-		 * Sanitizes the translation source data.
-		 *
-		 * Within this hook the data can be reduced
-		 * or enriched by other plugins / modules.
-		 *
-		 * @see   tm4mlp_sanitize_post()
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param array    $data    The current sanitized data which will be send in for translation.
-		 * @param \WP_Post $post    The target post which needs to be translated.
-		 * @param int      $site_id Id of the current site.
-		 */
-		// TODO $data = apply_filters( 'tm4mlp_sanitize_post', $data, $post, $site_id );
 
 		$post_type_labels = get_post_type_labels( get_post_type_object( $post->post_type ) );
 

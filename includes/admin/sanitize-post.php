@@ -6,9 +6,7 @@
  *
  * @return array
  */
-function tm4mlp_sanitize_post( $data, $original_post ) {
-	$post_data = $data;
-
+function tm4mlp_sanitize_post( $post_data, $original_post ) {
 	unset( $post_data['post_author'] );
 	unset( $post_data['post_date'] );
 	unset( $post_data['post_date_gmt'] );
@@ -42,9 +40,7 @@ function tm4mlp_sanitize_post( $data, $original_post ) {
 	$post_data['__meta']['guid'] = $post_data['guid'];
 	unset($post_data['guid']);
 
-	$data[ $original_post->post_type ] = $post_data;
-
-	return $data;
+	return $post_data;
 }
 
 add_filter( TM4MLP_SANITIZE_POST, 'tm4mlp_sanitize_post', 10, 2 );
