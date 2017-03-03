@@ -76,3 +76,16 @@ function tm4mlp_order_row_actions( $actions, $post ) {
 }
 
 add_filter( 'post_row_actions', 'tm4mlp_order_row_actions', 10, 2 );
+
+
+function tm4mlp_order_info() {
+	static $order_info;
+
+	if ( ! $order_info ) {
+		$order_info = new \Tm4mlp\Meta_Box\Order_Info();
+	}
+
+	$order_info->add_meta_box();
+}
+
+add_action( 'add_meta_boxes', 'tm4mlp_order_info' );
