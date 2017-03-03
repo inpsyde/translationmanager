@@ -5,8 +5,8 @@ function tm4mlp_cpt_cart() {
 		TM4MLP_CART,
 		array(
 			'label'        => __( 'Cart', 'tm4mlp' ),
-			'labels' => array(
-				'name' => __('Your inquiry', 'tm4mlp'),
+			'labels'       => array(
+				'name' => __( 'Your inquiry', 'tm4mlp' ),
 			),
 			'description'  => __( 'What you are about to order.', 'tm4mlp' ),
 			'public'       => true,
@@ -82,7 +82,7 @@ function tm4mlp_cart_row_actions( $actions, $post ) {
 	return array(
 		'trash' => str_replace(
 			'>Trash<',
-			'>'.  __('Remove from cart', 'tm4mlp') .'<',
+			'>' . __( 'Remove from cart', 'tm4mlp' ) . '<',
 			$actions['trash']
 		)
 	);
@@ -227,3 +227,12 @@ add_action(
 		$wp_query->set( 'post_parent', 0 );
 	}
 );
+
+
+add_filter( 'display_post_states', function ( $post_states, $post ) {
+	if ( TM4MLP_CART != $post->post_type ) {
+		return $post_states;
+	}
+
+	return array();
+}, 10, 2 );
