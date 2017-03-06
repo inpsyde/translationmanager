@@ -29,13 +29,28 @@ function tm4mlp_cart_taxonomy() {
 		TM4MLP_TAX_PROJECT,
 		TM4MLP_CART,
 		array(
-			'label' => __( 'Project', 'tm4mlp' ),
+			'label'  => __( 'Project', 'tm4mlp' ),
 			'public' => true,
 		)
 	);
 }
 
 add_action( 'init', 'tm4mlp_cart_taxonomy' );
+
+/**
+ * Remove month filter.
+ */
+function tm4mlp_cart_remove_month() {
+	if ( ! get_current_screen()
+	     || TM4MLP_CART != get_current_screen()->post_type
+	) {
+		return;
+	}
+
+	add_filter( 'months_dropdown_results', '__return_empty_array' );
+}
+
+add_action( 'admin_head', 'tm4mlp_cart_remove_month' );
 
 //function tm4mlp_cart_clean() {
 //	// Remove all WordPress basics as this post type is not meant to be maintained by users.
