@@ -95,6 +95,18 @@ function tm4mlp_cart_footer( $which ) {
 		return;
 	}
 
+	if ( isset( $_GET['tm4mlp_project'] ) && $_GET['tm4mlp_project'] ) { // Input var ok.
+		$current_slug = $_GET['tm4mlp_project']; // Input var ok.
+		$term         = get_term_by( 'slug', $current_slug, TM4MLP_TAX_PROJECT );
+
+		if ( ! is_wp_error( $term )
+		     && get_term_meta( $term->term_id, '_tm4mlp_order_id' )
+		) {
+			// This has an order id so we don't show the order button.
+			return;
+		}
+	}
+
 	require tm4mlp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
 }
 
@@ -120,141 +132,4 @@ function _tm4mlp_cart_remove_states( $post_states, $post ) {
 
 add_filter( 'display_post_states', '_tm4mlp_cart_remove_states', 10, 2 );
 
-//
-//add_action( 'load-edit.php', 'tm4mlp_order_translation' );
-//
-//function tm4mlp_order_translation() {
-//	if ( ! get_current_screen() || TM4MLP_CART != get_current_screen()->post_type ) {
-//		// Not our context so we ignore it.
-//		return;
-//	}
-//
-//	$request = $_GET; // Input var ok.
-//
-//	if ( ! isset( $request['tm4mlp_order_translation'] ) ) {
-//		// Cart table but order button not clicked so we ignore it.
-//		return;
-//	}
-//
-//	// List of post IDs / cart items.
-//	$cart_items = array();
-//
-//	if ( isset( $request['post'] ) && $request['post'] ) {
-//		$cart_items = array_map( 'intval', $request['post'] );
-//	}
-//
-//	if ( ! $cart_items ) {
-//		$cart_items = wp_list_pluck(
-//			get_posts(
-//				array(
-//					'posts_per_page' => - 1,
-//					'post_type'      => TM4MLP_CART,
-//					'post_status'    => 'any',
-//				)
-//			),
-//			'ID'
-//		);
-//	}
-//
-//	// Create order post
-//	$order_id = wp_insert_post(
-//		array(
-//			'post_title' => sprintf(
-//				__( 'Cart %s (%d items)', 'tm4mlp' ),
-//				date( 'Y-m-d' ),
-//				count( $cart_items )
-//			),
-//			'post_type'  => TM4MLP_ORDER,
-//		)
-//	);
-//
-//	if ( is_wp_error( $order_id ) ) {
-//		tm4mlp_die();
-//	}
-//
-//	global $current_site;
-//
-//	$site_id = get_current_blog_id();
-//	if ( $current_site ) {
-//		$site_id = $current_site->id;
-//	}
-//
-//	// Gather order data
-//	// and add entities to new parent.
-//	$order_data = array();
-//	foreach ( $cart_items as $cart_item ) {
-//		$post = get_post( $cart_item );
-//
-//		if ( ! $post instanceof \WP_Post ) {
-//			// TODO little messy here
-//			// TODO what about other types?
-//			continue;
-//		}
-//
-//		/**
-//		 * Sanitizes the translation source data.
-//		 *
-//		 * Within this hook the data can be reduced
-//		 * or enriched by other plugins / modules.
-//		 *
-//		 * @see   tm4mlp_sanitize_post()
-//		 *
-//		 * @since 1.0.0
-//		 *
-//		 * @param array    $data    The current sanitized data which will be send in for translation.
-//		 * @param \WP_Post $post    The target post which needs to be translated.
-//		 * @param int      $site_id Id of the current site.
-//		 */
-//		$order_data[] = apply_filters( TM4MLP_SANITIZE_POST, $post->to_array(), $site_id );
-//
-//		wp_update_post(
-//			array(
-//				'ID'          => $cart_item,
-//				'post_parent' => $order_id,
-//				'post_type'   => 'tm4mlp_order',
-//			)
-//		);
-//	}
-//
-//	do_action( TM4MLP_API_PROCESS_ORDER, $order_data, $order_id );
-//
-//	wp_redirect(
-//		get_admin_url( get_current_blog_id(), 'post.php?action=edit&post=' . (int) $order_id )
-//	);
-//
-//	wp_die( null, '', array( 'response' => 302 ) );
-//}
-//
-//
-//add_filter(
-//	'manage_' . TM4MLP_CART . '_posts_columns',
-//	function ( $columns ) {
-//		unset( $columns['author'] );
-//		unset( $columns['categories'] );
-//		unset( $columns['tags'] );
-//		unset( $columns['comments'] );
-//		unset( $columns['date'] );
-//
-//		$columns['target_language'] = __( 'Target language', 'tm4mlp' );
-//
-//		return $columns;
-//	}
-//);
-//
-//add_filter(
-//	'manage_' . TM4MLP_CART . '_posts_custom_column',
-//	function ( $column, $post_id ) {
-//		switch ( $column ) {
-//			case "target_language":
-//				echo esc_html(
-//					tm4mlp_get_language_label(
-//						get_post_meta( $post_id, '_target_language', true )
-//					)
-//				);
-//
-//				break;
-//		}
-//	},
-//	10,
-//	2
-//);
+add_action( 'admin_init', array( \Tm4mlp\Post_Type\Project_Item::class, 'register_post_status' ) );
