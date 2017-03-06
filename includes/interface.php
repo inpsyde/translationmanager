@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Interface for modules to serve languages.
+ *
+ * @return array
+ */
 function tm4mlp_get_languages() {
-	return apply_filters( 'tm4mlp_get_languages', array() );
+	global $current_site;
+
+	return apply_filters( 'tm4mlp_get_languages', array(), $current_site->id );
 }
 
 function tm4mlp_get_language_label( $lang_code ) {

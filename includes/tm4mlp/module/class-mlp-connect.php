@@ -2,7 +2,7 @@
 
 namespace Tm4mlp\Module;
 
-use Inpsyde\Tm4mlp\MlpConnect;
+use Tm4mlp\Domain\Language;
 
 class Mlp_Connect {
 	/**
@@ -59,23 +59,19 @@ class Mlp_Connect {
 	/**
 	 * @param int $site_id
 	 *
-	 * @return array
+	 * @return Language[]
 	 */
-	public function related_sites( $site_id ) {
+	public function related_sites( $languages, $site_id ) {
 
-		$out   = array();
 		$sites = $this->site_relations->get_related_sites( $site_id );
 
 		foreach ( $sites as $site ) {
 			$lang_iso = mlp_get_blog_language( $site, false );
 
-			$out[ $site ] = array(
-				'lang_code' => $lang_iso,
-				'label'     => mlp_get_lang_by_iso( $lang_iso ),
-			);
+			$languages[ $site ] = new Language( $lang_iso, mlp_get_lang_by_iso( $lang_iso ) );
 		}
 
-		return $out;
+		return $languages;
 	}
 
 	/**
