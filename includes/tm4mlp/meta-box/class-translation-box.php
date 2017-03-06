@@ -2,6 +2,8 @@
 
 namespace Tm4mlp\Meta_Box;
 
+use Tm4mlp\Domain\Language;
+
 class Translation_Box {
 
 	const ID = 'tm4mlp_translation_box';
@@ -31,9 +33,13 @@ class Translation_Box {
 	/**
 	 * @todo Fetch real languages.
 	 *
-	 * @return mixed|void
+	 * @return Language[]
 	 */
 	public function get_languages() {
-		return apply_filters( 'tm4mlp_get_languages', array() );
+		return tm4mlp_get_languages();
+	}
+
+	public function get_projects() {
+		return array();
 	}
 }

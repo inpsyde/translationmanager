@@ -9,21 +9,24 @@
 <div style="line-height: 2em;">
 	<?php foreach ( $this->get_languages() as $key => $language ): ?>
 		<div>
-			<label for="language_<?php esc_attr_e( $language['lang_code'] ) ?>">
+			<label for="language_<?php esc_attr_e( $language->get_lang_code() ) ?>">
 				<input type="checkbox"
-				       name="language[]"
+				       name="tm4mlp_language[]"
 				       value="<?php esc_attr_e( $key ) ?>"
-				       id="language_<?php esc_attr_e( $language['lang_code'] ) ?>"/>
-				<?php esc_html_e( $language['label'] ) ?>
+				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>"/>
+				<?php esc_html_e( $language->get_label() ) ?>
 			</label>
 		</div>
 	<?php endforeach; ?>
 </div>
 
 <p>
-	<a href="<?php echo admin_url( 'index.php?page=tm4mlp_add_translation&type=post&id=' . get_the_ID() ) ?>"
-	   title="<?php esc_attr_e( 'Request translation from Eurotext', 'tm4mlp' ) ?>"
-	   class="button button-primary">
-		<?php esc_html_e( 'Request translation(s)', 'tm4mlp' ) ?>
-	</a>
+	<?php if ( ! $this->get_projects() ): ?>
+		<button type="submit"
+		        name="<?php echo TM4MLP_ACTION_PROJECT_ADD_TRANSLATION ?>"
+		        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'tm4mlp' ) ?>"
+		        class="button button-primary">
+			<?php esc_html_e( 'Create new project', 'tm4mlp' ) ?>
+		</button>
+	<?php endif; ?>
 </p>

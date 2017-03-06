@@ -45,10 +45,12 @@ function tm4mlp_die( $message = '', $title = '', $args = array() ) {
 }
 
 // Set constants during compile time.
-const TM4MLP_API_PROCESS_ORDER       = 'tm4mlp_api_process_order';
-const TM4MLP_CAP_TRANSLATION_REQUEST = 'edit_others_pages';
-const TM4MLP_CART                    = 'tm4mlp_cart';
-const TM4MLP_ORDER                   = 'tm4mlp_order';
-const TM4MLP_SANITIZE_POST           = 'tm4mlp_sanitize_post';
-const TM4MLP_TRANS_STATUS            = 'tm4mlp_trans_status';
-const TM4MLP_TRANS_STATUS_PENDING    = 'tm4mlp_pending';
+const TM4MLP_ACTION_PROJECT_ADD_TRANSLATION = 'tm4mlp_action_project_add_translation';
+const TM4MLP_API_PROCESS_ORDER              = 'tm4mlp_api_process_order';
+const TM4MLP_CAP_TRANSLATION_REQUEST        = 'edit_others_pages';
+const TM4MLP_CART                           = 'tm4mlp_cart';
+const TM4MLP_ORDER                          = 'tm4mlp_order';
+const TM4MLP_SANITIZE_POST                  = 'tm4mlp_sanitize_post';
+const TM4MLP_TAX_PROJECT                    = 'tm4mlp_project';
+const TM4MLP_TRANS_STATUS                   = 'tm4mlp_trans_status';
+const TM4MLP_TRANS_STATUS_PENDING           = 'tm4mlp_pending';

@@ -15,12 +15,6 @@ function tm4mlp_translation_box() {
 	}
 
 	$translation_box->add_meta_box();
-
-	remove_meta_box(
-		\Tm4mlp\Meta_Box\Translation_Box::ID,
-		TM4MLP_TRANS_STATUS,
-		\Tm4mlp\Meta_Box\Translation_Box::CONTEXT
-	);
 }
 
 add_action( 'add_meta_boxes', 'tm4mlp_translation_box' );
