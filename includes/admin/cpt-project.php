@@ -137,3 +137,12 @@ function _tm4mlp_cart_remove_states( $post_states, $post ) {
 add_filter( 'display_post_states', '_tm4mlp_cart_remove_states', 10, 2 );
 
 add_action( 'admin_init', array( \Tm4mlp\Post_Type\Project_Item::class, 'register_post_status' ) );
+
+// Show project name in trash.
+add_filter(
+	'manage_' . TM4MLP_CART . '_posts_columns',
+	array(
+		\Tm4mlp\Post_Type\Project_Item::class,
+		'modify_columns'
+	)
+);
