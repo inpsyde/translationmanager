@@ -14,7 +14,7 @@ foreach ( $plugins as $plugin ) {
 	// Module file is located in "modules/{plugin-slug}.php".
 	$module_file = dirname( __FILE__ )
 	               . DIRECTORY_SEPARATOR . 'modules'
-	               . DIRECTORY_SEPARATOR . dirname( $plugin ) . '.php';
+	               . DIRECTORY_SEPARATOR . basename( dirname( $plugin ) ) . '.php';
 
 	if ( ! file_exists( $module_file ) ) {
 		// No module for this plugin so we ignore it.
