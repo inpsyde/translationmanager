@@ -52,87 +52,74 @@ function tm4mlp_cart_remove_month() {
 
 add_action( 'admin_head', 'tm4mlp_cart_remove_month' );
 
-//function tm4mlp_cart_clean() {
-//	// Remove all WordPress basics as this post type is not meant to be maintained by users.
-//	remove_meta_box( 'submitdiv', TM4MLP_CART, 'side' );
-//	remove_meta_box( 'slugdiv', TM4MLP_CART, 'normal' );
-//
-//	$screen = get_current_screen();
-//
-//	if ( TM4MLP_CART != $screen->post_type ) {
-//		return;
-//	}
-//
-//	add_filter( 'months_dropdown_results', '__return_empty_array' );
-//}
-//
-//add_action( 'admin_head', 'tm4mlp_cart_clean' );
-//
-//function tm4mlp_bulk_actions_cart( $actions ) {
-//	unset( $actions['edit'] );
-//
-//
-//	if ( isset( $actions['trash'] ) ) {
-//		$actions['trash'] = __( 'Remove from cart', 'tm4mlp' );
-//	}
-//
-//	return $actions;
-//}
-//
-//add_filter( 'bulk_actions-edit-' . TM4MLP_CART, 'tm4mlp_bulk_actions_cart' );
-//
-///**
-// * Cart items have no trash.
-// *
-// * @param $post_id
-// */
-//function tm4mlp_cart_trashed( $post_id ) {
-//	$post_type = get_post_type( $post_id );
-//
-//	if ( TM4MLP_CART != $post_type ) {
-//		return;
-//	}
-//
-//	wp_delete_post( $post_id );
-//}
-//
-//add_action( 'trashed_post', 'tm4mlp_cart_trashed' );
-//
-///**
-// * @param          $actions
-// * @param \WP_Post $post
-// */
-//function tm4mlp_cart_row_actions( $actions, $post ) {
-//	if ( $post && TM4MLP_CART != $post->post_type ) {
-//		return $actions;
-//	}
-//
-//	// Delete/Remove only.
-//	return array(
-//		'trash' => str_replace(
-//			'>Trash<',
-//			'>' . __( 'Remove from cart', 'tm4mlp' ) . '<',
-//			$actions['trash']
-//		)
-//	);
-//}
-//
-//add_filter( 'post_row_actions', 'tm4mlp_cart_row_actions', 10, 2 );
-//
-//function tm4mlp_cart_footer( $which ) {
-//	if ( 'edit-' . TM4MLP_CART != get_current_screen()->id ) {
-//		return;
-//	}
-//
-//	global $wp_query;
-//	if ( $wp_query->post_count <= 0 ) {
-//		return;
-//	}
-//
-//	require tm4mlp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
-//}
-//
-//add_action( 'manage_posts_extra_tablenav', 'tm4mlp_cart_footer' );
+function tm4mlp_bulk_actions_cart( $actions ) {
+	unset( $actions['edit'] );
+
+	if ( isset( $actions['trash'] ) ) {
+		$actions['trash'] = __( 'Remove from project', 'tm4mlp' );
+	}
+
+	return $actions;
+}
+
+add_filter( 'bulk_actions-edit-' . TM4MLP_CART, 'tm4mlp_bulk_actions_cart' );
+
+/**
+ * @param          $actions
+ * @param \WP_Post $post
+ */
+function tm4mlp_cart_row_actions( $actions, $post ) {
+	if ( $post && TM4MLP_CART != $post->post_type ) {
+		return $actions;
+	}
+
+	// Delete/Remove only.
+	return array(
+		'trash' => str_replace(
+			'>Trash<',
+			'>' . __( 'Remove from project', 'tm4mlp' ) . '<',
+			$actions['trash']
+		)
+	);
+}
+
+add_filter( 'post_row_actions', 'tm4mlp_cart_row_actions', 10, 2 );
+
+function tm4mlp_cart_footer( $which ) {
+	if ( 'edit-' . TM4MLP_CART != get_current_screen()->id ) {
+		return;
+	}
+
+	global $wp_query;
+	if ( $wp_query->post_count <= 0 ) {
+		return;
+	}
+
+	require tm4mlp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
+}
+
+add_action( 'manage_posts_extra_tablenav', 'tm4mlp_cart_footer' );
+
+/**
+ * Hide WP status.
+ *
+ * @deprecated 1.0.0 State shall be shown but different.
+ *
+ * @param $post_states
+ * @param $post
+ *
+ * @return array
+ */
+function _tm4mlp_cart_remove_states( $post_states, $post ) {
+	if ( TM4MLP_CART != $post->post_type ) {
+		return $post_states;
+	}
+
+	return array();
+}
+
+add_filter( 'display_post_states', '_tm4mlp_cart_remove_states', 10, 2 );
+
 //
 //add_action( 'load-edit.php', 'tm4mlp_order_translation' );
 //
@@ -238,40 +225,6 @@ add_action( 'admin_head', 'tm4mlp_cart_remove_month' );
 //	wp_die( null, '', array( 'response' => 302 ) );
 //}
 //
-//add_action(
-//	'admin_head',
-//	function () {
-//		if ( isset( $_GET['success'] ) ) {
-//			echo '<div class="notice notice-success is-dismissible" ><p >'
-//			     . esc_html__( $_GET['success'] )
-//			     . '</p></div>';
-//		}
-//	}
-//);
-//
-//add_action(
-//	'parse_query',
-//	function ( $wp_query ) {
-//		if ( ! $wp_query->is_main_query()
-//		     || TM4MLP_ORDER != $wp_query->get( 'post_type' )
-//		     || ! get_current_screen()
-//		     || get_current_screen()->parent_base
-//		) {
-//			return;
-//		}
-//
-//		$wp_query->set( 'post_parent', 0 );
-//	}
-//);
-//
-//
-//add_filter( 'display_post_states', function ( $post_states, $post ) {
-//	if ( TM4MLP_CART != $post->post_type ) {
-//		return $post_states;
-//	}
-//
-//	return array();
-//}, 10, 2 );
 //
 //add_filter(
 //	'manage_' . TM4MLP_CART . '_posts_columns',
