@@ -24,19 +24,6 @@ function tm4mlp_cpt_cart() {
 
 add_action( 'init', 'tm4mlp_cpt_cart' );
 
-function tm4mlp_cart_taxonomy() {
-	register_taxonomy(
-		TM4MLP_TAX_PROJECT,
-		TM4MLP_CART,
-		array(
-			'label'  => __( 'Project', 'tm4mlp' ),
-			'public' => true,
-		)
-	);
-}
-
-add_action( 'init', 'tm4mlp_cart_taxonomy' );
-
 /**
  * Remove month filter.
  */
