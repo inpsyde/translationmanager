@@ -73,6 +73,10 @@ function tm4mlp_cart_row_actions( $actions, $post ) {
 		return $actions;
 	}
 
+	if ( ! isset( $actions['trash'] ) ) {
+		return $actions;
+	}
+
 	// Delete/Remove only.
 	return array(
 		'trash' => str_replace(
