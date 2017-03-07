@@ -1,6 +1,6 @@
 <?php
 
-add_filter( 'tm4mlp_get_languages', function () {
+/*add_filter( 'tm4mlp_get_languages', function () {
 	// stub
 	return array(
 		array(
@@ -13,4 +13,4 @@ add_filter( 'tm4mlp_get_languages', function () {
 		),
 	);
 
-} );
+} );*/
