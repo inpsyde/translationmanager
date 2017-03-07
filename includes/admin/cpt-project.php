@@ -86,7 +86,14 @@ function tm4mlp_cart_footer( $which ) {
 		return;
 	}
 
-	if ( isset( $_GET['tm4mlp_project'] ) && $_GET['tm4mlp_project'] ) { // Input var ok.
+	$request = wp_parse_args(
+		$_GET,  // Input var ok.
+		array(
+			TM4MLP_TAX_PROJECT => null,
+		)
+	);
+
+	if ( isset( $request['tm4mlp_project'] ) && $_GET['tm4mlp_project'] ) {
 		$current_slug = $_GET['tm4mlp_project']; // Input var ok.
 		$term         = get_term_by( 'slug', $current_slug, TM4MLP_TAX_PROJECT );
 
