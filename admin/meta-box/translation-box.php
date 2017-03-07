@@ -1,9 +1,4 @@
 <?php /** @var \Tm4mlp\Meta_Box\Translation_Box $this */ ?>
-<a href="http://eurotext.de">
-	<img src="<?php echo plugins_url( 'public/eurotext-logo.png', TM4MLP_FILE ) ?>"
-	     alt=""
-	     style="width: 80%; margin: 0.5em 0;">
-</a>
 
 <!-- TODO values need to be transferred. -->
 <div style="line-height: 2em;">
