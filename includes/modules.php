@@ -5,7 +5,7 @@
 
 
 $plugins = get_option( 'active_plugins' );
-if ( ! $plugins && function_exists( 'wp_get_active_network_plugins' ) ) {
+if ( ! $plugins || function_exists( 'wp_get_active_network_plugins' ) ) {
 	$plugins = wp_get_active_network_plugins();
 }
 
