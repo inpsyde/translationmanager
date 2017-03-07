@@ -133,3 +133,9 @@ add_filter(
 		'modify_columns'
 	)
 );
+
+add_filter( 'views_edit-tm4mlp_cart', function () {
+	$info = new \Tm4mlp\Meta_Box\Order_Info();
+
+	require tm4mlp_get_template( 'admin/meta-box/project-box.php' );
+} );
