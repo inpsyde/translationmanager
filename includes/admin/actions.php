@@ -16,9 +16,8 @@ function tm4mlp_action_project_add_translation( $arguments ) {
 	);
 
 	// Iterate translations
-	$languages = tm4mlp_get_languages();
 	foreach ( $request['tm4mlp_language'] as $lang_id ) {
-		$handler->add_translation( $project, (int) $request['post_ID'], $languages[ $lang_id ]->get_lang_code() );
+		$handler->add_translation( $project, (int) $request['post_ID'], $lang_id );
 	}
 
 	return $project;

@@ -19,7 +19,7 @@ class Project_Handler {
 		return $ids['term_id'];
 	}
 
-	public function add_translation( $project, $post_id, $lang_code ) {
+	public function add_translation( $project, $post_id, $lang_id ) {
 		$translation_id = wp_insert_post(
 			array(
 				'post_type'  => TM4MLP_CART,
@@ -29,7 +29,7 @@ class Project_Handler {
 					get_the_title( $post_id )
 				),
 				'meta_input' => array(
-					'lang_code' => $lang_code,
+					'_tm4mlp_target_id' => $lang_id,
 				)
 			)
 		);

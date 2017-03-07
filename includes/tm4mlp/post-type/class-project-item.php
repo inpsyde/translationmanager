@@ -9,6 +9,8 @@ class Project_Item {
 
 	const COLUMN_PROJECT = 'tm4mlp_project';
 
+	const COLUMN_LANGUAGE = 'tm4mlp_language';
+
 	public static function register_post_status() {
 	}
 
@@ -20,6 +22,7 @@ class Project_Item {
 		unset( $columns['date'] );
 
 		$columns = static::_column_project( $columns );
+		$columns = static::_column_language( $columns );
 
 		add_action(
 			'manage_' . static::POST_TYPE . '_posts_custom_column',
@@ -51,6 +54,12 @@ class Project_Item {
 		return $columns;
 	}
 
+	protected static function _column_language( $columns ) {
+		$columns[ self::COLUMN_LANGUAGE ] = __( 'Target language', 'tm4mlp' );
+
+		return $columns;
+	}
+
 	public static function print_column( $column_name, $post_id ) {
 		switch ( $column_name ) {
 			case static::COLUMN_PROJECT:
@@ -64,6 +73,24 @@ class Project_Item {
 					/** @var \WP_Term $term */
 					echo $term->name;
 				}
+				break;
+			case static::COLUMN_LANGUAGE:
+				$lang_id = get_post_meta( $post_id, '_tm4mlp_target_id', true );
+
+				if ( ! $lang_id ) {
+					// TODO error handling.
+					return;
+				}
+
+				$languages = tm4mlp_get_languages();
+
+				if ( ! isset( $languages[ $lang_id ] ) ) {
+					// TODO error handling.
+					return;
+				}
+
+				echo $languages[ $lang_id ]->get_label();
+
 				break;
 		}
 	}
