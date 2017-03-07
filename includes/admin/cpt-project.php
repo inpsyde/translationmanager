@@ -134,8 +134,17 @@ add_filter(
 	)
 );
 
-add_filter( 'views_edit-tm4mlp_cart', function () {
+add_filter( 'views_edit-tm4mlp_cart', function ( $value ) {
+	$request = $_GET; // Input var ok.
+
+	if ( ! isset( $request[ TM4MLP_TAX_PROJECT ] ) || ! $request[ TM4MLP_TAX_PROJECT ] ) {
+		// Not on a specific project so we can't show details.
+		return $value;
+	}
+
 	$info = new \Tm4mlp\Meta_Box\Order_Info();
 
 	require tm4mlp_get_template( 'admin/meta-box/project-box.php' );
+
+	return $value;
 } );
