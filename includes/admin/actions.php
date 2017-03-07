@@ -23,9 +23,31 @@ function tm4mlp_action_project_add_translation( $arguments ) {
 	return $project;
 }
 
-function _tm4mlp_handle_load_post() {
+function _tm4mlp_handle_actions() {
 	if ( ! $_POST ) {
 		// Nothing submitted so we stop processing.
+	}
+
+	if ( isset( $_GET[ TM4MLP_ACTION_PROJECT_ORDER ] ) ) {
+		$term = get_term_by( 'slug', $_GET['_tm4mlp_project_id'], TM4MLP_TAX_PROJECT );
+
+		// TODO fill with real data.
+		update_term_meta( $term->term_id, '_tm4mlp_order_id', uniqid() );
+
+		wp_redirect(
+			get_admin_url(
+				null,
+				'edit.php?' .
+				http_build_query(
+					array(
+						TM4MLP_TAX_PROJECT => $_GET['_tm4mlp_project_id'],
+						'post_type'        => TM4MLP_CART,
+					)
+				)
+			)
+		);
+
+		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
 	if ( isset( $_POST[ TM4MLP_ACTION_PROJECT_ADD_TRANSLATION ] ) ) {
@@ -47,6 +69,8 @@ function _tm4mlp_handle_load_post() {
 
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
+
 }
 
-add_action( 'load-post.php', '_tm4mlp_handle_load_post' );
+add_action( 'load-post.php', '_tm4mlp_handle_actions' );
+add_action( 'load-edit.php', '_tm4mlp_handle_actions' );

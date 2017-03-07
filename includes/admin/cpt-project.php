@@ -101,6 +101,7 @@ function tm4mlp_cart_footer( $which ) {
 		     && get_term_meta( $term->term_id, '_tm4mlp_order_id' )
 		) {
 			// This has an order id so we don't show the order button.
+			_e( 'Thanks for your order.', 'tm4mlp' );
 			return;
 		}
 	}

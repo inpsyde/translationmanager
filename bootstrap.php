@@ -46,6 +46,7 @@ function tm4mlp_die( $message = '', $title = '', $args = array() ) {
 
 // Set constants during compile time.
 const TM4MLP_ACTION_PROJECT_ADD_TRANSLATION = 'tm4mlp_action_project_add_translation';
+const TM4MLP_ACTION_PROJECT_ORDER           = 'tm4mlp_action_project_order';
 const TM4MLP_API_PROCESS_ORDER              = 'tm4mlp_api_process_order';
 const TM4MLP_CAP_TRANSLATION_REQUEST        = 'edit_others_pages';
 const TM4MLP_CART                           = 'tm4mlp_cart';
