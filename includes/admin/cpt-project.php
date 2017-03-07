@@ -17,6 +17,7 @@ function tm4mlp_cpt_cart() {
 			'map_meta_cap'  => true,
 			'menu_position' => 100,
 			'supports'      => array( 'title' ),
+			'menu_icon'     => 'dashicons-translation',
 			// 'show_in_menu'  => 'edit.php?post_type=' . TM4MLP_TRANS_STATUS,
 		)
 	);
