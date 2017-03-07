@@ -6,7 +6,7 @@ function tm4mlp_cpt_cart() {
 		array(
 			'label'         => __( 'Cart', 'tm4mlp' ),
 			'labels'        => array(
-				'name' => __( 'Overview', 'tm4mlp' ),
+				'name' => __( 'Translations', 'tm4mlp' ),
 			),
 			'description'   => __( 'What you are about to order.', 'tm4mlp' ),
 			'public'        => true,
