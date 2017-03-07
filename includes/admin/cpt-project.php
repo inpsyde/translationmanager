@@ -150,6 +150,16 @@ add_filter(
 	)
 );
 
+add_filter(
+	TM4MLP_TAX_PROJECT . '_row_actions',
+	array(
+		\Tm4mlp\Taxonomy\Project::class,
+		'modify_row_actions'
+	),
+	10,
+	2
+);
+
 add_filter( 'views_edit-tm4mlp_cart', function ( $value ) {
 	$request = $_GET; // Input var ok.
 

@@ -11,6 +11,38 @@ class Project {
 	public static function register_post_status() {
 	}
 
+	/**
+	 * @param string[] $columns
+	 * @param \WP_Term $term
+	 */
+	public static function modify_row_actions( $columns, $term ) {
+		$columns['view'] = sprintf(
+			'<a href="%s">%s</a>',
+			self::get_project_link( $term->term_id ),
+			__('View')
+		);
+
+		return $columns;
+	}
+
+	/**
+	 * @param $term_id
+	 *
+	 * @return string
+	 */
+	protected static function get_project_link( $term_id ) {
+		return get_admin_url(
+			null,
+			'edit.php?' .
+			http_build_query(
+				array(
+					TM4MLP_TAX_PROJECT => get_term_field( 'slug', $term_id ),
+					'post_type'        => TM4MLP_CART,
+				)
+			)
+		);
+	}
+
 	public static function modify_columns( $columns ) {
 
 		unset( $columns['cb'] );
@@ -49,16 +81,7 @@ class Project {
 			case static::COL_ACTIONS:
 				return sprintf(
 					'<a href="%s" class="button">%s</a>',
-					get_admin_url(
-						null,
-						'edit.php?' .
-						http_build_query(
-							array(
-								TM4MLP_TAX_PROJECT => get_term_field( 'slug', $term_id ),
-								'post_type'        => TM4MLP_CART,
-							)
-						)
-					),
+					self::get_project_link( $term_id ),
 					__( 'Show project', 'tm4mlp' )
 				);
 		}
