@@ -46,7 +46,7 @@ function _tm4mlp_project_delete_coalesce( $term_id ) {
 add_action( 'delete_term_taxonomy', '_tm4mlp_project_delete_coalesce' );
 
 function _tm4mlp_project_hide_slug() {
-	?> <style> .form-field.term-slug-wrap { display: none; } </style> <?php
+	?> <style> .form-field.term-slug-wrap, input[name=slug], span.title { display: none; } </style> <?php
 }
 
 add_action( TM4MLP_TAX_PROJECT . '_pre_add_form', '_tm4mlp_project_hide_slug' );
