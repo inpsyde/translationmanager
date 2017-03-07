@@ -166,3 +166,13 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 
 	return $bulk_messages;
 }, 10, 2 );
+
+add_action( 'admin_head-edit.php', function () {
+	if ( ! get_current_screen()
+	     || TM4MLP_CART != get_current_screen()->post_type
+	) {
+		return;
+	}
+
+	echo "<style>ul.subsubsub { display: none; }</style>";
+} );
