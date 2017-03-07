@@ -6,13 +6,13 @@ function tm4mlp_cpt_cart() {
 		array(
 			'label'         => __( 'Cart', 'tm4mlp' ),
 			'labels'        => array(
-				'name' => __( 'Create cart', 'tm4mlp' ),
+				'name' => __( 'Overview', 'tm4mlp' ),
 			),
 			'description'   => __( 'What you are about to order.', 'tm4mlp' ),
 			'public'        => true,
 			'capabilities'  => array(
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
-				'create_posts' => false,
+				'create_posts' => 'do_not_allow',
 			),
 			'map_meta_cap'  => true,
 			'menu_position' => 100,
