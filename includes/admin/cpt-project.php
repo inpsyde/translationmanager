@@ -148,3 +148,21 @@ add_filter( 'views_edit-tm4mlp_cart', function ( $value ) {
 
 	return $value;
 } );
+
+add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_counts ) {
+
+	$bulk_messages[ TM4MLP_CART ] = array(
+		'updated'   => __( 'Project has been updated.', 'tm4mlp' ),
+		'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( '1 page not updated, somebody is editing it.' ) :
+			_n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] ),
+		'deleted'   => _n( '%s page permanently deleted.', '%s pages permanently deleted.', $bulk_counts['deleted'] ),
+		'trashed'   => _n( '%s page moved to the Trash.', '%s pages moved to the Trash.', $bulk_counts['trashed'] ),
+		'untrashed' => _n( '%s page restored from the Trash.', '%s pages restored from the Trash.', $bulk_counts['untrashed'] ),
+	);
+
+	if ( isset( $_GET['updated'] ) && - 1 == intval( $_GET['updated'] ) ) { // Input var ok.
+		$bulk_messages[ TM4MLP_CART ]['updated'] = __( 'Project has been created', 'tm4mlp' );
+	}
+
+	return $bulk_messages;
+}, 10, 2 );

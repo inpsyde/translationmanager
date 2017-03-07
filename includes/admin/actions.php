@@ -22,6 +22,7 @@ function tm4mlp_handle_load_post() {
 					array(
 						TM4MLP_TAX_PROJECT => get_term_field( 'slug', $project ),
 						'post_type'        => TM4MLP_CART,
+						'updated'          => -1,
 					)
 				)
 			)
