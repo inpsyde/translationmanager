@@ -40,12 +40,21 @@ class Project_Item {
 	}
 
 	public static function _column_project( $columns ) {
-		$request = $_GET; // Input var ok.
+		$request = wp_parse_args(
+			$_GET,
+			array(
+				TM4MLP_TAX_PROJECT => null,
+			)
+		); // Input var ok.
 
-		if ( ! isset( $request['post_status'] )
-		     || static::STATUS_TRASH != $request['post_status']
+		if ( static::STATUS_TRASH == $request['post_status']
 		) {
-			// Not the context we wanted
+			// This is trash so we show no project column.
+			return $columns;
+		}
+
+		if ( $request[ TM4MLP_TAX_PROJECT ] ) {
+			// Term/Project filter is active so this col is not needed.
 			return $columns;
 		}
 
@@ -71,7 +80,17 @@ class Project_Item {
 
 				foreach ( $terms as $term ) {
 					/** @var \WP_Term $term */
-					echo $term->name;
+					printf(
+						'<a href="%s">%s</a>',
+						'edit.php?' .
+						http_build_query(
+							array(
+								TM4MLP_TAX_PROJECT => $term->slug,
+								'post_type'        => TM4MLP_CART
+							)
+						),
+						$term->name
+					);
 				}
 				break;
 			case static::COLUMN_LANGUAGE:
