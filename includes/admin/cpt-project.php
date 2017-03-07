@@ -102,6 +102,7 @@ function tm4mlp_cart_footer( $which ) {
 		) {
 			// This has an order id so we don't show the order button.
 			_e( 'Thanks for your order.', 'tm4mlp' );
+
 			return;
 		}
 	}
@@ -150,7 +151,9 @@ add_filter( 'views_edit-tm4mlp_cart', function ( $value ) {
 		return $value;
 	}
 
-	$info = new \Tm4mlp\Meta_Box\Order_Info();
+	$term = get_term_by( 'slug', $request[ TM4MLP_TAX_PROJECT ], TM4MLP_TAX_PROJECT );
+
+	$info = new \Tm4mlp\Meta_Box\Order_Info( $term->term_id );
 
 	require tm4mlp_get_template( 'admin/meta-box/project-box.php' );
 
