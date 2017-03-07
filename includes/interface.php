@@ -3,12 +3,16 @@
 /**
  * Interface for modules to serve languages.
  *
- * @return array
+ * @return \Tm4mlp\Domain\Language[]
  */
 function tm4mlp_get_languages() {
 	global $current_site;
 
 	return apply_filters( 'tm4mlp_get_languages', array(), $current_site->id );
+}
+
+function tm4mlp_get_languages_ids() {
+	return array_keys( tm4mlp_get_languages() );
 }
 
 function tm4mlp_get_language_label( $lang_code ) {
