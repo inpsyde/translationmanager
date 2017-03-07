@@ -5,15 +5,23 @@ function tm4mlp_action_project_add_translation( $arguments ) {
 	$request = wp_parse_args(
 		$arguments,
 		array(
-			'tm4mlp_language' => tm4mlp_get_languages_ids(),
+			'tm4mlp_language'   => tm4mlp_get_languages_ids(),
+			'tm4mlp_project_id' => null,
 		)
 	);
 
 	$handler = new \Tm4mlp\Admin\Handler\Project_Handler();
 
-	$project = $handler->create_project(
-		sprintf( __( 'Project %s', 'tm4mlp' ), date( 'Y-m-d H:i:s' ) )
-	);
+	$project = (int) $request['tm4mlp_project_id'];
+
+	if ( ! $project ) {
+		$project = $handler->create_project(
+			sprintf( __( 'Project %s', 'tm4mlp' ), date( 'Y-m-d H:i:s' ) )
+		);
+	}
+
+	// Remember the last manipulated project.
+	update_user_meta( get_current_user_id(), 'tm4mlp_project_recent', $project );
 
 	// Iterate translations
 	foreach ( $request['tm4mlp_language'] as $lang_id ) {

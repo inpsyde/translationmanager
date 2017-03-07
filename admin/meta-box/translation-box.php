@@ -17,14 +17,12 @@
 
 			<div id="fff-status-select" class="hide-if-js" style="display: none;">
 				<input type="hidden"
-				       name="hidden_fff_status"
-				       id="hidden_fff_status"
+				       name="tm4mlp_project_id"
+				       id="tm4mlp_project_id"
 				       value="<?php echo $this->get_recent_project_id() ?>">
 				<label for="fff_status" class="screen-reader-text">Set status</label>
 				<select name="fff_status" id="fff_status">
-					<option value="_new"><?php _e( 'New project', 'tm4mlp' ) ?></option>
-					<option value="pending">Pending Review</option>
-					<option value="draft">Draft</option>
+					<option value="0"><?php _e( 'New project', 'tm4mlp' ) ?></option>
 					<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
 						<option value="<?php esc_attr_e( $project_id ) ?>">
 							<?php esc_html_e( $project_label ) ?>
@@ -56,7 +54,7 @@
 				$fffStatusSelect.slideUp('fast').siblings('a.edit-fff-status').show().focus();
 
 				jQuery('#fff-status-display').html(jQuery('#fff_status option:selected').text());
-				jQuery('#hidden_fff_status').val(jQuery('#fff_status').val());
+				jQuery('#tm4mlp_project_id').val(jQuery('#fff_status').val());
 
 				event.preventDefault();
 			});
