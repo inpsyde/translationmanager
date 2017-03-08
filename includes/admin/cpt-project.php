@@ -175,6 +175,8 @@ add_filter( 'views_edit-tm4mlp_cart', function ( $value ) {
 
 	require tm4mlp_get_template( 'admin/meta-box/project-box.php' );
 
+	require tm4mlp_get_template( 'admin/cart/manage-cart-title-description.php' );
+
 	return $value;
 } );
 
