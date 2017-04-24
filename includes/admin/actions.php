@@ -111,8 +111,6 @@ function tm4mlp_get_project_items( $term_id ) {
  * @param \WP_Term $project_term
  */
 function _tm4mlp_project_order( $project_term ) {
-	$posts = tm4mlp_get_project_items( $project_term->term_id );
-
 	global $wp_version;
 
 	$project_id = tm4mlp_api()->project()->create(
@@ -129,18 +127,15 @@ function _tm4mlp_project_order( $project_term ) {
 	}
 
 	$languages = tm4mlp_get_languages();
-	foreach ( $posts as $post ) {
-		$lang_id   = get_post_meta( $post->ID, '_tm4mlp_target_id', true );
-		$source_id = get_post_meta( $post->ID, '_tm4mlp_post_id', true );
-
-		if ( ! $lang_id || ! isset( $languages[ $lang_id ] ) || ! $source_id ) {
+	foreach ( tm4mlp_get_project_items( $project_term->term_id ) as $post ) {
+		if ( ! $post->_tm4mlp_post_id || ! isset( $languages[ $post->_tm4mlp_target_id ] ) ) {
 			// Invalid state, try next one.
 			continue;
 		}
 
-		$source            = get_post( $source_id );
+		$source            = get_post( $post->_tm4mlp_post_id );
 		$current           = $source->to_array();
-		$current['__meta'] = array( 'target_language' => $languages[ $lang_id ]->get_lang_code() );
+		$current['__meta'] = array( 'target_language' => $languages[ $post->_tm4mlp_target_id ]->get_lang_code() );
 
 		tm4mlp_api()->project_item()->create( $project_id, tm4mlp_sanitize_post( $current, $source ) );
 	}
