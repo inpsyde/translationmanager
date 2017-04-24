@@ -1,11 +1,7 @@
 <?php
 
 function tm4mlp_api_url( $path = null ) {
-	if ( null !== $path ) {
-		$path = '/' . $path . '.json';
-	}
-
-	return get_option( 'tm4mlp_api_url', 'http://api.eurotext.de/api' ) . $path;
+	return tm4mlp_api()->get_url( $path );
 }
 
 /**
@@ -16,55 +12,68 @@ function tm4mlp_api_url( $path = null ) {
 function tm4mlp_api_project_create( $data ) {
 	global $wp_version;
 
-	$payload = array(
-		'meta' => array(
-			'system'        => 'WordPress',
-			'systemVersion' => $wp_version,
-			'plugin'        => TM4MLP_FILE
-		),
-	);
-
-	$response = wp_remote_request(
-		tm4mlp_api_url( 'project' ),
+	$body = tm4mlp_api_request(
+		'PUT',
+		'project',
+		array(),
 		array(
-			'method'  => 'PUT',
-			'headers' => array(
-				'Content-Type'     => 'application/json',
-				'X-Callback'       => get_site_url( null, 'wp-json/tm4mlp/v1/order' ),
-				'X-Plugin'         => 'tm4mlp',
-				'X-Plugin-Version' => TM4MLP_VERSION,
-				'X-System'         => 'WordPress',
-				'X-System-Version' => $wp_version,
-				'X-Type'           => 'order',
-				'apikey'           => get_option( \Tm4mlp\Admin\Options_Page::REFRESH_TOKEN ),
-			),
-			'body'    => json_encode( array() ),
+			'X-Callback'       => get_site_url( null, 'wp-json/tm4mlp/v1/order' ),
+			'X-Plugin'         => 'tm4mlp',
+			'X-Plugin-Version' => TM4MLP_VERSION,
+			'X-System'         => 'WordPress',
+			'X-System-Version' => $wp_version,
+			'X-Type'           => 'order',
 		)
 	);
 
+	if ( ! isset( $body['id'] ) ) {
+		return null;
+	}
 
-	$body = wp_remote_retrieve_body( $response );
-
-	$payload = json_decode( $body, true );
-
-	$project_id = (int) $payload['id'];
+	$project_id = (int) $body['id'];
 
 	// Post each item
 	foreach ( $data as $item ) {
-		$response = wp_remote_request(
-			tm4mlp_api_url( 'project/' . $project_id . '/item' ),
-			array(
-				'method'  => 'PUT',
-				'headers' => array(
-					'Content-Type'     => 'application/json',
-					'apikey'           => get_option( \Tm4mlp\Admin\Options_Page::REFRESH_TOKEN ),
-				),
-				'body'    => json_encode( $item ),
-			)
+		tm4mlp_api_request(
+			'PUT',
+			'project/' . $project_id . '/item',
+			$item
 		);
 	}
 
 	return $project_id;
+}
+
+/**
+ * API Request
+ *
+ * @param string   $path
+ * @param string[] $request
+ *
+ * @return string
+ */
+function tm4mlp_api_request( $method, $path, $data = array(), $headers = array() ) {
+	return tm4mlp_api()->request( $method, $path, $data, $headers );
+}
+
+/**
+ * Instance of the TM4MLP API.
+ *
+ * @return \Tm4mlp\Api
+ */
+function tm4mlp_api() {
+	static $api;
+
+	if ( null === $api ) {
+		$api = new \Tm4mlp\Api(
+			get_option( \Tm4mlp\Admin\Options_Page::REFRESH_TOKEN ),
+			'b37270d25d5b3fccf137f7462774fe76',
+			'http://inpsyde.local:8000/sandbox/api/v1'
+		// get_option( 'tm4mlp_api_url', 'http://inpsyde.local:8000/api' )
+		);
+	}
+
+	return $api;
 }
 
 /**
