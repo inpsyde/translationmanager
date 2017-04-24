@@ -5,9 +5,7 @@ function tm4mlp_api_url( $path = null ) {
 		$path = '/' . $path . '.json';
 	}
 
-	return 'http://inpsyde.local:8000/sandbox/api/v1' . $path;
-
-	return get_option( 'tm4mlp_api_url', 'http://inpsyde.local:8000/api' ) . $path;
+	return get_option( 'tm4mlp_api_url', 'http://api.eurotext.de/api' ) . $path;
 }
 
 /**
