@@ -40,7 +40,7 @@ class Api {
 	 *
 	 * @return string[]
 	 */
-	public function request( $method, $path, $data, $headers ) {
+	public function request( $method, $path, $data = array(), $headers = array() ) {
 		$headers['Content-Type'] = 'application/json';
 		$headers['plugin_key']   = $this->plugin_key;
 		$headers['apikey']       = $this->api_key;
@@ -55,6 +55,14 @@ class Api {
 		);
 
 		return json_decode( wp_remote_retrieve_body( $response ), true );
+	}
+
+	public function put( $path, $data = array(), $headers = array() ) {
+		return $this->request('PUT', $path, $data, $headers);
+	}
+
+	public function get( $path, $data = array(), $headers = array() ) {
+		return $this->request('GET', $path, $data, $headers);
 	}
 
 	public function get_url( $path ) {

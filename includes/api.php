@@ -12,8 +12,7 @@ function tm4mlp_api_url( $path = null ) {
 function tm4mlp_api_project_create( $data ) {
 	global $wp_version;
 
-	$body = tm4mlp_api_request(
-		'PUT',
+	$body = tm4mlp_api()->put(
 		'project',
 		array(),
 		array(
@@ -34,26 +33,13 @@ function tm4mlp_api_project_create( $data ) {
 
 	// Post each item
 	foreach ( $data as $item ) {
-		tm4mlp_api_request(
-			'PUT',
+		tm4mlp_api()->put(
 			'project/' . $project_id . '/item',
 			$item
 		);
 	}
 
 	return $project_id;
-}
-
-/**
- * API Request
- *
- * @param string   $path
- * @param string[] $request
- *
- * @return string
- */
-function tm4mlp_api_request( $method, $path, $data = array(), $headers = array() ) {
-	return tm4mlp_api()->request( $method, $path, $data, $headers );
 }
 
 /**
