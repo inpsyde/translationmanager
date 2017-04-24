@@ -32,6 +32,7 @@ class Project_Handler {
 				),
 				'meta_input' => array(
 					'_tm4mlp_target_id' => $lang_id,
+					'_tm4mlp_post_id'   => $post_id,
 				)
 			)
 		);

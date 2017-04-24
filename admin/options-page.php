@@ -16,15 +16,15 @@
 		<div id="inpsyde-tabs" class="inpsyde-tabs">
 			<ul class="inpsyde-tab__navigation wp-clearfix">
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--connection"><?php esc_html_e( 'Connection', 'pixxio-api' ); ?></a>
+					<a href="#tab--connection"><?php esc_html_e( 'Connection', 'tm4mlp' ); ?></a>
 				</li>
 
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--plugins"><?php esc_html_e( 'Plugins', 'pixxio-api' ); ?></a>
+					<a href="#tab--plugins"><?php esc_html_e( 'Plugins', 'tm4mlp' ); ?></a>
 				</li>
 
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--languages"><?php esc_html_e( 'Languages', 'pixxio-api' ); ?></a>
+					<a href="#tab--languages"><?php esc_html_e( 'Languages', 'tm4mlp' ); ?></a>
 				</li>
 			</ul>
 

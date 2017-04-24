@@ -39,8 +39,7 @@ function _tm4mlp_handle_actions() {
 	if ( isset( $_GET[ TM4MLP_ACTION_PROJECT_ORDER ] ) ) {
 		$term = get_term_by( 'slug', $_GET['_tm4mlp_project_id'], TM4MLP_TAX_PROJECT );
 
-		// TODO fill with real data.
-		update_term_meta( $term->term_id, '_tm4mlp_order_id', uniqid() );
+		_tm4mlp_project_order( $term );
 
 		wp_redirect(
 			get_admin_url(
@@ -78,6 +77,62 @@ function _tm4mlp_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
+}
+
+/**
+ * @param \WP_Term T $project_term
+ */
+function _tm4mlp_project_order( $project_term ) {
+	$posts = get_posts( array(
+		'post_type'      => TM4MLP_CART,
+		'tax_query'      => array(
+			'taxonomy' => TM4MLP_TAX_PROJECT,
+			'field'    => 'id',
+			'terms'    => $project_term->term_id
+		),
+		'posts_per_page' => - 1,
+		'post_status'    => get_post_stati(),
+	) );
+
+	// TODO What if no post in list?
+
+	$request   = array();
+	$languages = tm4mlp_get_languages();
+	foreach ( $posts as $post ) {
+		$lang_id = get_post_meta( $post->ID, '_tm4mlp_target_id', true );
+
+		if ( null === $lang_id ) {
+			// Invalid.
+			continue;
+		}
+
+		if ( ! $lang_id || ! isset( $languages[ $lang_id ] ) ) {
+			// TODO error handling.
+			continue;
+		}
+
+		$source_id = get_post_meta( $post->ID, '_tm4mlp_post_id', true );
+
+		if ( ! $source_id ) {
+			// invalid.
+			continue;
+		}
+
+		$current = array(
+			'__meta' => array(
+				'target_language' => $languages[ $lang_id ]->get_lang_code(),
+			),
+		);
+
+		$source  = get_post( $source_id );
+		$current = array_merge( $source->to_array(), $current );
+
+		$request[] = tm4mlp_sanitize_post( $current, $source );
+	}
+
+	$project_id = tm4mlp_api_project_create( $request );
+
+	update_term_meta( $project_term->term_id, '_tm4mlp_order_id', $project_id );
 }
 
 add_action( 'load-post.php', '_tm4mlp_handle_actions' );

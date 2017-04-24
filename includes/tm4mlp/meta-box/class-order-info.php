@@ -78,6 +78,10 @@ class Order_Info {
 	 * @return \DateTime
 	 */
 	public function get_ordered_at() {
+		if (!get_post()) {
+			return null;
+		}
+
 		return new \DateTime( get_post()->post_date );
 	}
 
@@ -85,6 +89,6 @@ class Order_Info {
 	 * @return \DateTime
 	 */
 	public function get_translated_at() {
-		return new \DateTime();
+		return null;
 	}
 }

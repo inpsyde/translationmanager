@@ -16,21 +16,25 @@
 		</b>
 	</div>
 
-	<div>
-		<span class="dashicons dashicons-calendar-alt"></span>
-		<?php _e( 'Ordered at', 'tm4mlp' ) ?>:
-		<b>
-			<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
-		</b>
-	</div>
+	<?php if ( $this->get_ordered_at() instanceof \DateTime ): ?>
+		<div>
+			<span class="dashicons dashicons-calendar-alt"></span>
+			<?php _e( 'Ordered at', 'tm4mlp' ) ?>:
+			<b>
+				<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
+			</b>
+		</div>
+	<?php endif; ?>
 
-	<div>
-		<span class="dashicons dashicons-calendar-alt"></span>
-		<?php _e( 'Translated at', 'tm4mlp' ) ?>:
-		<b>
-			<?php echo $this->get_translated_at()->format( 'Y-m-d' ) ?>
-		</b>
-	</div>
+	<?php if ( $this->get_translated_at() instanceof \DateTime ): ?>
+		<div>
+			<span class="dashicons dashicons-calendar-alt"></span>
+			<?php _e( 'Translated at', 'tm4mlp' ) ?>:
+			<b>
+				<?php echo $this->get_translated_at()->format( 'Y-m-d' ) ?>
+			</b>
+		</div>
+	<?php endif; ?>
 <?php else: ?>
 	<br>
 	<div class="textright">

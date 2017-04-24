@@ -2,6 +2,7 @@
 
 namespace Tm4mlp\Meta_Box;
 
+use Tm4mlp\Admin\Options_Page;
 use Tm4mlp\Domain\Language;
 
 class Translation_Box {
@@ -29,6 +30,10 @@ class Translation_Box {
 		}
 
 		require $template;
+	}
+
+	protected function get_customer_key() {
+		return get_option(Options_Page::REFRESH_TOKEN);
 	}
 
 	/**

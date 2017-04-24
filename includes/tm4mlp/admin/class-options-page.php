@@ -2,7 +2,7 @@
 /**
  * Containing class that handles pixxio options page.
  *
- * @package pixxio-api
+ * @package tm4mlp
  */
 
 namespace Tm4mlp\Admin;

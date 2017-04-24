@@ -2,7 +2,7 @@
 /**
  * Containing the class loader.
  *
- * @package pixxio-api
+ * @package tm4mlp
  */
 
 namespace Tm4mlp;

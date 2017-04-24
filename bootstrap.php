@@ -9,7 +9,7 @@ spl_autoload_register( array( new \Tm4mlp\Loader(), 'load_class' ) );
  *
  * Makes it possible for themes or other plugins to overwrite a template.
  *
- * @param string $name Required template (relative path from "plugins/pixxio-api/" on).
+ * @param string $name Required template (relative path from "plugins/tm4mlp/" on).
  *
  * @return string Absolute path to the template.
  */

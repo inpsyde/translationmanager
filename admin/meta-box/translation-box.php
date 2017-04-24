@@ -1,7 +1,17 @@
 <?php /** @var \Tm4mlp\Meta_Box\Translation_Box $this */ ?>
 
+<?php if ( ! $this->get_customer_key() ): ?>
+	<em>
+		<a href="<?php echo get_admin_url( null, '/options-general.php?page=' . \Tm4mlp\Admin\Options_Page::SLUG ) ?>">
+			<?php esc_html_e( 'Click here to setup the Eurotext Translation Plugin.', 'tm4mlp' ) ?>
+		</a>
+	</em>
+	<?php return; ?>
+<?php endif; ?>
+
 <!-- TODO values need to be transferred. -->
 <div style="line-height: 2em;">
+
 	<?php if ( $this->get_projects() ): ?>
 		<div class="misc-pub-section misc-pub-fff-status">
 			<?php _e( 'Project', 'tm4mlp' ) ?>:
