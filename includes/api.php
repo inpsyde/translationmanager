@@ -5,44 +5,6 @@ function tm4mlp_api_url( $path = null ) {
 }
 
 /**
- * @param $data
- *
- * @return string|bool ID of the order on API side or false on failure.
- */
-function tm4mlp_api_project_create( $data ) {
-	global $wp_version;
-
-	$body = tm4mlp_api()->put(
-		'project',
-		array(),
-		array(
-			'X-Callback'       => get_site_url( null, 'wp-json/tm4mlp/v1/order' ),
-			'X-Plugin'         => 'tm4mlp',
-			'X-Plugin-Version' => TM4MLP_VERSION,
-			'X-System'         => 'WordPress',
-			'X-System-Version' => $wp_version,
-			'X-Type'           => 'order',
-		)
-	);
-
-	if ( ! isset( $body['id'] ) ) {
-		return null;
-	}
-
-	$project_id = (int) $body['id'];
-
-	// Post each item
-	foreach ( $data as $item ) {
-		tm4mlp_api()->put(
-			'project/' . $project_id . '/item',
-			$item
-		);
-	}
-
-	return $project_id;
-}
-
-/**
  * Instance of the TM4MLP API.
  *
  * @return \Tm4mlp\Api

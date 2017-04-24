@@ -2,7 +2,18 @@
 
 namespace Tm4mlp;
 
+use Tm4mlp\Api\Project;
+use Tm4mlp\Api\Project_Item;
+
 class Api {
+	/**
+	 * @var Project
+	 */
+	protected $project;
+	/**
+	 * @var Project_Item
+	 */
+	protected $project_item;
 	/**
 	 * @var string
 	 */
@@ -32,6 +43,10 @@ class Api {
 		$this->base_url   = $base_url;
 	}
 
+	public function put( $path, $data = array(), $headers = array() ) {
+		return $this->request( 'PUT', $path, $data, $headers );
+	}
+
 	/**
 	 * @param string $method
 	 * @param string $path
@@ -57,19 +72,37 @@ class Api {
 		return json_decode( wp_remote_retrieve_body( $response ), true );
 	}
 
-	public function put( $path, $data = array(), $headers = array() ) {
-		return $this->request('PUT', $path, $data, $headers);
-	}
-
-	public function get( $path, $data = array(), $headers = array() ) {
-		return $this->request('GET', $path, $data, $headers);
-	}
-
 	public function get_url( $path ) {
 		if ( null !== $path ) {
 			$path .= '.json';
 		}
 
 		return $this->base_url . '/' . ltrim( $path, '/' );
+	}
+
+	public function get( $path, $data = array(), $headers = array() ) {
+		return $this->request( 'GET', $path, $data, $headers );
+	}
+
+	/**
+	 * @return Project
+	 */
+	public function project() {
+		if ( null === $this->project ) {
+			$this->project = new Project( $this );
+		}
+
+		return $this->project;
+	}
+
+	/**
+	 * @return Project_Item
+	 */
+	public function project_item() {
+		if ( null === $this->project_item ) {
+			$this->project_item = new Project_Item( $this );
+		}
+
+		return $this->project_item;
 	}
 }

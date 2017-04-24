@@ -80,57 +80,73 @@ function _tm4mlp_handle_actions() {
 }
 
 /**
- * @param \WP_Term T $project_term
+ * Fetch all project items.
+ *
+ * @param int $term_id
+ *
+ * @return array
  */
-function _tm4mlp_project_order( $project_term ) {
-	$posts = get_posts( array(
-		'post_type'      => TM4MLP_CART,
-		'tax_query'      => array(
-			'taxonomy' => TM4MLP_TAX_PROJECT,
-			'field'    => 'id',
-			'terms'    => $project_term->term_id
-		),
-		'posts_per_page' => - 1,
-		'post_status'    => get_post_stati(),
-	) );
-
-	// TODO What if no post in list?
-
-	$request   = array();
-	$languages = tm4mlp_get_languages();
-	foreach ( $posts as $post ) {
-		$lang_id = get_post_meta( $post->ID, '_tm4mlp_target_id', true );
-
-		if ( null === $lang_id ) {
-			// Invalid.
-			continue;
-		}
-
-		if ( ! $lang_id || ! isset( $languages[ $lang_id ] ) ) {
-			// TODO error handling.
-			continue;
-		}
-
-		$source_id = get_post_meta( $post->ID, '_tm4mlp_post_id', true );
-
-		if ( ! $source_id ) {
-			// invalid.
-			continue;
-		}
-
-		$current = array(
-			'__meta' => array(
-				'target_language' => $languages[ $lang_id ]->get_lang_code(),
+function tm4mlp_get_project_items( $term_id ) {
+	$get_posts = get_posts(
+		array(
+			'post_type'      => TM4MLP_CART,
+			'tax_query'      => array(
+				'taxonomy' => TM4MLP_TAX_PROJECT,
+				'field'    => 'id',
+				'terms'    => $term_id
 			),
-		);
+			'posts_per_page' => - 1,
+			'post_status'    => get_post_stati(),
+		)
+	);
 
-		$source  = get_post( $source_id );
-		$current = array_merge( $source->to_array(), $current );
-
-		$request[] = tm4mlp_sanitize_post( $current, $source );
+	if ( ! $get_posts || is_wp_error( $get_posts ) ) {
+		return array();
 	}
 
-	$project_id = tm4mlp_api_project_create( $request );
+	return (array) apply_filters( 'tm4mlp_get_project_items', $get_posts );
+}
+
+/**
+ * @param \WP_Term $project_term
+ */
+function _tm4mlp_project_order( $project_term ) {
+	$posts = tm4mlp_get_project_items( $project_term->term_id );
+
+	global $wp_version;
+
+	$project_id = tm4mlp_api()->project()->create(
+		array(),
+		array(
+			'X-Callback'       => get_site_url( null, 'wp-json/tm4mlp/v1/order' ),
+			'X-Plugin'         => 'tm4mlp',
+			'X-Plugin-Version' => TM4MLP_VERSION,
+			'X-System'         => 'WordPress',
+			'X-System-Version' => $wp_version,
+			'X-Type'           => 'order',
+		)
+	);
+
+	if ( ! $project_id ) {
+		return;
+	}
+
+	$languages = tm4mlp_get_languages();
+	foreach ( $posts as $post ) {
+		$lang_id   = get_post_meta( $post->ID, '_tm4mlp_target_id', true );
+		$source_id = get_post_meta( $post->ID, '_tm4mlp_post_id', true );
+
+		if ( ! $lang_id || ! isset( $languages[ $lang_id ] ) || ! $source_id ) {
+			// Invalid state, try next one.
+			continue;
+		}
+
+		$source            = get_post( $source_id );
+		$current           = $source->to_array();
+		$current['__meta'] = array( 'target_language' => $languages[ $lang_id ]->get_lang_code() );
+
+		tm4mlp_api()->project_item()->create( $project_id, tm4mlp_sanitize_post( $current, $source ) );
+	}
 
 	update_term_meta( $project_term->term_id, '_tm4mlp_order_id', $project_id );
 }
