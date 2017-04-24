@@ -28,8 +28,8 @@ class Project {
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
-	public function create( $data = array(), $headers = array() ) {
-		$body = $this->get_api()->put( self::URL, $data, $headers );
+	public function create( \Tm4mlp\Domain\Project $project ) {
+		$body = $this->get_api()->put( self::URL, array(), $project->to_header_array() );
 
 		if ( ! isset( $body['id'] ) ) {
 			return null;

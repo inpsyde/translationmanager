@@ -116,14 +116,11 @@ function _tm4mlp_project_order( $project_term ) {
 	global $wp_version;
 
 	$project_id = tm4mlp_api()->project()->create(
-		array(),
-		array(
-			'X-Callback'       => get_site_url( null, 'wp-json/tm4mlp/v1/order' ),
-			'X-Plugin'         => 'tm4mlp',
-			'X-Plugin-Version' => TM4MLP_VERSION,
-			'X-System'         => 'WordPress',
-			'X-System-Version' => $wp_version,
-			'X-Type'           => 'order',
+		new \Tm4mlp\Domain\Project(
+			'WordPress',
+			$wp_version,
+			'tm4mlp',
+			TM4MLP_VERSION
 		)
 	);
 
