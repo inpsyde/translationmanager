@@ -39,13 +39,23 @@ class Project {
 	 * @param null   $callback       URL to trigger after translation is completely done.
 	 */
 	public function __construct( $system, $system_version, $plugin, $plugin_version, $type = 'order', $callback = null ) {
-
 		$this->system         = $system;
 		$this->system_version = $system_version;
 		$this->plugin         = $plugin;
 		$this->plugin_version = $plugin_version;
 		$this->type           = $type;
 		$this->callback       = $callback;
+	}
+
+	public function to_header_array() {
+		return array(
+			'X-System'         => $this->get_system(),
+			'X-System-Version' => $this->get_system_version(),
+			'X-Plugin'         => $this->get_plugin(),
+			'X-Plugin-Version' => $this->get_plugin_version(),
+			'X-Type'           => $this->get_type(),
+			'X-Callback'       => $this->get_callback(),
+		);
 	}
 
 	/**
@@ -88,16 +98,5 @@ class Project {
 	 */
 	public function get_callback() {
 		return $this->callback;
-	}
-
-	public function to_header_array() {
-		return array(
-			'X-System'         => $this->get_system(),
-			'X-System-Version' => $this->get_system_version(),
-			'X-Plugin'         => $this->get_plugin(),
-			'X-Plugin-Version' => $this->get_plugin_version(),
-			'X-Type'           => $this->get_type(),
-			'X-Callback'       => $this->get_callback(),
-		);
 	}
 }

@@ -44,4 +44,8 @@ class Project {
 	protected function get_api() {
 		return $this->api;
 	}
+
+	public function get( $project_id ) {
+		return $this->get_api()->get( 'project/' . (int) $project_id );
+	}
 }

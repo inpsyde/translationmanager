@@ -21,6 +21,8 @@ class Mlp_Connect {
 	}
 
 	/**
+	 * Add meta information so that MLP is capable of mapping ('__meta' is always given and should be an array).
+	 *
 	 * @param array    $data
 	 * @param \WP_Post $post
 	 * @param int      $site_id
@@ -28,13 +30,13 @@ class Mlp_Connect {
 	 * @return array
 	 */
 	public function prepare_outgoing( array $data, \WP_Post $post, $site_id ) {
+		if ( ! isset( $data['__meta'] ) ) {
+			$data['__meta'] = array();
+		}
 
-		// Add meta information so that MLP is capable of mapping ('__meta' is always given and should be an array).
-		$data['__meta'] = array(
-			'site_id' => $site_id,
-			'post_id' => $post->ID,
-			'type'    => 'post',
-		);
+		$data['__meta']['site_id'] = $site_id;
+		$data['__meta']['post_id'] = $post->ID;
+		$data['__meta']['type']    = 'post';
 
 		return $data;
 	}
@@ -81,22 +83,23 @@ class Mlp_Connect {
 	 */
 	public function update_translations( array $data ) {
 
-		if ( empty( $data['__meta']['target']['id'] ) ) {
-			return;
-		}
-
-		switch_to_blog( $data['__meta']['target']['id'] );
-		unset( $data['__meta'] );
-
-		foreach ( $data as $translation ) {
+		foreach ( $data['items'] as $translation ) {
+			$translation = $translation['data'];
+			if (! switch_to_blog( $translation['__meta']['target_id'] ) ) {
+				// TODO Error message, payed for nothing.
+				continue;
+			}
 
 			$translation['ID'] = $translation['__meta']['post_id'];
+			var_export($translation);
 
 			unset ( $translation['__meta'] );
+
 
 			wp_update_post( $translation );
 		}
 
+		exit;
 		restore_current_blog();
 	}
 }

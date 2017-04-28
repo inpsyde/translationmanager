@@ -24,6 +24,16 @@
 				<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
 			</b>
 		</div>
+
+		<?php if ( ! $this->get_translated_at() ): ?>
+			<div class="textright">
+				<input type="submit"
+				       name="<?php echo TM4MLP_ACTION_PROJECT_UPDATE ?>"
+				       class="button button-primary"
+				       onclick="jQuery('#<?php echo TM4MLP_ACTION_PROJECT_UPDATE ?>').click();"
+				       value="<?php _e( 'Update', 'tm4mlp' ) ?>"/>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	<?php if ( $this->get_translated_at() instanceof \DateTime ): ?>

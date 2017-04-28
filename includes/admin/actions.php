@@ -57,6 +57,27 @@ function _tm4mlp_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
+	if ( isset( $_GET[ TM4MLP_ACTION_PROJECT_UPDATE ] ) ) {
+		$term = get_term_by( 'slug', $_GET['_tm4mlp_project_id'], TM4MLP_TAX_PROJECT );
+
+		_tm4mlp_project_update( $term );
+
+		wp_redirect(
+			get_admin_url(
+				null,
+				'edit.php?' .
+				http_build_query(
+					array(
+						TM4MLP_TAX_PROJECT => $_GET['_tm4mlp_project_id'],
+						'post_type'        => TM4MLP_CART,
+					)
+				)
+			)
+		);
+
+		wp_die( '', '', array( 'response' => 302 ) );
+	}
+
 	if ( isset( $_POST[ TM4MLP_ACTION_PROJECT_ADD_TRANSLATION ] ) ) {
 		$project = tm4mlp_action_project_add_translation( $_POST );
 
@@ -91,12 +112,14 @@ function tm4mlp_get_project_items( $term_id ) {
 		array(
 			'post_type'      => TM4MLP_CART,
 			'tax_query'      => array(
-				'taxonomy' => TM4MLP_TAX_PROJECT,
-				'field'    => 'id',
-				'terms'    => $term_id
+				array(
+					'taxonomy' => TM4MLP_TAX_PROJECT,
+					'field'    => 'id',
+					'terms'    => $term_id
+				)
 			),
 			'posts_per_page' => - 1,
-			'post_status'    => get_post_stati(),
+			'post_status'    => array('draft', 'published'),
 		)
 	);
 
@@ -135,12 +158,36 @@ function _tm4mlp_project_order( $project_term ) {
 
 		$source            = get_post( $post->_tm4mlp_post_id );
 		$current           = $source->to_array();
-		$current['__meta'] = array( 'target_language' => $languages[ $post->_tm4mlp_target_id ]->get_lang_code() );
+		$current['__meta'] = array(
+			'target_language' => $languages[ $post->_tm4mlp_target_id ]->get_lang_code(),
+			'target_id' => $post->_tm4mlp_target_id
+		);
 
-		tm4mlp_api()->project_item()->create( $project_id, tm4mlp_sanitize_post( $current, $source ) );
+		/**
+		 * Filter to update translation data.
+		 */
+		$data = apply_filters( TM4MLP_SANITIZE_POST, $current, $source, get_current_blog_id() );
+
+		tm4mlp_api()->project_item()->create( $project_id, $data );
 	}
 
 	update_term_meta( $project_term->term_id, '_tm4mlp_order_id', $project_id );
+}
+
+/**
+ * @param \WP_Term $project_term
+ */
+function _tm4mlp_project_update( $project_term ) {
+	$project_id = get_term_meta( $project_term->term_id, '_tm4mlp_order_id', true );
+
+	if ( ! $project_id ) {
+		// ID missing.
+		return;
+	}
+
+	$data = tm4mlp_api()->project()->get( $project_id );
+
+	do_action( 'tm4mlp_api_translation_update', $data );
 }
 
 add_action( 'load-post.php', '_tm4mlp_handle_actions' );

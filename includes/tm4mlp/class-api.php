@@ -60,12 +60,16 @@ class Api {
 		$headers['plugin_key']   = $this->plugin_key;
 		$headers['apikey']       = $this->api_key;
 
+		if ( 'GET' != $method ) {
+			$data = json_encode( $data );
+		}
+
 		$response = wp_remote_request(
 			$this->get_url( $path ),
 			array(
 				'method'  => $method,
 				'headers' => $headers,
-				'body'    => json_encode( $data ),
+				'body'    => $data,
 			)
 		);
 

@@ -101,7 +101,8 @@ function tm4mlp_cart_footer( $which ) {
 		if ( ! is_wp_error( $term )
 		     && get_term_meta( $term->term_id, '_tm4mlp_order_id' )
 		) {
-			// This has an order id so we don't show the order button.
+			// This has an order id so we show the update button.
+			require tm4mlp_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
 			_e( 'Thanks for your order.', 'tm4mlp' );
 
 			return;
