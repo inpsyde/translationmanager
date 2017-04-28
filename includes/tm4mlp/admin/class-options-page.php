@@ -110,6 +110,22 @@ class Options_Page {
 
 		// Base URL of the API.
 		$this->_add_settings_field(
+			static::URL,
+			__( 'URL', 'tm4mlp-api' ),
+			array( $this, 'dispatch_input_text' ),
+			static::OPTION_GROUP,
+			static::SECTION_CREDENTIALS,
+			array(
+				'value' => get_option(
+					static::URL,
+					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
+					__( 'Not set', 'tm4mlp-api' )
+				)
+			)
+		);
+
+		// Token
+		$this->_add_settings_field(
 			static::REFRESH_TOKEN,
 			__( 'Token', 'tm4mlp-api' ),
 			array( $this, 'dispatch_input_text' ),
@@ -125,6 +141,7 @@ class Options_Page {
 		);
 
 		add_filter( 'sanitize_option_' . static::REFRESH_TOKEN, 'trim' );
+		add_filter( 'sanitize_option_' . static::URL, 'trim' );
 	}
 
 	/**
@@ -206,40 +223,6 @@ class Options_Page {
 		return (bool) get_option( static::REFRESH_TOKEN, FALSE );
 	}
 
-	protected function save_action( $data ) {
-		if (
-			! isset( $data[ static::USERNAME ] ) || ! wp_unslash( $data[ static::USERNAME ] )
-			|| ! isset( $data[ static::PASSWORD ] ) || ! wp_unslash( $data[ static::PASSWORD ] )
-		) {
-			// Our page but no data provided so we don't fetch the token.
-			return;
-		}
-
-		$login = new Api\Login(
-			new Api( tm4mlp_get_url() ),
-			$data[ static::USERNAME ],
-			$data[ static::PASSWORD ]
-		);
-
-		try {
-			$new_token = $login->fetch_refresh_token();
-
-			update_option( static::REFRESH_TOKEN, $new_token, FALSE );
-
-			// The later process overwrites the option with what is given in the $_POST.
-			// This is suppressed by telling WordPress, that the value is okay already.
-			add_filter(
-				'pre_update_option_' . static::REFRESH_TOKEN,
-				function ( $value, $old_value ) {
-					return $old_value;
-				},
-				10,
-				2
-			);
-		} catch ( \Exception $e ) {
-
-		}
-	}
 
 	protected function fetch_files_action() {
 		tm4mlp_api_fetch_all();
