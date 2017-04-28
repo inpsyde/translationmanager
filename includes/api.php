@@ -16,8 +16,7 @@ function tm4mlp_api() {
 		$api = new \Tm4mlp\Api(
 			get_option( \Tm4mlp\Admin\Options_Page::REFRESH_TOKEN ),
 			'b37270d25d5b3fccf137f7462774fe76',
-			'http://inpsyde.local:8000/sandbox/api/v1'
-		// get_option( 'tm4mlp_api_url', 'http://inpsyde.local:8000/api' )
+			get_option( \Tm4mlp\Admin\Options_Page::URL, 'http://api.eurotext.de/api/v1' )
 		);
 	}
 

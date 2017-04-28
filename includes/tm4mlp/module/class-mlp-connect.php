@@ -91,7 +91,6 @@ class Mlp_Connect {
 			}
 
 			$translation['ID'] = $translation['__meta']['post_id'];
-			var_export($translation);
 
 			unset ( $translation['__meta'] );
 
@@ -99,7 +98,6 @@ class Mlp_Connect {
 			wp_update_post( $translation );
 		}
 
-		exit;
 		restore_current_blog();
 	}
 }
