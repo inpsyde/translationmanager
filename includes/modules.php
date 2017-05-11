@@ -4,15 +4,15 @@
  */
 
 
-$plugins = get_option( 'active_plugins' );
+$plugins = get_option( 'active_plugins', array() );
 if ( ! $plugins || function_exists( 'wp_get_active_network_plugins' ) ) {
-	$plugins = wp_get_active_network_plugins();
+	$plugins = array_merge( $plugins, wp_get_active_network_plugins() );
 }
 
 // Load module for each active plugin.
-foreach ( $plugins as $plugin ) {
+foreach ( (array) $plugins as $plugin ) {
 	// Module file is located in "modules/{plugin-slug}.php".
-	$module_file = dirname( __FILE__ )
+	$module_file = __DIR__
 	               . DIRECTORY_SEPARATOR . 'modules'
 	               . DIRECTORY_SEPARATOR . basename( dirname( $plugin ) ) . '.php';
 
