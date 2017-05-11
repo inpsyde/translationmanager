@@ -165,8 +165,14 @@ function _tm4mlp_project_order( $project_term ) {
 
 		/**
 		 * Filter to update translation data.
+		 *
+		 * @param array $current Current data that will be transfered to the API.
+		 * @param array $source  Post that is currently extracted data from.
+		 * @param int   $blog_id ID of the current running blog.
+		 *
+		 * @return array
 		 */
-		$data = apply_filters( TM4MLP_SANITIZE_POST, $current, $source, get_current_blog_id() );
+		$data = (array) apply_filters( TM4MLP_SANITIZE_POST, $current, $source, get_current_blog_id() );
 
 		tm4mlp_api()->project_item()->create( $project_id, $data );
 	}
