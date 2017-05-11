@@ -187,7 +187,10 @@ function _tm4mlp_project_update( $project_term ) {
 
 	$data = tm4mlp_api()->project()->get( $project_id );
 
-	do_action( 'tm4mlp_api_translation_update', $data );
+	foreach ( $data['items'] as $item ) {
+		$item
+		do_action( 'tm4mlp_api_translation_update', $data );
+	}
 }
 
 add_action( 'load-post.php', '_tm4mlp_handle_actions' );
