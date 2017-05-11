@@ -2,6 +2,7 @@
   "name": "eurotext/wp-tm4mpl",
   "description": "WordPress Plugin to connect to the Eurotext REST API.",
   "license": "proprietary",
+  "type": "wordpress-plugin",
   "config": {
     "sort-packages": true
   },
