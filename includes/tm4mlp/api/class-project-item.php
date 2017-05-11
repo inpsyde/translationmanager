@@ -29,7 +29,14 @@ class Project_Item {
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
 	public function create( $project_id, $data = array() ) {
-		$body = $this->get_api()->put( $this->get_url( $project_id ), $data );
+		$body = $this->get_api()->put(
+			$this->get_url( $project_id ),
+			$data,
+			array(
+				// 'X-Source' => null,
+				'X-Target' => $data['__meta']['target_language'],
+			)
+		);
 
 		if ( ! isset( $body['id'] ) ) {
 			return null;
