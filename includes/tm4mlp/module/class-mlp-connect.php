@@ -1,4 +1,10 @@
-<?php
+<?php # -*- coding: utf-8 -*-
+/**
+ * Bridge between the translation data and the MLP API
+ *
+ * @version 2017.03.01
+ * @author  toscho
+ */
 
 namespace Tm4mlp\Module;
 

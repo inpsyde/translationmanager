@@ -1,8 +1,5 @@
 <?php
 
-
-namespace Inpsyde\Tm4mlp;
-
 use Tm4mlp\Module\Mlp_Connect;
 
 add_action( 'inpsyde_mlp_loaded', function ( \Inpsyde_Property_List_Interface $data ) {
