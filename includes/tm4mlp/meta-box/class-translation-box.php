@@ -13,11 +13,29 @@ class Translation_Box {
 	protected $projects;
 
 	public function add_meta_box() {
+		/**
+		 * Define where the translation box shall be shown.
+		 *
+		 * Add or remove post-types from the array.
+		 * By default it will be shown on 'post' and 'page'.
+		 * The value goes right in the `add_meta_box` screen argument.
+		 *
+		 * @see add_meta_box()
+		 *
+		 * @var array Screens for `add_meta_box()`.
+		 *
+		 * @return array
+		 */
+		$tm4mlp_translation_box_screen = apply_filters(
+			'tm4mlp_translation_box_screen',
+			get_post_types( array( 'show_ui' => true, '_builtin' => true ) )
+		);
+
 		add_meta_box(
 			static::ID,
 			__( 'Inquiry for translation', 'tm4mlp' ),
 			array( $this, 'dispatch' ),
-			apply_filters( 'tm4mlp_translation_box_screen', [ 'post', 'page' ] ),
+			$tm4mlp_translation_box_screen,
 			self::CONTEXT
 		);
 	}

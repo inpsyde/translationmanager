@@ -27,6 +27,9 @@ class Mlp_Connect {
 	 * @param \WP_Post $post
 	 * @param int      $site_id
 	 *
+	 *
+	 * @todo Object TransportInformation machen.
+	 *
 	 * @return array
 	 */
 	public function prepare_outgoing( array $data, \WP_Post $post, $site_id ) {
@@ -81,22 +84,21 @@ class Mlp_Connect {
 	 *
 	 * @return void
 	 */
-	public function update_translations( array $data ) {
+	public function update_translations( array $translation ) {
 
-		foreach ( $data['items'] as $translation ) {
-			$translation = $translation['data'];
+//		foreach ( $data['items'] as $translation ) {
+//			$translation = $translation['data'];
 			if (! switch_to_blog( $translation['__meta']['target_id'] ) ) {
 				// TODO Error message, payed for nothing.
-				continue;
+				return;
 			}
 
 			$translation['ID'] = $translation['__meta']['post_id'];
 
 			unset ( $translation['__meta'] );
 
-
 			wp_update_post( $translation );
-		}
+//		}
 
 		restore_current_blog();
 	}
