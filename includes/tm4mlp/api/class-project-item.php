@@ -33,7 +33,7 @@ class Project_Item {
 			$this->get_url( $project_id ),
 			$data,
 			array(
-				// 'X-Source' => null,
+				'X-Source' => tm4mlp_get_current_lang_code(),
 				'X-Target' => $data['__meta']['target_language'],
 			)
 		);
