@@ -51,7 +51,7 @@ class Mlp_Connect {
 	}
 
 	/**
-	 * @return array
+	 * @return Language
 	 */
 	public function current_language() {
 
@@ -59,12 +59,7 @@ class Mlp_Connect {
 		$lang_iso  = mlp_get_blog_language( $site_id, false );
 		$lang_name = mlp_get_lang_by_iso( $lang_iso );
 
-		return array(
-			$site_id => array(
-				'lang_code' => $lang_iso,
-				'label'     => $lang_name,
-			)
-		);
+		return new Language($lang_iso, $lang_name);
 	}
 
 	/**

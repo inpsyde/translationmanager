@@ -15,7 +15,7 @@ function tm4mlp_get_languages() {
  * @return \Tm4mlp\Domain\Language
  */
 function tm4mlp_get_current_language() {
-	return apply_filters( new \Tm4mlp\Domain\Language(get_locale(), null), 'tm4mlp_get_current_language' );
+	return apply_filters( 'tm4mlp_get_current_language', new \Tm4mlp\Domain\Language(get_locale(), null) );
 }
 
 function tm4mlp_get_current_lang_code() {
