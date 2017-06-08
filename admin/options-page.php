@@ -2,7 +2,7 @@
 <div class="wrap">
 
 	<h2 class="settings__headline">
-		<?php esc_html_e( 'Eurotext WordPress Connector' ) ?>
+		<?php esc_html_e( 'translationMANAGER' ) ?>
 		<small class="settings__version">
 			<sup>1.0.0</sup>
 		</small>
