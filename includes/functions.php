@@ -26,3 +26,15 @@ function inpsyde_remove_search_box() {
 			';
 	}
 }
+
+
+add_action('admin_menu', 'inpsyde_tm4mlp_settings_menu_item');
+
+/**
+ * add external link to Translation area
+ */
+function inpsyde_tm4mlp_settings_menu_item() {
+	global $submenu;
+	$url = 'options-general.php?page=tm4mlp';
+	$submenu['edit.php?post_type=tm4mlp_cart'][] = array('Settings', 'manage_options', $url);
+}
