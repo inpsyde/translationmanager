@@ -38,3 +38,29 @@ function inpsyde_tm4mlp_settings_menu_item() {
 	$url = 'options-general.php?page=tm4mlp';
 	$submenu['edit.php?post_type=tm4mlp_cart'][] = array('Settings', 'manage_options', $url);
 }
+
+add_action('admin_menu', 'inpsyde_tm4mlp_about_page');
+/**
+ * Adds a submenu page under a custom post type parent.
+ */
+function inpsyde_tm4mlp_about_page() {
+	add_submenu_page(
+		'edit.php?post_type=tm4mlp_cart',
+		__( 'About', 'tm4mlp_cart' ),
+		__( 'About', 'tm4mlp_cart' ),
+		'manage_options',
+		'inpsyde-tm4mlp-about',
+		'inpsyde_tm4mlp_about_page_callback'
+	);
+}
+
+/**
+ * Display callback for the submenu page.
+ */
+function inpsyde_tm4mlp_about_page_callback() {
+	?>
+	<div class="wrap">
+		Here any kinda text will go.
+	</div>
+	<?php
+}
