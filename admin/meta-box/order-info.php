@@ -10,7 +10,7 @@
 <?php if ( $this->get_order_id() ): ?>
 	<div>
 		<span class="dashicons dashicons-testimonial"></span>
-		<?php _e( 'Order number', 'tm4mlp' ) ?>:
+		<?php _e( 'Project number', 'tm4mlp' ) ?>:
 		<b>
 			<?php echo esc_html( $this->get_order_id() ) ?>
 		</b>
