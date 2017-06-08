@@ -11,7 +11,7 @@
 
 <!-- TODO values need to be transferred. -->
 <div style="line-height: 2em;">
-
+	<?php if( !empty($this->get_languages())):?>
 	<?php if ( $this->get_projects() ): ?>
 		<div class="misc-pub-section misc-pub-fff-status">
 			<?php _e( 'Project', 'tm4mlp' ) ?>:
@@ -78,19 +78,25 @@
 		</script>
 	<?php endif; ?>
 
+
 	<?php foreach ( $this->get_languages() as $key => $language ): ?>
 		<div>
 			<label for="language_<?php esc_attr_e( $language->get_lang_code() ) ?>">
 				<input type="checkbox"
 				       name="tm4mlp_language[]"
 				       value="<?php esc_attr_e( $key ) ?>"
-				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>"/>
+				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>" required="required" />
 				<?php esc_html_e( $language->get_label() ) ?>
 			</label>
 		</div>
 	<?php endforeach; ?>
+	<?php else:?>
+		<p>No language found !</p>
+	<?php endif?>
+
 </div>
 
+<?php if( !empty($this->get_languages())):?>
 <p>
 	<button type="submit"
 	        name="<?php echo TM4MLP_ACTION_PROJECT_ADD_TRANSLATION ?>"
@@ -103,3 +109,4 @@
 		<?php endif; ?>
 	</button>
 </p>
+<?php endif ?>
