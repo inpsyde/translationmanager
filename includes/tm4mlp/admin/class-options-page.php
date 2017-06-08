@@ -240,7 +240,10 @@ class Options_Page {
 	}
 
 	public function enqueue_style() {
-		if ( ! get_current_screen() || 'settings_page_tm4mlp' !== get_current_screen()->id ) {
+		if ( ! get_current_screen() ||
+		     'settings_page_tm4mlp' !== get_current_screen()->id ||
+		     (get_current_screen()->parent_base !== 'edit' && ! empty($_GET['tm4mlp_project']) && $_GET['post_type'] != 'tm4mlp_cart' )
+		) {
 			return;
 		}
 
