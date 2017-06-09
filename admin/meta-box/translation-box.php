@@ -5,7 +5,7 @@
 			$('#tm4mlp-inquery-button-id').on('click', '.tm4mlp-inquery-button', function() {
 				var checked = $("input.tm4mlp_languages_class").is(':checked');
 				if(!checked) {
-					alert("You must check at least one checkbox.");
+					alert( "You must check at least one language." );
 					return false;
 				}
 			});
