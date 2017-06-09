@@ -3,7 +3,7 @@
 	(function($){
 		$(function(){
 			$('#tm4mlp-inquery-button-id').on('click', '.tm4mlp-inquery-button', function() {
-				checked = $("input[type=checkbox][name=tm4mlp_language]:checked").length;
+				var checked = $("input.tm4mlp_languages_class").is(':checked');
 				if(!checked) {
 					alert("You must check at least one checkbox.");
 					return false;
@@ -95,6 +95,7 @@
 		<div>
 			<label for="language_<?php esc_attr_e( $language->get_lang_code() ) ?>">
 				<input type="checkbox"
+						class="tm4mlp_languages_class"
 				       name="tm4mlp_language[]"
 				       value="<?php esc_attr_e( $key ) ?>"
 				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>" />
