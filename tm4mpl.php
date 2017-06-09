@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Eurotext API Connector
+Plugin Name: translationMANAGER for WordPress
 Plugin URI:  https://eurotext.com
-Description: WordPress Plugin to connect to the Eurotext REST API.
+Description: Translate your contents in a WordPress Multisite and MultilingualPress.
 Version:     1.0.0
 Author:      Inpsyde
 Author URI:  https://inpsyde.com/

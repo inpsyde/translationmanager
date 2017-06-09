@@ -64,3 +64,11 @@ function inpsyde_tm4mlp_about_page_callback() {
 	</div>
 	<?php
 }
+
+add_filter( 'plugin_row_meta', 'custom_plugin_row_meta', 10, 2 );
+function custom_plugin_row_meta( $links, $file ) {
+	if ( strpos( $file, TM4MLP_FILENAME ) !== false ) {
+		$links[1] = 'By <a href="https://eurotext.de/">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>';
+	}
+	return $links;
+}
