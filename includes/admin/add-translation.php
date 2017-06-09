@@ -17,8 +17,8 @@ function tm4mlp_add_translation_menu() {
 	// Register admin page route.
 	add_submenu_page(
 		null,
-		__('Translations', 'tm4mlp'),
-		__('Translations', 'tm4mlp'),
+		__('Translations', 'translationmanager'),
+		__('Translations', 'translationmanager'),
 		'read',
 		'tm4mlp_add_translation',
 		'__return_false'

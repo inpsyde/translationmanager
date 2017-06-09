@@ -16,7 +16,7 @@ function tm4mlp_action_project_add_translation( $arguments ) {
 
 	if ( ! $project ) {
 		$project = $handler->create_project(
-			sprintf( __( 'Project %s', 'tm4mlp' ), date( 'Y-m-d H:i:s' ) )
+			sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
 		);
 	}
 
@@ -140,7 +140,7 @@ function _tm4mlp_project_order( $project_term ) {
 		new \Tm4mlp\Domain\Project(
 			'WordPress',
 			$wp_version,
-			'tm4mlp',
+			'translationmanager',
 			TM4MLP_VERSION
 		)
 	);

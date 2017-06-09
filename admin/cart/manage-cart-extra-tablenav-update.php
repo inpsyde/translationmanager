@@ -5,5 +5,5 @@
 		       id="<?php echo TM4MLP_ACTION_PROJECT_UPDATE ?>"
 		       name="<?php echo TM4MLP_ACTION_PROJECT_UPDATE ?>"
 		       class="button button-primary"
-		       value="<?php _e( 'Update status', 'tm4mlp' ) ?>"/>
+		       value="<?php _e( 'Update status', 'translationmanager' ) ?>"/>
 </div>

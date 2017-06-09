@@ -21,7 +21,7 @@ class Options_Page {
 	const REFRESH_TOKEN = 'tm4mlp_api_token';
 	const TRANSIENT_CATEGORIES = 'tm4mlp_categories';
 	const SELECTED_CATEGORIES = 'tm4mlp_sync_categories';
-	const SLUG = 'tm4mlp';
+	const SLUG = 'translationmanager';
 
 	/**
 	 * Allowed actions

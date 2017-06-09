@@ -15,7 +15,7 @@
 <?php if ( ! $this->get_customer_key() ): ?>
 	<em>
 		<a href="<?php echo get_admin_url( null, '/options-general.php?page=' . \Tm4mlp\Admin\Options_Page::SLUG ) ?>">
-			<?php esc_html_e( 'Click here to setup the Eurotext Translation Plugin.', 'tm4mlp' ) ?>
+			<?php esc_html_e( 'Click here to setup the Eurotext Translation Plugin.', 'translationmanager' ) ?>
 		</a>
 	</em>
 	<?php return; ?>
@@ -26,7 +26,7 @@
 	<?php if( !empty($this->get_languages())):?>
 	<?php if ( $this->get_projects() ): ?>
 		<div class="misc-pub-section misc-pub-fff-status">
-			<?php _e( 'Project', 'tm4mlp' ) ?>:
+			<?php _e( 'Project', 'translationmanager' ) ?>:
 			<strong>
 				<span id="fff-status-display">
 					<?php esc_html_e( $this->get_recent_project_name() ) ?>
@@ -44,7 +44,7 @@
 				       value="<?php echo $this->get_recent_project_id() ?>">
 				<label for="fff_status" class="screen-reader-text">Set status</label>
 				<select name="fff_status" id="fff_status">
-					<option value="0"><?php _e( 'New project', 'tm4mlp' ) ?></option>
+					<option value="0"><?php _e( 'New project', 'translationmanager' ) ?></option>
 					<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
 						<option value="<?php esc_attr_e( $project_id ) ?>">
 							<?php esc_html_e( $project_label ) ?>
@@ -113,12 +113,12 @@
 <p id="tm4mlp-inquery-button-id">
 	<button type="submit"
 	        name="<?php echo TM4MLP_ACTION_PROJECT_ADD_TRANSLATION ?>"
-	        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'tm4mlp' ) ?>"
+	        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'translationmanager' ) ?>"
 	        class="button button-primary tm4mlp-inquery-button">
 		<?php if ( ! $this->get_projects() ): ?>
-			<?php esc_html_e( 'Create new project', 'tm4mlp' ) ?>
+			<?php esc_html_e( 'Create new project', 'translationmanager' ) ?>
 		<?php else: ?>
-			<?php esc_html_e( 'Add to project', 'tm4mlp' ) ?>
+			<?php esc_html_e( 'Add to project', 'translationmanager' ) ?>
 		<?php endif; ?>
 	</button>
 </p>

@@ -26,7 +26,7 @@ class Project_Handler {
 			array(
 				'post_type'  => TM4MLP_CART,
 				'post_title' => sprintf(
-					__( '%s: "%s"', 'tm4mlp' ),
+					__( '%s: "%s"', 'translationmanager' ),
 					$labels->singular_name,
 					get_the_title( $post_id )
 				),

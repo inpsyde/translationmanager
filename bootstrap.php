@@ -34,11 +34,11 @@ function tm4mlp_activate() {
 
 function tm4mlp_die( $message = '', $title = '', $args = array() ) {
 	if ( ! $title ) {
-		$title = __( 'We are sorry!', 'tm4mlp' );
+		$title = __( 'We are sorry!', 'translationmanager' );
 	}
 
 	if ( ! $message ) {
-		$message = __( 'Something went wrong. Please contact us.', 'tm4mlp' );
+		$message = __( 'Something went wrong. Please contact us.', 'translationmanager' );
 	}
 
 	wp_die( $message, $title, $args );

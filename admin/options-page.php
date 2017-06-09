@@ -16,15 +16,15 @@
 		<div id="inpsyde-tabs" class="inpsyde-tabs">
 			<ul class="inpsyde-tab__navigation wp-clearfix">
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--connection"><?php esc_html_e( 'Connection', 'tm4mlp' ); ?></a>
+					<a href="#tab--connection"><?php esc_html_e( 'Connection', 'translationmanager' ); ?></a>
 				</li>
 
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--plugins"><?php esc_html_e( 'Plugins', 'tm4mlp' ); ?></a>
+					<a href="#tab--plugins"><?php esc_html_e( 'Plugins', 'translationmanager' ); ?></a>
 				</li>
 
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--languages"><?php esc_html_e( 'Languages', 'tm4mlp' ); ?></a>
+					<a href="#tab--languages"><?php esc_html_e( 'Languages', 'translationmanager' ); ?></a>
 				</li>
 			</ul>
 

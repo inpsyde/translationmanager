@@ -16,7 +16,7 @@ class Order_Info {
 	public function add_meta_box() {
 		add_meta_box(
 			static::ID,
-			__( 'Order information', 'tm4mlp' ),
+			__( 'Order information', 'translationmanager' ),
 			array( $this, 'dispatch' ),
 			TM4MLP_ORDER,
 			self::CONTEXT
@@ -47,7 +47,7 @@ class Order_Info {
 	 */
 	public function get_status() {
 		if ( ! $this->get_order_id() ) {
-			return __( 'Ready to order', 'tm4mlp' );
+			return __( 'Ready to order', 'translationmanager' );
 		}
 
 		return apply_filters( 'tm4mlp_order_status', 'In preparation', get_the_ID() );

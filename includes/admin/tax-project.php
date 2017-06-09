@@ -5,9 +5,9 @@ function tm4mlp_cart_taxonomy() {
 		TM4MLP_TAX_PROJECT,
 		TM4MLP_CART,
 		array(
-			'label'  => __( 'Projects', 'tm4mlp' ),
+			'label'  => __( 'Projects', 'translationmanager' ),
 			'labels' => array(
-				'add_new_item' => __( 'Create new project', 'tm4mlp' )
+				'add_new_item' => __( 'Create new project', 'translationmanager' )
 			),
 			'public' => true,
 		)

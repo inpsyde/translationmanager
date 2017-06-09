@@ -35,7 +35,7 @@ class Add_Translation {
 				'edit.php?' . http_build_query(
 					array(
 						'post_type' => TM4MLP_CART,
-						'success'   => __( 'Item added to cart.', 'tm4mlp' )
+						'success'   => __( 'Item added to cart.', 'translationmanager' )
 					)
 				)
 			)
@@ -66,7 +66,7 @@ class Add_Translation {
 				array(
 					'post_type'  => TM4MLP_CART,
 					'post_title' => sprintf(
-						__( '%s: "%s"', 'tm4mlp' ),
+						__( '%s: "%s"', 'translationmanager' ),
 						$post_type_labels->singular_name,
 						$post->post_title
 					),
