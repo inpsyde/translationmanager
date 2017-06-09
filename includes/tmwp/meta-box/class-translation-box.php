@@ -1,13 +1,13 @@
 <?php
 
-namespace Tm4mlp\Meta_Box;
+namespace Tmwp\Meta_Box;
 
-use Tm4mlp\Admin\Options_Page;
-use Tm4mlp\Domain\Language;
+use Tmwp\Admin\Options_Page;
+use Tmwp\Domain\Language;
 
 class Translation_Box {
 
-	const ID = 'tm4mlp_translation_box';
+	const ID = 'tmwp_translation_box';
 
 	const CONTEXT = 'side';
 	protected $projects;
@@ -26,23 +26,23 @@ class Translation_Box {
 		 *
 		 * @return array
 		 */
-		$tm4mlp_translation_box_screen = apply_filters(
-			'tm4mlp_translation_box_screen',
+		$tmwp_translation_box_screen = apply_filters(
+			'tmwp_translation_box_screen',
 			get_post_types( array( 'show_ui' => true, '_builtin' => true ) )
 		);
 
 		add_meta_box(
 			static::ID,
-			__( 'Inquiry for translation', 'translationmanager' ),
+			__( 'Inquiry for translation', 'tmwp' ),
 			array( $this, 'dispatch' ),
-			$tm4mlp_translation_box_screen,
+			$tmwp_translation_box_screen,
 			self::CONTEXT
 		);
 	}
 
 	public function dispatch() {
 		/** @var string $template */
-		$template = tm4mlp_get_template( 'admin/meta-box/translation-box.php' );
+		$template = tmwp_get_template( 'admin/meta-box/translation-box.php' );
 		if ( ! $template || ! file_exists( $template ) ) {
 			return;
 		}
@@ -60,7 +60,7 @@ class Translation_Box {
 	 * @return Language[]
 	 */
 	public function get_languages() {
-		return tm4mlp_get_languages();
+		return tmwp_get_languages();
 	}
 
 	public function get_projects() {
@@ -71,11 +71,11 @@ class Translation_Box {
 		/** @var \WP_Term[] $terms */
 		$terms = get_terms(
 			array(
-				'taxonomy'   => TM4MLP_TAX_PROJECT,
+				'taxonomy'   => TMWP_TAX_PROJECT,
 				'hide_empty' => false,
 				'meta_query' => array(
 					array(
-						'key'     => '_tm4mlp_order_id',
+						'key'     => '_tmwp_order_id',
 						'compare' => 'NOT EXISTS',
 						'value'   => '',
 					),
@@ -93,7 +93,7 @@ class Translation_Box {
 
 	public function get_recent_project_name() {
 		if ( ! $this->get_recent_project_id() ) {
-			return __( 'New project', 'translationmanager' );
+			return __( 'New project', 'tmwp' );
 		}
 
 		return get_term_field( 'name', $this->get_recent_project_id() );
@@ -103,6 +103,6 @@ class Translation_Box {
 	 * @return int|null
 	 */
 	public function get_recent_project_id() {
-		return get_user_meta( get_current_user_id(), 'tm4mlp_project_recent', true );
+		return get_user_meta( get_current_user_id(), 'tmwp_project_recent', true );
 	}
 }

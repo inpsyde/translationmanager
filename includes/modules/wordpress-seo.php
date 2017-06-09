@@ -8,7 +8,7 @@
  * @author  toscho
  */
 
-$wordpress_seo = new \Tm4mlp\Module\WordPress_Seo( );
+$wordpress_seo = new \Tmwp\Module\WordPress_Seo( );
 
 // Prepare outgoing data. These will be sent back later with the same keys.
-add_filter( TM4MLP_SANITIZE_POST, array( $wordpress_seo, 'prepare_outgoing' ), 10, 2 );
+add_filter( TMWP_SANITIZE_POST, array( $wordpress_seo, 'prepare_outgoing' ), 10, 2 );

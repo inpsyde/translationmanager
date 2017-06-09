@@ -1,15 +1,15 @@
 <?php
 
-namespace Tm4mlp\Post_Type;
+namespace Tmwp\Post_Type;
 
 class Project_Item {
 	const STATUS_TRASH = 'trash';
 
-	const POST_TYPE = 'tm4mlp_cart';
+	const POST_TYPE = 'tmwp_cart';
 
-	const COLUMN_PROJECT = 'tm4mlp_project';
+	const COLUMN_PROJECT = 'tmwp_project';
 
-	const COLUMN_LANGUAGE = 'tm4mlp_language';
+	const COLUMN_LANGUAGE = 'tmwp_language';
 
 	public static function register_post_status() {
 	}
@@ -43,7 +43,7 @@ class Project_Item {
 		$request = wp_parse_args(
 			$_GET,
 			array(
-				TM4MLP_TAX_PROJECT => null,
+				TMWP_TAX_PROJECT => null,
 			)
 		); // Input var ok.
 
@@ -53,18 +53,18 @@ class Project_Item {
 			return $columns;
 		}
 
-		if ( $request[ TM4MLP_TAX_PROJECT ] ) {
+		if ( $request[ TMWP_TAX_PROJECT ] ) {
 			// Term/Project filter is active so this col is not needed.
 			return $columns;
 		}
 
-		$columns[ self::COLUMN_PROJECT ] = __( 'Project', 'translationmanager' );
+		$columns[ self::COLUMN_PROJECT ] = __( 'Project', 'tmwp' );
 
 		return $columns;
 	}
 
 	protected static function _column_language( $columns ) {
-		$columns[ self::COLUMN_LANGUAGE ] = __( 'Target language', 'translationmanager' );
+		$columns[ self::COLUMN_LANGUAGE ] = __( 'Target language', 'tmwp' );
 
 		return $columns;
 	}
@@ -72,7 +72,7 @@ class Project_Item {
 	public static function print_column( $column_name, $post_id ) {
 		switch ( $column_name ) {
 			case static::COLUMN_PROJECT:
-				$terms = get_the_terms( $post_id, TM4MLP_TAX_PROJECT );
+				$terms = get_the_terms( $post_id, TMWP_TAX_PROJECT );
 
 				if ( ! $terms ) {
 					break;
@@ -85,8 +85,8 @@ class Project_Item {
 						'edit.php?' .
 						http_build_query(
 							array(
-								TM4MLP_TAX_PROJECT => $term->slug,
-								'post_type'        => TM4MLP_CART
+								TMWP_TAX_PROJECT => $term->slug,
+								'post_type'        => TMWP_CART
 							)
 						),
 						$term->name
@@ -94,14 +94,14 @@ class Project_Item {
 				}
 				break;
 			case static::COLUMN_LANGUAGE:
-				$lang_id = get_post_meta( $post_id, '_tm4mlp_target_id', true );
+				$lang_id = get_post_meta( $post_id, '_tmwp_target_id', true );
 
 				if ( ! $lang_id ) {
 					// TODO error handling.
 					return;
 				}
 
-				$languages = tm4mlp_get_languages();
+				$languages = tmwp_get_languages();
 
 				if ( ! isset( $languages[ $lang_id ] ) ) {
 					// TODO error handling.

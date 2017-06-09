@@ -2,26 +2,26 @@
 /**
  * Containing class that handles pixxio options page.
  *
- * @package tm4mlp
+ * @package tmwp
  */
 
-namespace Tm4mlp\Admin;
+namespace Tmwp\Admin;
 
 /**
- * Controller / Model for tm4mlp options page.
+ * Controller / Model for tmwp options page.
  *
- * @package Tm4mlp\Admin
+ * @package Tmwp\Admin
  */
 class Options_Page {
-	const OPTION_GROUP = 'tm4mlp_api';
-	const USERNAME = 'tm4mlp_api_username';
-	const PASSWORD = 'tm4mlp_api_password';
-	const SECTION_CREDENTIALS = 'tm4mlp_api_credentials';
-	const URL = 'tm4mlp_api_url';
-	const REFRESH_TOKEN = 'tm4mlp_api_token';
-	const TRANSIENT_CATEGORIES = 'tm4mlp_categories';
-	const SELECTED_CATEGORIES = 'tm4mlp_sync_categories';
-	const SLUG = 'translationmanager';
+	const OPTION_GROUP = 'tmwp_api';
+	const USERNAME = 'tmwp_api_username';
+	const PASSWORD = 'tmwp_api_password';
+	const SECTION_CREDENTIALS = 'tmwp_api_credentials';
+	const URL = 'tmwp_api_url';
+	const REFRESH_TOKEN = 'tmwp_api_token';
+	const TRANSIENT_CATEGORIES = 'tmwp_categories';
+	const SELECTED_CATEGORIES = 'tmwp_sync_categories';
+	const SLUG = 'tmwp';
 
 	/**
 	 * Allowed actions
@@ -91,7 +91,7 @@ class Options_Page {
 		$prefix = $suffix = '';
 		extract( $field, EXTR_OVERWRITE );
 
-		require tm4mlp_get_template( 'admin/options-page/input-field.php' );
+		require tmwp_get_template( 'admin/options-page/input-field.php' );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Options_Page {
 	public function register_setting() {
 		add_settings_section(
 			self::SECTION_CREDENTIALS,
-			__( 'Credentials', 'tm4mlp_api' ),
+			__( 'Credentials', 'tmwp_api' ),
 			'__return_false',
 			self::OPTION_GROUP
 		);
@@ -111,7 +111,7 @@ class Options_Page {
 		// Base URL of the API.
 		$this->_add_settings_field(
 			static::URL,
-			__( 'URL', 'tm4mlp-api' ),
+			__( 'URL', 'tmwp-api' ),
 			array( $this, 'dispatch_input_text' ),
 			static::OPTION_GROUP,
 			static::SECTION_CREDENTIALS,
@@ -119,7 +119,7 @@ class Options_Page {
 				'value' => get_option(
 					static::URL,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					__( 'Not set', 'tm4mlp-api' )
+					__( 'Not set', 'tmwp-api' )
 				)
 			)
 		);
@@ -127,7 +127,7 @@ class Options_Page {
 		// Token
 		$this->_add_settings_field(
 			static::REFRESH_TOKEN,
-			__( 'Token', 'tm4mlp-api' ),
+			__( 'Token', 'tmwp-api' ),
 			array( $this, 'dispatch_input_text' ),
 			static::OPTION_GROUP,
 			static::SECTION_CREDENTIALS,
@@ -135,7 +135,7 @@ class Options_Page {
 				'value' => get_option(
 					static::REFRESH_TOKEN,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					__( 'Not set', 'tm4mlp-api' )
+					__( 'Not set', 'tmwp-api' )
 				)
 			)
 		);
@@ -214,7 +214,7 @@ class Options_Page {
 	 */
 	public function render() {
 		ob_start();
-		require_once tm4mlp_get_template( '/admin/options-page.php' );
+		require_once tmwp_get_template( '/admin/options-page.php' );
 
 		return ob_get_clean();
 	}
@@ -225,11 +225,11 @@ class Options_Page {
 
 
 	protected function fetch_files_action() {
-		tm4mlp_api_fetch_all();
+		tmwp_api_fetch_all();
 	}
 
 	protected function update_categories_action() {
-		$collections = tm4mlp_api_collections_get();
+		$collections = tmwp_api_collections_get();
 
 		$collectionTransient = array();
 		foreach ( $collections as $collection ) {
@@ -240,16 +240,16 @@ class Options_Page {
 	}
 
 	public function enqueue_style() {
-		if ( ! get_current_screen() || 'settings_page_tm4mlp' !== get_current_screen()->id ) {
+		if ( ! get_current_screen() || 'settings_page_tmwp' !== get_current_screen()->id ) {
 			return;
 		}
 
 		wp_register_style(
-			'tm4mlp-options-page',
-			plugins_url( 'public/css/style.css', 'tm4mlp/tm4mlp.php' )
+			'tmwp-options-page',
+			plugins_url( 'public/css/style.css', 'translationmanager/translationmanager.php' )
 		);
 
-		wp_enqueue_style( 'tm4mlp-options-page' );
+		wp_enqueue_style( 'tmwp-options-page' );
 	}
 
 	public function enqueue_script() {

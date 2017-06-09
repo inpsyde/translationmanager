@@ -1,4 +1,4 @@
-=== TM4MLP ===
+=== TMWP ===
 
 Requires at least: WordPress 4.7.0
 Tested up to: 4.7.0

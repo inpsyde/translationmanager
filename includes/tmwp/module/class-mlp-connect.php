@@ -6,9 +6,9 @@
  * @author  toscho
  */
 
-namespace Tm4mlp\Module;
+namespace Tmwp\Module;
 
-use Tm4mlp\Domain\Language;
+use Tmwp\Domain\Language;
 
 class Mlp_Connect {
 	/**

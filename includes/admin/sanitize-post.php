@@ -6,7 +6,7 @@
  *
  * @return array
  */
-function tm4mlp_sanitize_post( $post_data ) {
+function tmwp_sanitize_post( $post_data ) {
 	unset( $post_data['post_author'] );
 	unset( $post_data['post_date'] );
 	unset( $post_data['post_date_gmt'] );
@@ -43,4 +43,4 @@ function tm4mlp_sanitize_post( $post_data ) {
 	return $post_data;
 }
 
-add_filter( TM4MLP_SANITIZE_POST, 'tm4mlp_sanitize_post', 10 );
+add_filter( TMWP_SANITIZE_POST, 'tmwp_sanitize_post', 10 );

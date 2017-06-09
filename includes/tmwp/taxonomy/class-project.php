@@ -1,12 +1,12 @@
 <?php
 
-namespace Tm4mlp\Taxonomy;
+namespace Tmwp\Taxonomy;
 
 class Project {
-	const TAXONOMY = TM4MLP_TAX_PROJECT;
+	const TAXONOMY = TMWP_TAX_PROJECT;
 
-	const COL_STATUS = 'tm4mlp_order_status';
-	const COL_ACTIONS = 'tm4mlp_order_action';
+	const COL_STATUS = 'tmwp_order_status';
+	const COL_ACTIONS = 'tmwp_order_action';
 
 	public static function register_post_status() {
 	}
@@ -36,8 +36,8 @@ class Project {
 			'edit.php?' .
 			http_build_query(
 				array(
-					TM4MLP_TAX_PROJECT => get_term_field( 'slug', $term_id ),
-					'post_type'        => TM4MLP_CART,
+					TMWP_TAX_PROJECT => get_term_field( 'slug', $term_id ),
+					'post_type'        => TMWP_CART,
 				)
 			)
 		);
@@ -51,7 +51,7 @@ class Project {
 
 		// Add status ad second place.
 		$columns = array_slice( $columns, 0, 1 )
-		           + array( static::COL_STATUS => __( 'Status', 'translationmanager' ) )
+		           + array( static::COL_STATUS => __( 'Status', 'tmwp' ) )
 		           + array_slice( $columns, 1 );
 
 		$columns[ static::COL_ACTIONS ] = '';
@@ -69,12 +69,12 @@ class Project {
 	public static function print_column( $value, $column_name, $term_id ) {
 		switch ( $column_name ) {
 			case static::COL_STATUS:
-				if ( ! get_term_meta( $term_id, '_tm4mlp_order_id', true ) ) {
-					return __( 'New', 'translationmanager' );
+				if ( ! get_term_meta( $term_id, '_tmwp_order_id', true ) ) {
+					return __( 'New', 'tmwp' );
 				}
 
 				return sprintf(
-					__( 'Ordered at %s', 'translationmanager' ),
+					__( 'Ordered at %s', 'tmwp' ),
 					date( 'Y-m-d' )
 				);
 				break;
@@ -82,7 +82,7 @@ class Project {
 				return sprintf(
 					'<a href="%s" class="button">%s</a>',
 					self::get_project_link( $term_id ),
-					__( 'Show project', 'translationmanager' )
+					__( 'Show project', 'tmwp' )
 				);
 		}
 

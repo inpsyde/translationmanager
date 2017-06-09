@@ -1,9 +1,9 @@
-<?php /** @var \Tm4mlp\Meta_Box\Translation_Box $this */ ?>
+<?php /** @var \Tmwp\Meta_Box\Translation_Box $this */ ?>
 <script>
 	(function($){
 		$(function(){
-			$('#tm4mlp-inquery-button-id').on('click', '.tm4mlp-inquery-button', function() {
-				var checked = $("input.tm4mlp_languages_class").is(':checked');
+			$('#tmwp-inquery-button-id').on('click', '.tmwp-inquery-button', function() {
+				var checked = $("input.tmwp_languages_class").is(':checked');
 				if(!checked) {
 					alert( "You must check at least one language." );
 					return false;
@@ -14,8 +14,8 @@
 </script>
 <?php if ( ! $this->get_customer_key() ): ?>
 	<em>
-		<a href="<?php echo get_admin_url( null, '/options-general.php?page=' . \Tm4mlp\Admin\Options_Page::SLUG ) ?>">
-			<?php esc_html_e( 'Click here to setup the Eurotext Translation Plugin.', 'translationmanager' ) ?>
+		<a href="<?php echo get_admin_url( null, '/options-general.php?page=' . \Tmwp\Admin\Options_Page::SLUG ) ?>">
+			<?php esc_html_e( 'Click here to setup the Eurotext Translation Plugin.', 'tmwp' ) ?>
 		</a>
 	</em>
 	<?php return; ?>
@@ -26,7 +26,7 @@
 	<?php if( !empty($this->get_languages())):?>
 	<?php if ( $this->get_projects() ): ?>
 		<div class="misc-pub-section misc-pub-fff-status">
-			<?php _e( 'Project', 'translationmanager' ) ?>:
+			<?php _e( 'Project', 'tmwp' ) ?>:
 			<strong>
 				<span id="fff-status-display">
 					<?php esc_html_e( $this->get_recent_project_name() ) ?>
@@ -39,12 +39,12 @@
 
 			<div id="fff-status-select" class="hide-if-js" style="display: none;">
 				<input type="hidden"
-				       name="tm4mlp_project_id"
-				       id="tm4mlp_project_id"
+				       name="tmwp_project_id"
+				       id="tmwp_project_id"
 				       value="<?php echo $this->get_recent_project_id() ?>">
 				<label for="fff_status" class="screen-reader-text">Set status</label>
 				<select name="fff_status" id="fff_status">
-					<option value="0"><?php _e( 'New project', 'translationmanager' ) ?></option>
+					<option value="0"><?php _e( 'New project', 'tmwp' ) ?></option>
 					<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
 						<option value="<?php esc_attr_e( $project_id ) ?>">
 							<?php esc_html_e( $project_label ) ?>
@@ -76,7 +76,7 @@
 				$fffStatusSelect.slideUp('fast').siblings('a.edit-fff-status').show().focus();
 
 				jQuery('#fff-status-display').html(jQuery('#fff_status option:selected').text());
-				jQuery('#tm4mlp_project_id').val(jQuery('#fff_status').val());
+				jQuery('#tmwp_project_id').val(jQuery('#fff_status').val());
 
 				event.preventDefault();
 			});
@@ -95,8 +95,8 @@
 		<div>
 			<label for="language_<?php esc_attr_e( $language->get_lang_code() ) ?>">
 				<input type="checkbox"
-						class="tm4mlp_languages_class"
-				       name="tm4mlp_language[]"
+						class="tmwp_languages_class"
+				       name="tmwp_language[]"
 				       value="<?php esc_attr_e( $key ) ?>"
 				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>" />
 				<?php esc_html_e( $language->get_label() ) ?>
@@ -110,15 +110,15 @@
 </div>
 
 <?php if( !empty($this->get_languages())):?>
-<p id="tm4mlp-inquery-button-id">
+<p id="tmwp-inquery-button-id">
 	<button type="submit"
-	        name="<?php echo TM4MLP_ACTION_PROJECT_ADD_TRANSLATION ?>"
-	        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'translationmanager' ) ?>"
-	        class="button button-primary tm4mlp-inquery-button">
+	        name="<?php echo TMWP_ACTION_PROJECT_ADD_TRANSLATION ?>"
+	        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'tmwp' ) ?>"
+	        class="button button-primary tmwp-inquery-button">
 		<?php if ( ! $this->get_projects() ): ?>
-			<?php esc_html_e( 'Create new project', 'translationmanager' ) ?>
+			<?php esc_html_e( 'Create new project', 'tmwp' ) ?>
 		<?php else: ?>
-			<?php esc_html_e( 'Add to project', 'translationmanager' ) ?>
+			<?php esc_html_e( 'Add to project', 'tmwp' ) ?>
 		<?php endif; ?>
 	</button>
 </p>

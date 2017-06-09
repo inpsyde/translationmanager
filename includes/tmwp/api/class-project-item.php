@@ -1,16 +1,16 @@
 <?php
 
-namespace Tm4mlp\Api;
+namespace Tmwp\Api;
 
-use Tm4mlp\Api;
+use Tmwp\Api;
 
 /**
  * Handling the project endpoint of the API.
  *
- * @package Tm4mlp\Api
+ * @package Tmwp\Api
  */
-class Project {
-	const URL = 'project';
+class Project_Item {
+	const URL = 'project/%d/item';
 	/**
 	 * @var Api
 	 */
@@ -28,8 +28,15 @@ class Project {
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
-	public function create( \Tm4mlp\Domain\Project $project ) {
-		$body = $this->get_api()->put( self::URL, array(), $project->to_header_array() );
+	public function create( $project_id, $data = array() ) {
+		$body = $this->get_api()->put(
+			$this->get_url( $project_id ),
+			$data,
+			array(
+				'X-Source' => tmwp_get_current_lang_code(),
+				'X-Target' => $data['__meta']['target_language'],
+			)
+		);
 
 		if ( ! isset( $body['id'] ) ) {
 			return null;
@@ -45,7 +52,10 @@ class Project {
 		return $this->api;
 	}
 
-	public function get( $project_id ) {
-		return $this->get_api()->get( 'project/' . (int) $project_id );
+	/**
+	 * @return string
+	 */
+	protected function get_url( $project_id ) {
+		return sprintf( self::URL, $project_id );
 	}
 }

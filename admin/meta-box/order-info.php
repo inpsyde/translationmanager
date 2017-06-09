@@ -1,7 +1,7 @@
-<?php /** @var \Tm4mlp\Meta_Box\Order_Info $this */ ?>
+<?php /** @var \Tmwp\Meta_Box\Order_Info $this */ ?>
 <div>
 	<span class="dashicons dashicons-yes"></span>
-	<?php _e( 'Status', 'translationmanager' ) ?>:
+	<?php _e( 'Status', 'tmwp' ) ?>:
 	<b>
 		<?php echo esc_html( $this->get_status() ) ?>
 	</b>
@@ -10,7 +10,7 @@
 <?php if ( $this->get_order_id() ): ?>
 	<div>
 		<span class="dashicons dashicons-testimonial"></span>
-		<?php _e( 'Project number', 'translationmanager' ) ?>:
+		<?php _e( 'Project number', 'tmwp' ) ?>:
 		<b>
 			<?php echo esc_html( $this->get_order_id() ) ?>
 		</b>
@@ -19,7 +19,7 @@
 	<?php if ( $this->get_ordered_at() instanceof \DateTime ): ?>
 		<div>
 			<span class="dashicons dashicons-calendar-alt"></span>
-			<?php _e( 'Ordered at', 'translationmanager' ) ?>:
+			<?php _e( 'Ordered at', 'tmwp' ) ?>:
 			<b>
 				<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
 			</b>
@@ -28,10 +28,10 @@
 		<?php if ( ! $this->get_translated_at() ): ?>
 			<div class="textright">
 				<input type="submit"
-				       name="<?php echo TM4MLP_ACTION_PROJECT_UPDATE ?>"
+				       name="<?php echo TMWP_ACTION_PROJECT_UPDATE ?>"
 				       class="button button-primary"
-				       onclick="jQuery('#<?php echo TM4MLP_ACTION_PROJECT_UPDATE ?>').click();"
-				       value="<?php _e( 'Update', 'translationmanager' ) ?>"/>
+				       onclick="jQuery('#<?php echo TMWP_ACTION_PROJECT_UPDATE ?>').click();"
+				       value="<?php _e( 'Update', 'tmwp' ) ?>"/>
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>
@@ -39,7 +39,7 @@
 	<?php if ( $this->get_translated_at() instanceof \DateTime ): ?>
 		<div>
 			<span class="dashicons dashicons-calendar-alt"></span>
-			<?php _e( 'Translated at', 'translationmanager' ) ?>:
+			<?php _e( 'Translated at', 'tmwp' ) ?>:
 			<b>
 				<?php echo $this->get_translated_at()->format( 'Y-m-d' ) ?>
 			</b>
@@ -49,9 +49,9 @@
 	<br>
 	<div class="textright">
 		<input type="submit"
-		       name="<?php echo TM4MLP_ACTION_PROJECT_ORDER ?>"
+		       name="<?php echo TMWP_ACTION_PROJECT_ORDER ?>"
 		       class="button button-primary"
-		       onclick="jQuery('#<?php echo TM4MLP_ACTION_PROJECT_ORDER ?>').click();"
-		       value="<?php _e( 'Order project', 'translationmanager' ) ?>"/>
+		       onclick="jQuery('#<?php echo TMWP_ACTION_PROJECT_ORDER ?>').click();"
+		       value="<?php _e( 'Order project', 'tmwp' ) ?>"/>
 	</div>
 <?php endif; ?>

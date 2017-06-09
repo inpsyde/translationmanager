@@ -1,11 +1,11 @@
 <?php
 
-namespace Tm4mlp\Domain;
+namespace Tmwp\Domain;
 
 /**
  * Represent a language as needed by TM.
  *
- * @package Tm4mlp\Domain
+ * @package Tmwp\Domain
  */
 class Language {
 	protected $lang_code;

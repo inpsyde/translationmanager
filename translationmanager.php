@@ -12,17 +12,17 @@ Text Domain: tm4mpl
 Domain Path: /languages
 */
 
-define( 'TM4MLP_FILE', __FILE__ );
-define( 'TM4MLP_DIR', dirname( TM4MLP_FILE ) );
-define( 'TM4MLP_FILENAME', basename( TM4MLP_DIR ) . '/' . basename( TM4MLP_FILE ) );
-define( 'TM4MLP_VERSION', '1.0.0' );
+define( 'TMWP_FILE', __FILE__ );
+define( 'TMWP_DIR', dirname( TMWP_FILE ) );
+define( 'TMWP_FILENAME', basename( TMWP_DIR ) . '/' . basename( TMWP_FILE ) );
+define( 'TMWP_VERSION', '1.0.0' );
 
 require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
-register_activation_hook( TM4MLP_FILENAME, 'tm4mlp_activate' );
+register_activation_hook( TMWP_FILENAME, 'tmwp_activate' );
 
 // Then everything else.
-foreach ( glob( TM4MLP_DIR . '/includes/*.php' ) as $feature ) {
+foreach ( glob( TMWP_DIR . '/includes/*.php' ) as $feature ) {
 	require_once $feature;
 }
 
@@ -31,6 +31,6 @@ if ( ! is_admin() ) {
 }
 
 // In admin context we load some more.
-foreach ( glob( TM4MLP_DIR . '/includes/admin/*.php' ) as $feature ) {
+foreach ( glob( TMWP_DIR . '/includes/admin/*.php' ) as $feature ) {
 	require_once $feature;
 }

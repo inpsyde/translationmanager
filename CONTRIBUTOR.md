@@ -1,4 +1,4 @@
-# TM4MLP
+# TMWP
 
 ## Big mess
 
@@ -12,7 +12,7 @@ besides those that WordPress gave us:
 - "includes/" mostly contains code.
   - "includes/*.php" will always be loaded.
   - "includes/admin/*.php" will be loaded when `is_admin()` is true.
-  - "includes/tm4mlp" contains all classes (loaded via class loader).
+  - "includes/tmwp" contains all classes (loaded via class loader).
 - "public/" contains partials/templates/js/css for the frontend.
 
 ### Procedural copy of classes
@@ -40,18 +40,18 @@ Within your module you might be interested in those filter/actions:
 
 ### Filter
  
-The `tm4mlp_sanitize_post` sanitizes data before it is send in for translation.
-Use the `TM4MLP_SANITIZE_POST` const to be forward compatible.
+The `tmwp_sanitize_post` sanitizes data before it is send in for translation.
+Use the `TMWP_SANITIZE_POST` const to be forward compatible.
 This filter is documented in the method
-`\Tm4mlp\Pages\Add_Translation::handle_post()`.
+`\Tmwp\Pages\Add_Translation::handle_post()`.
 
-The `tm4mlp_api_translation_update` receives data like this (JSON):
+The `tmwp_api_translation_update` receives data like this (JSON):
 
     {
       "__meta": {
         "id": 1, (ID as given by REST-API)
-        "source": { id: 5, language: "de-DE", label: "Deutsch" }, (see below for `tm4mlp_get_current_language` filter)
-        "target": { id: 6, language: 'fr-FR', label: "Francais" }, (see below for `tm4mlp_get_languages` filter)
+        "source": { id: 5, language: "de-DE", label: "Deutsch" }, (see below for `tmwp_get_current_language` filter)
+        "target": { id: 6, language: 'fr-FR', label: "Francais" }, (see below for `tmwp_get_languages` filter)
       },
       "0": {
         "__meta": {
@@ -74,9 +74,9 @@ The `tm4mlp_api_translation_update` receives data like this (JSON):
     }
 
 An example for development can be found at the API on the path "/api/stub/translation.json".
-More documentation about this action can be found in the `tm4mlp_api_fetch` function.
+More documentation about this action can be found in the `tmwp_api_fetch` function.
 
-Set languages via `tm4mlp_get_languages` filter like this:
+Set languages via `tmwp_get_languages` filter like this:
 
     [
         'lang_id' => 'Lang label',
@@ -85,5 +85,5 @@ Set languages via `tm4mlp_get_languages` filter like this:
     ]
 
 The ID can be whatever you need in your translation plugin.
-You also may want to give us the current language via the `tm4mlp_get_current_language`,
+You also may want to give us the current language via the `tmwp_get_current_language`,
 so that he translation agency and you afterwards know the origin language.

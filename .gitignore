@@ -37,7 +37,7 @@ composer.lock
 .idea/inspectionProfiles/
 .idea/modules.xml
 .idea/php.xml
-.idea/tm4mlp.iml
+.idea/tmwp.iml
 .idea/vcs.xml
 .idea/webResources.xml
 .idea/codeStyleSettings.xml

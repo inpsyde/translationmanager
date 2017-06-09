@@ -1,6 +1,6 @@
 <?php
 
-namespace Tm4mlp\Module;
+namespace Tmwp\Module;
 
 use WPSEO_Meta;
 

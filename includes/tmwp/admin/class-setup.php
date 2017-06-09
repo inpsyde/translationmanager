@@ -3,11 +3,11 @@
  * PHP 5.4
  */
 
-namespace Tm4mlp\Admin;
+namespace Tmwp\Admin;
 
 class Setup {
 	public function plugin_activate() {
-		$plugin_data = get_plugin_data( TM4MLP_FILE );
+		$plugin_data = get_plugin_data( TMWP_FILE );
 
 		if ( ! isset( $plugin_data['Version'] ) || ! $plugin_data['Version'] ) {
 			throw new \Exception( 'Bad plugin data.' );
@@ -15,10 +15,10 @@ class Setup {
 
 		$version = $plugin_data['Version'];
 
-		$setup_files = glob( TM4MLP_DIR . '/admin/plugin-activate/*-*.php' );
+		$setup_files = glob( TMWP_DIR . '/admin/plugin-activate/*-*.php' );
 		natsort( $setup_files );
 
-		$current_version = get_option( 'tm4mlp_version', '0.0.0' );
+		$current_version = get_option( 'tmwp_version', '0.0.0' );
 
 		foreach ( $setup_files as $setup_script ) {
 			$file_version = strtok( basename( $setup_script ), '-' );
@@ -35,7 +35,7 @@ class Setup {
 
 			require_once $setup_script;
 
-			update_option( 'tm4mlp_version', $file_version );
+			update_option( 'tmwp_version', $file_version );
 		}
 	}
 }

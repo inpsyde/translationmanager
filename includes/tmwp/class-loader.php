@@ -2,15 +2,15 @@
 /**
  * Containing the class loader.
  *
- * @package tm4mlp
+ * @package tmwp
  */
 
-namespace Tm4mlp;
+namespace Tmwp;
 
 /**
  * Handles the autoloader for classes.
  *
- * @package Tm4mlp
+ * @package Tmwp
  */
 class Loader {
 	/**

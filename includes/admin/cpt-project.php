@@ -1,14 +1,14 @@
 <?php
 
-function tm4mlp_cpt_cart() {
+function tmwp_cpt_cart() {
 	register_post_type(
-		TM4MLP_CART,
+		TMWP_CART,
 		array(
-			'label'         => __( 'Cart', 'translationmanager' ),
+			'label'         => __( 'Cart', 'tmwp' ),
 			'labels'        => array(
-				'name' => __( 'Translations', 'translationmanager' ),
+				'name' => __( 'Translations', 'tmwp' ),
 			),
-			'description'   => __( 'What you are about to order.', 'translationmanager' ),
+			'description'   => __( 'What you are about to order.', 'tmwp' ),
 			'public'        => true,
 			'capabilities'  => array(
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
@@ -17,20 +17,20 @@ function tm4mlp_cpt_cart() {
 			'map_meta_cap'  => true,
 			'menu_position' => 100,
 			'supports'      => array( 'title' ),
-			'menu_icon'     => plugins_url( 'public/tm-icon-bw.png', TM4MLP_FILE ),
-			// 'show_in_menu'  => 'edit.php?post_type=' . TM4MLP_TRANS_STATUS,
+			'menu_icon'     => plugins_url( 'public/tm-icon-bw.png', TMWP_FILE ),
+			// 'show_in_menu'  => 'edit.php?post_type=' . TMWP_TRANS_STATUS,
 		)
 	);
 }
 
-add_action( 'init', 'tm4mlp_cpt_cart' );
+add_action( 'init', 'tmwp_cpt_cart' );
 
 /**
  * Remove month filter.
  */
-function tm4mlp_cart_remove_month() {
+function tmwp_cart_remove_month() {
 	if ( ! get_current_screen()
-	     || TM4MLP_CART != get_current_screen()->post_type
+	     || TMWP_CART != get_current_screen()->post_type
 	) {
 		return;
 	}
@@ -38,26 +38,26 @@ function tm4mlp_cart_remove_month() {
 	add_filter( 'months_dropdown_results', '__return_empty_array' );
 }
 
-add_action( 'admin_head', 'tm4mlp_cart_remove_month' );
+add_action( 'admin_head', 'tmwp_cart_remove_month' );
 
-function tm4mlp_bulk_actions_cart( $actions ) {
+function tmwp_bulk_actions_cart( $actions ) {
 	unset( $actions['edit'] );
 
 	if ( isset( $actions['trash'] ) ) {
-		$actions['trash'] = __( 'Remove from project', 'translationmanager' );
+		$actions['trash'] = __( 'Remove from project', 'tmwp' );
 	}
 
 	return $actions;
 }
 
-add_filter( 'bulk_actions-edit-' . TM4MLP_CART, 'tm4mlp_bulk_actions_cart' );
+add_filter( 'bulk_actions-edit-' . TMWP_CART, 'tmwp_bulk_actions_cart' );
 
 /**
  * @param          $actions
  * @param \WP_Post $post
  */
-function tm4mlp_cart_row_actions( $actions, $post ) {
-	if ( $post && TM4MLP_CART != $post->post_type ) {
+function tmwp_cart_row_actions( $actions, $post ) {
+	if ( $post && TMWP_CART != $post->post_type ) {
 		return $actions;
 	}
 
@@ -69,16 +69,16 @@ function tm4mlp_cart_row_actions( $actions, $post ) {
 	return array(
 		'trash' => str_replace(
 			'>Trash<',
-			'>' . __( 'Remove from project', 'translationmanager' ) . '<',
+			'>' . __( 'Remove from project', 'tmwp' ) . '<',
 			$actions['trash']
 		)
 	);
 }
 
-add_filter( 'post_row_actions', 'tm4mlp_cart_row_actions', 10, 2 );
+add_filter( 'post_row_actions', 'tmwp_cart_row_actions', 10, 2 );
 
-function tm4mlp_cart_footer( $which ) {
-	if ( 'edit-' . TM4MLP_CART != get_current_screen()->id ) {
+function tmwp_cart_footer( $which ) {
+	if ( 'edit-' . TMWP_CART != get_current_screen()->id ) {
 		return;
 	}
 
@@ -90,29 +90,29 @@ function tm4mlp_cart_footer( $which ) {
 	$request = wp_parse_args(
 		$_GET,  // Input var ok.
 		array(
-			TM4MLP_TAX_PROJECT => null,
+			TMWP_TAX_PROJECT => null,
 		)
 	);
 
-	if ( isset( $request['tm4mlp_project'] ) && $_GET['tm4mlp_project'] ) {
-		$current_slug = $_GET['tm4mlp_project']; // Input var ok.
-		$term         = get_term_by( 'slug', $current_slug, TM4MLP_TAX_PROJECT );
+	if ( isset( $request['tmwp_project'] ) && $_GET['tmwp_project'] ) {
+		$current_slug = $_GET['tmwp_project']; // Input var ok.
+		$term         = get_term_by( 'slug', $current_slug, TMWP_TAX_PROJECT );
 
 		if ( ! is_wp_error( $term )
-		     && get_term_meta( $term->term_id, '_tm4mlp_order_id' )
+		     && get_term_meta( $term->term_id, '_tmwp_order_id' )
 		) {
 			// This has an order id so we show the update button.
-			require tm4mlp_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
-			_e( 'Thanks for your order.', 'translationmanager' );
+			require tmwp_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
+			_e( 'Thanks for your order.', 'tmwp' );
 
 			return;
 		}
 	}
 
-	require tm4mlp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
+	require tmwp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
 }
 
-add_action( 'manage_posts_extra_tablenav', 'tm4mlp_cart_footer' );
+add_action( 'manage_posts_extra_tablenav', 'tmwp_cart_footer' );
 
 /**
  * Hide WP status.
@@ -124,67 +124,67 @@ add_action( 'manage_posts_extra_tablenav', 'tm4mlp_cart_footer' );
  *
  * @return array
  */
-function _tm4mlp_cart_remove_states( $post_states, $post ) {
-	if ( TM4MLP_CART != $post->post_type ) {
+function _tmwp_cart_remove_states( $post_states, $post ) {
+	if ( TMWP_CART != $post->post_type ) {
 		return $post_states;
 	}
 
 	return array();
 }
 
-add_filter( 'display_post_states', '_tm4mlp_cart_remove_states', 10, 2 );
+add_filter( 'display_post_states', '_tmwp_cart_remove_states', 10, 2 );
 
-add_action( 'admin_init', array( \Tm4mlp\Post_Type\Project_Item::class, 'register_post_status' ) );
+add_action( 'admin_init', array( \Tmwp\Post_Type\Project_Item::class, 'register_post_status' ) );
 
 add_filter(
-	'manage_' . TM4MLP_CART . '_posts_columns',
+	'manage_' . TMWP_CART . '_posts_columns',
 	array(
-		\Tm4mlp\Post_Type\Project_Item::class,
+		\Tmwp\Post_Type\Project_Item::class,
 		'modify_columns'
 	)
 );
 
 add_filter(
-	'manage_edit-' . TM4MLP_TAX_PROJECT . '_columns',
+	'manage_edit-' . TMWP_TAX_PROJECT . '_columns',
 	array(
-		\Tm4mlp\Taxonomy\Project::class,
+		\Tmwp\Taxonomy\Project::class,
 		'modify_columns'
 	)
 );
 
 add_filter(
-	TM4MLP_TAX_PROJECT . '_row_actions',
+	TMWP_TAX_PROJECT . '_row_actions',
 	array(
-		\Tm4mlp\Taxonomy\Project::class,
+		\Tmwp\Taxonomy\Project::class,
 		'modify_row_actions'
 	),
 	10,
 	2
 );
 
-add_filter( 'views_edit-tm4mlp_cart', function ( $value ) {
+add_filter( 'views_edit-tmwp_cart', function ( $value ) {
 	$request = $_GET; // Input var ok.
 
-	if ( ! isset( $request[ TM4MLP_TAX_PROJECT ] ) || ! $request[ TM4MLP_TAX_PROJECT ] ) {
+	if ( ! isset( $request[ TMWP_TAX_PROJECT ] ) || ! $request[ TMWP_TAX_PROJECT ] ) {
 		// Not on a specific project so we can't show details.
 		return $value;
 	}
 
-	$term = get_term_by( 'slug', $request[ TM4MLP_TAX_PROJECT ], TM4MLP_TAX_PROJECT );
+	$term = get_term_by( 'slug', $request[ TMWP_TAX_PROJECT ], TMWP_TAX_PROJECT );
 
-	$info = new \Tm4mlp\Meta_Box\Order_Info( $term->term_id );
+	$info = new \Tmwp\Meta_Box\Order_Info( $term->term_id );
 
-	require tm4mlp_get_template( 'admin/meta-box/project-box.php' );
+	require tmwp_get_template( 'admin/meta-box/project-box.php' );
 
-	require tm4mlp_get_template( 'admin/cart/manage-cart-title-description.php' );
+	require tmwp_get_template( 'admin/cart/manage-cart-title-description.php' );
 
 	return $value;
 } );
 
 add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_counts ) {
 
-	$bulk_messages[ TM4MLP_CART ] = array(
-		'updated'   => __( 'Project has been updated.', 'translationmanager' ),
+	$bulk_messages[ TMWP_CART ] = array(
+		'updated'   => __( 'Project has been updated.', 'tmwp' ),
 		'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( '1 page not updated, somebody is editing it.' ) :
 			_n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] ),
 		'deleted'   => _n( '%s page permanently deleted.', '%s pages permanently deleted.', $bulk_counts['deleted'] ),
@@ -193,7 +193,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 	);
 
 	if ( isset( $_GET['updated'] ) && - 1 == intval( $_GET['updated'] ) ) { // Input var ok.
-		$bulk_messages[ TM4MLP_CART ]['updated'] = __( 'Project has been created', 'translationmanager' );
+		$bulk_messages[ TMWP_CART ]['updated'] = __( 'Project has been created', 'tmwp' );
 	}
 
 	return $bulk_messages;
@@ -201,7 +201,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 
 add_action( 'admin_head-edit.php', function () {
 	if ( ! get_current_screen()
-	     || TM4MLP_CART != get_current_screen()->post_type
+	     || TMWP_CART != get_current_screen()->post_type
 	) {
 		return;
 	}

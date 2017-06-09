@@ -1,4 +1,4 @@
-<?php /** @var \Tm4mlp\Admin\Options_Page $this */ ?>
+<?php /** @var \Tmwp\Admin\Options_Page $this */ ?>
 <div class="wrap">
 
 	<h2 class="settings__headline">
@@ -16,15 +16,15 @@
 		<div id="inpsyde-tabs" class="inpsyde-tabs">
 			<ul class="inpsyde-tab__navigation wp-clearfix">
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--connection"><?php esc_html_e( 'Connection', 'translationmanager' ); ?></a>
+					<a href="#tab--connection"><?php esc_html_e( 'Connection', 'tmwp' ); ?></a>
 				</li>
 
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--plugins"><?php esc_html_e( 'Plugins', 'translationmanager' ); ?></a>
+					<a href="#tab--plugins"><?php esc_html_e( 'Plugins', 'tmwp' ); ?></a>
 				</li>
 
 				<li class="inpsyde-tab__navigation-item">
-					<a href="#tab--languages"><?php esc_html_e( 'Languages', 'translationmanager' ); ?></a>
+					<a href="#tab--languages"><?php esc_html_e( 'Languages', 'tmwp' ); ?></a>
 				</li>
 			</ul>
 
@@ -32,7 +32,7 @@
 				<h3 class="screen-reader-text">Credentials</h3>
 				<?php settings_fields( $this::OPTION_GROUP ); ?>
 				<?php
-				do_settings_sections( 'tm4mlp_api' );
+				do_settings_sections( 'tmwp_api' );
 				submit_button( __( 'Save changes' ), 'primary', 'save_action' );
 				?>
 			</div>

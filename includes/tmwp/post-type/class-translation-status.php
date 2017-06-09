@@ -1,6 +1,6 @@
 <?php
 
-namespace Tm4mlp\Post_Type;
+namespace Tmwp\Post_Type;
 
 class Translation_Status {
 	const POST_TYPE = 'translation_status';

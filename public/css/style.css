@@ -1,4 +1,4 @@
-.settings_page_tm4mlp #wpcontent:before {
+.settings_page_tmwp #wpcontent:before {
   content: ' ';
   position: absolute;
   left: 0;
@@ -7,15 +7,15 @@
   width: 100%;
   min-height: 400px;
   background: #8FB900; }
-.settings_page_tm4mlp .settings__headline {
+.settings_page_tmwp .settings__headline {
   color: #fff;
   margin: 0;
   padding: 50px 0 !important;
   font-size: 250% !important; }
-.settings_page_tm4mlp .inpsyde-logo__image {
+.settings_page_tmwp .inpsyde-logo__image {
   margin-top: 20px;
   float: right; }
-.settings_page_tm4mlp .notice, .settings_page_tm4mlp .updated, .settings_page_tm4mlp .error {
+.settings_page_tmwp .notice, .settings_page_tmwp .updated, .settings_page_tmwp .error {
   display: inline-block; }
 
 .inpsyde-tabs {

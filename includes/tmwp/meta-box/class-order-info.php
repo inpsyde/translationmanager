@@ -1,10 +1,10 @@
 <?php
 
-namespace Tm4mlp\Meta_Box;
+namespace Tmwp\Meta_Box;
 
 class Order_Info {
 
-	const ID = 'tm4mlp_order_info';
+	const ID = 'tmwp_order_info';
 
 	const CONTEXT = 'side';
 	private $project_id;
@@ -16,16 +16,16 @@ class Order_Info {
 	public function add_meta_box() {
 		add_meta_box(
 			static::ID,
-			__( 'Order information', 'translationmanager' ),
+			__( 'Order information', 'tmwp' ),
 			array( $this, 'dispatch' ),
-			TM4MLP_ORDER,
+			TMWP_ORDER,
 			self::CONTEXT
 		);
 	}
 
 	public function dispatch() {
 		/** @var string $template */
-		$template = tm4mlp_get_template( 'admin/meta-box/order-info.php' );
+		$template = tmwp_get_template( 'admin/meta-box/order-info.php' );
 
 		if ( ! $template || ! file_exists( $template ) ) {
 			return;
@@ -47,10 +47,10 @@ class Order_Info {
 	 */
 	public function get_status() {
 		if ( ! $this->get_order_id() ) {
-			return __( 'Ready to order', 'translationmanager' );
+			return __( 'Ready to order', 'tmwp' );
 		}
 
-		return apply_filters( 'tm4mlp_order_status', 'In preparation', get_the_ID() );
+		return apply_filters( 'tmwp_order_status', 'In preparation', get_the_ID() );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Order_Info {
 	 * @return string
 	 */
 	public function get_order_id() {
-		return get_term_meta( $this->get_project_id(), '_tm4mlp_order_id', true );
+		return get_term_meta( $this->get_project_id(), '_tmwp_order_id', true );
 	}
 
 	/**

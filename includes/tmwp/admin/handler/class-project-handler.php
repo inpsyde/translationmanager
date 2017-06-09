@@ -1,15 +1,15 @@
 <?php
 
-namespace Tm4mlp\Admin\Handler;
+namespace Tmwp\Admin\Handler;
 
 class Project_Handler {
 	public function create_project( $title ) {
 		// Check if project already exists.
-		$ids = term_exists( $title, TM4MLP_TAX_PROJECT );
+		$ids = term_exists( $title, TMWP_TAX_PROJECT );
 
 		if ( ! $ids ) {
 			// Create if it does not exists.
-			$ids = wp_insert_term( $title, TM4MLP_TAX_PROJECT );
+			$ids = wp_insert_term( $title, TMWP_TAX_PROJECT );
 		}
 
 		if ( is_wp_error( $ids ) ) {
@@ -24,19 +24,19 @@ class Project_Handler {
 
 		$translation_id = wp_insert_post(
 			array(
-				'post_type'  => TM4MLP_CART,
+				'post_type'  => TMWP_CART,
 				'post_title' => sprintf(
-					__( '%s: "%s"', 'translationmanager' ),
+					__( '%s: "%s"', 'tmwp' ),
 					$labels->singular_name,
 					get_the_title( $post_id )
 				),
 				'meta_input' => array(
-					'_tm4mlp_target_id' => $lang_id,
-					'_tm4mlp_post_id'   => $post_id,
+					'_tmwp_target_id' => $lang_id,
+					'_tmwp_post_id'   => $post_id,
 				)
 			)
 		);
 
-		wp_set_post_terms( $translation_id, array( $project ), TM4MLP_TAX_PROJECT );
+		wp_set_post_terms( $translation_id, array( $project ), TMWP_TAX_PROJECT );
 	}
 }

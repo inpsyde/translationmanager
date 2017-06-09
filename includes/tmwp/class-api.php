@@ -1,9 +1,9 @@
 <?php
 
-namespace Tm4mlp;
+namespace Tmwp;
 
-use Tm4mlp\Api\Project;
-use Tm4mlp\Api\Project_Item;
+use Tmwp\Api\Project;
+use Tmwp\Api\Project_Item;
 
 class Api {
 	/**

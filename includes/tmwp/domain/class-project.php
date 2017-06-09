@@ -1,6 +1,6 @@
 <?php
 
-namespace Tm4mlp\Domain;
+namespace Tmwp\Domain;
 
 class Project {
 	/**

@@ -1,22 +1,22 @@
 <?php
 
-function tm4mlp_api_url( $path = null ) {
-	return tm4mlp_api()->get_url( $path );
+function tmwp_api_url( $path = null ) {
+	return tmwp_api()->get_url( $path );
 }
 
 /**
- * Instance of the TM4MLP API.
+ * Instance of the TMWP API.
  *
- * @return \Tm4mlp\Api
+ * @return \Tmwp\Api
  */
-function tm4mlp_api() {
+function tmwp_api() {
 	static $api;
 
 	if ( null === $api ) {
-		$api = new \Tm4mlp\Api(
-			get_option( \Tm4mlp\Admin\Options_Page::REFRESH_TOKEN ),
+		$api = new \Tmwp\Api(
+			get_option( \Tmwp\Admin\Options_Page::REFRESH_TOKEN ),
 			'b37270d25d5b3fccf137f7462774fe76',
-			get_option( \Tm4mlp\Admin\Options_Page::URL, 'http://api.eurotext.de/api/v1' )
+			get_option( \Tmwp\Admin\Options_Page::URL, 'http://api.eurotext.de/api/v1' )
 		);
 	}
 
@@ -32,7 +32,7 @@ function tm4mlp_api() {
  *
  * @since 1.0.0
  */
-function tm4mlp_api_fetch() {
+function tmwp_api_fetch() {
 	$data            = array();
 	$response        = array(); // wp_remote_request()
 	$target_language = 'no-NE';
@@ -50,5 +50,5 @@ function tm4mlp_api_fetch() {
 	 * @param string $target_language Target language as language tag (like "en-CA").
 	 * @param array  $response        The response as of `wp_remote_request()`.
 	 */
-	do_action( TM4MLP_API_PROCESS_ORDER, $data, $target_language, $response );
+	do_action( TMWP_API_PROCESS_ORDER, $data, $target_language, $response );
 }
