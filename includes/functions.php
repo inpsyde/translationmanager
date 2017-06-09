@@ -65,8 +65,8 @@ function inpsyde_tmwp_about_page_callback() {
 	<?php
 }
 
-add_filter( 'plugin_row_meta', 'custom_plugin_row_meta', 10, 2 );
-function custom_plugin_row_meta( $links, $file ) {
+add_filter( 'plugin_row_meta', 'inpsyde_euro_text_link_at_plugin_list', 10, 2 );
+function inpsyde_euro_text_link_at_plugin_list( $links, $file ) {
 	if ( strpos( $file, TMWP_FILENAME ) !== false ) {
 		$links[1] = 'By <a href="https://eurotext.de/">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>';
 	}
