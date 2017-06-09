@@ -1,5 +1,17 @@
 <?php /** @var \Tm4mlp\Meta_Box\Translation_Box $this */ ?>
-
+<script>
+	(function($){
+		$(function(){
+			$('#tm4mlp-inquery-button-id').on('click', '.tm4mlp-inquery-button', function() {
+				checked = $("input[type=checkbox][name=tm4mlp_language]:checked").length;
+				if(!checked) {
+					alert("You must check at least one checkbox.");
+					return false;
+				}
+			});
+		})
+	})(jQuery)
+</script>
 <?php if ( ! $this->get_customer_key() ): ?>
 	<em>
 		<a href="<?php echo get_admin_url( null, '/options-general.php?page=' . \Tm4mlp\Admin\Options_Page::SLUG ) ?>">
@@ -85,7 +97,7 @@
 				<input type="checkbox"
 				       name="tm4mlp_language[]"
 				       value="<?php esc_attr_e( $key ) ?>"
-				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>" required="required" />
+				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>" />
 				<?php esc_html_e( $language->get_label() ) ?>
 			</label>
 		</div>
@@ -97,11 +109,11 @@
 </div>
 
 <?php if( !empty($this->get_languages())):?>
-<p>
+<p id="tm4mlp-inquery-button-id">
 	<button type="submit"
 	        name="<?php echo TM4MLP_ACTION_PROJECT_ADD_TRANSLATION ?>"
 	        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'tm4mlp' ) ?>"
-	        class="button button-primary">
+	        class="button button-primary tm4mlp-inquery-button">
 		<?php if ( ! $this->get_projects() ): ?>
 			<?php esc_html_e( 'Create new project', 'tm4mlp' ) ?>
 		<?php else: ?>
