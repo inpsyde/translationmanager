@@ -35,7 +35,7 @@ add_action('admin_menu', 'inpsyde_tmwp_settings_menu_item');
  */
 function inpsyde_tmwp_settings_menu_item() {
 	global $submenu;
-	$url = 'options-general.php?page=tmwp';
+	$url = 'options-general.php?page=settings_page_tmwp';
 	$submenu['edit.php?post_type=tmwp_cart'][] = array('Settings', 'manage_options', $url);
 }
 

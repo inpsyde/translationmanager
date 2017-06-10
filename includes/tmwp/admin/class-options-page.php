@@ -21,7 +21,7 @@ class Options_Page {
 	const REFRESH_TOKEN = 'tmwp_api_token';
 	const TRANSIENT_CATEGORIES = 'tmwp_categories';
 	const SELECTED_CATEGORIES = 'tmwp_sync_categories';
-	const SLUG = 'tmwp';
+	const SLUG = 'settings_page_tmwp';
 
 	/**
 	 * Allowed actions
