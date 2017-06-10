@@ -21,7 +21,7 @@ class Options_Page {
 	const REFRESH_TOKEN = 'tmwp_api_token';
 	const TRANSIENT_CATEGORIES = 'tmwp_categories';
 	const SELECTED_CATEGORIES = 'tmwp_sync_categories';
-	const SLUG = 'settings_page_tmwp';
+	const SLUG = 'tmwp';
 
 	/**
 	 * Allowed actions
@@ -213,9 +213,9 @@ class Options_Page {
 	 * @return string Content of the options page.
 	 */
 	public function render() {
+		wp_enqueue_style( 'tmwp-options-page' );
 		ob_start();
 		require_once tmwp_get_template( '/admin/options-page.php' );
-
 		return ob_get_clean();
 	}
 
@@ -240,16 +240,10 @@ class Options_Page {
 	}
 
 	public function enqueue_style() {
-		if ( ! get_current_screen() || self::SLUG !== get_current_screen()->id ) {
-			return;
-		}
-
 		wp_register_style(
 			'tmwp-options-page',
 			plugins_url( 'public/css/style.css', 'translationmanager/translationmanager.php' )
 		);
-
-		wp_enqueue_style( 'tmwp-options-page' );
 	}
 
 	public function enqueue_script() {
