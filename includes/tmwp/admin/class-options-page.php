@@ -44,8 +44,8 @@ class Options_Page {
 	 */
 	public function add_options_page() {
 		add_options_page(
-			__( 'Translations', 'tm4mpl' ),
-			__( 'Translations', 'tm4mpl' ),
+			__( 'Translations', 'translationmanager' ),
+			__( 'Translations', 'translationmanager' ),
 			'manage_options',
 			self::SLUG,
 			array( $this, 'dispatch' )
@@ -240,7 +240,7 @@ class Options_Page {
 	}
 
 	public function enqueue_style() {
-		if ( ! get_current_screen() || 'settings_page_tmwp' !== get_current_screen()->id ) {
+		if ( ! get_current_screen() || self::SLUG !== get_current_screen()->id ) {
 			return;
 		}
 
