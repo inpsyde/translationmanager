@@ -1,5 +1,5 @@
 {
-  "name": "eurotext/wp-tm4mpl",
+  "name": "eurotext/translationmanager",
   "description": "WordPress Plugin to connect to the Eurotext REST API.",
   "license": "proprietary",
   "type": "wordpress-plugin",

@@ -242,7 +242,7 @@ class Options_Page {
 	public function enqueue_style() {
 		wp_register_style(
 			'tmwp-options-page',
-			plugins_url( 'public/css/style.css', 'translationmanager/translationmanager.php' )
+			plugins_url( '../../../public/css/style.css', __FILE__ )
 		);
 	}
 
