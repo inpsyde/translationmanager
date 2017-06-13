@@ -12,6 +12,7 @@ class InpsydeCustomFunctions {
 		add_action( 'admin_menu', array( $this, 'inpsyde_tmwp_about_page' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'inpsyde_euro_text_link_at_plugin_list' ), 10, 2 );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
+		add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_post_updated_messages' ), 10, 2 );
 	}
 
 	public function inpsyde_remove_search_box() {
@@ -211,6 +212,21 @@ class InpsydeCustomFunctions {
 		}
 
 		return $admin_footer_text;
+	}
+
+	/* Filter post updated messages for custom post types. */
+	public function bulk_post_updated_messages( $bulk_messages, $bulk_counts ) {
+
+		$bulk_messages['tmwp_cart'] = array(
+			'updated'   => _n( '%s translation updated.', '%s translations updated.', $bulk_counts['updated'] ),
+			'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
+			'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
+			'trashed'   => _n( '%s translation removed from the project.', '%s translations removed from the project.', $bulk_counts['trashed'] ),
+			'untrashed' => _n( '%s translation restored at the project.', '%s my_cpts restored at the project.', $bulk_counts['untrashed'] ),
+		);
+
+		return $bulk_messages;
+
 	}
 }
 
