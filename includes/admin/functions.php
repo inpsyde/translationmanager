@@ -13,6 +13,41 @@ class InpsydeCustomFunctions {
 		add_filter( 'plugin_row_meta', array( $this, 'inpsyde_euro_text_link_at_plugin_list' ), 10, 2 );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
 		add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_post_updated_messages' ), 10, 2 );
+		add_action( 'manage_posts_extra_tablenav', array( $this, 'restrict_manage_posts' ), 10 );
+	}
+
+	public function restrict_manage_posts( $which ) {
+		if( 'page' === $_GET['post_type'] && 'top' === $which ) { ?>
+			<?php add_thickbox(); ?>
+
+			<script type="text/javascript">
+				(function($){
+					$(function(){
+						// Code for making the button dependable on checkboxes.
+						$( ".check-column" ).on('change', "input[type='checkbox']", function() {
+							var checked = $("input[name='post[]']").is(':checked');
+							if(!checked) {
+								$("#translate_bulk_pages").attr("disabled", true);
+							} else {
+								$("#translate_bulk_pages").attr("disabled", false);
+							}
+							return true;
+						});
+					});
+				})(jQuery)
+			</script>
+
+			<div id="my-content-id" style="display:none;">
+				<p>
+					This is my hidden content! It will appear in ThickBox when the link is clicked.
+				</p>
+			</div>
+
+			<div class="alignleft actions translate_button">
+				<a href="#TB_inline?width=600&height=550&inlineId=modal-window-id" id="translate_bulk_pages" class="button thickbox" disabled>Translate Bulk Post</a>
+			</div>
+			<?php
+		}
 	}
 
 	public function inpsyde_remove_search_box() {
