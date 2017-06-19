@@ -13,6 +13,7 @@ class InpsydeCustomFunctions {
 		add_filter( 'plugin_row_meta', array( $this, 'inpsyde_euro_text_link_at_plugin_list' ), 10, 2 );
 		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
 		add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_post_updated_messages' ), 10, 2 );
+		add_filter( 'get_edit_term_link', array( $this, 'inpsyde_get_edit_term_link' ), 10, 4 );
 		add_action( 'manage_posts_extra_tablenav', array( $this, 'restrict_manage_posts' ), 10 );
 	}
 
@@ -24,7 +25,7 @@ class InpsydeCustomFunctions {
 				(function($){
 					$(function(){
 						// Code for making the button dependable on checkboxes.
-						$( ".check-column" ).on('change', "input[type='checkbox']", function() {
+						$( ".check-column" ).on('change', "input[type='checkbox']", function( e ) {
 							var checked = $("input[name='post[]']").is(':checked');
 							if(!checked) {
 								$("#translate_bulk_pages").attr("disabled", true);
@@ -33,14 +34,22 @@ class InpsydeCustomFunctions {
 							}
 							return true;
 						});
+
+						// Code for making the button prevent default on checkboxes.
+						$("#translate_bulk_pages").on( 'click', function( e ) {
+							var disabled = $(this).attr('disabled');
+							if(disabled) {
+								e.preventDefault();
+								return false;
+							}
+							return true;
+						})
 					});
 				})(jQuery)
 			</script>
 
 			<div id="my-content-id" style="display:none;">
-				<p>
-					This is my hidden content! It will appear in ThickBox when the link is clicked.
-				</p>
+
 			</div>
 
 			<div class="alignleft actions translate_button">
@@ -257,11 +266,19 @@ class InpsydeCustomFunctions {
 			'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
 			'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
 			'trashed'   => _n( '%s translation removed from the project.', '%s translations removed from the project.', $bulk_counts['trashed'] ),
-			'untrashed' => _n( '%s translation restored at the project.', '%s my_cpts restored at the project.', $bulk_counts['untrashed'] ),
+			'untrashed' => _n( '%s translation restored at the project.', '%s translations restored at the project.', $bulk_counts['untrashed'] ),
 		);
 
 		return $bulk_messages;
 
+	}
+
+
+	public function inpsyde_get_edit_term_link( $location, $term_id, $taxonomy, $object_type ) {
+		if ( 'tmwp_project' === $taxonomy ) {
+			$location = Tmwp\Taxonomy\Project::get_project_link( $term_id );
+		}
+		return $location;
 	}
 }
 

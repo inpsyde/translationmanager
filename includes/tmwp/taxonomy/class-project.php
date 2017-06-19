@@ -30,7 +30,7 @@ class Project {
 	 *
 	 * @return string
 	 */
-	protected static function get_project_link( $term_id ) {
+	public static function get_project_link( $term_id ) {
 		return get_admin_url(
 			null,
 			'edit.php?' .
