@@ -38,7 +38,7 @@ function _tmwp_handle_actions() {
 
 	if ( isset( $_GET[ TMWP_ACTION_PROJECT_ORDER ] ) ) {
 		$term = get_term_by( 'slug', $_GET['_tmwp_project_id'], TMWP_TAX_PROJECT );
-
+		
 		_tmwp_project_order( $term );
 
 		wp_redirect(
@@ -198,5 +198,7 @@ function _tmwp_project_update( $project_term ) {
 	}
 }
 
-add_action( 'load-post.php', '_tmwp_handle_actions' );
-add_action( 'load-edit.php', '_tmwp_handle_actions' );
+//add_action( 'load-post.php', '_tmwp_handle_actions' );
+//add_action( 'load-edit.php', '_tmwp_handle_actions' );
+
+add_action( 'admin_post_tmwp_order_or_update_projects', '_tmwp_handle_actions' );

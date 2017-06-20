@@ -6,7 +6,9 @@
 		<?php echo esc_html( $this->get_status() ) ?>
 	</b>
 </div>
-
+<form id="tmwp_order_or_update_projects" method="get" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
+	<input type="hidden" name="action" value="tmwp_order_or_update_projects">
+	<input type="hidden" name="_tm4mlp_project_id" value="<?php echo $_GET['tmwp_project']?>">
 <?php if ( $this->get_order_id() ): ?>
 	<div>
 		<span class="dashicons dashicons-testimonial"></span>
@@ -55,3 +57,4 @@
 		       value="<?php _e( 'Order project', 'tmwp' ) ?>"/>
 	</div>
 <?php endif; ?>
+</form>
