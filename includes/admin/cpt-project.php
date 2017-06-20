@@ -6,7 +6,7 @@ function tmwp_cpt_cart() {
 		array(
 			'label'         => __( 'Cart', 'tmwp' ),
 			'labels'        => array(
-				'name' => __( 'Translations', 'tmwp' ),
+				'name' => __( 'Projects', 'tmwp' ),
 			),
 			'description'   => __( 'What you are about to order.', 'tmwp' ),
 			'public'        => true,
