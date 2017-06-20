@@ -12,6 +12,6 @@
 			<textarea name="description" id="tag-description" rows="5" cols="40"><?php echo ( is_object( $term ) ) ? $term->description : ''; ?></textarea>
 		</div>
 		<?php wp_referer_field() ?>
-		<input type="submit" name="tmwp_project_info_save" class="button button-primary" value="Save">
+		<input type="submit" name="tmwp_project_info_save" class="button button-primary" value="Save Project">
 	</div>
 </form>
