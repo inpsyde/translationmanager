@@ -38,7 +38,7 @@ function _tmwp_handle_actions() {
 
 	if ( isset( $_GET[ TMWP_ACTION_PROJECT_ORDER ] ) ) {
 		$term = get_term_by( 'slug', $_GET['_tmwp_project_id'], TMWP_TAX_PROJECT );
-		
+
 		_tmwp_project_order( $term );
 
 		wp_redirect(

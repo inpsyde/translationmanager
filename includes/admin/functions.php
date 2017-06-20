@@ -15,6 +15,7 @@ class InpsydeCustomFunctions {
 		add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_post_updated_messages' ), 10, 2 );
 		add_filter( 'get_edit_term_link', array( $this, 'inpsyde_get_edit_term_link' ), 10, 4 );
 		add_action( 'manage_posts_extra_tablenav', array( $this, 'restrict_manage_posts' ), 10 );
+		add_action( 'admin_post_tmwp_project_info_save', array( $this, 'tmwp_project_info_save' ) );
 	}
 
 	public function restrict_manage_posts( $which ) {
@@ -279,6 +280,25 @@ class InpsydeCustomFunctions {
 			$location = Tmwp\Taxonomy\Project::get_project_link( $term_id );
 		}
 		return $location;
+	}
+
+	public function tmwp_project_info_save() {
+		if( 'tmwp_project_info_save' != $_POST['action'] ) {
+			return;
+		}
+		$term = get_term_by( 'slug', $_POST['_tm4mlp_project_id'], TMWP_TAX_PROJECT );
+
+		$update = wp_update_term( $term->term_id, TMWP_TAX_PROJECT, array(
+			'name'          => $_POST['tag-name'],
+			'description'   => $_POST['description']
+		) );
+
+		if ( is_wp_error( $update ) ) {
+			wp_die('Something went wrong. Please go back and try again.');
+		}
+
+		wp_safe_redirect( wp_get_referer() );
+		return;
 	}
 }
 
