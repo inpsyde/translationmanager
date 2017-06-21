@@ -1,5 +1,5 @@
 === translationMANAGER for WordPress ===
-Contributors: Inpsyde,
+Contributors: Inpsyde, Eurotext
 Donate link: http://eurotext.de/
 Tags: translation, api, I18N
 Requires at least: 3.9
