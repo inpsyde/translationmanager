@@ -78,42 +78,42 @@ function tmwp_cart_row_actions( $actions, $post ) {
 
 add_filter( 'post_row_actions', 'tmwp_cart_row_actions', 10, 2 );
 
-function tmwp_cart_footer( $which ) {
-	if ( 'edit-' . TMWP_CART != get_current_screen()->id ) {
-		return;
-	}
-
-	global $wp_query;
-	if ( $wp_query->post_count <= 0 ) {
-		return;
-	}
-
-	$request = wp_parse_args(
-		$_GET,  // Input var ok.
-		array(
-			TMWP_TAX_PROJECT => null,
-		)
-	);
-
-	if ( isset( $request['tmwp_project'] ) && $_GET['tmwp_project'] ) {
-		$current_slug = $_GET['tmwp_project']; // Input var ok.
-		$term         = get_term_by( 'slug', $current_slug, TMWP_TAX_PROJECT );
-
-		if ( ! is_wp_error( $term )
-		     && get_term_meta( $term->term_id, '_tmwp_order_id' )
-		) {
-			// This has an order id so we show the update button.
-			require tmwp_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
-			_e( 'Thanks for your order.', 'tmwp' );
-
-			return;
-		}
-	}
-
-	require tmwp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
-}
-
-add_action( 'manage_posts_extra_tablenav', 'tmwp_cart_footer' );
+//function tmwp_cart_footer( $which ) {
+//	if ( 'edit-' . TMWP_CART != get_current_screen()->id ) {
+//		return;
+//	}
+//
+//	global $wp_query;
+//	if ( $wp_query->post_count <= 0 ) {
+//		return;
+//	}
+//
+//	$request = wp_parse_args(
+//		$_GET,  // Input var ok.
+//		array(
+//			TMWP_TAX_PROJECT => null,
+//		)
+//	);
+//
+//	if ( isset( $request['tmwp_project'] ) && $_GET['tmwp_project'] ) {
+//		$current_slug = $_GET['tmwp_project']; // Input var ok.
+//		$term         = get_term_by( 'slug', $current_slug, TMWP_TAX_PROJECT );
+//
+//		if ( ! is_wp_error( $term )
+//		     && get_term_meta( $term->term_id, '_tmwp_order_id' )
+//		) {
+//			// This has an order id so we show the update button.
+//			require tmwp_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
+//			_e( 'Thanks for your order.', 'tmwp' );
+//
+//			return;
+//		}
+//	}
+//
+//	require tmwp_get_template( 'admin/cart/manage-cart-extra-tablenav.php' );
+//}
+//
+//add_action( 'manage_posts_extra_tablenav', 'tmwp_cart_footer' );
 
 /**
  * Hide WP status.
