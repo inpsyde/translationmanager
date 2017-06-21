@@ -1,6 +1,6 @@
 <form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
 	<input type="hidden" name="action" value="tmwp_project_info_save">
-	<input type="hidden" name="_tm4mlp_project_id" value="<?php echo $_GET['tmwp_project']?>">
+	<input type="hidden" name="_tmwp_project_id" value="<?php echo $_GET['tmwp_project']?>">
 	<div class="alignleft actions" style="padding-bottom: 20px">
 		<div class="form-field form-required term-name-wrap">
 			<label for="tag-name"><?php _ex( 'Name', 'term name' ); ?></label>

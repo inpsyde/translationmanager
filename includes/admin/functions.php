@@ -286,7 +286,7 @@ class InpsydeCustomFunctions {
 		if( 'tmwp_project_info_save' != $_POST['action'] ) {
 			return;
 		}
-		$term = get_term_by( 'slug', $_POST['_tm4mlp_project_id'], TMWP_TAX_PROJECT );
+		$term = get_term_by( 'slug', $_POST['_tmwp_project_id'], TMWP_TAX_PROJECT );
 
 		$update = wp_update_term( $term->term_id, TMWP_TAX_PROJECT, array(
 			'name'          => $_POST['tag-name'],
