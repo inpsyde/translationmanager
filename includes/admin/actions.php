@@ -32,12 +32,13 @@ function tmwp_action_project_add_translation( $arguments ) {
 }
 
 function _tmwp_handle_actions() {
-	if ( ! $_POST ) {
+    if ( ! $_POST ) {
 		// Nothing submitted so we stop processing.
+        return;
 	}
 
-	if ( isset( $_GET[ TMWP_ACTION_PROJECT_ORDER ] ) ) {
-		$term = get_term_by( 'slug', $_GET['_tmwp_project_id'], TMWP_TAX_PROJECT );
+	if ( isset( $_POST[ TMWP_ACTION_PROJECT_ORDER ] ) ) {
+		$term = get_term_by( 'slug', $_POST['_tmwp_project_id'], TMWP_TAX_PROJECT );
 
 		_tmwp_project_order( $term );
 
@@ -47,7 +48,7 @@ function _tmwp_handle_actions() {
 				'edit.php?' .
 				http_build_query(
 					array(
-						TMWP_TAX_PROJECT => $_GET['_tmwp_project_id'],
+						TMWP_TAX_PROJECT => $_POST['_tmwp_project_id'],
 						'post_type'        => TMWP_CART,
 					)
 				)
@@ -57,8 +58,8 @@ function _tmwp_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
-	if ( isset( $_GET[ TMWP_ACTION_PROJECT_UPDATE ] ) ) {
-		$term = get_term_by( 'slug', $_GET['_tmwp_project_id'], TMWP_TAX_PROJECT );
+	if ( isset( $_POST[ TMWP_ACTION_PROJECT_UPDATE ] ) ) {
+		$term = get_term_by( 'slug', $_POST['_tmwp_project_id'], TMWP_TAX_PROJECT );
 
 		_tmwp_project_update( $term );
 
@@ -68,7 +69,7 @@ function _tmwp_handle_actions() {
 				'edit.php?' .
 				http_build_query(
 					array(
-						TMWP_TAX_PROJECT => $_GET['_tmwp_project_id'],
+						TMWP_TAX_PROJECT => $_POST['_tmwp_project_id'],
 						'post_type'        => TMWP_CART,
 					)
 				)
@@ -97,7 +98,6 @@ function _tmwp_handle_actions() {
 
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
-
 }
 
 /**
