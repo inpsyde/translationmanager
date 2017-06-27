@@ -198,7 +198,8 @@ function _tmwp_project_update( $project_term ) {
 	}
 }
 
-//add_action( 'load-post.php', '_tmwp_handle_actions' );
-//add_action( 'load-edit.php', '_tmwp_handle_actions' );
+// Fetch post save actions which are used for project creation.
+add_action( 'load-post.php', '_tmwp_handle_actions' );
+add_action( 'load-edit.php', '_tmwp_handle_actions' );
 
 add_action( 'admin_post_tmwp_order_or_update_projects', '_tmwp_handle_actions' );
