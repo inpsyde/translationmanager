@@ -38,7 +38,7 @@ class Project {
 	 * @param string $type           Could be "order" or "quote".
 	 * @param null   $callback       URL to trigger after translation is completely done.
 	 */
-	public function __construct( $system, $system_version, $plugin, $plugin_version, $type = 'order', $callback = null ) {
+	public function __construct( $system, $system_version, $plugin, $plugin_version, $type = 'quote', $callback = null ) {
 		$this->system         = $system;
 		$this->system_version = $system_version;
 		$this->plugin         = $plugin;
