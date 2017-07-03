@@ -56,8 +56,8 @@ class Mlp_Connect {
 		 */
 		$data = apply_filters(
 			'tmwp_mlp_module_outgoing_post',
-			$post,
 			$data,
+			$post,
 			(int) $site_id
 		);
 
