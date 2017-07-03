@@ -48,13 +48,13 @@ class Mlp_Connect {
 		$data['__meta']['type']    = 'post';
 
 		/**
-		 * Fires after translation data for a post is edited by MLP module, before it is sent to API.
+		 * Filters translation data for a post, after it is edited by MLP module, before it is sent to API.
 		 *
 		 * @param \WP_Post $post    To-be-translated post
 		 * @param array    $data    Translation data to be sent via API
 		 * @param int      $site_id Post site ID
 		 */
-		do_action(
+		$data = apply_filters(
 			'tmwp_mlp_module_outgoing_post',
 			$post,
 			$data,
