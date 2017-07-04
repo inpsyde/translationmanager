@@ -1,1 +1,29 @@
 path: html
+
+apache_modules:
+  - mod_rewrite
+
+core multisite-install:
+  url: http://172.10.16.100
+  base: http://172.10.16.100
+  title: "Translation-Manager DEV"
+  admin_user: "admin"
+  admin_password: "letmein"
+  admin_email: "foo@example.org"
+
+core config:
+  dbhost: db
+  dbuser: dev
+  dbpass: dev
+  dbname: dev
+  dbcharset: utf8
+  locale: en_US
+  extra-php: |
+    define( 'WP_ALLOW_MULTISITE', TRUE );
+    define( 'MULTISITE',            true       );
+    // Set this to true for sub-domain installations.
+    define( 'SUBDOMAIN_INSTALL',    false      );
+    define( 'DOMAIN_CURRENT_SITE',  '172.10.16.100');
+    define( 'PATH_CURRENT_SITE',    '/'        );
+    define( 'SITE_ID_CURRENT_SITE', 1          );
+    define( 'BLOG_ID_CURRENT_SITE', 1          );

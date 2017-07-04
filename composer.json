@@ -11,11 +11,47 @@
       "bootstrap.php"
     ]
   },
+  "scripts": {
+    "post-create-project-cmd": [
+      "echo RUN INSIDE THE CONTAINER!",
+      "wp core download || exit 0",
+      "wp core config --force",
+      "wp core multisite-install",
+      "wp plugin delete hello.php",
+      "wp plugin delete akismet",
+      "wp plugin activate --all",
+      "[ -h html/wp-content/plugins/translationmanager ] || ln -rs . html/wp-content/plugins/translationmanager"
+      "[ -h html/.htaccess ] || ln -sr .htaccess.dev html/.htaccess"
+    ]
+  },
+  "extra": {
+    "wordpress-install-dir": "html",
+    "installer-paths": {
+      "html/wp-content/plugins/{$name}": ["type:wordpress-plugin"],
+      "html/wp-content/themes/{$name}": ["type:wordpress-theme"]
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url":"https://wpackagist.org"
+    }
+  ],
+  "require": {
+    "php": ">=5.4 <7.1",
+    "johnpbloch/wordpress-core": "~4.7",
+    "johnpbloch/wordpress-core-installer": "~0.2",
+    "wpackagist-plugin/multilingual-press": "^2.6"
+  },
   "require-dev": {
     "phpunit/phpunit": "~5",
     "sourcerer-mike/wp-readme-validator": "dev-master",
     "squizlabs/php_codesniffer": "~2.7",
     "wimg/php-compatibility": "^7.0",
-    "wp-coding-standards/wpcs": "dev-master"
+    "wp-coding-standards/wpcs": "dev-master",
+    "wpackagist-plugin/debug-bar": "~0",
+    "wpackagist-plugin/debug-bar-actions-and-filters-addon": "~1",
+    "wpackagist-plugin/debug-bar-constants": "~1",
+    "wpackagist-plugin/debug-bar-screen-info": "~1"
   }
 }

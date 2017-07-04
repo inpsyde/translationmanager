@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  php:
+    build: .
+    volumes:
+      - ".:/var/www"
+    networks:
+      - default
+    environment:
+      PHP_XDEBUG_ENABLED: 1
+      XDEBUG_CONFIG: "remote_enable=1 remote_host=172.10.16.1 idekey=PHPSTORM profiler_enable=0"
+      PHP_IDE_CONFIG: "serverName=dev"
+    networks:
+      default:
+        ipv4_address: 172.10.16.100
+  db:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    environment:
+      - "MYSQL_DATABASE=dev"
+      - "MYSQL_USER=dev"
+      - "MYSQL_PASSWORD=dev"
+      - "MYSQL_ROOT_PASSWORD=dev"
+    volumes:
+      - ".docker/db:/var/lib/mysql"
+    networks:
+      default:
+        ipv4_address: 172.10.16.57
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.10.16.0/24
