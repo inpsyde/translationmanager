@@ -32,13 +32,36 @@ function tmwp_action_project_add_translation( $arguments ) {
 }
 
 function _tmwp_handle_actions() {
-    if ( ! $_POST ) {
-		// Nothing submitted so we stop processing.
-        return;
+
+	$post_data = filter_input_array(
+		INPUT_POST,
+		array(
+			TMWP_ACTION_PROJECT_ORDER           => FILTER_SANITIZE_STRING,
+			TMWP_ACTION_PROJECT_UPDATE          => FILTER_SANITIZE_STRING,
+			TMWP_ACTION_PROJECT_ADD_TRANSLATION => FILTER_SANITIZE_STRING,
+			'_tmwp_project_id'                  => FILTER_SANITIZE_STRING,
+			'tmwp_project_id'                   => FILTER_SANITIZE_NUMBER_INT,
+			'tmwp_language'                     => array(
+				'filter' => FILTER_SANITIZE_STRING,
+				'flags'  => FILTER_FORCE_ARRAY
+			)
+		)
+	);
+
+	// If nothing submitted or no action detected we stop processing.
+	if (
+		! $post_data
+		|| (
+			! $post_data[ TMWP_ACTION_PROJECT_ORDER ]
+			&& ! $post_data[ TMWP_ACTION_PROJECT_UPDATE ]
+			&& ! $post_data[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ]
+		)
+	) {
+		return;
 	}
 
-	if ( isset( $_POST[ TMWP_ACTION_PROJECT_ORDER ] ) ) {
-		$term = get_term_by( 'slug', $_POST['_tmwp_project_id'], TMWP_TAX_PROJECT );
+	if ( $post_data[ TMWP_ACTION_PROJECT_ORDER ] ) {
+		$term = get_term_by( 'slug', $post_data['_tmwp_project_id'], TMWP_TAX_PROJECT );
 
 		_tmwp_project_order( $term );
 
@@ -48,8 +71,8 @@ function _tmwp_handle_actions() {
 				'edit.php?' .
 				http_build_query(
 					array(
-						TMWP_TAX_PROJECT => $_POST['_tmwp_project_id'],
-						'post_type'        => TMWP_CART,
+						TMWP_TAX_PROJECT => $post_data[ '_tmwp_project_id' ],
+						'post_type'      => TMWP_CART,
 					)
 				)
 			)
@@ -58,8 +81,8 @@ function _tmwp_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
-	if ( isset( $_POST[ TMWP_ACTION_PROJECT_UPDATE ] ) ) {
-		$term = get_term_by( 'slug', $_POST['_tmwp_project_id'], TMWP_TAX_PROJECT );
+	if ( $post_data[ TMWP_ACTION_PROJECT_UPDATE ] ) {
+		$term = get_term_by( 'slug', $post_data['_tmwp_project_id'], TMWP_TAX_PROJECT );
 
 		_tmwp_project_update( $term );
 
@@ -69,8 +92,8 @@ function _tmwp_handle_actions() {
 				'edit.php?' .
 				http_build_query(
 					array(
-						TMWP_TAX_PROJECT => $_POST['_tmwp_project_id'],
-						'post_type'        => TMWP_CART,
+						TMWP_TAX_PROJECT => $post_data[ '_tmwp_project_id' ],
+						'post_type'      => TMWP_CART,
 					)
 				)
 			)
@@ -79,8 +102,13 @@ function _tmwp_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
-	if ( isset( $_POST[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ] ) ) {
-		$project = tmwp_action_project_add_translation( $_POST );
+	if ( $post_data[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ] ) {
+		$project = tmwp_action_project_add_translation(
+			array(
+				'tmwp_language'   => $post_data['tmwp_language'],
+				'tmwp_project_id' => $post_data['tmwp_project_id'],
+			)
+		);
 
 		wp_redirect(
 			get_admin_url(
@@ -89,8 +117,8 @@ function _tmwp_handle_actions() {
 				http_build_query(
 					array(
 						TMWP_TAX_PROJECT => get_term_field( 'slug', $project ),
-						'post_type'        => TMWP_CART,
-						'updated'          => - 1,
+						'post_type'      => TMWP_CART,
+						'updated'        => - 1,
 					)
 				)
 			)
@@ -156,25 +184,30 @@ function _tmwp_project_order( $project_term ) {
 			continue;
 		}
 
-		$source            = get_post( $post->_tmwp_post_id );
-		$current           = $source->to_array();
-		$current['__meta'] = array(
-			'target_language' => $languages[ $post->_tmwp_target_id ]->get_lang_code(),
-			'target_id' => $post->_tmwp_target_id
+		$source_post = get_post( $post->_tmwp_post_id );
+		if ( ! $source_post ) {
+			continue;
+		}
+
+		$source_site_id = get_current_blog_id();
+
+		$data = \Tmwp\Translation_Data::for_outgoing(
+			$source_post,
+			$source_site_id,
+			$post->_tmwp_target_id,
+			$languages[ $post->_tmwp_target_id ]->get_lang_code()
 		);
 
 		/**
-		 * Filter to update translation data.
+		 * Fires before translation data is transfered to the API.
 		 *
-		 * @param array    $current Current data that will be transfered to the API.
-		 * @param \WP_Post $source  Post that is currently extracted data from.
-		 * @param int      $blog_id ID of the current running blog.
+		 * Data can be edited in place by listeners.
 		 *
-		 * @return array
+		 * @param \Tmwp\Translation_Data $data
 		 */
-		$data = (array) apply_filters( TMWP_SANITIZE_POST, $current, $source, get_current_blog_id() );
+		do_action_ref_array( TMWP_OUTGOING_DATA, array( $data ) );
 
-		tmwp_api()->project_item()->create( $project_id, $data );
+		tmwp_api()->project_item()->create( $project_id, $data->to_array() );
 	}
 
 	update_term_meta( $project_term->term_id, '_tmwp_order_id', $project_id );
@@ -191,10 +224,37 @@ function _tmwp_project_update( $project_term ) {
 		return;
 	}
 
-	$data = tmwp_api()->project()->get( $project_id );
+	$translation = tmwp_api()->project()->get( $project_id );
 
-	foreach ( $data['items'] as $item ) {
-		do_action( 'tmwp_api_translation_update', $item );
+	foreach ( $translation['items'] as $item ) {
+
+		$translation = \Tmwp\Translation_Data::for_incoming( (array) $item );
+
+		/**
+		 * Fires for each item or translation received from the API.
+		 *
+		 * @param \Tmwp\Translation_Data $translation Translation data built from data received from API
+		 */
+		do_action( TMWP_INCOMING_DATA, $translation );
+
+		/**
+		 * Filters the updater that executed have to return the updated post
+		 */
+		$updater = apply_filters( TMWP_POST_UPDATER, null, $translation );
+
+		$post = is_callable( $updater ) ? $updater( $translation ) : null;
+
+		if ( $post instanceof \WP_Post ) {
+
+			/**
+			 * Fires after the updater has updated the post.
+			 *
+			 * @param \WP_Post $post                      Just updated post
+			 * @param \Tmwp\Translation_Data $translation Translation data built from data received from API
+			 */
+			do_action( TMWP_UPDATED_POST, $post, $translation );
+		}
+
 	}
 }
 

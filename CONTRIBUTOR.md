@@ -36,16 +36,39 @@ Writing modules is easy (here: for the plugin "akismet"):
 
 Simple as that.
 It is okay to create sub-folders and more beyond the "modules" directory.
-Within your module you might be interested in those filter/actions:
+Within your module you might be interested in the following.
 
-### Filter
+### Translation data
+
+`Tmwp\Translation_Data` is a DTO object that is used to encapsulate that data that is being sent and received to and
+from API.
+
+There are accessor methods for values to be translated and metadata (that will be returned unchanged).
+
+The accessor methods facilitate the usage  of _namespaces_ for values and metadata, allowing modules to easily separate
+their data from other modules without risk of conflicts.
+
+There are two main hooks: `tmwp_outgoing_data` (saved in the constant `TMWP_OUTGOING_DATA`) and `tmwp_incoming_data`
+(saved in the constant `TMWP_INCOMING_DATA`) that pass this object to listeners, allowing for read and  write access.
+
+### Actions: `TMWP_OUTGOING_DATA`
  
-The `tmwp_sanitize_post` sanitizes data before it is send in for translation.
-Use the `TMWP_SANITIZE_POST` const to be forward compatible.
-This filter is documented in the method
-`\Tmwp\Pages\Add_Translation::handle_post()`.
+The `tmwp_outgoing_data` action fires before data is sent to API.
+Use the `TMWP_OUTGOING_DATA` const to be forward compatible.
+Only passed argument is an instance `Tmwp\Translation_Data`, that allow write access, so modules can add custom values
+(and metadata) to be sent for translation. Metadata can be used for arbitrary values that will be returned unchanged
+from the API.
 
-The `tmwp_api_translation_update` receives data like this (JSON):
+
+### Actions: `TMWP_INCOMING_DATA`
+
+The `tmwp_incoming_data` action fires after some translation data have been received from API.
+Use the `TMWP_INCOMING_DATA` const to be forward compatible.
+
+Only passed argument is an instance `Tmwp\Translation_Data`, that modules can use in read access to do operations
+based on received data before a translation post is updated, or for in just-in-time modification.
+
+The "raw" data received form API looks like this (JSON):
 
     {
       "__meta": {
@@ -73,10 +96,30 @@ The `tmwp_api_translation_update` receives data like this (JSON):
       }
     }
 
-An example for development can be found at the API on the path "/api/stub/translation.json".
-More documentation about this action can be found in the `tmwp_api_fetch` function.
+and the `Tmwp\Translation_Data` provides separate accessor for "values" (anything that is not "meta") and for "meta".
 
-Set languages via `tmwp_get_languages` filter like this:
+Note that the method `Tmwp\Translation_Data::to_array()` convert the object in the array in everything similar to
+the original raw data.
+
+### Filter: `TMWP_POST_UPDATER`
+
+Translation Manager can work with different translation plugins. This is why it does not create / update posts not do any
+other write operation when data is received from API.
+
+What is  does it to fire the filter "tmwp_post_updater" (stored in the constant `TMWP_POST_UPDATER`) where translation
+plugins can hook to return a callback that will be used to update the translation post. The callback will be called with 
+an instance of `Tmwp\Translation_Data` that encapsulate data received from API and it must return the translated post
+object.
+
+### Action: `TMWP_UPDATED_POST`
+
+After a translation post have been updated by translation plugin, Translation Manager fires the hook "" (stored in 
+the constant `Translation_Data`) passing the post object itself and the `Tmwp\Translation_Data` instance build from
+API response.
+
+### Setting languages
+
+Available languages can be set via `tmwp_get_languages` filter like this:
 
     [
         'lang_id' => 'Lang label',
@@ -87,3 +130,8 @@ Set languages via `tmwp_get_languages` filter like this:
 The ID can be whatever you need in your translation plugin.
 You also may want to give us the current language via the `tmwp_get_current_language`,
 so that he translation agency and you afterwards know the origin language.
+
+### Module example
+
+Explanatory usages example for all main plugin hooks can be found in MultilingualPress connection class, 
+found in `/includes/tmwp/module/class-mlp-connect.php`

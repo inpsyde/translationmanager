@@ -43,7 +43,7 @@ class Order_Info {
 	 *
 	 * @todo Correct status.
 	 *
-	 * @return mixed|void
+	 * @return mixed
 	 */
 	public function get_status() {
 		if ( ! $this->get_order_id() ) {
