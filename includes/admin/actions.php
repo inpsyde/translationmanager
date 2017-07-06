@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $arguments
+ *
+ * @return bool|int
+ */
 function tmwp_action_project_add_translation( $arguments ) {
 	// defaults
 	$request = wp_parse_args(
@@ -20,6 +25,36 @@ function tmwp_action_project_add_translation( $arguments ) {
 		);
 	}
 
+	/**
+	 * Runs before adding translations to the cart.
+	 *
+	 * You might add other things to the cart before the translations kick in
+	 * or check against some other things (like account balance) to stop adding things to the cart
+	 * and show some error message.
+	 *
+	 * For those scenarios this filter allows turn it's value into false.
+	 * In that case it will neither add things to the project/cart
+	 * nor redirect to the project- / cart-view.
+	 *
+	 * @param bool  $valid     Initially true and can be torn to false to stop adding items to the cart.
+	 * @param int   $project   ID of the project (actually a term ID).
+	 * @param int   $post_id   ID of the post that will be added to the cart.
+	 * @param int[] $languages IDs of the target languages (assoc pair).
+	 *
+	 * @see wp_insert_post() actions and filter to access each single transation that is added to cart.
+	 */
+	$valid = apply_filters(
+		TMWP_FILTER_BEFORE_ADD_TO_PROJECT,
+		true,
+		$project,
+		$request['post_ID'],
+		$request['tmwp_language']
+	);
+
+	if (true !== $valid) {
+		return false;
+	}
+
 	// Remember the last manipulated project.
 	update_user_meta( get_current_user_id(), 'tmwp_project_recent', $project );
 
@@ -28,7 +63,26 @@ function tmwp_action_project_add_translation( $arguments ) {
 		$handler->add_translation( $project, (int) $request['post_ID'], $lang_id );
 	}
 
-	return $project;
+	/**
+	 * Filter the output of the `tmwp_action_project_add_translation` function.
+	 *
+	 * After adding posts to a project / cart it will redirect to this project.
+	 * One last time you can filter to which project it will redirect (by using the ID)
+	 * or if should'nt redirect at all (by setting the value to "false").
+	 *
+	 * @param int   $project ID of the project (actually a term ID).
+	 * @param int   $post_id ID of the post that will be added to the cart.
+	 * @param int[] $languages IDs of the target languages (assoc pair).
+	 *
+	 * @see tmwp_action_project_add_translation() where this filter resides.
+	 * @see tmwp_get_languages() how languages are gathered.
+	 */
+	return apply_filters(
+		TMWP_FILTER_PROJECT_ADD_TRANSLATION,
+		$project,
+		$request['post_ID'],
+		$request['tmwp_language']
+	);
 }
 
 function _tmwp_handle_actions() {
@@ -109,6 +163,11 @@ function _tmwp_handle_actions() {
 				'tmwp_project_id' => $post_data['tmwp_project_id'],
 			)
 		);
+
+		if ( false === $project ) {
+			// Project has been invalidated so we don't redirect there.
+			return;
+		}
 
 		wp_redirect(
 			get_admin_url(
