@@ -11,7 +11,8 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 
 	const META_KEY = '__meta';
 	const VALUES_KEY = '__values';
-	const SOURCE_POST_KEY = 'source_post_id';
+	const SOURCE_POST_ID_KEY = 'source_post_id';
+	const SOURCE_POST_KEY = 'source_post_obj';
 	const SOURCE_SITE_KEY = 'source_site_id';
 	const TARGET_POST_KEY = 'target_post_id';
 	const TARGET_SITE_KEY = 'target_site_id';
@@ -22,10 +23,10 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	 */
 	private $storage = array(
 		self::META_KEY   => array(
-			self::SOURCE_POST_KEY => 0,
-			self::SOURCE_SITE_KEY => 0,
-			self::TARGET_SITE_KEY => 0,
-			self::TARGET_LANG_KEY => '',
+			self::SOURCE_POST_ID_KEY => 0,
+			self::SOURCE_SITE_KEY    => 0,
+			self::TARGET_SITE_KEY    => 0,
+			self::TARGET_LANG_KEY    => '',
 		),
 		self::VALUES_KEY => array(),
 	);
@@ -60,10 +61,10 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 			: array();
 
 		$meta = array(
-			self::SOURCE_POST_KEY => (int) $source_post->ID,
-			self::SOURCE_SITE_KEY => (int) $source_site_id,
-			self::TARGET_SITE_KEY => (int) $target_site_id,
-			self::TARGET_LANG_KEY => (string) $target_language,
+			self::SOURCE_POST_ID_KEY => (int) $source_post->ID,
+			self::SOURCE_SITE_KEY    => (int) $source_site_id,
+			self::TARGET_SITE_KEY    => (int) $target_site_id,
+			self::TARGET_LANG_KEY    => (string) $target_language,
 		);
 
 		unset( $outgoing_data[ self::META_KEY ] );
@@ -95,18 +96,18 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 			: array();
 
 		$empty_meta = array(
-			self::SOURCE_POST_KEY => 0,
-			self::SOURCE_SITE_KEY => 0,
-			self::TARGET_SITE_KEY => 0,
-			self::TARGET_LANG_KEY => '',
+			self::SOURCE_POST_ID_KEY => 0,
+			self::SOURCE_SITE_KEY    => 0,
+			self::TARGET_SITE_KEY    => 0,
+			self::TARGET_LANG_KEY    => '',
 		);
 
 		$meta = array_merge( $embedded_meta, $empty_meta );
 
-		$meta[ self::SOURCE_POST_KEY ] = (int) $meta[ self::SOURCE_POST_KEY ];
-		$meta[ self::SOURCE_SITE_KEY ] = (int) $meta[ self::SOURCE_SITE_KEY ];
-		$meta[ self::TARGET_SITE_KEY ] = (int) $meta[ self::TARGET_SITE_KEY ];
-		$meta[ self::TARGET_LANG_KEY ] = (string) $meta[ self::TARGET_LANG_KEY ];
+		$meta[ self::SOURCE_POST_ID_KEY ] = (int) $meta[ self::SOURCE_POST_ID_KEY ];
+		$meta[ self::SOURCE_SITE_KEY ]    = (int) $meta[ self::SOURCE_SITE_KEY ];
+		$meta[ self::TARGET_SITE_KEY ]    = (int) $meta[ self::TARGET_SITE_KEY ];
+		$meta[ self::TARGET_LANG_KEY ]    = (string) $meta[ self::TARGET_LANG_KEY ];
 
 		unset( $incoming_data[ self::META_KEY ] );
 
@@ -120,7 +121,7 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	/**
 	 * @return bool
 	 */
-	public function is_valid(  ) {
+	public function is_valid() {
 
 		return
 			$this->source_post_id()
@@ -134,7 +135,7 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	 */
 	public function source_post_id() {
 
-		return $this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ];
+		return $this->storage[ self::META_KEY ][ self::SOURCE_POST_ID_KEY ];
 	}
 
 	/**
@@ -143,6 +144,24 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	public function source_site_id() {
 
 		return $this->storage[ self::META_KEY ][ self::SOURCE_SITE_KEY ];
+	}
+
+	/**
+	 * @return \WP_Post|null
+	 */
+	public function source_post() {
+
+		if ( empty( $this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ] ) ) {
+			
+			$site_id  = $this->source_site_id();
+			$switched = $site_id !== get_current_blog_id();
+			$switched and switch_to_blog( $site_id );
+			$post = get_post( $this->source_post_id() );
+			$switched and restore_current_blog();
+			$this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ] = $post ? $post : null;
+		}
+
+		return $this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ];
 	}
 
 	/**
