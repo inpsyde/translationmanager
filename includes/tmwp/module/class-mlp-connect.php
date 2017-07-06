@@ -15,6 +15,7 @@ class Mlp_Connect {
 
 	const TMWP_MLP_UPDATED_POST = 'tmwp_mlp_module_updated_post';
 	const UPDATED_BY_MLP = 'updated-by-multilingualpress';
+	const CREATED_BY_MLP = 'created-by-multilingualpress';
 
 	/**
 	 * @var \Mlp_Site_Relations
@@ -196,7 +197,8 @@ class Mlp_Connect {
 
 			restore_current_blog();
 
-			$data->set_meta( self::UPDATED_BY_MLP, true );
+			$signature = $linked_post ? self::CREATED_BY_MLP : self::UPDATED_BY_MLP;
+			$data->set_meta( $signature, true );
 
 			return $target_post;
 		}
@@ -210,7 +212,7 @@ class Mlp_Connect {
 	 */
 	public function notify_third_party( \WP_Post $translated_post, Translation_Data $data ) {
 
-		if ( ! $data->get_meta( self::UPDATED_BY_MLP ) ) {
+		if ( ! $data->get_meta( self::CREATED_BY_MLP ) && ! $data->get_meta( self::UPDATED_BY_MLP ) ) {
 			return;
 		}
 
