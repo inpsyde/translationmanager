@@ -62,6 +62,7 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 
 		$meta = array(
 			self::SOURCE_POST_ID_KEY => (int) $source_post->ID,
+			self::SOURCE_POST_KEY    => $source_post,
 			self::SOURCE_SITE_KEY    => (int) $source_site_id,
 			self::TARGET_SITE_KEY    => (int) $target_site_id,
 			self::TARGET_LANG_KEY    => (string) $target_language,
@@ -151,14 +152,24 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	 */
 	public function source_post() {
 
-		if ( empty( $this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ] ) ) {
-			
-			$site_id  = $this->source_site_id();
-			$switched = $site_id !== get_current_blog_id();
-			$switched and switch_to_blog( $site_id );
-			$post = get_post( $this->source_post_id() );
-			$switched and restore_current_blog();
-			$this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ] = $post ? $post : null;
+		if ( ! empty( $this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ] ) ) {
+			return $this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ];
+		}
+
+		if ( ! $this->is_valid() ) {
+			return null;
+		}
+
+		$site_id  = $this->source_site_id();
+		$switched = $site_id !== get_current_blog_id();
+		$switched and switch_to_blog( $site_id );
+		$post = get_post( $this->source_post_id() );
+		$switched and restore_current_blog();
+		$this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ] = $post ? $post : null;
+
+		// If source post does not return a valid post, we invalidate the data by unsetting post id
+		if ( ! $post ) {
+			$this->storage[ self::META_KEY ][ self::SOURCE_POST_ID_KEY ] = null;
 		}
 
 		return $this->storage[ self::META_KEY ][ self::SOURCE_POST_KEY ];
