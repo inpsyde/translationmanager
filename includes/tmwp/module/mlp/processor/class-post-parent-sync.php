@@ -1,0 +1,52 @@
+<?php # -*- coding: utf-8 -*-
+
+namespace Tmwp\Module\Mlp\Processor;
+
+use Tmwp\Module\Mlp\Connector;
+use Tmwp\Translation_Data;
+
+class Post_Parent_Sync implements Incoming_Processor {
+
+	/**
+	 * @param Translation_Data       $data
+	 * @param \Mlp_Site_Relations    $site_relations
+	 * @param \Mlp_Content_Relations $content_relations
+	 *
+	 * @return void
+	 */
+	public function process_incoming(
+		Translation_Data $data,
+		\Mlp_Site_Relations $site_relations,
+		\Mlp_Content_Relations $content_relations
+	) {
+
+		$source_post = $data->source_post();
+		$post_data = $data->get_meta( Post_Data_Builder::POST_DATA_KEY, Connector::DATA_NAMESPACE );
+		$is_update = $data->get_meta( Post_Data_Builder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE );
+
+		if ( ! $source_post || ! $post_data || $is_update || ! $source_post->post_parent ) {
+			return;
+		}
+
+		$target_site_id = $data->target_site_id();
+		$source_site_id = $data->source_site_id();
+
+		$related_parents = $content_relations->get_relations( $source_site_id, $source_post->post_parent, 'post' );
+
+		$post_data[ 'post_parent' ] = array_key_exists( $target_site_id, $related_parents )
+			? $related_parents[$target_site_id]
+			: 0;
+
+		$data->set_value( Post_Data_Builder::POST_DATA_KEY, $post_data, Connector::DATA_NAMESPACE );
+	}
+
+	/**
+	 * @param Translation_Data $data
+	 *
+	 * @return bool
+	 */
+	public function enabled( Translation_Data $data ) {
+
+		return true;
+	}
+}
