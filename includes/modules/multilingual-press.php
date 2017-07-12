@@ -13,5 +13,5 @@ add_action( 'inpsyde_mlp_loaded', function ( \Inpsyde_Property_List_Interface $d
 	add_filter( TMWP_SANITIZE_POST, array( $connect, 'prepare_outgoing' ), 10, 3 );
 
 	// Incoming data.
-	add_filter( 'tmwp_api_translation_update', array( $connect, 'update_translations' ) );
+	add_action( 'tmwp_api_translation_update', array( $connect, 'update_translations' ) );
 } );

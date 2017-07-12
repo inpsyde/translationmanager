@@ -47,6 +47,20 @@ class Mlp_Connect {
 		$data['__meta']['post_id'] = $post->ID;
 		$data['__meta']['type']    = 'post';
 
+		/**
+		 * Filters translation data for a post, after it is edited by MLP module, before it is sent to API.
+		 *
+		 * @param array    $data           Translation data to be sent via API
+		 * @param \WP_Post $source_post    Source post
+		 * @param int      $source_site_id Source post site ID
+		 */
+		$data = apply_filters(
+			'tmwp_mlp_module_outgoing_post',
+			$data,
+			$post,
+			(int) $site_id
+		);
+
 		return $data;
 	}
 
@@ -63,6 +77,7 @@ class Mlp_Connect {
 	}
 
 	/**
+	 * @param array $languages
 	 * @param int $site_id
 	 *
 	 * @return Language[]
@@ -81,7 +96,7 @@ class Mlp_Connect {
 	}
 
 	/**
-	 * @param array $data
+	 * @param array $translation
 	 *
 	 * @return void
 	 */
@@ -98,7 +113,25 @@ class Mlp_Connect {
 
 			unset ( $translation['__meta'] );
 
-			wp_update_post( $translation );
+			$id = wp_update_post( $translation );
+
+			if ( $id && ! is_wp_error( $id ) && ( $target_post = get_post( $id ) ) ) {
+
+				/**
+				 * Fires after a translation post is updated by MLP, giving other modules opportunity to edit/use
+				 * the just translated post also accessing translation data received from the API
+				 *
+				 * @param \WP_Post $target_post    Just translated post
+				 * @param int      $target_site_id Transalted post site ID
+				 * @param array    $translation    Translation data received form API
+				 */
+				do_action(
+					'tmwp_mlp_module_updated_post',
+					$target_post,
+					(int) $translation['__meta']['target_id'],
+					$translation
+				);
+			}
 //		}
 
 		restore_current_blog();

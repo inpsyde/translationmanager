@@ -166,9 +166,9 @@ function _tmwp_project_order( $project_term ) {
 		/**
 		 * Filter to update translation data.
 		 *
-		 * @param array $current Current data that will be transfered to the API.
-		 * @param array $source  Post that is currently extracted data from.
-		 * @param int   $blog_id ID of the current running blog.
+		 * @param array    $current Current data that will be transfered to the API.
+		 * @param \WP_Post $source  Post that is currently extracted data from.
+		 * @param int      $blog_id ID of the current running blog.
 		 *
 		 * @return array
 		 */
