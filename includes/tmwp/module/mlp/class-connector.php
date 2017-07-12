@@ -13,6 +13,11 @@ class Connector {
 	const DATA_NAMESPACE = 'MLP';
 
 	/**
+	 * @var Utils\Registry;
+	 */
+	private static $utils;
+
+	/**
 	 * @var \Mlp_Site_Relations
 	 */
 	private $site_relations;
@@ -26,6 +31,16 @@ class Connector {
 	 * @var Processor_Bus
 	 */
 	private $processors;
+
+	/**
+	 * @return Utils\Registry
+	 */
+	public static function utils() {
+
+		self::$utils or self::$utils = new Utils\Registry();
+
+		return self::$utils;
+	}
 
 	/**
 	 * @param \Mlp_Site_Relations    $site_relations

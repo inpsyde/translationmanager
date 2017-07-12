@@ -7,24 +7,9 @@ use Tmwp\Translation_Data;
 class Processor_Bus {
 
 	/**
-	 * @var Utils\Registry;
-	 */
-	private static $utils;
-
-	/**
 	 * @var \SplQueue<Processor\Processor>
 	 */
 	private $processors;
-
-	/**
-	 * @return Utils\Registry
-	 */
-	public static function utils() {
-
-		self::$utils or self::$utils = new Utils\Registry();
-
-		return self::$utils;
-	}
 
 	/**
 	 * @param Processor\Processor $processor
