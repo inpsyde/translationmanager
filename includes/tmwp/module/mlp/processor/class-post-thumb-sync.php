@@ -39,6 +39,7 @@ class Post_Thumb_Sync implements Incoming_Processor {
 
 		switch_to_blog( $source_site_id );
 		$source_thumb_id = get_post_thumbnail_id( $data->source_post_id() );
+		restore_current_blog();
 
 		$target_thumb_id = 0;
 
@@ -47,15 +48,10 @@ class Post_Thumb_Sync implements Incoming_Processor {
 			$target_thumb_id = $image_sync->copy_image( $source_thumb_id, $source_site_id, $data->target_site_id() );
 		}
 
-		restore_current_blog();
-
-		switch_to_blog( $data->target_site_id() );
-
 		if ( $target_thumb_id ) {
+			switch_to_blog( $data->target_site_id() );
 			set_post_thumbnail( $saved_post, $target_thumb_id );
+			restore_current_blog();
 		}
-
-		restore_current_blog();
-
 	}
 }
