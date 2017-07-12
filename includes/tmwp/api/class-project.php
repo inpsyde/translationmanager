@@ -23,8 +23,7 @@ class Project {
 	/**
 	 * Create a new project.
 	 *
-	 * @param array $data
-	 * @param array $headers
+	 * @param \Tmwp\Domain\Project $project
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
