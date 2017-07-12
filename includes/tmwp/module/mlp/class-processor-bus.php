@@ -6,13 +6,25 @@ use Tmwp\Translation_Data;
 
 class Processor_Bus {
 
-	const INGOING = 'ingoing';
-	const OUTGOING = 'outgoing';
+	/**
+	 * @var Utils\Registry;
+	 */
+	private static $utils;
 
 	/**
 	 * @var \SplQueue<Processor\Processor>
 	 */
 	private $processors;
+
+	/**
+	 * @return Utils\Registry
+	 */
+	public static function utils() {
+
+		self::$utils or self::$utils = new Utils\Registry();
+
+		return self::$utils;
+	}
 
 	/**
 	 * @param Processor\Processor $processor
@@ -28,13 +40,14 @@ class Processor_Bus {
 	}
 
 	public function process(
-		$type,
 		Translation_Data $data,
 		\Mlp_Site_Relations $site_relations,
 		\Mlp_Content_Relations $content_relations
 	) {
 
-		if ( ! in_array( $type, array( self::INGOING, self::OUTGOING ), true ) ) {
+		$is_incoming = $data->is_incoming();
+
+		if ( ! $is_incoming && ! $data->is_outgoing() ) {
 			return;
 		}
 
@@ -43,9 +56,10 @@ class Processor_Bus {
 		 *
 		 * Use this hook to add processors by calling `push_processor()` on passed bus instance.
 		 *
-		 * @param Processor_Bus $processor_bus
+		 * @param Processor_Bus    $processor_bus
+		 * @param Translation_Data $data
 		 */
-		do_action( 'tmwp_mlp_data_processors', $this, $type );
+		do_action( 'tmwp_mlp_data_processors', $this, $data );
 
 		if ( ! $this->processors ) {
 			return;
@@ -56,10 +70,13 @@ class Processor_Bus {
 			/** @var Processor\Incoming_Processor|Processor\Outgoing_Processor $processor */
 			$processor = $this->processors->dequeue();
 
-			$target = $type === self::INGOING ? '\\Processor\\Incoming_Processor' : '\\Processor\\Outgoing_Processor';
-			$method = $type === self::INGOING ? 'process_incoming' : 'process_outgoing';
+			$target = $is_incoming ? '\\Processor\\Incoming_Processor' : '\\Processor\\Outgoing_Processor';
+			$method = $is_incoming ? 'process_incoming' : 'process_outgoing';
 
-			if ( is_a( $processor, __NAMESPACE__ . $target ) && $processor->enabled( $data ) ) {
+			if (
+				is_a( $processor, __NAMESPACE__ . $target )
+				&& apply_filters( 'tmwp_mlp_data_processor_enabled', true, $processor, $data )
+			) {
 
 				/** @var callable $cb */
 				$cb = array( $processor, $method );

@@ -45,9 +45,13 @@ class Post_Data_Builder implements Incoming_Processor {
 
 		$target_site_id = $data->target_site_id();
 
+		switch_to_blog( $data->target_site_id() );
+
 		$linked_post = array_key_exists( $target_site_id, $linked_posts )
 			? get_post( $linked_posts[ $target_site_id ] )
 			: null;
+
+		restore_current_blog();
 
 		$linked_post_data = $linked_post ? $linked_post->to_array() : array();
 
@@ -73,15 +77,5 @@ class Post_Data_Builder implements Incoming_Processor {
 
 		$data->set_value( self::POST_DATA_KEY, $post_data, Connector::DATA_NAMESPACE );
 		$data->set_value( self::IS_UPDATE_KEY, (bool) $linked_post, Connector::DATA_NAMESPACE );
-	}
-
-	/**
-	 * @param Translation_Data $data
-	 *
-	 * @return bool
-	 */
-	public function enabled( Translation_Data $data ) {
-
-		return true;
 	}
 }

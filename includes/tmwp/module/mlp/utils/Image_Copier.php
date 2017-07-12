@@ -2,7 +2,7 @@
 
 namespace Tmwp\Module\Mlp\Utils;
 
-class Image_Sync {
+class Image_Copier {
 
 	/**
 	 * @param int  $source_attachment_id

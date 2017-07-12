@@ -33,19 +33,21 @@ class Post_Saver implements Incoming_Processor {
 		// Save post with all the data
 		$target_post_id = wp_update_post( $post_data );
 
-		if (
-			! $target_post_id
-			|| is_wp_error( $target_post_id )
-			|| ! ( $target_post = get_post( $target_post_id ) )
-		) {
+		$target_post = $target_post_id && ! is_wp_error( $target_post_id ) ? get_post( $target_post_id ) : null;
 
-			restore_current_blog();
+		restore_current_blog();
 
+		if ( ! $target_post) {
 			return;
 		}
 
+		$sync_on_update = true;
+		if ( $data->get_meta( Post_Data_Builder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE ) ) {
+			$sync_on_update = apply_filters( 'tmwp_mlp_module_sync_post_relation_on_update', true, $data );
+		}
+
 		// If it is a new post creation, link created post with source post
-		if ( ! $data->get_meta( Post_Data_Builder::IS_UPDATE_KEY ) ) {
+		if ( $sync_on_update ) {
 			$content_relations->set_relation(
 				$data->source_site_id(),
 				$data->target_site_id(),
@@ -55,18 +57,5 @@ class Post_Saver implements Incoming_Processor {
 		}
 
 		$data->set_meta( self::SAVED_POST_KEY, $target_post, Connector::DATA_NAMESPACE );
-
-		restore_current_blog();
-
-	}
-
-	/**
-	 * @param Translation_Data $data
-	 *
-	 * @return bool
-	 */
-	public function enabled( Translation_Data $data ) {
-
-		return true;
 	}
 }

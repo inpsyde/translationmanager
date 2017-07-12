@@ -10,10 +10,7 @@ use Tmwp\Translation_Data;
 
 class Connector {
 
-	const TMWP_MLP_UPDATED_POST = 'tmwp_mlp_module_updated_post';
 	const DATA_NAMESPACE = 'MLP';
-	const UPDATED_BY_MLP = 'updated-by-multilingualpress';
-	const CREATED_BY_MLP = 'created-by-multilingualpress';
 
 	/**
 	 * @var \Mlp_Site_Relations
@@ -48,7 +45,7 @@ class Connector {
 	public function prepare_outgoing( Translation_Data $data ) {
 
 		$this->init_processors();
-		$this->processors->process( Processor_Bus::OUTGOING, $data, $this->site_relations, $this->content_relations );
+		$this->processors->process( $data, $this->site_relations, $this->content_relations );
 	}
 
 	/**
@@ -73,9 +70,13 @@ class Connector {
 		}
 
 		$this->init_processors();
-		$this->processors->process( Processor_Bus::INGOING, $data, $this->site_relations, $this->content_relations );
+		$this->processors->process( $data, $this->site_relations, $this->content_relations );
 
-		return $data->get_meta( Processor\Post_Saver::SAVED_POST_KEY );
+		$saved_post = $data->get_meta( Processor\Post_Saver::SAVED_POST_KEY );
+
+		return ( $saved_post instanceof \WP_Post && $saved_post->ID )
+			? $saved_post
+			: null;
 	}
 
 	/**
@@ -122,6 +123,8 @@ class Connector {
 		$this->processors
 			->push_processor( new Processor\Post_Data_Builder() )
 			->push_processor( new Processor\Post_Parent_Sync() )
-			->push_processor( new Processor\Post_Saver() );
+			->push_processor( new Processor\Post_Saver() )
+			->push_processor( new Processor\Post_Thumb_Sync() )
+			->push_processor( new Processor\Taxonomies_Sync() );
 	}
 }

@@ -17,6 +17,8 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	const TARGET_POST_KEY = 'target_post_id';
 	const TARGET_SITE_KEY = 'target_site_id';
 	const TARGET_LANG_KEY = 'target_language';
+	const INCOMING = 'incoming';
+	const OUTGOING = 'outgoing';
 
 	/**
 	 * @var array
@@ -30,6 +32,11 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 		),
 		self::VALUES_KEY => array(),
 	);
+
+	/**
+	 * @var string
+	 */
+	private $direction = '';
 
 	/**
 	 * Disabled on purpose, use named constructor.
@@ -76,8 +83,9 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 			'post_excerpt' => $source_post->post_excerpt,
 		) );
 
-		$instance          = new static();
-		$instance->storage = array(
+		$instance            = new static();
+		$instance->direction = self::OUTGOING;
+		$instance->storage   = array(
 			self::META_KEY   => array_merge( $embedded_meta, $meta ),
 			self::VALUES_KEY => $outgoing_data,
 		);
@@ -112,11 +120,28 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 
 		unset( $incoming_data[ self::META_KEY ] );
 
-		$instance          = new static();
-		$instance->storage = array( self::META_KEY => $meta, self::VALUES_KEY => $incoming_data );
+		$instance            = new static();
+		$instance->direction = self::INCOMING;
+		$instance->storage   = array( self::META_KEY => $meta, self::VALUES_KEY => $incoming_data );
 
 		return $instance;
 
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_incoming() {
+
+		return $this->direction === self::INCOMING;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_outgoing() {
+
+		return $this->direction === self::OUTGOING;
 	}
 
 	/**
