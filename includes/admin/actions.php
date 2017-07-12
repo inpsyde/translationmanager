@@ -157,6 +157,10 @@ function _tmwp_handle_actions() {
 	}
 
 	if ( $post_data[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ] ) {
+
+		$updater = new \Tmwp\Admin\Cart_Updater();
+		$updater->setup();
+
 		$project = tmwp_action_project_add_translation(
 			array(
 				'tmwp_language'   => $post_data['tmwp_language'],
