@@ -22,8 +22,8 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 
 	private static $protected_meta = array(
 		self::SOURCE_POST_ID_KEY,
+		self::SOURCE_POST_KEY,
 		self::SOURCE_SITE_KEY,
-		self::SOURCE_POST_ID_KEY,
 		self::TARGET_POST_KEY,
 		self::TARGET_SITE_KEY,
 		self::TARGET_LANG_KEY,
