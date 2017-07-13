@@ -20,6 +20,15 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	const INCOMING = 'incoming';
 	const OUTGOING = 'outgoing';
 
+	private static $protected_meta = array(
+		self::SOURCE_POST_ID_KEY,
+		self::SOURCE_SITE_KEY,
+		self::SOURCE_POST_ID_KEY,
+		self::TARGET_POST_KEY,
+		self::TARGET_SITE_KEY,
+		self::TARGET_LANG_KEY,
+	);
+
 	/**
 	 * @var array
 	 */
@@ -111,7 +120,7 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 			self::TARGET_LANG_KEY    => '',
 		);
 
-		$meta = array_merge( $embedded_meta, $empty_meta );
+		$meta = array_merge( $empty_meta, $embedded_meta );
 
 		$meta[ self::SOURCE_POST_ID_KEY ] = (int) $meta[ self::SOURCE_POST_ID_KEY ];
 		$meta[ self::SOURCE_SITE_KEY ]    = (int) $meta[ self::SOURCE_SITE_KEY ];
@@ -334,6 +343,12 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	 */
 	public function set_meta( $key, $value, $namespace = '' ) {
 
+		if ( ! $namespace && in_array( $key, self::$protected_meta, true ) ) {
+			_doing_it_wrong( __METHOD__, "Meta key {$key} is protected and can't be overridden.", '0.1' );
+
+			return;
+		}
+
 		$storage = &$this->storage[ self::META_KEY ];
 
 		if ( $namespace ) {
@@ -349,6 +364,12 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 	 * @param string $namespace
 	 */
 	public function remove_meta( $key, $namespace = '' ) {
+
+		if ( ! $namespace && in_array( $key, self::$protected_meta, true ) ) {
+			_doing_it_wrong( __METHOD__, "Meta key {$key} is protected and can't be removed.", '0.1' );
+
+			return;
+		}
 
 		$storage = &$this->storage[ self::META_KEY ];
 
