@@ -166,7 +166,7 @@ function _tmwp_handle_actions() {
 			array(
 				'tmwp_language'   => $post_data['tmwp_language'],
 				'tmwp_project_id' => $post_data['tmwp_project_id'],
-				'post_ID'         => $post_data,
+				'post_ID'         => $post_data['post_ID'],
 			)
 		);
 
