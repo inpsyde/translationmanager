@@ -291,7 +291,7 @@ function _tmwp_project_update( $project_term ) {
 
 	foreach ( $translation['items'] as $item ) {
 
-		$translation = \Tmwp\Translation_Data::for_incoming( (array) $item );
+		$translation = \Tmwp\Translation_Data::for_incoming( (array) $item['data'] );
 
 		/**
 		 * Fires for each item or translation received from the API.
