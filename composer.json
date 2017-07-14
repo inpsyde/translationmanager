@@ -11,19 +11,6 @@
       "bootstrap.php"
     ]
   },
-  "scripts": {
-    "post-create-project-cmd": [
-      "echo RUN INSIDE THE CONTAINER!",
-      "wp core download || exit 0",
-      "wp core config --force",
-      "wp core multisite-install",
-      "wp plugin delete hello.php",
-      "wp plugin delete akismet",
-      "wp plugin activate --all",
-      "[ -h html/wp-content/plugins/translationmanager ] || ln -rs . html/wp-content/plugins/translationmanager"
-      "[ -h html/.htaccess ] || ln -sr .htaccess.dev html/.htaccess"
-    ]
-  },
   "extra": {
     "wordpress-install-dir": "html",
     "installer-paths": {
