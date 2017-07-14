@@ -22,7 +22,7 @@ class Post_Saver implements Incoming_Processor {
 		\Mlp_Content_Relations $content_relations
 	) {
 
-		$post_data = $data->get_meta( Post_Data_Builder::POST_DATA_KEY, Connector::DATA_NAMESPACE );
+		$post_data = $data->get_value( Post_Data_Builder::POST_DATA_KEY, Connector::DATA_NAMESPACE );
 
 		if ( ! $post_data ) {
 			return;

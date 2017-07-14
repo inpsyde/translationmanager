@@ -59,7 +59,7 @@ class Post_Data_Builder implements Incoming_Processor {
 
 		// Let's extract only post data from received translation data
 		$translated_data = array();
-		foreach ( $post_vars as $key ) {
+		foreach ( array_keys( $post_vars ) as $key ) {
 			if ( $data->has_value( $key ) ) {
 				$translated_data[ $key ] = $data->get_value( $key );
 			}
