@@ -87,7 +87,7 @@ class Connector {
 		$this->init_processors();
 		$this->processors->process( $data, $this->site_relations, $this->content_relations );
 
-		$saved_post = $data->get_meta( Processor\Post_Saver::SAVED_POST_KEY );
+		$saved_post = $data->get_meta( Processor\Post_Saver::SAVED_POST_KEY, Connector::DATA_NAMESPACE );
 
 		return ( $saved_post instanceof \WP_Post && $saved_post->ID )
 			? $saved_post

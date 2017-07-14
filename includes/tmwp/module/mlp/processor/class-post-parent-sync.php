@@ -21,9 +21,8 @@ class Post_Parent_Sync implements Incoming_Processor {
 	) {
 
 		$source_post = $data->source_post();
-		$post_data   = $data->get_meta( Post_Data_Builder::POST_DATA_KEY, Connector::DATA_NAMESPACE );
 
-		if ( ! $source_post || ! $post_data || ! $source_post->post_parent ) {
+		if ( ! $source_post || ! $source_post->post_parent ) {
 			return;
 		}
 
@@ -41,10 +40,10 @@ class Post_Parent_Sync implements Incoming_Processor {
 
 		$related_parents = $content_relations->get_relations( $source_site_id, $source_post->post_parent, 'post' );
 
-		$post_data[ 'post_parent' ] = array_key_exists( $target_site_id, $related_parents )
+		$parent = array_key_exists( $target_site_id, $related_parents )
 			? $related_parents[ $target_site_id ]
 			: 0;
 
-		$data->set_value( Post_Data_Builder::POST_DATA_KEY, $post_data, Connector::DATA_NAMESPACE );
+		$data->set_value( 'post_parent', $parent );
 	}
 }

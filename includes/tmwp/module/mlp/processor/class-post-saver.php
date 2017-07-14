@@ -22,10 +22,13 @@ class Post_Saver implements Incoming_Processor {
 		\Mlp_Content_Relations $content_relations
 	) {
 
-		$post_data = $data->get_meta( Post_Data_Builder::POST_DATA_KEY, Connector::DATA_NAMESPACE );
+		$post_vars = get_object_vars( new \WP_Post( new \stdClass() ) );
+		$post_data = array();
 
-		if ( ! $post_data ) {
-			return;
+		foreach( $post_vars as $key => $value ) {
+			if ( $data->has_value( $key )  ) {
+				$post_data[ $key ] = $data->get_value( $key );
+			}
 		}
 
 		switch_to_blog( $data->target_site_id() );
