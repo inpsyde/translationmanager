@@ -194,7 +194,7 @@ function _tmwp_project_update( $project_term ) {
 	$data = tmwp_api()->project()->get( $project_id );
 
 	foreach ( $data['items'] as $item ) {
-		do_action( 'tmwp_api_translation_update', $item );
+		do_action( 'tmwp_api_translation_update', $item['data'] );
 	}
 }
 
