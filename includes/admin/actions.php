@@ -287,9 +287,9 @@ function _tmwp_project_update( $project_term ) {
 		return;
 	}
 
-	$translation = tmwp_api()->project()->get( $project_id );
+	$translation_data = tmwp_api()->project()->get( $project_id );
 
-	foreach ( $translation['items'] as $item ) {
+	foreach ( $translation_data['items'] as $item ) {
 
 		$translation = \Tmwp\Translation_Data::for_incoming( (array) $item['data'] );
 
