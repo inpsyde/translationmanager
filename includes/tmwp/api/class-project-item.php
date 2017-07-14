@@ -23,8 +23,8 @@ class Project_Item {
 	/**
 	 * Create a new project.
 	 *
+	 * @param       $project_id
 	 * @param array $data
-	 * @param array $headers
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */

@@ -2,40 +2,76 @@
 
 namespace Tmwp\Module;
 
-use WPSEO_Meta;
+use Tmwp\Translation_Data;
 
 class WordPress_Seo {
-	/**
-	 * Append data from SEO plugin.
-	 *
-	 * @param array    $current
-	 * @param \WP_Post $source
-	 *
-	 * @return mixed
-	 */
-	public function prepare_outgoing( $current, $source ) {
-		$current['wordpress_seo'] = array();
 
-		foreach ( $this->get_meta_fields() as $internal => $meta_field ) {
-			$current['wordpress_seo'][ $internal ] = get_post_meta( $source->ID, $meta_field, true );
+	const _NAMESPACE = 'wordpress_seo';
+
+	/**
+	 * Store WordPress SEO meta fields related to source post into translation data, using meta for fields that should
+	 * not be translated.
+	 *
+	 * @param Translation_Data $data
+	 */
+	public function prepare_outgoing( Translation_Data $data ) {
+
+		if ( ! class_exists( 'WPSEO_Meta' ) || ! $data->is_valid() ) {
+			return;
 		}
 
-		return $current;
+		$source_post_id = $data->source_post_id();
+
+		$to_translate = array(
+			'title',
+			'metadesc',
+			'metakeywords',
+			'bctitle',
+		);
+
+		$to_not_translate = array(
+			'meta-robots-noindex',
+			'meta-robots-nofollow',
+			'meta-robots-adv',
+		);
+
+		foreach ( $to_translate as $key ) {
+			$field = get_post_meta( $source_post_id, \WPSEO_Meta::$meta_prefix . $key, true );
+			$data->set_value( $key, $field, self::_NAMESPACE );
+		}
+
+		foreach ( $to_not_translate as $key ) {
+			$field = get_post_meta( $source_post_id, \WPSEO_Meta::$meta_prefix . $key, true );
+			$data->set_meta( $key, $field, self::_NAMESPACE );
+		}
 	}
 
 	/**
-	 * Gather meta field names.
+	 * After a translation post has been updated, updates its meta merging translated data and meta data that were set
+	 * on API request.
 	 *
-	 * @see WPSEO_Meta::$meta_fields
+	 * @wp-hook tmwp_updated_post
+	 *
+	 * @param \WP_Post         $translated_post
+	 * @param Translation_Data $data
 	 */
-	protected function get_meta_fields() {
-		return array(
-			'snippetpreview' => WPSEO_Meta::$meta_prefix . 'snippetpreview',
-			'title'          => WPSEO_Meta::$meta_prefix . 'title',
-			'metadesc'       => WPSEO_Meta::$meta_prefix . 'metadesc',
-			'metakeywords'   => WPSEO_Meta::$meta_prefix . 'metakeywords',
-			'bctitle'        => WPSEO_Meta::$meta_prefix . 'bctitle',
-			'canonical'      => WPSEO_Meta::$meta_prefix . 'canonical'
-		);
+	public function update_translation( \WP_Post $translated_post, Translation_Data $data ) {
+
+		if ( ! $data->is_valid() ) {
+			return;
+		}
+
+		$not_translated = $data->get_meta( self::_NAMESPACE );
+		$translated     = $data->get_value( self::_NAMESPACE );
+		$all_meta       = array_filter( array_merge( $not_translated, $translated ) );
+
+		foreach ( $all_meta as $key => $value ) {
+			$exists = get_post_meta( $translated_post->ID, \WPSEO_Meta::$meta_prefix . $key );
+
+			// Existent non-translated data are not updated
+			if ( ! $exists && isset( $translated[ $key ] ) ) {
+				update_post_meta( $translated_post->ID, \WPSEO_Meta::$meta_prefix . $key, $value );
+			}
+		}
 	}
 }
