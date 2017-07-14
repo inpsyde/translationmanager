@@ -123,7 +123,7 @@ class Cart_Updater {
 		if ( $this->append_to_title && ! empty( $data[ 'post_type' ] ) && $data[ 'post_type' ] === TMWP_CART ) {
 			empty( $data[ 'post_title' ] ) and $data[ 'post_title' ] = '';
 			$data[ 'post_title' ] and $data[ 'post_title' ] .= ' ';
-			$data[ 'post_title' ] = $this->append_to_title;
+			$data[ 'post_title' ] .= $this->append_to_title;
 		}
 
 		return $data;
