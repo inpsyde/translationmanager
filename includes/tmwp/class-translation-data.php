@@ -78,7 +78,6 @@ final class Translation_Data implements \ArrayAccess, \JsonSerializable {
 
 		$meta = array(
 			self::SOURCE_POST_ID_KEY => (int) $source_post->ID,
-			self::SOURCE_POST_KEY    => $source_post,
 			self::SOURCE_SITE_KEY    => (int) $source_site_id,
 			self::TARGET_SITE_KEY    => (int) $target_site_id,
 			self::TARGET_LANG_KEY    => (string) $target_language,
