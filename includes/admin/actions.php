@@ -95,6 +95,7 @@ function _tmwp_handle_actions() {
 			TMWP_ACTION_PROJECT_ADD_TRANSLATION => FILTER_SANITIZE_STRING,
 			'_tmwp_project_id'                  => FILTER_SANITIZE_STRING,
 			'tmwp_project_id'                   => FILTER_SANITIZE_NUMBER_INT,
+			'post_ID'                           => FILTER_SANITIZE_NUMBER_INT,
 			'tmwp_language'                     => array(
 				'filter' => FILTER_SANITIZE_STRING,
 				'flags'  => FILTER_FORCE_ARRAY
@@ -165,6 +166,7 @@ function _tmwp_handle_actions() {
 			array(
 				'tmwp_language'   => $post_data['tmwp_language'],
 				'tmwp_project_id' => $post_data['tmwp_project_id'],
+				'post_ID'         => $post_data,
 			)
 		);
 
