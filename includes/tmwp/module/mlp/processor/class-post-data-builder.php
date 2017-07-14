@@ -7,7 +7,6 @@ use Tmwp\Translation_Data;
 
 class Post_Data_Builder implements Incoming_Processor {
 
-	const POST_DATA_KEY = 'post-data';
 	const IS_UPDATE_KEY = 'is-update';
 
 	private static $unwanted_data = array(
@@ -74,8 +73,11 @@ class Post_Data_Builder implements Incoming_Processor {
 		$post_data = array_diff_key( $post_data, self::$unwanted_data );
 		// ... and force ID to be existing linked post if exists.
 		$linked_post and $post_data[ 'ID' ] = $linked_post->ID;
+		// Set back all post data in root namespace
+		foreach( $post_data as $key => $value ) {
+			$data->set_value( $key, $value );
+		}
 
-		$data->set_value( self::POST_DATA_KEY, $post_data, Connector::DATA_NAMESPACE );
-		$data->set_value( self::IS_UPDATE_KEY, (bool) $linked_post, Connector::DATA_NAMESPACE );
+		$data->set_meta( self::IS_UPDATE_KEY, (bool) $linked_post, Connector::DATA_NAMESPACE );
 	}
 }
