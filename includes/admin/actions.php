@@ -106,15 +106,15 @@ function _tmwp_handle_actions() {
 	if (
 		! $post_data
 		|| (
-			! $post_data[ TMWP_ACTION_PROJECT_ORDER ]
-			&& ! $post_data[ TMWP_ACTION_PROJECT_UPDATE ]
-			&& ! $post_data[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ]
+			null === $post_data[ TMWP_ACTION_PROJECT_ORDER ]
+			&& null === $post_data[ TMWP_ACTION_PROJECT_UPDATE ]
+			&& null === $post_data[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ]
 		)
 	) {
 		return;
 	}
 
-	if ( $post_data[ TMWP_ACTION_PROJECT_ORDER ] ) {
+	if ( null !== $post_data[ TMWP_ACTION_PROJECT_ORDER ] ) {
 		$term = get_term_by( 'slug', $post_data['_tmwp_project_id'], TMWP_TAX_PROJECT );
 
 		_tmwp_project_order( $term );
@@ -135,7 +135,7 @@ function _tmwp_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
-	if ( $post_data[ TMWP_ACTION_PROJECT_UPDATE ] ) {
+	if ( null !== $post_data[ TMWP_ACTION_PROJECT_UPDATE ] ) {
 		$term = get_term_by( 'slug', $post_data['_tmwp_project_id'], TMWP_TAX_PROJECT );
 
 		_tmwp_project_update( $term );
@@ -156,7 +156,7 @@ function _tmwp_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
-	if ( $post_data[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ] ) {
+	if ( null !== $post_data[ TMWP_ACTION_PROJECT_ADD_TRANSLATION ] ) {
 
 		$updater = new \Tmwp\Admin\Cart_Updater();
 		$updater->setup();
