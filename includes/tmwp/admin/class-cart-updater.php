@@ -47,45 +47,34 @@ class Cart_Updater {
 			return $project;
 		}
 
-		$cart_items_for_post_ancestors = get_posts(
+		$cart_items = get_posts(
 			array(
-				'fields'     => 'ids',
-				'post_type'  => TMWP_CART,
-				'nopaging'   => true,
-				'tax_query'  => array(
+				'fields'    => 'ids',
+				'post_type' => TMWP_CART,
+				'nopaging'  => true,
+				'tax_query' => array(
 					array(
 						'taxonomy' => TMWP_TAX_PROJECT,
 						'terms'    => array( $project ),
 						'field'    => 'term_id'
-					)
-				),
-				'meta_query' => array(
-					array(
-						'key'     => '_tmwp_post_id',
-						'value'   => $ancestors,
-						'compare' => 'IN',
-						'type'    => 'NUMERIC'
-					),
-					array(
-						'key'     => '_tmwp_target_id',
-						'value'   => $languages,
-						'compare' => 'IN'
 					)
 				)
 			)
 		);
 
 		$already_in_cart = array();
-		foreach ( $cart_items_for_post_ancestors as $cart_item_id ) {
+		foreach ( $cart_items as $cart_item_id ) {
 
 			$lang = get_post_meta( $cart_item_id, '_tmwp_target_id', true );
 			if ( ! $lang || ! in_array( $lang, $languages, true ) ) {
 				continue;
 			}
 
-			empty( $already_in_cart[ $lang ] ) and $already_in_cart[ $lang ] = array();
 			$added_ancestor_id = (int) get_post_meta( $cart_item_id, '_tmwp_post_id', true );
-			$added_ancestor_id and $already_in_cart[ $lang ][ $added_ancestor_id ] = true;
+			if ( $added_ancestor_id && in_array( $added_ancestor_id, $ancestors, true ) ) {
+				empty( $already_in_cart[ $lang ] ) and $already_in_cart[ $lang ] = array();
+				$already_in_cart[ $lang ][ $added_ancestor_id ] = true;
+			}
 		}
 
 		$original_title        = get_the_title( $post );
