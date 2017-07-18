@@ -34,7 +34,7 @@ class Post_Saver implements Incoming_Processor {
 		switch_to_blog( $data->target_site_id() );
 
 		// Save post with all the data
-		$target_post_id = wp_update_post( $post_data );
+		$target_post_id = wp_insert_post( $post_data );
 
 		$target_post = $target_post_id && ! is_wp_error( $target_post_id ) ? get_post( $target_post_id ) : null;
 
