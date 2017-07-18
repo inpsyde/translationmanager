@@ -22,6 +22,10 @@ class Project {
 	/**
 	 * @var string
 	 */
+	private $name;
+	/**
+	 * @var string
+	 */
 	private $type;
 	/**
 	 * @var null
@@ -38,11 +42,12 @@ class Project {
 	 * @param string $type           Could be "order" or "quote".
 	 * @param null   $callback       URL to trigger after translation is completely done.
 	 */
-	public function __construct( $system, $system_version, $plugin, $plugin_version, $type = 'quote', $callback = null ) {
+	public function __construct( $system, $system_version, $plugin, $plugin_version, $name = '', $type = 'quote', $callback = null ) {
 		$this->system         = $system;
 		$this->system_version = $system_version;
 		$this->plugin         = $plugin;
 		$this->plugin_version = $plugin_version;
+		$this->name           = $name;
 		$this->type           = $type;
 		$this->callback       = $callback;
 	}
@@ -53,6 +58,7 @@ class Project {
 			'X-System-Version' => $this->get_system_version(),
 			'X-Plugin'         => $this->get_plugin(),
 			'X-Plugin-Version' => $this->get_plugin_version(),
+			'X-Name'           => $this->get_name(),
 			'X-Type'           => $this->get_type(),
 			'X-Callback'       => $this->get_callback(),
 		);
@@ -84,6 +90,13 @@ class Project {
 	 */
 	public function get_plugin_version() {
 		return $this->plugin_version;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->name;
 	}
 
 	/**

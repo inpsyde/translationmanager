@@ -234,7 +234,8 @@ function _tmwp_project_order( $project_term ) {
 			'WordPress',
 			$wp_version,
 			'tmwp',
-			TMWP_VERSION
+			TMWP_VERSION,
+			$project_term->name
 		)
 	);
 
