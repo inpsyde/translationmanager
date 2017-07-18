@@ -2,6 +2,8 @@
 
 namespace Tmwp\Module\Mlp;
 
+use Inpsyde\Wonolog\Data\Log;
+use Monolog\Logger;
 use Tmwp\Translation_Data;
 
 class Processor_Bus {
@@ -62,6 +64,13 @@ class Processor_Bus {
 				is_a( $processor, __NAMESPACE__ . $target )
 				&& apply_filters( 'tmwp_mlp_data_processor_enabled', true, $processor, $data )
 			) {
+				do_action(
+					'wonolog.log',
+					new Log(
+						'Processing with ' . get_class( $processor ) . '::' . $method . '()',
+						Logger::DEBUG
+					)
+				);
 
 				/** @var callable $cb */
 				$cb = array( $processor, $method );

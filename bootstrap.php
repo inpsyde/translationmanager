@@ -4,6 +4,9 @@
 require_once dirname( __FILE__ ) . '/includes/tmwp/class-loader.php';
 spl_autoload_register( array( new \Tmwp\Loader(), 'load_class' ) );
 
+// Enable logging
+Inpsyde\Wonolog\bootstrap();
+
 /**
  * Resolve path to template.
  *

@@ -2,6 +2,8 @@
 
 namespace Tmwp\Module\Mlp\Processor;
 
+use Inpsyde\Wonolog\Data\Log;
+use Monolog\Logger;
 use Tmwp\Module\Mlp\Connector;
 use Tmwp\Translation_Data;
 
@@ -35,6 +37,8 @@ class Post_Saver implements Incoming_Processor {
 
 		// Save post with all the data
 		$target_post_id = wp_insert_post( $post_data );
+
+		do_action( 'wonolog.log', new Log( __METHOD__ . ': Target post is ' . (int) $target_post_id, Logger::DEBUG ) );
 
 		$target_post = $target_post_id && ! is_wp_error( $target_post_id ) ? get_post( $target_post_id ) : null;
 

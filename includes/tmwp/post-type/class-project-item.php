@@ -47,8 +47,7 @@ class Project_Item {
 			)
 		); // Input var ok.
 
-		if ( static::STATUS_TRASH == $request['post_status']
-		) {
+		if ( isset( $request['post_status'] ) && static::STATUS_TRASH == $request['post_status'] ) {
 			// This is trash so we show no project column.
 			return $columns;
 		}

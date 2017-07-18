@@ -26,6 +26,7 @@
   ],
   "require": {
     "php": ">=5.4 <7.1",
+    "inpsyde/wonolog": "^1.0",
     "johnpbloch/wordpress-core": "~4.7",
     "johnpbloch/wordpress-core-installer": "~0.2",
     "wpackagist-plugin/multilingual-press": "^2.6"
