@@ -90,7 +90,6 @@
 		</script>
 	<?php endif; ?>
 
-
 	<?php foreach ( $this->get_languages() as $key => $language ): ?>
 		<div>
 			<label for="language_<?php esc_attr_e( $language->get_lang_code() ) ?>">

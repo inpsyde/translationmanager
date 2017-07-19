@@ -50,14 +50,19 @@ class InpsydeCustomFunctions {
 			</script>
 
 			<div id="my-content-id" style="display:none;">
-
+				<h1>Hello</h1>
+				<?php print_r($this->get_projects());?>
 			</div>
 
 			<div class="alignleft actions translate_button">
-				<a href="#TB_inline?width=600&height=550&inlineId=modal-window-id" id="translate_bulk_pages" class="button thickbox" disabled>Translate Bulk Post</a>
+				<a href="#TB_inline?width=600&height=550&inlineId=my-content-id" id="translate_bulk_pages" class="button thickbox" disabled>Translate Bulk Post</a>
 			</div>
 			<?php
 		}
+	}
+
+	public function get_projects() {
+		return tmwp_get_languages();
 	}
 
 	public function inpsyde_remove_search_box() {
