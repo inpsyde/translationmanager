@@ -7,15 +7,18 @@ class InpsydeCustomFunctions {
 	}
 
 	public function init() {
-		add_action( 'admin_head', array( $this, 'inpsyde_remove_search_box' ) );
-		add_action( 'admin_menu', array( $this, 'inpsyde_tmwp_settings_menu_item' ) );
-		add_action( 'admin_menu', array( $this, 'inpsyde_tmwp_about_page' ) );
-		add_filter( 'plugin_row_meta', array( $this, 'inpsyde_euro_text_link_at_plugin_list' ), 10, 2 );
-		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
-		add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_post_updated_messages' ), 10, 2 );
-		add_filter( 'get_edit_term_link', array( $this, 'inpsyde_get_edit_term_link' ), 10, 4 );
-		add_action( 'manage_posts_extra_tablenav', array( $this, 'restrict_manage_posts' ), 10 );
-		add_action( 'admin_post_tmwp_project_info_save', array( $this, 'tmwp_project_info_save' ) );
+
+		add_action( 'admin_head', [ $this, 'inpsyde_remove_search_box' ] );
+		add_action( 'admin_menu', [ $this, 'inpsyde_tmwp_settings_menu_item' ] );
+		add_action( 'admin_menu', [ $this, 'inpsyde_tmwp_about_page' ] );
+		add_filter( 'plugin_row_meta', [ $this, 'inpsyde_euro_text_link_at_plugin_list' ], 10, 2 );
+		add_filter( 'admin_footer_text', [ $this, 'admin_footer_text' ], 100 );
+		add_filter( 'bulk_post_updated_messages', [ $this, 'bulk_post_updated_messages' ], 10, 2 );
+		add_filter( 'get_edit_term_link', [ $this, 'inpsyde_get_edit_term_link' ], 10, 4 );
+		add_action( 'manage_posts_extra_tablenav', [ $this, 'restrict_manage_posts' ], 10 );
+		add_action( 'admin_post_tmwp_project_info_save', [ $this, 'tmwp_project_info_save' ] );
+		add_filter( 'bulk_actions-edit-page', [ $this, 'translate_bulk_actions' ] );
+		add_filter( 'handle_bulk_actions-edit-page', [ $this, 'bulk_translate_action_handler' ], 10, 3 );
 	}
 
 	public function restrict_manage_posts( $which ) {
@@ -304,6 +307,26 @@ class InpsydeCustomFunctions {
 
 		wp_safe_redirect( wp_get_referer() );
 		return;
+	}
+
+	public function translate_bulk_actions( $actions ){
+		$actions['bulk_translate'] = 'Bulk Translate';
+		return $actions;
+	}
+
+	/**
+	 * Handles the bulk action.
+	 */
+	public function bulk_translate_action_handler( $redirect_to, $action, $post_ids ) {
+
+		if ( $action !== 'bulk_translate' ) {
+			return $redirect_to;
+		}
+
+		$redirect_to = add_query_arg( 'bulk_translate', implode( '+', $post_ids ), $redirect_to );
+
+		return $redirect_to;
+
 	}
 }
 
