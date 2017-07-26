@@ -27,27 +27,113 @@ class InpsydeCustomFunctions {
 
 			<script type="text/javascript">
 				(function($){
-
 					$(function(){
-
 						$( '.tablenav .actions.bulkactions' ).on( 'click', '.button.action', function(e){
 							var selectVal = $(this).prev( 'select' ).val();
 							if( 'bulk_translate' === selectVal ) {
 								e.preventDefault();
-								tb_show(
-									'Please select the languages',
-									'#TB_inline?width=600&height=550&inlineId=bulk-translate-language-box-popup',
-									null
-								);
+								var checked = $("input[name='post[]']").is(':checked');
+								if( !checked ) {
+									alert('You must need to select at least one element for translate.');
+								} else {
+									var buttonID = $( this ).attr( 'id' );
+									if( 'doaction' === buttonID ) {
+										$( this ).parent().parent().find( '.tmwp-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
+									} else {
+										$( this ).parent().parent().parent().find('.tablenav.top').find( '.tmwp-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
+									}
+									//
+
+								}
+								return true;
 							}
 						});
 
+						$( '.tmwp-language-overlay .tmwp-lang-popup' ).on( 'click', '.close', function(){
+							$( this ).parent().parent().css( 'visbility', 'hidden' ).css( 'opacity', '0' ).removeAttr('style');
+						} );
+
+						$( document ).on( 'click', '#TB_ajaxContent input#tmwp-submit-bulk-translate', function(){
+							document.getElementById('posts-filter').submit();
+						})
 					});
 				})(jQuery)
 			</script>
+			<style>
+				.tmwp-language-overlay {
+					position: fixed;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					background: rgba(0, 0, 0, 0.7);
+					transition: opacity 500ms;
+					visibility: hidden;
+					opacity: 0;
+				}
 
-			<div id="bulk-translate-language-box-popup" style="display:none;">
-				<h1>Hello</h1>
+				.tmwp-lang-popup {
+					margin: 70px auto;
+					padding: 20px;
+					background: #fff;
+					width: 30%;
+					position: relative;
+					transition: all 5s ease-in-out;
+				}
+
+				.tmwp-lang-popup h2 {
+					margin-top: 0;
+					color: #333;
+					font-family: Tahoma, Arial, sans-serif;
+				}
+				.tmwp-lang-popup .close {
+					position: absolute;
+					top: 20px;
+					right: 30px;
+					transition: all 200ms;
+					font-size: 30px;
+					font-weight: bold;
+					text-decoration: none;
+					color: #333;
+				}
+				.tmwp-lang-popup .content {
+					max-height: 30%;
+					overflow: auto;
+				}
+
+				@media screen and (max-width: 700px){
+					.box{
+						width: 70%;
+					}
+					.tmwp-lang-popup{
+						width: 70%;
+					}
+				}
+			</style>
+
+			<div class="tmwp-language-overlay">
+				<div class="tmwp-lang-popup">
+					<a class="close" href="#">&times;</a>
+					<div class="content">
+						<h2>Please select languages here:</h2>
+						<div>
+							<input type="checkbox" name="tmwp_bulk_languages[]" value="de"> Deutsch<br>
+							<input type="checkbox" name="tmwp_bulk_languages[]" value="fr"> Français<br>
+						</div>
+
+						<?php
+						submit_button(
+							'Bulk Translate',
+							'primary',
+							'tmwp-submit-bulk-translate',
+							true,
+							[
+								'id' => 'tmwp-submit-bulk-translate'
+							]
+						);
+						?>
+					</div>
+				</div>
 			</div>
 			<?php
 		}
@@ -307,7 +393,7 @@ class InpsydeCustomFunctions {
 		if ( $action !== 'bulk_translate' ) {
 			return $redirect_to;
 		}
-
+		print_r($_GET);die();
 		$redirect_to = add_query_arg( 'bulk_translate', implode( '+', $post_ids ), $redirect_to );
 
 		return $redirect_to;
