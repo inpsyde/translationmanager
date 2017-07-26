@@ -49,13 +49,20 @@ class InpsydeCustomFunctions {
 							}
 						});
 
-						$( '.tmwp-language-overlay .tmwp-lang-popup' ).on( 'click', '.close', function(){
-							$( this ).parent().parent().css( 'visbility', 'hidden' ).css( 'opacity', '0' ).removeAttr('style');
+						$( '.tmwp-language-overlay .tmwp-lang-popup' ).on( 'click', '.close', function() {
+							$( this ).parent().parent().removeAttr( 'style' );
 						} );
 
-						$( document ).on( 'click', '#TB_ajaxContent input#tmwp-submit-bulk-translate', function(){
-							document.getElementById('posts-filter').submit();
-						})
+						$( '#tmwp-lang-wrap-div' ).on( 'change', 'input[type=checkbox]', function( ) {
+							var inputStatus = $( this ).parent().find('input[name="tmwp_bulk_languages[]"]').is(':checked');
+
+							if(!inputStatus) {
+								$("#tmwp-submit-bulk-translate").attr("disabled", true);
+							} else {
+								$("#tmwp-submit-bulk-translate").attr("disabled", false);
+							}
+							return true;
+						});
 					});
 				})(jQuery)
 			</script>
@@ -116,7 +123,7 @@ class InpsydeCustomFunctions {
 					<a class="close" href="#">&times;</a>
 					<div class="content">
 						<h2>Please select languages here:</h2>
-						<div>
+						<div id="tmwp-lang-wrap-div">
 							<input type="checkbox" name="tmwp_bulk_languages[]" value="de"> Deutsch<br>
 							<input type="checkbox" name="tmwp_bulk_languages[]" value="fr"> Français<br>
 						</div>
@@ -128,7 +135,8 @@ class InpsydeCustomFunctions {
 							'tmwp-submit-bulk-translate',
 							true,
 							[
-								'id' => 'tmwp-submit-bulk-translate'
+								'id'        => 'tmwp-submit-bulk-translate',
+								'disabled'  => 'true'
 							]
 						);
 						?>
