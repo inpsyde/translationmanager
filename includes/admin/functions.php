@@ -27,45 +27,30 @@ class InpsydeCustomFunctions {
 
 			<script type="text/javascript">
 				(function($){
+
 					$(function(){
-						// Code for making the button dependable on checkboxes.
-						$( ".check-column" ).on('change', "input[type='checkbox']", function( e ) {
-							var checked = $("input[name='post[]']").is(':checked');
-							if(!checked) {
-								$("#translate_bulk_pages").attr("disabled", true);
-							} else {
-								$("#translate_bulk_pages").attr("disabled", false);
+
+						$( '.tablenav .actions.bulkactions' ).on( 'click', '.button.action', function(e){
+							var selectVal = $(this).prev( 'select' ).val();
+							if( 'bulk_translate' === selectVal ) {
+								e.preventDefault();
+								tb_show(
+									'Please select the languages',
+									'#TB_inline?width=600&height=550&inlineId=bulk-translate-language-box-popup',
+									null
+								);
 							}
-							return true;
 						});
 
-						// Code for making the button prevent default on checkboxes.
-						$("#translate_bulk_pages").on( 'click', function( e ) {
-							var disabled = $(this).attr('disabled');
-							if(disabled) {
-								e.preventDefault();
-								return false;
-							}
-							return true;
-						})
 					});
 				})(jQuery)
 			</script>
 
-			<div id="my-content-id" style="display:none;">
+			<div id="bulk-translate-language-box-popup" style="display:none;">
 				<h1>Hello</h1>
-				<?php print_r($this->get_projects());?>
-			</div>
-
-			<div class="alignleft actions translate_button">
-				<a href="#TB_inline?width=600&height=550&inlineId=my-content-id" id="translate_bulk_pages" class="button thickbox" disabled>Translate Bulk Post</a>
 			</div>
 			<?php
 		}
-	}
-
-	public function get_projects() {
-		return tmwp_get_languages();
 	}
 
 	public function inpsyde_remove_search_box() {
