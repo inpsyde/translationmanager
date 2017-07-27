@@ -7,57 +7,163 @@ class InpsydeCustomFunctions {
 	}
 
 	public function init() {
-		add_action( 'admin_head', array( $this, 'inpsyde_remove_search_box' ) );
-		add_action( 'admin_menu', array( $this, 'inpsyde_tmwp_settings_menu_item' ) );
-		add_action( 'admin_menu', array( $this, 'inpsyde_tmwp_about_page' ) );
-		add_filter( 'plugin_row_meta', array( $this, 'inpsyde_euro_text_link_at_plugin_list' ), 10, 2 );
-		add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 100 );
-		add_filter( 'bulk_post_updated_messages', array( $this, 'bulk_post_updated_messages' ), 10, 2 );
-		add_filter( 'get_edit_term_link', array( $this, 'inpsyde_get_edit_term_link' ), 10, 4 );
-		add_action( 'manage_posts_extra_tablenav', array( $this, 'restrict_manage_posts' ), 10 );
-		add_action( 'admin_post_tmwp_project_info_save', array( $this, 'tmwp_project_info_save' ) );
+
+		add_action( 'admin_head', [ $this, 'inpsyde_remove_search_box' ] );
+		add_action( 'admin_menu', [ $this, 'inpsyde_tmwp_settings_menu_item' ] );
+		add_action( 'admin_menu', [ $this, 'inpsyde_tmwp_about_page' ] );
+		add_filter( 'plugin_row_meta', [ $this, 'inpsyde_euro_text_link_at_plugin_list' ], 10, 2 );
+		add_filter( 'admin_footer_text', [ $this, 'admin_footer_text' ], 100 );
+		add_filter( 'bulk_post_updated_messages', [ $this, 'bulk_post_updated_messages' ], 10, 2 );
+		add_filter( 'get_edit_term_link', [ $this, 'inpsyde_get_edit_term_link' ], 10, 4 );
+		add_action( 'manage_posts_extra_tablenav', [ $this, 'restrict_manage_posts' ], 10 );
+		add_action( 'admin_post_tmwp_project_info_save', [ $this, 'tmwp_project_info_save' ] );
+		add_filter( 'bulk_actions-edit-page', [ $this, 'translate_bulk_actions' ] );
+		add_filter( 'handle_bulk_actions-edit-page', [ $this, 'bulk_translate_action_handler' ], 10, 3 );
 	}
 
 	public function restrict_manage_posts( $which ) {
+		global $current_site;
 		if( 'page' === $_GET['post_type'] && 'top' === $which ) { ?>
 			<?php add_thickbox(); ?>
 
 			<script type="text/javascript">
 				(function($){
 					$(function(){
-						// Code for making the button dependable on checkboxes.
-						$( ".check-column" ).on('change', "input[type='checkbox']", function( e ) {
-							var checked = $("input[name='post[]']").is(':checked');
-							if(!checked) {
-								$("#translate_bulk_pages").attr("disabled", true);
+						$( '.tablenav .actions.bulkactions' ).on( 'click', '.button.action', function(e){
+							var selectVal = $(this).prev( 'select' ).val();
+							if( 'bulk_translate' === selectVal ) {
+								e.preventDefault();
+								var checked = $("input[name='post[]']").is(':checked');
+								if( !checked ) {
+									alert('You must need to select at least one element for translate.');
+								} else {
+									var buttonID = $( this ).attr( 'id' );
+									if( 'doaction' === buttonID ) {
+										$( this ).parent().parent().find( '.tmwp-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
+									} else {
+										$( this ).parent().parent().parent().find('.tablenav.top').find( '.tmwp-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
+									}
+									//
+
+								}
+								return true;
+							}
+						});
+
+						$( '.tmwp-language-overlay .tmwp-lang-popup' ).on( 'click', '.close', function() {
+							$( this ).parent().parent().removeAttr( 'style' );
+						} );
+
+						$( '#tmwp-lang-wrap-div' ).on( 'change', 'input[type=checkbox]', function( ) {
+							var inputStatus = $( this ).parent().find('input[name="tmwp_bulk_languages[]"]').is(':checked');
+
+							if(!inputStatus) {
+								$("#tmwp-submit-bulk-translate").attr("disabled", true);
 							} else {
-								$("#translate_bulk_pages").attr("disabled", false);
+								$("#tmwp-submit-bulk-translate").attr("disabled", false);
 							}
 							return true;
 						});
-
-						// Code for making the button prevent default on checkboxes.
-						$("#translate_bulk_pages").on( 'click', function( e ) {
-							var disabled = $(this).attr('disabled');
-							if(disabled) {
-								e.preventDefault();
-								return false;
-							}
-							return true;
-						})
 					});
 				})(jQuery)
 			</script>
+			<style>
+				.tmwp-language-overlay {
+					position: fixed;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					background: rgba(0, 0, 0, 0.7);
+					transition: opacity 500ms;
+					visibility: hidden;
+					opacity: 0;
+				}
 
-			<div id="my-content-id" style="display:none;">
+				.tmwp-lang-popup {
+					margin: 70px auto;
+					padding: 20px;
+					background: #fff;
+					width: 30%;
+					position: relative;
+					transition: all 5s ease-in-out;
+				}
 
-			</div>
+				.tmwp-lang-popup h2 {
+					margin-top: 0;
+					color: #333;
+					font-family: Tahoma, Arial, sans-serif;
+				}
+				.tmwp-lang-popup .close {
+					position: absolute;
+					top: 20px;
+					right: 30px;
+					transition: all 200ms;
+					font-size: 30px;
+					font-weight: bold;
+					text-decoration: none;
+					color: #333;
+				}
+				.tmwp-lang-popup .content {
+					max-height: 30%;
+					overflow: auto;
+				}
 
-			<div class="alignleft actions translate_button">
-				<a href="#TB_inline?width=600&height=550&inlineId=modal-window-id" id="translate_bulk_pages" class="button thickbox" disabled>Translate Bulk Post</a>
+				@media screen and (max-width: 700px){
+					.box{
+						width: 70%;
+					}
+					.tmwp-lang-popup{
+						width: 70%;
+					}
+				}
+			</style>
+
+			<div class="tmwp-language-overlay">
+				<div class="tmwp-lang-popup">
+					<a class="close" href="#">&times;</a>
+					<div class="content">
+						<h2>Please select languages here:</h2>
+						<div id="tmwp-lang-wrap-div">
+							<?php foreach( $this->get_languages( $current_site->id ) as $lang_key => $lang ): ?>
+								<input type="checkbox" name="tmwp_bulk_languages[]" value="<?php echo $lang_key ?>"><?php echo $lang->get_label() ?><br>
+							<?php endforeach;?>
+						</div>
+
+						<?php
+						submit_button(
+							'Bulk Translate',
+							'primary',
+							'tmwp-submit-bulk-translate',
+							true,
+							[
+								'id'        => 'tmwp-submit-bulk-translate',
+								'disabled'  => 'true'
+							]
+						);
+						?>
+					</div>
+				</div>
 			</div>
 			<?php
 		}
+	}
+
+	public function get_languages( $site_id ) {
+
+		global $wpdb;
+		$languages = [];
+		$site_relations = new \Mlp_Site_Relations( $wpdb, 'mlp_site_relations' );
+
+		$sites = $site_relations->get_related_sites( $site_id );
+
+		foreach ( $sites as $site ) {
+			$lang_iso = mlp_get_blog_language( $site, false );
+
+			$languages[ $site ] = new Tmwp\Domain\Language( $lang_iso, mlp_get_lang_by_iso( $lang_iso ) );
+		}
+
+		return $languages;
 	}
 
 	public function inpsyde_remove_search_box() {
@@ -299,6 +405,42 @@ class InpsydeCustomFunctions {
 
 		wp_safe_redirect( wp_get_referer() );
 		return;
+	}
+
+	public function translate_bulk_actions( $actions ){
+		$actions['bulk_translate'] = 'Bulk Translate';
+		return $actions;
+	}
+
+	/**
+	 * Handles the bulk action.
+	 */
+	public function bulk_translate_action_handler( $redirect_to, $action, $post_ids ) {
+
+		if ( $action !== 'bulk_translate' || empty( $post_ids ) || !isset( $_GET['tmwp_bulk_languages'] ) ) {
+			return $redirect_to;
+		}
+
+		$languages = $_GET['tmwp_bulk_languages'];
+
+		//print_r($languages);die();
+
+		$handler = new Tmwp\Admin\Handler\Project_Handler;
+		$project = $handler->create_project(
+			sprintf( __( 'Project %s', 'tmwp' ), date( 'Y-m-d H:i:s' ) )
+		);
+
+		// Iterate translations
+		foreach ( $post_ids as $post_id ) {
+			foreach( $languages as $lang_id ) {
+				$handler->add_translation( $project, $post_id, $lang_id );
+			}
+		}
+
+		$redirect_to = Tmwp\Taxonomy\Project::get_project_link( $project );;
+
+		return $redirect_to;
+
 	}
 }
 
