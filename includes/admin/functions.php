@@ -22,6 +22,7 @@ class InpsydeCustomFunctions {
 	}
 
 	public function restrict_manage_posts( $which ) {
+		global $current_site;
 		if( 'page' === $_GET['post_type'] && 'top' === $which ) { ?>
 			<?php add_thickbox(); ?>
 
@@ -124,8 +125,9 @@ class InpsydeCustomFunctions {
 					<div class="content">
 						<h2>Please select languages here:</h2>
 						<div id="tmwp-lang-wrap-div">
-							<input type="checkbox" name="tmwp_bulk_languages[]" value="de"> Deutsch<br>
-							<input type="checkbox" name="tmwp_bulk_languages[]" value="fr"> Français<br>
+							<?php foreach( $this->get_languages( $current_site->id ) as $lang_key => $lang ): ?>
+								<input type="checkbox" name="tmwp_bulk_languages[]" value="<?php echo $lang_key ?>"><?php echo $lang->get_label() ?><br>
+							<?php endforeach;?>
 						</div>
 
 						<?php
@@ -145,6 +147,23 @@ class InpsydeCustomFunctions {
 			</div>
 			<?php
 		}
+	}
+
+	public function get_languages( $site_id ) {
+
+		global $wpdb;
+		$languages = [];
+		$site_relations = new \Mlp_Site_Relations( $wpdb, 'mlp_site_relations' );
+
+		$sites = $site_relations->get_related_sites( $site_id );
+
+		foreach ( $sites as $site ) {
+			$lang_iso = mlp_get_blog_language( $site, false );
+
+			$languages[ $site ] = new Tmwp\Domain\Language( $lang_iso, mlp_get_lang_by_iso( $lang_iso ) );
+		}
+
+		return $languages;
 	}
 
 	public function inpsyde_remove_search_box() {
@@ -398,11 +417,27 @@ class InpsydeCustomFunctions {
 	 */
 	public function bulk_translate_action_handler( $redirect_to, $action, $post_ids ) {
 
-		if ( $action !== 'bulk_translate' ) {
+		if ( $action !== 'bulk_translate' || empty( $post_ids ) || !isset( $_GET['tmwp_bulk_languages'] ) ) {
 			return $redirect_to;
 		}
-		print_r($_GET);die();
-		$redirect_to = add_query_arg( 'bulk_translate', implode( '+', $post_ids ), $redirect_to );
+
+		$languages = $_GET['tmwp_bulk_languages'];
+
+		//print_r($languages);die();
+
+		$handler = new Tmwp\Admin\Handler\Project_Handler;
+		$project = $handler->create_project(
+			sprintf( __( 'Project %s', 'tmwp' ), date( 'Y-m-d H:i:s' ) )
+		);
+
+		// Iterate translations
+		foreach ( $post_ids as $post_id ) {
+			foreach( $languages as $lang_id ) {
+				$handler->add_translation( $project, $post_id, $lang_id );
+			}
+		}
+
+		$redirect_to = Tmwp\Taxonomy\Project::get_project_link( $project );;
 
 		return $redirect_to;
 
