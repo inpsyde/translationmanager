@@ -303,7 +303,7 @@ class InpsydeCustomFunctions {
 						<div class="backwpup-welcome">
 							<img class="backwpup-banner-img" src="<?php echo plugins_url( '../../public/img/Workflow_Industrie_EN.jpg', __FILE__ ) ?>" />
 							<h1><?php esc_html_e( 'Welcome to translationMANAGER for WordPress', 'translationmanager' ); ?></h1>
-							<p><?php esc_html_e( 'With the <b>translationMANAGER</b>, exporting content from your <b>WordPress Multisite</b> is simple and straightforward. Select posts, pages and customized content (custom post types) with just a few clicks and send the texts to the Eurotext Translation Portal. Once translated, texts can be reimported just as quickly and then immediately published. All of this from the comfort of the WordPress admin area. Professional translations with WordPress have never been so simple!', 'translationmanager' );?></p>
+							<p><?php esc_html_e( 'With the translationMANAGER, exporting content from your WordPress Multisite is simple and straightforward. Select posts, pages and customized content (custom post types) with just a few clicks and send the texts to the Eurotext Translation Portal. Once translated, texts can be reimported just as quickly and then immediately published. All of this from the comfort of the WordPress admin area. Professional translations with WordPress have never been so simple!', 'translationmanager' );?></p>
 							<p><?php esc_html_e('Eurotext works with together with more than 4,000 native-speaking translators working in over 50 languages. Modern translation technology and automated quality control processes allow us to offer high-quality translations at fair prices. See for yourself!', 'translationmanager')?></p>
 						</div>
 						<table class="eurotext-table">
