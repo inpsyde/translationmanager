@@ -25,13 +25,12 @@
     }
   ],
   "require": {
-    "php": ">=5.4 <7.1",
-    "inpsyde/wonolog": "^1.0",
-    "johnpbloch/wordpress-core": "~4.7",
-    "johnpbloch/wordpress-core-installer": "~0.2",
-    "wpackagist-plugin/multilingual-press": "^2.6"
+    "php": ">=5.4 <7.1"
   },
   "require-dev": {
+    "johnpbloch/wordpress-core": "~4.7",
+    "johnpbloch/wordpress-core-installer": "~0.2",
+    "wpackagist-plugin/multilingual-press": "^2.6",
     "phpunit/phpunit": "~5",
     "brain/monkey": "2.*",
     "sourcerer-mike/wp-readme-validator": "dev-master",

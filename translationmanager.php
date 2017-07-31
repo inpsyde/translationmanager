@@ -17,8 +17,8 @@ define( 'TMWP_DIR', dirname( TMWP_FILE ) );
 define( 'TMWP_FILENAME', basename( TMWP_DIR ) . '/' . basename( TMWP_FILE ) );
 define( 'TMWP_VERSION', '1.0.0' );
 
-// Bootstrap (also loads "bootstrap.php").
-require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+// Load bootstrap
+require_once __DIR__ . '/bootstrap.php';
 
 register_activation_hook( TMWP_FILENAME, 'tmwp_activate' );
 

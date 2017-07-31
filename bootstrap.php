@@ -1,11 +1,12 @@
 <?php
+// If the file was already loaded (e.g. via Composer) the constant is defined, and we bail to avoid fatals.
+if ( defined( 'TMWP_ACTION_PROJECT_ADD_TRANSLATION' ) ) {
+	return;
+}
 
 // Register autoloader.
 require_once dirname( __FILE__ ) . '/includes/tmwp/class-loader.php';
 spl_autoload_register( array( new \Tmwp\Loader(), 'load_class' ) );
-
-// Enable logging
-Inpsyde\Wonolog\bootstrap();
 
 /**
  * Resolve path to template.
@@ -64,3 +65,4 @@ const TMWP_TAX_PROJECT                    = 'tmwp_project';
 const TMWP_TRANS_STATUS                   = 'tmwp_trans_status';
 const TMWP_TRANS_STATUS_PENDING           = 'tmwp_pending';
 const TMWP_UPDATED_POST                   = 'tmwp_updated_post';
+const TMWP_ACTION_LOG                     = 'tmwp_log';
