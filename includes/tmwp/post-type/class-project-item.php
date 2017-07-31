@@ -57,13 +57,13 @@ class Project_Item {
 			return $columns;
 		}
 
-		$columns[ self::COLUMN_PROJECT ] = __( 'Project', 'tmwp' );
+		$columns[ self::COLUMN_PROJECT ] = __( 'Project', 'translationmanager' );
 
 		return $columns;
 	}
 
 	protected static function _column_language( $columns ) {
-		$columns[ self::COLUMN_LANGUAGE ] = __( 'Target language', 'tmwp' );
+		$columns[ self::COLUMN_LANGUAGE ] = __( 'Target language', 'translationmanager' );
 
 		return $columns;
 	}

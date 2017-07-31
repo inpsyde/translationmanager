@@ -51,7 +51,7 @@ class Project {
 
 		// Add status ad second place.
 		$columns = array_slice( $columns, 0, 1 )
-		           + array( static::COL_STATUS => __( 'Status', 'tmwp' ) )
+		           + array( static::COL_STATUS => __( 'Status', 'translationmanager' ) )
 		           + array_slice( $columns, 1 );
 
 		$columns[ static::COL_ACTIONS ] = '';
@@ -70,11 +70,11 @@ class Project {
 		switch ( $column_name ) {
 			case static::COL_STATUS:
 				if ( ! get_term_meta( $term_id, '_tmwp_order_id', true ) ) {
-					return __( 'New', 'tmwp' );
+					return __( 'New', 'translationmanager' );
 				}
 
 				return sprintf(
-					__( 'Ordered at %s', 'tmwp' ),
+					__( 'Ordered at %s', 'translationmanager' ),
 					date( 'Y-m-d' )
 				);
 				break;
@@ -82,7 +82,7 @@ class Project {
 				return sprintf(
 					'<a href="%s" class="button">%s</a>',
 					self::get_project_link( $term_id ),
-					__( 'Show project', 'tmwp' )
+					__( 'Show project', 'translationmanager' )
 				);
 		}
 

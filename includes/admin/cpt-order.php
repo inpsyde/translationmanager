@@ -8,9 +8,9 @@ function tmwp_cpt_order() {
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
 				'create_posts' => false,
 			),
-			'description'  => __( 'Your placed orders.', 'tmwp' ),
+			'description'  => __( 'Your placed orders.', 'translationmanager' ),
 			'hierarchical' => true,
-			'label'        => __( 'Order', 'tmwp' ),
+			'label'        => __( 'Order', 'translationmanager' ),
 			'map_meta_cap' => true,
 			'public'       => true,
 			'show_in_menu' => 'edit.php?post_type=' . TMWP_TRANS_STATUS,

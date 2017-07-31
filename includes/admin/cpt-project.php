@@ -4,12 +4,12 @@ function tmwp_cpt_cart() {
 	register_post_type(
 		TMWP_CART,
 		array(
-			'label'         => __( 'Cart', 'tmwp' ),
+			'label'         => __( 'Cart', 'translationmanager' ),
 			'labels'        => array(
-				'name' => __( 'Projects', 'tmwp' ),
-				'menu_name' => __( 'Translations', 'tmwp' ),
+				'name' => __( 'Projects', 'translationmanager' ),
+				'menu_name' => __( 'Translations', 'translationmanager' ),
 			),
-			'description'   => __( 'What you are about to order.', 'tmwp' ),
+			'description'   => __( 'What you are about to order.', 'translationmanager' ),
 			'public'        => true,
 			'capabilities'  => array(
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
@@ -45,7 +45,7 @@ function tmwp_bulk_actions_cart( $actions ) {
 	unset( $actions['edit'] );
 
 	if ( isset( $actions['trash'] ) ) {
-		$actions['trash'] = __( 'Remove from project', 'tmwp' );
+		$actions['trash'] = __( 'Remove from project', 'translationmanager' );
 	}
 
 	return $actions;
@@ -70,7 +70,7 @@ function tmwp_cart_row_actions( $actions, $post ) {
 	return array(
 		'trash' => str_replace(
 			'>Trash<',
-			'>' . __( 'Remove from project', 'tmwp' ) . '<',
+			'>' . __( 'Remove from project', 'translationmanager' ) . '<',
 			$actions['trash']
 		)
 	);
@@ -104,7 +104,7 @@ add_filter( 'post_row_actions', 'tmwp_cart_row_actions', 10, 2 );
 //		) {
 //			// This has an order id so we show the update button.
 //			require tmwp_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
-//			_e( 'Thanks for your order.', 'tmwp' );
+//			_e( 'Thanks for your order.', 'translationmanager' );
 //
 //			return;
 //		}
@@ -185,7 +185,7 @@ add_filter( 'views_edit-tmwp_cart', function ( $value ) {
 add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_counts ) {
 
 	$bulk_messages[ TMWP_CART ] = array(
-		'updated'   => __( 'Project has been updated.', 'tmwp' ),
+		'updated'   => __( 'Project has been updated.', 'translationmanager' ),
 		'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( '1 page not updated, somebody is editing it.' ) :
 			_n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] ),
 		'deleted'   => _n( '%s page permanently deleted.', '%s pages permanently deleted.', $bulk_counts['deleted'] ),
@@ -194,7 +194,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 	);
 
 	if ( isset( $_GET['updated'] ) && - 1 == intval( $_GET['updated'] ) ) { // Input var ok.
-		$bulk_messages[ TMWP_CART ]['updated'] = __( 'Project has been created', 'tmwp' );
+		$bulk_messages[ TMWP_CART ]['updated'] = __( 'Project has been created', 'translationmanager' );
 	}
 
 	return $bulk_messages;

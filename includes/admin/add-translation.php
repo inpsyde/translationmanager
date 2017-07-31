@@ -17,8 +17,8 @@ function tmwp_add_translation_menu() {
 	// Register admin page route.
 	add_submenu_page(
 		null,
-		__('Translations', 'tmwp'),
-		__('Translations', 'tmwp'),
+		__('Translations', 'translationmanager'),
+		__('Translations', 'translationmanager'),
 		'read',
 		'tmwp_add_translation',
 		'__return_false'

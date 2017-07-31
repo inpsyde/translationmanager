@@ -5,9 +5,9 @@ function tmwp_cart_taxonomy() {
 		TMWP_TAX_PROJECT,
 		TMWP_CART,
 		array(
-			'label'  => __( 'Projects', 'tmwp' ),
+			'label'  => __( 'Projects', 'translationmanager' ),
 			'labels' => array(
-				'add_new_item' => __( 'Create new project', 'tmwp' )
+				'add_new_item' => __( 'Create new project', 'translationmanager' )
 			),
 			'public' => true,
 		)

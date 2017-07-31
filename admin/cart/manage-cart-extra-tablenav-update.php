@@ -5,5 +5,5 @@
 		       id="<?php echo TMWP_ACTION_PROJECT_UPDATE ?>"
 		       name="<?php echo TMWP_ACTION_PROJECT_UPDATE ?>"
 		       class="button button-primary"
-		       value="<?php _e( 'Update status', 'tmwp' ) ?>"/>
+		       value="<?php _e( 'Update status', 'translationmanager' ) ?>"/>
 </div>

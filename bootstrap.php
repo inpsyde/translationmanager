@@ -37,11 +37,11 @@ function tmwp_activate() {
 
 function tmwp_die( $message = '', $title = '', $args = array() ) {
 	if ( ! $title ) {
-		$title = __( 'We are sorry!', 'tmwp' );
+		$title = __( 'We are sorry!', 'translationmanager' );
 	}
 
 	if ( ! $message ) {
-		$message = __( 'Something went wrong. Please contact us.', 'tmwp' );
+		$message = __( 'Something went wrong. Please contact us.', 'translationmanager' );
 	}
 
 	wp_die( $message, $title, $args );

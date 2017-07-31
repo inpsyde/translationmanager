@@ -33,7 +33,7 @@ class Translation_Box {
 
 		add_meta_box(
 			static::ID,
-			__( 'Inquiry for translation', 'tmwp' ),
+			__( 'Inquiry for translation', 'translationmanager' ),
 			array( $this, 'dispatch' ),
 			$tmwp_translation_box_screen,
 			self::CONTEXT
@@ -93,7 +93,7 @@ class Translation_Box {
 
 	public function get_recent_project_name() {
 		if ( ! $this->get_recent_project_id() ) {
-			return __( 'New project', 'tmwp' );
+			return __( 'New project', 'translationmanager' );
 		}
 
 		return get_term_field( 'name', $this->get_recent_project_id() );

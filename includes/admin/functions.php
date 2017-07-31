@@ -427,7 +427,7 @@ class InpsydeCustomFunctions {
 
 		$handler = new Tmwp\Admin\Handler\Project_Handler;
 		$project = $handler->create_project(
-			sprintf( __( 'Project %s', 'tmwp' ), date( 'Y-m-d H:i:s' ) )
+			sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
 		);
 
 		// Iterate translations

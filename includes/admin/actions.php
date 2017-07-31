@@ -21,7 +21,7 @@ function tmwp_action_project_add_translation( $arguments ) {
 
 	if ( ! $project ) {
 		$project = $handler->create_project(
-			sprintf( __( 'Project %s', 'tmwp' ), date( 'Y-m-d H:i:s' ) )
+			sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
 		);
 	}
 
@@ -233,7 +233,7 @@ function _tmwp_project_order( $project_term ) {
 		new \Tmwp\Domain\Project(
 			'WordPress',
 			$wp_version,
-			'tmwp',
+			'translationmanager',
 			TMWP_VERSION,
 			$project_term->name
 		)
