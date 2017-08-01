@@ -17,136 +17,140 @@ class InpsydeCustomFunctions {
 		add_filter( 'get_edit_term_link', [ $this, 'inpsyde_get_edit_term_link' ], 10, 4 );
 		add_action( 'manage_posts_extra_tablenav', [ $this, 'restrict_manage_posts' ], 10 );
 		add_action( 'admin_post_translationmanager_project_info_save', [ $this, 'translationmanager_project_info_save' ] );
+		add_filter( 'bulk_actions-edit-post', [ $this, 'translate_bulk_actions' ] );
+		add_filter( 'handle_bulk_actions-edit-post', [ $this, 'bulk_translate_action_handler' ], 10, 3 );
 		add_filter( 'bulk_actions-edit-page', [ $this, 'translate_bulk_actions' ] );
 		add_filter( 'handle_bulk_actions-edit-page', [ $this, 'bulk_translate_action_handler' ], 10, 3 );
 	}
 
 	public function restrict_manage_posts( $which ) {
 		global $current_site;
-		if( 'page' === $_GET['post_type'] && 'top' === $which ) { ?>
-			<?php add_thickbox(); ?>
-
-			<script type="text/javascript">
-				(function($){
-					$(function(){
-						$( '.tablenav .actions.bulkactions' ).on( 'click', '.button.action', function(e){
-							var selectVal = $(this).prev( 'select' ).val();
-							if( 'bulk_translate' === selectVal ) {
-								e.preventDefault();
-								var checked = $("input[name='post[]']").is(':checked');
-								if( !checked ) {
-									alert('You must need to select at least one element for translate.');
-								} else {
-									var buttonID = $( this ).attr( 'id' );
-									if( 'doaction' === buttonID ) {
-										$( this ).parent().parent().find( '.translationmanager-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
+		$screen = get_current_screen();
+		if( 'page' === $screen->post_type || 'post' === $screen->post_type ) {
+			if( 'top' === $which ) { ?>
+				<script type="text/javascript">
+					(function($){
+						$(function(){
+							$( '.tablenav .actions.bulkactions' ).on( 'click', '.button.action', function(e){
+								var selectVal = $(this).prev( 'select' ).val();
+								if( 'bulk_translate' === selectVal ) {
+									e.preventDefault();
+									var checked = $("input[name='post[]']").is(':checked');
+									if( !checked ) {
+										alert('You must need to select at least one element for translate.');
 									} else {
-										$( this ).parent().parent().parent().find('.tablenav.top').find( '.translationmanager-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
-									}
-									//
+										var buttonID = $( this ).attr( 'id' );
+										if( 'doaction' === buttonID ) {
+											$( this ).parent().parent().find( '.translationmanager-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
+										} else {
+											$( this ).parent().parent().parent().find('.tablenav.top').find( '.translationmanager-language-overlay' ).css( 'visibility', 'visible' ).css( 'opacity', '1' );
+										}
+										//
 
+									}
+									return true;
+								}
+							});
+
+							$( '.translationmanager-language-overlay .translationmanager-lang-popup' ).on( 'click', '.close', function() {
+								$( this ).parent().parent().removeAttr( 'style' );
+							} );
+
+							$( '#translationmanager-lang-wrap-div' ).on( 'change', 'input[type=checkbox]', function( ) {
+								var inputStatus = $( this ).parent().find('input[name="translationmanager_bulk_languages[]"]').is(':checked');
+
+								if(!inputStatus) {
+									$("#translationmanager-submit-bulk-translate").attr("disabled", true);
+								} else {
+									$("#translationmanager-submit-bulk-translate").attr("disabled", false);
 								}
 								return true;
-							}
+							});
 						});
-
-						$( '.translationmanager-language-overlay .translationmanager-lang-popup' ).on( 'click', '.close', function() {
-							$( this ).parent().parent().removeAttr( 'style' );
-						} );
-
-						$( '#translationmanager-lang-wrap-div' ).on( 'change', 'input[type=checkbox]', function( ) {
-							var inputStatus = $( this ).parent().find('input[name="translationmanager_bulk_languages[]"]').is(':checked');
-
-							if(!inputStatus) {
-								$("#translationmanager-submit-bulk-translate").attr("disabled", true);
-							} else {
-								$("#translationmanager-submit-bulk-translate").attr("disabled", false);
-							}
-							return true;
-						});
-					});
-				})(jQuery)
-			</script>
-			<style>
-				.translationmanager-language-overlay {
-					position: fixed;
-					top: 0;
-					bottom: 0;
-					left: 0;
-					right: 0;
-					background: rgba(0, 0, 0, 0.7);
-					transition: opacity 500ms;
-					visibility: hidden;
-					opacity: 0;
-				}
-
-				.translationmanager-lang-popup {
-					margin: 70px auto;
-					padding: 20px;
-					background: #fff;
-					width: 30%;
-					position: relative;
-					transition: all 5s ease-in-out;
-				}
-
-				.translationmanager-lang-popup h2 {
-					margin-top: 0;
-					color: #333;
-					font-family: Tahoma, Arial, sans-serif;
-				}
-				.translationmanager-lang-popup .close {
-					position: absolute;
-					top: 20px;
-					right: 30px;
-					transition: all 200ms;
-					font-size: 30px;
-					font-weight: bold;
-					text-decoration: none;
-					color: #333;
-				}
-				.translationmanager-lang-popup .content {
-					max-height: 30%;
-					overflow: auto;
-				}
-
-				@media screen and (max-width: 700px){
-					.box{
-						width: 70%;
+					})(jQuery)
+				</script>
+				<style>
+					.translationmanager-language-overlay {
+						position: fixed;
+						top: 0;
+						bottom: 0;
+						left: 0;
+						right: 0;
+						background: rgba(0, 0, 0, 0.7);
+						transition: opacity 500ms;
+						visibility: hidden;
+						opacity: 0;
 					}
-					.translationmanager-lang-popup{
-						width: 70%;
-					}
-				}
-			</style>
 
-			<div class="translationmanager-language-overlay">
-				<div class="translationmanager-lang-popup">
-					<a class="close" href="#">&times;</a>
-					<div class="content">
-						<h2>Please select languages here:</h2>
-						<div id="translationmanager-lang-wrap-div">
-							<?php foreach( $this->get_languages( $current_site->id ) as $lang_key => $lang ): ?>
-								<input type="checkbox" name="translationmanager_bulk_languages[]" value="<?php echo $lang_key ?>"><?php echo $lang->get_label() ?><br>
-							<?php endforeach;?>
+					.translationmanager-lang-popup {
+						margin: 70px auto;
+						padding: 20px;
+						background: #fff;
+						width: 30%;
+						position: relative;
+						transition: all 5s ease-in-out;
+					}
+
+					.translationmanager-lang-popup h2 {
+						margin-top: 0;
+						color: #333;
+						font-family: Tahoma, Arial, sans-serif;
+					}
+					.translationmanager-lang-popup .close {
+						position: absolute;
+						top: 20px;
+						right: 30px;
+						transition: all 200ms;
+						font-size: 30px;
+						font-weight: bold;
+						text-decoration: none;
+						color: #333;
+					}
+					.translationmanager-lang-popup .content {
+						max-height: 30%;
+						overflow: auto;
+					}
+
+					@media screen and (max-width: 700px){
+						.box{
+							width: 70%;
+						}
+						.translationmanager-lang-popup{
+							width: 70%;
+						}
+					}
+				</style>
+
+				<div class="translationmanager-language-overlay">
+					<div class="translationmanager-lang-popup">
+						<a class="close" href="#">&times;</a>
+						<div class="content">
+							<h2>Please select languages here:</h2>
+							<div id="translationmanager-lang-wrap-div">
+								<?php foreach( $this->get_languages( $current_site->id ) as $lang_key => $lang ): ?>
+									<input type="checkbox" name="translationmanager_bulk_languages[]" value="<?php echo $lang_key ?>"><?php echo $lang->get_label() ?><br>
+								<?php endforeach;?>
+							</div>
+
+							<?php
+							submit_button(
+								'Bulk Translate',
+								'primary',
+								'translationmanager-submit-bulk-translate',
+								true,
+								[
+									'id'        => 'translationmanager-submit-bulk-translate',
+									'disabled'  => 'true'
+								]
+							);
+							?>
 						</div>
-
-						<?php
-						submit_button(
-							'Bulk Translate',
-							'primary',
-							'translationmanager-submit-bulk-translate',
-							true,
-							[
-								'id'        => 'translationmanager-submit-bulk-translate',
-								'disabled'  => 'true'
-							]
-						);
-						?>
 					</div>
 				</div>
-			</div>
-			<?php
+				<?php
+			}
 		}
+
 	}
 
 	public function get_languages( $site_id ) {
