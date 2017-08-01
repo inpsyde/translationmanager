@@ -1,22 +1,22 @@
 <?php
 
-function tmwp_api_url( $path = null ) {
-	return tmwp_api()->get_url( $path );
+function translationmanager_api_url( $path = null ) {
+	return translationmanager_api()->get_url( $path );
 }
 
 /**
- * Instance of the TMWP API.
+ * Instance of the TRANSLATIONMANAGER API.
  *
- * @return \Tmwp\Api
+ * @return \Translationmanager\Api
  */
-function tmwp_api() {
+function translationmanager_api() {
 	static $api;
 
 	if ( null === $api ) {
-		$api = new \Tmwp\Api(
-			get_option( \Tmwp\Admin\Options_Page::REFRESH_TOKEN ),
+		$api = new \Translationmanager\Api(
+			get_option( \Translationmanager\Admin\Options_Page::REFRESH_TOKEN ),
 			'b37270d25d5b3fccf137f7462774fe76',
-			get_option( \Tmwp\Admin\Options_Page::URL, 'http://api.eurotext.de/api/v1' )
+			get_option( \Translationmanager\Admin\Options_Page::URL, 'http://api.eurotext.de/api/v1' )
 		);
 	}
 
@@ -32,7 +32,7 @@ function tmwp_api() {
  *
  * @since 1.0.0
  */
-function tmwp_api_fetch() {
+function translationmanager_api_fetch() {
 	$data            = array();
 	$response        = array(); // wp_remote_request()
 	$target_language = 'no-NE';
@@ -50,5 +50,5 @@ function tmwp_api_fetch() {
 	 * @param string $target_language Target language as language tag (like "en-CA").
 	 * @param array  $response        The response as of `wp_remote_request()`.
 	 */
-	do_action( TMWP_API_PROCESS_ORDER, $data, $target_language, $response );
+	do_action( TRANSLATIONMANAGER_API_PROCESS_ORDER, $data, $target_language, $response );
 }

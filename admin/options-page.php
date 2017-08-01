@@ -1,4 +1,4 @@
-<?php /** @var \Tmwp\Admin\Options_Page $this */ ?>
+<?php /** @var \Translationmanager\Admin\Options_Page $this */ ?>
 <div class="wrap">
 
 	<h2 class="settings__headline">
@@ -32,7 +32,7 @@
 				<h3 class="screen-reader-text">Credentials</h3>
 				<?php settings_fields( $this::OPTION_GROUP ); ?>
 				<?php
-				do_settings_sections( 'tmwp_api' );
+				do_settings_sections( 'translationmanager_api' );
 				submit_button( __( 'Save changes' ), 'primary', 'save_action' );
 				?>
 			</div>

@@ -1,14 +1,14 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Tmwp\Tests\Module\Mlp;
+namespace Translationmanager\Tests\Module\Mlp;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
-use Tmwp\Module\Mlp\Processor\Incoming_Processor;
-use Tmwp\Module\Mlp\Processor\Outgoing_Processor;
-use Tmwp\Tests\TestCase;
-use Tmwp\Translation_Data;
-use Tmwp\Module\Mlp\Processor_Bus;
+use Translationmanager\Module\Mlp\Processor\Incoming_Processor;
+use Translationmanager\Module\Mlp\Processor\Outgoing_Processor;
+use Translationmanager\Tests\TestCase;
+use Translationmanager\Translation_Data;
+use Translationmanager\Module\Mlp\Processor_Bus;
 
 class ProcessorBusTest extends TestCase {
 
@@ -23,12 +23,12 @@ class ProcessorBusTest extends TestCase {
 		/** @var \Mlp_Content_Relations $content_relations */
 		$content_relations = \Mockery::mock( \Mlp_Content_Relations::class );
 
-		Filters\expectApplied( 'tmwp_mlp_data_processor_enabled' )
+		Filters\expectApplied( 'translationmanager_mlp_data_processor_enabled' )
 			->once()
 			->with( true, \Mockery::type( Incoming_Processor::class ), $data )
 			->andReturnFirstArg();
 
-		Actions\expectDone( 'tmwp_mlp_data_processors' )
+		Actions\expectDone( 'translationmanager_mlp_data_processors' )
 			->once()
 			->with( \Mockery::type( Processor_Bus::class ), $data )
 			->whenHappen( function ( Processor_Bus $bus ) use ( $data, $site_relations, $content_relations ) {
@@ -67,9 +67,9 @@ class ProcessorBusTest extends TestCase {
 		/** @var \Mlp_Content_Relations $content_relations */
 		$content_relations = \Mockery::mock( \Mlp_Content_Relations::class );
 
-		Filters\expectApplied( 'tmwp_mlp_data_processor_enabled' )->never();
+		Filters\expectApplied( 'translationmanager_mlp_data_processor_enabled' )->never();
 
-		Actions\expectDone( 'tmwp_mlp_data_processors' )
+		Actions\expectDone( 'translationmanager_mlp_data_processors' )
 			->once()
 			->with( \Mockery::type( Processor_Bus::class ), $data );
 
@@ -98,7 +98,7 @@ class ProcessorBusTest extends TestCase {
 		/** @var \Mlp_Content_Relations $content_relations */
 		$content_relations = \Mockery::mock( \Mlp_Content_Relations::class );
 
-		Filters\expectApplied( 'tmwp_mlp_data_processor_enabled' )
+		Filters\expectApplied( 'translationmanager_mlp_data_processor_enabled' )
 			->twice()
 			->andReturnUsing( function ($true, $processor) use($processor_a) {
 				return $processor_a === $processor ? false : $true;

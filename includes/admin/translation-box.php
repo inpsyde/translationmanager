@@ -1,6 +1,6 @@
 <?php
 
-function tmwp_translation_box() {
+function translationmanager_translation_box() {
 	static $translation_box;
 
 	if ( get_current_screen()
@@ -11,10 +11,10 @@ function tmwp_translation_box() {
 	}
 
 	if ( ! $translation_box ) {
-		$translation_box = new \Tmwp\Meta_Box\Translation_Box();
+		$translation_box = new \Translationmanager\Meta_Box\Translation_Box();
 	}
 
 	$translation_box->add_meta_box();
 }
 
-add_action( 'add_meta_boxes', 'tmwp_translation_box' );
+add_action( 'add_meta_boxes', 'translationmanager_translation_box' );
