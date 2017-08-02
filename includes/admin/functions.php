@@ -8,19 +8,21 @@ class InpsydeCustomFunctions {
 
 	public function init() {
 
-		add_action( 'admin_head', [ $this, 'inpsyde_remove_search_box' ] );
-		add_action( 'admin_menu', [ $this, 'inpsyde_translationmanager_settings_menu_item' ] );
-		add_action( 'admin_menu', [ $this, 'inpsyde_translationmanager_about_page' ] );
-		add_filter( 'plugin_row_meta', [ $this, 'inpsyde_euro_text_link_at_plugin_list' ], 10, 2 );
-		add_filter( 'admin_footer_text', [ $this, 'admin_footer_text' ], 100 );
-		add_filter( 'bulk_post_updated_messages', [ $this, 'bulk_post_updated_messages' ], 10, 2 );
-		add_filter( 'get_edit_term_link', [ $this, 'inpsyde_get_edit_term_link' ], 10, 4 );
-		add_action( 'manage_posts_extra_tablenav', [ $this, 'restrict_manage_posts' ], 10 );
-		add_action( 'admin_post_translationmanager_project_info_save', [ $this, 'translationmanager_project_info_save' ] );
-		add_filter( 'bulk_actions-edit-post', [ $this, 'translate_bulk_actions' ] );
-		add_filter( 'handle_bulk_actions-edit-post', [ $this, 'bulk_translate_action_handler' ], 10, 3 );
-		add_filter( 'bulk_actions-edit-page', [ $this, 'translate_bulk_actions' ] );
-		add_filter( 'handle_bulk_actions-edit-page', [ $this, 'bulk_translate_action_handler' ], 10, 3 );
+		add_action( 'admin_head',                                       [ $this, 'inpsyde_remove_search_box' ] );
+		add_action( 'admin_menu',                                       [ $this, 'inpsyde_translationmanager_settings_menu_item' ] );
+		add_action( 'admin_menu',                                       [ $this, 'inpsyde_translationmanager_about_page' ] );
+		add_filter( 'plugin_row_meta',                                  [ $this, 'inpsyde_euro_text_link_at_plugin_list' ], 10, 2 );
+		add_filter( 'admin_footer_text',                                [ $this, 'admin_footer_text' ], 100 );
+		add_filter( 'bulk_post_updated_messages',                       [ $this, 'bulk_post_updated_messages' ], 10, 2 );
+		add_filter( 'get_edit_term_link',                               [ $this, 'inpsyde_get_edit_term_link' ], 10, 4 );
+		add_action( 'manage_posts_extra_tablenav',                      [ $this, 'restrict_manage_posts' ], 10 );
+		add_action( 'admin_post_translationmanager_project_info_save',  [ $this, 'translationmanager_project_info_save' ] );
+		// For 'post' post type.
+		add_filter( 'bulk_actions-edit-post',                           [ $this, 'translate_bulk_actions' ] );
+		add_filter( 'handle_bulk_actions-edit-post',                    [ $this, 'bulk_translate_action_handler' ], 10, 3 );
+		// For 'page' post type.
+		add_filter( 'bulk_actions-edit-page',                           [ $this, 'translate_bulk_actions' ] );
+		add_filter( 'handle_bulk_actions-edit-page',                    [ $this, 'bulk_translate_action_handler' ], 10, 3 );
 	}
 
 	public function restrict_manage_posts( $which ) {
