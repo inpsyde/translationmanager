@@ -276,14 +276,14 @@ function _translationmanager_project_order( $project_term ) {
 		translationmanager_api()->project_item()->create( $project_id, $data->to_array() );
 	}
 
-	update_term_meta( $project_term->term_id, '_translationmanager_order_id', $project_id );
+	update_term_meta( $project_term->term_id, '_tmanager_order_id', $project_id );
 }
 
 /**
  * @param \WP_Term $project_term
  */
 function _translationmanager_project_update( $project_term ) {
-	$project_id = get_term_meta( $project_term->term_id, '_translationmanager_order_id', true );
+	$project_id = get_term_meta( $project_term->term_id, '_tmanager_order_id', true );
 
 	if ( ! $project_id ) {
 		// ID missing.
@@ -328,4 +328,4 @@ function _translationmanager_project_update( $project_term ) {
 add_action( 'load-post.php', '_translationmanager_handle_actions' );
 add_action( 'load-edit.php', '_translationmanager_handle_actions' );
 
-add_action( 'admin_post_translationmanager_order_or_update_projects', '_translationmanager_handle_actions' );
+add_action( 'admin_post_tmanager_order_or_update_projects', '_translationmanager_handle_actions' );

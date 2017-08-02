@@ -102,7 +102,7 @@ add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
 //		$term         = get_term_by( 'slug', $current_slug, TRANSLATIONMANAGER_TAX_PROJECT );
 //
 //		if ( ! is_wp_error( $term )
-//		     && get_term_meta( $term->term_id, '_translationmanager_order_id' )
+//		     && get_term_meta( $term->term_id, '_tmanager_order_id' )
 //		) {
 //			// This has an order id so we show the update button.
 //			require translationmanager_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
