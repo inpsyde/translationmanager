@@ -1,6 +1,6 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Tmwp\Tests;
+namespace Translationmanager\Tests;
 
 use PHPUnit_Framework_TestCase;
 use Brain\Monkey;
