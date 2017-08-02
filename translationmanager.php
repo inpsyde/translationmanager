@@ -12,18 +12,23 @@ Text Domain: tm4mpl
 Domain Path: /languages
 */
 
-define( 'TMWP_FILE', __FILE__ );
-define( 'TMWP_DIR', dirname( TMWP_FILE ) );
-define( 'TMWP_FILENAME', basename( TMWP_DIR ) . '/' . basename( TMWP_FILE ) );
-define( 'TMWP_VERSION', '1.0.0' );
+define( 'TRANSLATIONMANAGER_FILE', __FILE__ );
+define( 'TRANSLATIONMANAGER_DIR', dirname( TRANSLATIONMANAGER_FILE ) );
+define( 'TRANSLATIONMANAGER_FILENAME', basename( TRANSLATIONMANAGER_DIR ) . '/' . basename( TRANSLATIONMANAGER_FILE ) );
+define( 'TRANSLATIONMANAGER_VERSION', '1.0.0' );
 
-// Bootstrap (also loads "bootstrap.php").
-require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+/**
+ * Checking if vendor/autoload.php exists or not.
+ */
+if ( file_exists( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor/autoload.php' ) ) {
+	// Bootstrap (also loads "bootstrap.php").
+	require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+}
 
-register_activation_hook( TMWP_FILENAME, 'tmwp_activate' );
+register_activation_hook( TRANSLATIONMANAGER_FILENAME, 'translationmanager_activate' );
 
 // Then everything else.
-foreach ( glob( TMWP_DIR . '/includes/*.php' ) as $feature ) {
+foreach ( glob( TRANSLATIONMANAGER_DIR . '/includes/*.php' ) as $feature ) {
 	require_once $feature;
 }
 
@@ -32,6 +37,6 @@ if ( ! is_admin() ) {
 }
 
 // In admin context we load some more.
-foreach ( glob( TMWP_DIR . '/includes/admin/*.php' ) as $feature ) {
+foreach ( glob( TRANSLATIONMANAGER_DIR . '/includes/admin/*.php' ) as $feature ) {
 	require_once $feature;
 }

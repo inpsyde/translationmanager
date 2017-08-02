@@ -1,9 +1,9 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Tmwp\Tests;
+namespace Translationmanager\Tests;
 
 use Brain\Monkey\Functions;
-use Tmwp\Translation_Data;
+use Translationmanager\Translation_Data;
 
 class TranslationDataTest extends TestCase {
 

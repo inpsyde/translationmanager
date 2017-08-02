@@ -45,7 +45,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tmwp\\Tests\\": "tests/unit/src"
+      "Translationmanager\\Tests\\": "tests/unit/src"
     }
   }
 }

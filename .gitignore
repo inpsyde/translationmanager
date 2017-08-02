@@ -40,7 +40,7 @@ composer.lock
 .idea/inspectionProfiles/
 .idea/modules.xml
 .idea/php.xml
-.idea/tmwp.iml
+.idea/translationmanager.iml
 .idea/vcs.xml
 .idea/webResources.xml
 .idea/codeStyleSettings.xml

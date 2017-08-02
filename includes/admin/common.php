@@ -3,7 +3,7 @@
 /**
  * gets the current post type in the WordPress Admin
  */
-function tmwp_get_current_post_type() {
+function translationmanager_get_current_post_type() {
 	global $post, $typenow, $current_screen;
 
 	if ( $post && $post->post_type ) {
