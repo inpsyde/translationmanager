@@ -1,11 +1,12 @@
 <?php
+// If the file was already loaded (e.g. via Composer) the constant is defined, and we bail to avoid fatals.
+if ( defined( 'TRANSLATIONMANAGER_ACTION_PROJECT_ADD_TRANSLATION' ) ) {
+	return;
+}
 
 // Register autoloader.
 require_once dirname( __FILE__ ) . '/includes/translationmanager/class-loader.php';
 spl_autoload_register( array( new \Translationmanager\Loader(), 'load_class' ) );
-
-// Enable logging
-//Inpsyde\Wonolog\bootstrap();
 
 /**
  * Resolve path to template.
@@ -57,7 +58,7 @@ const TMANAGER_CART                                     = 'tmanager_cart';
 const TRANSLATIONMANAGER_FILTER_BEFORE_ADD_TO_PROJECT   = 'translationmanager_filter_before_add_to_project';
 const TRANSLATIONMANAGER_FILTER_PROJECT_ADD_TRANSLATION = 'translationmanager_action_project_add_translation';
 const TRANSLATIONMANAGER_INCOMING_DATA                  = 'translationmanager_incoming_data';
-const TRANSLATIONMANAGER_ORDER                          = 'translationmanager_order';
+const TRANSLATIONMANAGER_ORDER                          = 'tmanager_order';
 const TRANSLATIONMANAGER_OUTGOING_DATA                  = 'translationmanager_outgoing_data';
 const TRANSLATIONMANAGER_POST_UPDATER                   = 'translationmanager_post_updater';
 const TRANSLATIONMANAGER_TAX_PROJECT                    = 'translationmanager_project';

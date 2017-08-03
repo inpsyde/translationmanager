@@ -5,8 +5,8 @@ namespace Translationmanager\Taxonomy;
 class Project {
 	const TAXONOMY = TRANSLATIONMANAGER_TAX_PROJECT;
 
-	const COL_STATUS = 'translationmanager_order_status';
-	const COL_ACTIONS = 'translationmanager_order_action';
+	const COL_STATUS = 'tmanager_order_status';
+	const COL_ACTIONS = 'tmanager_order_action';
 
 	public static function register_post_status() {
 	}
@@ -69,7 +69,7 @@ class Project {
 	public static function print_column( $value, $column_name, $term_id ) {
 		switch ( $column_name ) {
 			case static::COL_STATUS:
-				if ( ! get_term_meta( $term_id, '_translationmanager_order_id', true ) ) {
+				if ( ! get_term_meta( $term_id, '_tmanager_order_id', true ) ) {
 					return __( 'New', 'translationmanager' );
 				}
 

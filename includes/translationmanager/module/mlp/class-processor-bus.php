@@ -2,8 +2,6 @@
 
 namespace Translationmanager\Module\Mlp;
 
-//use Inpsyde\Wonolog\Data\Log;
-//use Monolog\Logger;
 use Translationmanager\Translation_Data;
 
 class Processor_Bus {
@@ -65,11 +63,16 @@ class Processor_Bus {
 				&& apply_filters( 'translationmanager_mlp_data_processor_enabled', true, $processor, $data )
 			) {
 				do_action(
-					'wonolog.log',
-					new Log(
-						'Processing with ' . get_class( $processor ) . '::' . $method . '()',
-						Logger::DEBUG
-					)
+					TRANSLATIONMANAGER_ACTION_LOG,
+					[
+						'message' => 'Processing with ' . get_class( $processor ) . '::' . $method . '()',
+						'context' => [
+							'Target site' => $data->target_site_id(),
+							'Source site' => $data->source_site_id(),
+							'Source post' => $data->source_post_id(),
+							'Target lang' => $data->target_language(),
+						]
+					]
 				);
 
 				/** @var callable $cb */

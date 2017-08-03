@@ -16,16 +16,10 @@ define( 'TRANSLATIONMANAGER_FILE', __FILE__ );
 define( 'TRANSLATIONMANAGER_DIR', dirname( TRANSLATIONMANAGER_FILE ) );
 define( 'TRANSLATIONMANAGER_FILENAME', basename( TRANSLATIONMANAGER_DIR ) . '/' . basename( TRANSLATIONMANAGER_FILE ) );
 define( 'TRANSLATIONMANAGER_VERSION', '1.0.0' );
+// Load bootstrap
+require_once __DIR__ . '/bootstrap.php';
 
-/**
- * Checking if vendor/autoload.php exists or not.
- */
-if ( file_exists( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor/autoload.php' ) ) {
-	// Bootstrap (also loads "bootstrap.php").
-	require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
-}
-
-register_activation_hook( TRANSLATIONMANAGER_FILENAME, 'translationmanager_activate' );
+register_activation_hook( TRANSLATIONMANAGER_FILENAME, 'tmwp_activate' );
 
 // Then everything else.
 foreach ( glob( TRANSLATIONMANAGER_DIR . '/includes/*.php' ) as $feature ) {

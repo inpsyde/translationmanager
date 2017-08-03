@@ -4,7 +4,7 @@ namespace Translationmanager\Meta_Box;
 
 class Order_Info {
 
-	const ID = 'translationmanager_order_info';
+	const ID = 'tmanager_order_info';
 
 	const CONTEXT = 'side';
 	private $project_id;
@@ -50,7 +50,7 @@ class Order_Info {
 			return __( 'Ready to order', 'translationmanager' );
 		}
 
-		return apply_filters( 'translationmanager_order_status', 'In preparation', get_the_ID() );
+		return apply_filters( 'tmanager_order_status', 'In preparation', get_the_ID() );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Order_Info {
 	 * @return string
 	 */
 	public function get_order_id() {
-		return get_term_meta( $this->get_project_id(), '_translationmanager_order_id', true );
+		return get_term_meta( $this->get_project_id(), '_tmanager_order_id', true );
 	}
 
 	/**
