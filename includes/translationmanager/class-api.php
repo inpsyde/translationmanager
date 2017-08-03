@@ -56,6 +56,12 @@ class Api {
 	 * @return string[]
 	 */
 	public function request( $method, $path, $data = array(), $headers = array() ) {
+		$url     = $this->get_url( $path );
+		$context = [
+			// Add headers early to context to keep api key out of it.
+			'headers' => $headers
+		];
+
 		$headers['Content-Type'] = 'application/json';
 		$headers['plugin_key']   = $this->plugin_key;
 		$headers['apikey']       = $this->api_key;
@@ -64,14 +70,43 @@ class Api {
 			$data = json_encode( $data );
 		}
 
+		do_action(
+			TRANSLATIONMANAGER_ACTION_LOG,
+			[
+				'message' => sprintf(
+					'%s: %s',
+					$method,
+					$url
+				),
+				'context' => $context
+			]
+		);
+
 		$response = wp_remote_request(
-			$this->get_url( $path ),
+			$url,
 			array(
 				'method'  => $method,
 				'headers' => $headers,
 				'body'    => $data,
 			)
 		);
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+		if ( $response_code < 200 || $response_code >= 300 ) {
+			do_action(
+				TRANSLATIONMANAGER_ACTION_LOG,
+				[
+					'message' => 'Request against API failed.',
+					'context' => array_merge(
+						$context,
+						[
+							'status' => $response_code,
+							'body'   => wp_remote_retrieve_body( $response ),
+						]
+					),
+				]
+			);
+		}
 
 		return json_decode( wp_remote_retrieve_body( $response ), true );
 	}

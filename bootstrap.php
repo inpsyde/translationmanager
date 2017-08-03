@@ -49,6 +49,9 @@ function translationmanager_die( $message = '', $title = '', $args = array() ) {
 }
 
 // Set constants during compile time.
+const TRANSLATIONMANAGER_PREFIX = 'translationmanager';
+
+const TRANSLATIONMANAGER_ACTION_LOG                     = 'translationmanager_log';
 const TRANSLATIONMANAGER_ACTION_PROJECT_ADD_TRANSLATION = 'translationmanager_action_project_add_translation';
 const TRANSLATIONMANAGER_ACTION_PROJECT_ORDER           = 'translationmanager_action_project_order';
 const TRANSLATIONMANAGER_ACTION_PROJECT_UPDATE          = 'translationmanager_action_project_update';
