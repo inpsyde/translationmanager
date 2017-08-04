@@ -22,7 +22,7 @@ class Post_Thumb_Sync implements Incoming_Processor {
 
 		$saved_post = $data->get_meta( Post_Saver::SAVED_POST_KEY, Connector::DATA_NAMESPACE );
 
-		if ( ! $saved_post || ! post_type_supports( $saved_post->post_tupe, 'thumbnail' ) ) {
+		if ( ! $saved_post || ! post_type_supports( $saved_post->post_type, 'thumbnail' ) ) {
 			return;
 		}
 
