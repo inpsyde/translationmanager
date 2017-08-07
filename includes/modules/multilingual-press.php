@@ -10,6 +10,6 @@ add_action( 'inpsyde_mlp_loaded', function ( \Inpsyde_Property_List_Interface $d
 	add_filter( 'translationmanager_get_languages', array( $connect, 'related_sites' ), 10, 2 );
 
 	// Setup the translation workflow
-	add_filter( TRANSLATIONMANAGER_OUTGOING_DATA, array( $connect, 'prepare_outgoing' ) );
-	add_action( TRANSLATIONMANAGER_POST_UPDATER, array( $connect, 'prepare_updater' ) );
+	add_action( TRANSLATIONMANAGER_OUTGOING_DATA, array( $connect, 'prepare_outgoing' ) );
+	add_filter( TRANSLATIONMANAGER_POST_UPDATER, array( $connect, 'prepare_updater' ) );
 } );
