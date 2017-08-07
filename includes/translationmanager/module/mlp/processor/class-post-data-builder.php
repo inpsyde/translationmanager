@@ -65,7 +65,7 @@ class Post_Data_Builder implements Incoming_Processor {
 		}
 
 		$source_post_data = $source_post->to_array();
-		unset( $source_post_data[ 'post_patent' ] );
+		unset( $source_post_data[ 'post_parent' ] );
 
 		// Merge all data we know...
 		$post_data = array_merge( $source_post_data, $linked_post_data, $translated_data );
