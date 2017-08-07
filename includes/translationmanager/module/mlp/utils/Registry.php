@@ -26,4 +26,12 @@ class Registry {
 		return $this->services[ __FUNCTION__ ][ $id ];
 	}
 
+	/**
+	 * @return Network_State
+	 */
+	public function network_state() {
+		
+		return Network_State::create();
+	}
+
 }
