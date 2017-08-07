@@ -44,7 +44,7 @@ class Post_Thumb_Sync implements Incoming_Processor {
 		$target_thumb_id = 0;
 
 		if ( $source_thumb_id ) {
-			$image_sync      = Connector::utils()->image_sync();
+			$image_sync      = Connector::utils()->image_sync( $content_relations  );
 			$target_thumb_id = $image_sync->copy_image( $source_thumb_id, $source_site_id, $data->target_site_id() );
 		}
 

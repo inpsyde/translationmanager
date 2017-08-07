@@ -5,6 +5,19 @@ namespace Translationmanager\Module\Mlp\Utils;
 class Image_Copier {
 
 	/**
+	 * @var \Mlp_Content_Relations
+	 */
+	private $content_relations;
+
+	/**
+	 * @param \Mlp_Content_Relations $content_relations
+	 */
+	public function __construct( \Mlp_Content_Relations $content_relations ) {
+
+		$this->content_relations = $content_relations;
+	}
+
+	/**
 	 * @param int  $source_attachment_id
 	 * @param int  $source_site_id
 	 * @param null $target_site_id
@@ -31,11 +44,33 @@ class Image_Copier {
 		}
 
 		$switched = $target_site_id && $target_site_id !== get_current_blog_id();
+		$switched and switch_to_blog( $target_site_id );
 
-		$switched and switch_to_blog( $switched );
+		$linked_file = $linked = null;
+		$linked_attachments = $this->content_relations->get_relations( $source_site_id, $source_attachment_id );
+		if ( ! empty( $linked_attachments[$target_site_id] ) ) {
+			$linked = $linked_attachments[$target_site_id];
+			$linked_file = get_attached_file( $linked_attachments[$target_site_id] );
+		}
+
+		if ( $linked && basename( $linked_file ) === basename( $source_file ) ) {
+
+			$switched and restore_current_blog();
+
+			return (int) $linked;
+		}
 
 		$filepath  = $this->copy_source_file( $source_file );
 		$insert_id = $filepath ? $this->insert_attachment( $attachment, $filepath ) : 0;
+
+		if ( $insert_id ) {
+			$this->content_relations->set_relation(
+				$source_site_id,
+				$target_site_id,
+				$source_attachment_id,
+				$insert_id
+			);
+		}
 
 		$switched and restore_current_blog();
 
