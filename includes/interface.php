@@ -6,9 +6,8 @@
  * @return \Translationmanager\Domain\Language[]
  */
 function translationmanager_get_languages() {
-	global $current_site;
 
-	return apply_filters( 'translationmanager_get_languages', array(), $current_site->id );
+	return apply_filters( 'translationmanager_get_languages', array(), get_current_blog_id() );
 }
 
 /**

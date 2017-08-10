@@ -26,7 +26,7 @@ class InpsydeCustomFunctions {
 	}
 
 	public function restrict_manage_posts( $which ) {
-		global $current_site;
+
 		if( 'top' === $which ) { ?>
 			<script type="text/javascript">
 				(function($){
@@ -127,7 +127,7 @@ class InpsydeCustomFunctions {
 					<div class="content">
 						<h2>Please select languages here:</h2>
 						<div id="translationmanager-lang-wrap-div">
-							<?php foreach( $this->get_languages( $current_site->id ) as $lang_key => $lang ): ?>
+							<?php foreach( $this->get_languages( get_current_blog_id() ) as $lang_key => $lang ): ?>
 								<input type="checkbox" name="translationmanager_bulk_languages[]" value="<?php echo $lang_key ?>"><?php echo $lang->get_label() ?><br>
 							<?php endforeach;?>
 						</div>
