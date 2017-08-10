@@ -36,6 +36,7 @@ class Project_Item {
 			array(
 				'X-Source' => translationmanager_get_current_lang_code(),
 				'X-Target' => $target_language,
+				'X-TextType' => $this->get_text_type( $post_type_name )
 			)
 		);
 
@@ -58,5 +59,25 @@ class Project_Item {
 	 */
 	protected function get_url( $project_id ) {
 		return sprintf( self::URL, $project_id );
+	}
+
+	/**
+	 * Get the Text-Type based on the Post-Type
+	 *
+	 * @param string $post_type_name
+	 *
+	 * @return string text-type name for REST-API
+	 */
+	private function get_text_type( $post_type_name ) {
+
+		$text_type_name = str_replace(
+			array( 'post', 'page'),
+			array( 'marketing', 'specialized-text'),
+			$post_type_name
+		);
+
+		$text_type_name = apply_filters( 'translationmanager_get_text_type', $text_type_name, $post_type_name );
+
+		return $text_type_name;
 	}
 }
