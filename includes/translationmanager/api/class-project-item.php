@@ -23,18 +23,19 @@ class Project_Item {
 	/**
 	 * Create a new project.
 	 *
-	 * @param       $project_id
-	 * @param array $data
+	 * @param        $project_id
+	 * @param string $post_type_name
+	 * @param array  $data
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
-	public function create( $project_id, $data = array() ) {
+	public function create( $project_id, $post_type_name, $target_language, $data = array() ) {
 		$body = $this->get_api()->put(
 			$this->get_url( $project_id ),
 			$data,
 			array(
 				'X-Source' => translationmanager_get_current_lang_code(),
-				'X-Target' => $data['__meta']['target_language'],
+				'X-Target' => $target_language,
 			)
 		);
 

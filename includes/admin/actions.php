@@ -243,6 +243,9 @@ function _translationmanager_project_order( $project_term ) {
 		return;
 	}
 
+	// posts get collected by post type
+	$post_types = array();
+
 	$languages = translationmanager_get_languages();
 	foreach ( translationmanager_get_project_items( $project_term->term_id ) as $post ) {
 		if ( ! $post->_translationmanager_post_id || ! isset( $languages[ $post->_translationmanager_target_id ] ) ) {
@@ -272,8 +275,13 @@ function _translationmanager_project_order( $project_term ) {
 		 * @param \Translationmanager\Translation_Data $data
 		 */
 		do_action_ref_array( TRANSLATIONMANAGER_OUTGOING_DATA, array( $data ) );
+		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ] = $data->to_array();
+	}
 
-		translationmanager_api()->project_item()->create( $project_id, $data->to_array() );
+	foreach( $post_types as $post_type_target_language => $post_types_data ) {
+		foreach( $post_types_data as $post_type_name => $post_type_content ) {
+			translationmanager_api()->project_item()->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
+		}
 	}
 
 	update_term_meta( $project_term->term_id, '_tmanager_order_id', $project_id );
