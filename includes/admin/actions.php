@@ -275,7 +275,7 @@ function _translationmanager_project_order( $project_term ) {
 		 * @param \Translationmanager\Translation_Data $data
 		 */
 		do_action_ref_array( TRANSLATIONMANAGER_OUTGOING_DATA, array( $data ) );
-		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ] = $data->to_array();
+		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ][] = $data->to_array();
 	}
 
 	foreach( $post_types as $post_type_target_language => $post_types_data ) {
