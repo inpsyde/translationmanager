@@ -129,7 +129,7 @@ class InpsydeCustomFunctions {
 						<div id="translationmanager-project-wrap-div">
 							<h2>Select Projects:</h2>
 							<select name="translationmanager-projects" id="translationmanager-">
-								<option value="0"><?php _e( 'New project', 'translationmanager' ) ?></option>
+								<option value="-1"><?php _e( 'New project', 'translationmanager' ) ?></option>
 								<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
 									<option value="<?php esc_attr_e( $project_id ) ?>">
 										<?php esc_html_e( $project_label ) ?>
@@ -463,14 +463,14 @@ class InpsydeCustomFunctions {
 		}
 
 		$languages = $_GET['translationmanager_bulk_languages'];
-		$project = $_GET['translationmanager-projects'];
+		$project = (int) $_GET['translationmanager-projects'];
 
 		//print_r($languages);die();
 
 		$handler = new Translationmanager\Admin\Handler\Project_Handler;
 
-		if( 0 === $project ){
-			$project = $handler->create_project(
+		if( '-1' == $project ){
+			$project = (int) $handler->create_project(
 				sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
 			);
 		}
