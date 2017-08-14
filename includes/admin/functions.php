@@ -92,7 +92,7 @@ class InpsydeCustomFunctions {
 				}
 
 				.translationmanager-lang-popup h2 {
-					margin-top: 0;
+					margin: 10px auto;
 					color: #333;
 					font-family: Tahoma, Arial, sans-serif;
 				}
@@ -125,8 +125,21 @@ class InpsydeCustomFunctions {
 				<div class="translationmanager-lang-popup">
 					<a class="close" href="#">&times;</a>
 					<div class="content">
-						<h2>Please select languages here:</h2>
+
+						<div id="translationmanager-project-wrap-div">
+							<h2>Select Projects:</h2>
+							<select name="translationmanager-projects" id="translationmanager-">
+								<option value="0"><?php _e( 'New project', 'translationmanager' ) ?></option>
+								<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
+									<option value="<?php esc_attr_e( $project_id ) ?>">
+										<?php esc_html_e( $project_label ) ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+
 						<div id="translationmanager-lang-wrap-div">
+							<h2>Select languages:</h2>
 							<?php foreach( $this->get_languages( get_current_blog_id() ) as $lang_key => $lang ): ?>
 								<input type="checkbox" name="translationmanager_bulk_languages[]" value="<?php echo $lang_key ?>"><?php echo $lang->get_label() ?><br>
 							<?php endforeach;?>
@@ -402,7 +415,7 @@ class InpsydeCustomFunctions {
 		) );
 
 		if ( is_wp_error( $update ) ) {
-			wp_die('Something went wrong. Please go back and try again.');
+			wp_die( __( 'Something went wrong. Please go back and try again.', 'translationmanager' ) );
 		}
 
 		wp_safe_redirect( wp_get_referer() );
@@ -410,8 +423,34 @@ class InpsydeCustomFunctions {
 	}
 
 	public function translate_bulk_actions( $actions ){
-		$actions['bulk_translate'] = 'Bulk Translate';
+		$actions['bulk_translate'] = __( 'Bulk Translate', 'translationmanager' );
 		return $actions;
+	}
+
+
+	public function get_projects() {
+
+		/** @var \WP_Term[] $terms */
+		$terms = get_terms(
+			array(
+				'taxonomy'   => TRANSLATIONMANAGER_TAX_PROJECT,
+				'hide_empty' => false,
+				'meta_query' => array(
+					array(
+						'key'     => '_tmanager_order_id',
+						'compare' => 'NOT EXISTS',
+						'value'   => '',
+					),
+				)
+			)
+		);
+
+		$projects = array();
+		foreach ( $terms as $term ) {
+			$projects[ $term->term_id ] = $term->name;
+		}
+
+		return $projects;
 	}
 
 	/**
@@ -424,13 +463,17 @@ class InpsydeCustomFunctions {
 		}
 
 		$languages = $_GET['translationmanager_bulk_languages'];
+		$project = $_GET['translationmanager-projects'];
 
 		//print_r($languages);die();
 
 		$handler = new Translationmanager\Admin\Handler\Project_Handler;
-		$project = $handler->create_project(
-			sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
-		);
+
+		if( 0 === $project ){
+			$project = $handler->create_project(
+				sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
+			);
+		}
 
 		// Iterate translations
 		foreach ( $post_ids as $post_id ) {
