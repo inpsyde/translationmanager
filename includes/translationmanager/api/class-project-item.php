@@ -36,7 +36,8 @@ class Project_Item {
 			array(
 				'X-Source' => translationmanager_get_current_lang_code(),
 				'X-Target' => $target_language,
-				'X-TextType' => $this->get_text_type( $post_type_name )
+				'X-TextType' => $this->get_text_type( $post_type_name ),
+				'X-System-Module' => $post_type_name,
 			)
 		);
 
