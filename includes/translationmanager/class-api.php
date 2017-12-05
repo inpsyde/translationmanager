@@ -43,8 +43,8 @@ class Api {
 		$this->base_url   = $base_url;
 	}
 
-	public function put( $path, $data = array(), $headers = array() ) {
-		return $this->request( 'PUT', $path, $data, $headers );
+	public function post( $path, $data = array(), $headers = array() ) {
+		return $this->request( 'POST', $path, $data, $headers );
 	}
 
 	/**

@@ -30,7 +30,7 @@ class Project_Item {
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
 	public function create( $project_id, $post_type_name, $target_language, $data = array() ) {
-		$body = $this->get_api()->put(
+		$body = $this->get_api()->post(
 			$this->get_url( $project_id ),
 			$data,
 			array(

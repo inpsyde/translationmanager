@@ -28,7 +28,7 @@ class Project {
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
 	public function create( \Translationmanager\Domain\Project $project ) {
-		$body = $this->get_api()->put( self::URL, array(), $project->to_header_array() );
+		$body = $this->get_api()->post( self::URL, array(), $project->to_header_array() );
 
 		if ( ! isset( $body['id'] ) ) {
 			return null;
