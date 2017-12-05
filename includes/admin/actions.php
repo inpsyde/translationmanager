@@ -300,35 +300,35 @@ function _translationmanager_project_update( $project_term ) {
 
 	$translation_data = translationmanager_api()->project()->get( $project_id );
 
-	foreach ( $translation_data['items'] as $item ) {
-
-		$translation = \Translationmanager\Translation_Data::for_incoming( (array) $item['data'] );
-
-		/**
-		 * Fires for each item or translation received from the API.
-		 *
-		 * @param \Translationmanager\Translation_Data $translation Translation data built from data received from API
-		 */
-		do_action( TRANSLATIONMANAGER_INCOMING_DATA, $translation );
-
-		/**
-		 * Filters the updater that executed have to return the updated post
-		 */
-		$updater = apply_filters( TRANSLATIONMANAGER_POST_UPDATER, null, $translation );
-
-		$post = is_callable( $updater ) ? $updater( $translation ) : null;
-
-		if ( $post instanceof \WP_Post ) {
+	foreach ( $translation_data['items'] as $items ) {
+		foreach ( $items['data'] as $item ) {
+			$translation = \Translationmanager\Translation_Data::for_incoming( (array) $item );
 
 			/**
-			 * Fires after the updater has updated the post.
+			 * Fires for each item or translation received from the API.
 			 *
-			 * @param \WP_Post $post                      Just updated post
 			 * @param \Translationmanager\Translation_Data $translation Translation data built from data received from API
 			 */
-			do_action( TRANSLATIONMANAGER_UPDATED_POST, $post, $translation );
-		}
+			do_action( TRANSLATIONMANAGER_INCOMING_DATA, $translation );
 
+			/**
+			 * Filters the updater that executed have to return the updated post
+			 */
+			$updater = apply_filters( TRANSLATIONMANAGER_POST_UPDATER, null, $translation );
+
+			$post = is_callable( $updater ) ? $updater( $translation ) : null;
+
+			if ( $post instanceof \WP_Post ) {
+
+				/**
+				 * Fires after the updater has updated the post.
+				 *
+				 * @param \WP_Post $post Just updated post
+				 * @param \Translationmanager\Translation_Data $translation Translation data built from data received from API
+				 */
+				do_action( TRANSLATIONMANAGER_UPDATED_POST, $post, $translation );
+			}
+		}
 	}
 }
 
