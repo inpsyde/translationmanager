@@ -38,7 +38,7 @@ class Project_Item {
 	public static function is_subject() {
 
 		return get_current_screen()
-		       && static::POST_TYPE == get_current_screen()->post_type;
+		       && static::POST_TYPE === get_current_screen()->post_type;
 	}
 
 	public static function _column_project( $columns ) {

@@ -66,7 +66,7 @@ class Api {
 		$headers['plugin_key']   = $this->plugin_key;
 		$headers['apikey']       = $this->api_key;
 
-		if ( 'GET' != $method ) {
+		if ( 'GET' !== $method ) {
 			$data = json_encode( $data );
 		}
 

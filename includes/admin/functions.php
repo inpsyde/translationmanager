@@ -522,7 +522,7 @@ class InpsydeCustomFunctions {
 
 		static $input = null;
 
-		if ( null == $input ) {
+		if ( null === $input ) {
 			$input = (object) [
 				'taxonomy'                   => filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING ),
 				'post_type'                  => filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ),

@@ -31,7 +31,7 @@ function translationmanager_get_language_label( $lang_code ) {
 	$languages = translationmanager_get_languages();
 
 	foreach ( $languages as $language ) {
-		if ( $lang_code == $language['lang_code'] ) {
+		if ( $lang_code === $language['lang_code'] ) {
 			return $language['label'];
 		}
 	}

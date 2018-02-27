@@ -34,7 +34,7 @@ add_action( 'init', 'translationmanager_cpt_cart' );
 function tmanager_cart_remove_month() {
 
 	if ( ! get_current_screen()
-	     || 'tmanager_cart' != get_current_screen()->post_type
+	     || 'tmanager_cart' !== get_current_screen()->post_type
 	) {
 		return;
 	}
@@ -63,7 +63,7 @@ add_filter( 'bulk_actions-edit-tmanager_carttmanager_cart', 'translationmanager_
  */
 function tmanager_cart_row_actions( $actions, $post ) {
 
-	if ( $post && 'tmanager_cart' != $post->post_type ) {
+	if ( $post && 'tmanager_cart' !== $post->post_type ) {
 		return $actions;
 	}
 
@@ -84,7 +84,7 @@ function tmanager_cart_row_actions( $actions, $post ) {
 add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
 
 //function tmanager_cart_footer( $which ) {
-//	if ( 'edit-tmanager_cart' != get_current_screen()->id ) {
+//	if ( 'edit-tmanager_cart' !== get_current_screen()->id ) {
 //		return;
 //	}
 //
@@ -132,7 +132,7 @@ add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
  */
 function _tmanager_cart_remove_states( $post_states, $post ) {
 
-	if ( 'tmanager_cart' != $post->post_type ) {
+	if ( 'tmanager_cart' !== $post->post_type ) {
 		return $post_states;
 	}
 
@@ -192,7 +192,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 
 	$bulk_messages['tmanager_cart'] = array(
 		'updated'   => __( 'Project has been updated.', 'translationmanager' ),
-		'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( '1 page not updated, somebody is editing it.' ) :
+		'locked'    => ( 1 === $bulk_counts['locked'] ) ? __( '1 page not updated, somebody is editing it.' ) :
 			_n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] ),
 		'deleted'   => _n( '%s page permanently deleted.', '%s pages permanently deleted.', $bulk_counts['deleted'] ),
 		'trashed'   => _n( '%s page moved to the Trash.', '%s pages moved to the Trash.', $bulk_counts['trashed'] ),
@@ -200,7 +200,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 	);
 
 	$updated = filter_input( INPUT_GET, 'updated', FILTER_SANITIZE_NUMBER_INT );
-	if ( - 1 == $updated ) {
+	if ( - 1 === $updated ) {
 		$bulk_messages['tmanager_cart']['updated'] = esc_html__( 'Project has been created', 'translationmanager' );
 	}
 
@@ -210,7 +210,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 add_action( 'admin_head-edit.php', function () {
 
 	if ( ! get_current_screen()
-	     || 'tmanager_cart' != get_current_screen()->post_type
+	     || 'tmanager_cart' !== get_current_screen()->post_type
 	) {
 		return;
 	}

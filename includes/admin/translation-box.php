@@ -4,7 +4,7 @@ function translationmanager_translation_box() {
 	static $translation_box;
 
 	if ( get_current_screen()
-	     && 'add' == get_current_screen()->action
+	     && 'add' === get_current_screen()->action
 	) {
 		// There shall be no translation option while creating a new entry.
 		return;
