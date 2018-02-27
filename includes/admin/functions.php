@@ -425,18 +425,25 @@ class InpsydeCustomFunctions {
 
 	public function translationmanager_project_info_save() {
 
-		if ( 'translationmanager_project_info_save' != $_POST['action'] ) {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+		if ( 'translationmanager_project_info_save' !== $action ) {
 			return;
 		}
-		$term = get_term_by( 'slug', $_POST['_translationmanager_project_id'], 'translationmanager_project' );
+
+		$project_id = intval( filter_input( INPUT_POST, '_translationmanager_project_id', FILTER_SANITIZE_STRING ) );
+		if ( ! $project_id ) {
+			return;
+		}
+
+		$term = get_term_by( 'slug', $project_id, 'translationmanager_project' );
 
 		$update = wp_update_term( $term->term_id, 'translationmanager_project', array(
-			'name'        => $_POST['tag-name'],
-			'description' => $_POST['description'],
+			'name'        => sanitize_text_field( filter_input( INPUT_POST, 'tag-name', FILTER_SANITIZE_STRING ) ),
+			'description' => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING ),
 		) );
 
 		if ( is_wp_error( $update ) ) {
-			wp_die( __( 'Something went wrong. Please go back and try again.', 'translationmanager' ) );
+			wp_die( esc_html__( 'Something went wrong. Please go back and try again.', 'translationmanager' ) );
 		}
 
 		wp_safe_redirect( wp_get_referer() );
