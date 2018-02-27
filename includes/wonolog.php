@@ -8,7 +8,7 @@
 if (
 	! defined( 'Inpsyde\Wonolog\LOG' )
 	|| ! method_exists( 'Inpsyde\Wonolog\Data\Log', 'from_array' )
-	|| has_action( TRANSLATIONMANAGER_ACTION_LOG, 'translationmanager_log_action_to_wonolog' )
+	|| has_action( 'translationmanager_log', 'translationmanager_log_action_to_wonolog' )
 ) {
 	return;
 }
@@ -21,7 +21,7 @@ if ( ! function_exists( 'translationmanager_log_action_to_wonolog' ) ) {
 	}
 }
 
-add_action( TRANSLATIONMANAGER_ACTION_LOG, function ( array $log_data ) {
+add_action( 'translationmanager_log', function ( array $log_data ) {
 
 	do_action( Inpsyde\Wonolog\LOG, Inpsyde\Wonolog\Data\Log::from_array( $log_data ), 1 );
 } );

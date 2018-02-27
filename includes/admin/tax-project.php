@@ -2,8 +2,8 @@
 
 function tmanager_cart_taxonomy() {
 	register_taxonomy(
-		TRANSLATIONMANAGER_TAX_PROJECT,
-		TMANAGER_CART,
+		'translationmanager_project',
+		'tmanager_cart',
 		array(
 			'label'  => __( 'Projects', 'translationmanager' ),
 			'labels' => array(
@@ -20,18 +20,18 @@ function _translationmanager_project_delete_coalesce( $term_id ) {
 	$term = get_term( $term_id );
 
 	if ( is_wp_error( $term )
-	     || TRANSLATIONMANAGER_TAX_PROJECT != $term->taxonomy
+	     || 'translationmanager_project' !== $term->taxonomy
 	) {
 		return;
 	}
 
 	$posts = get_posts(
 		array(
-			'post_type'      => TMANAGER_CART,
+			'post_type'      => 'tmanager_cart',
 			'post_status'    => 'any',
 			'posts_per_page' => - 1,
 			'tax_query'      => array(
-				'taxonomy' => TRANSLATIONMANAGER_TAX_PROJECT,
+				'taxonomy' => 'translationmanager_project',
 				'field'    => 'id',
 				'terms'    => $term_id
 			)
@@ -49,5 +49,5 @@ function _translationmanager_project_hide_slug() {
 	?> <style> .form-field.term-slug-wrap, input[name=slug], span.title { display: none; } </style> <?php
 }
 
-add_action( TRANSLATIONMANAGER_TAX_PROJECT . '_pre_add_form', '_translationmanager_project_hide_slug' );
-add_action( TRANSLATIONMANAGER_TAX_PROJECT . '_pre_edit_form', '_translationmanager_project_hide_slug' );
+add_action( 'translationmanager_project_pre_add_form', '_translationmanager_project_hide_slug' );
+add_action( 'translationmanager_project_pre_edit_form', '_translationmanager_project_hide_slug' );

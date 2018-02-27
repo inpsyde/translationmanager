@@ -39,7 +39,7 @@ class Post_Saver implements Incoming_Processor {
 		$target_post_id = wp_insert_post( $post_data, true );
 
 		do_action(
-			TRANSLATIONMANAGER_ACTION_LOG,
+			'translationmanager_log',
 			[
 				'message' => 'Incoming post data from API processed.',
 				'context' => [

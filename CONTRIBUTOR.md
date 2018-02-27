@@ -48,22 +48,20 @@ There are accessor methods for values to be translated and metadata (that will b
 The accessor methods facilitate the usage  of _namespaces_ for values and metadata, allowing modules to easily separate
 their data from other modules without risk of conflicts.
 
-There are two main hooks: `translationmanager_outgoing_data` (saved in the constant `TRANSLATIONMANAGER_OUTGOING_DATA`) and `translationmanager_incoming_data`
-(saved in the constant `TRANSLATIONMANAGER_INCOMING_DATA`) that pass this object to listeners, allowing for read and  write access.
+There are two main hooks: `translationmanager_outgoing_data` and `translationmanager_incoming_data` that pass this object to listeners, allowing for read and  write access.
 
-### Actions: `TRANSLATIONMANAGER_OUTGOING_DATA`
+### Actions: `'translationmanager_outgoing_data'`
  
 The `translationmanager_outgoing_data` action fires before data is sent to API.
-Use the `TRANSLATIONMANAGER_OUTGOING_DATA` const to be forward compatible.
+
 Only passed argument is an instance `Translationmanager\Translation_Data`, that allow write access, so modules can add custom values
 (and metadata) to be sent for translation. Metadata can be used for arbitrary values that will be returned unchanged
 from the API.
 
 
-### Actions: `TRANSLATIONMANAGER_INCOMING_DATA`
+### Actions: `translationmanager_incoming_data`
 
 The `translationmanager_incoming_data` action fires after some translation data have been received from API.
-Use the `TRANSLATIONMANAGER_INCOMING_DATA` const to be forward compatible.
 
 Only passed argument is an instance `Translationmanager\Translation_Data`, that modules can use in read access to do operations
 based on received data before a translation post is updated, or for in just-in-time modification.
@@ -101,17 +99,17 @@ and the `Translationmanager\Translation_Data` provides separate accessor for "va
 Note that the method `Translationmanager\Translation_Data::to_array()` convert the object in the array in everything similar to
 the original raw data.
 
-### Filter: `TRANSLATIONMANAGER_POST_UPDATER`
+### Filter: `translationmanager_post_updater`
 
 Translation Manager can work with different translation plugins. This is why it does not create / update posts not do any
 other write operation when data is received from API.
 
-What is  does it to fire the filter "translationmanager_post_updater" (stored in the constant `TRANSLATIONMANAGER_POST_UPDATER`) where translation
+What is  does it to fire the filter `translationmanager_post_updater` where translation
 plugins can hook to return a callback that will be used to update the translation post. The callback will be called with 
 an instance of `Translationmanager\Translation_Data` that encapsulate data received from API and it must return the translated post
 object.
 
-### Action: `TRANSLATIONMANAGER_UPDATED_POST`
+### Action: `translationmanager_updated_post`
 
 After a translation post have been updated by translation plugin, Translation Manager fires the hook "" (stored in 
 the constant `Translation_Data`) passing the post object itself and the `Translationmanager\Translation_Data` instance build from

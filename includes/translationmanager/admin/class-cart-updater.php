@@ -17,7 +17,10 @@ class Cart_Updater {
 	 */
 	public function setup() {
 
-		add_filter( TRANSLATIONMANAGER_FILTER_PROJECT_ADD_TRANSLATION, array( $this, 'force_ancestors_in_cart' ), 10, 4 );
+		add_filter( 'translationmanager_action_project_add_translation', array(
+			$this,
+			'force_ancestors_in_cart',
+		), 10, 4 );
 	}
 
 	/**
@@ -27,8 +30,8 @@ class Cart_Updater {
 	 *
 	 * @wp-hook translationmanager_action_project_add_translation
 	 *
-	 * @param int     $project
-	 * @param int     $post_id
+	 * @param int $project
+	 * @param int $post_id
 	 * @param array() $languages
 	 *
 	 * @return mixed
@@ -50,15 +53,15 @@ class Cart_Updater {
 		$cart_items = get_posts(
 			array(
 				'fields'    => 'ids',
-				'post_type' => TMANAGER_CART,
+				'post_type' => 'tmanager_cart',
 				'nopaging'  => true,
 				'tax_query' => array(
 					array(
-						'taxonomy' => TRANSLATIONMANAGER_TAX_PROJECT,
+						'taxonomy' => 'translationmanager_project',
 						'terms'    => array( $project ),
-						'field'    => 'term_id'
-					)
-				)
+						'field'    => 'term_id',
+					),
+				),
 			)
 		);
 
@@ -109,13 +112,12 @@ class Cart_Updater {
 	 */
 	public function update_cart_item_title( array $data ) {
 
-		if ( $this->append_to_title && ! empty( $data[ 'post_type' ] ) && $data[ 'post_type' ] === TMANAGER_CART ) {
-			empty( $data[ 'post_title' ] ) and $data[ 'post_title' ] = '';
-			$data[ 'post_title' ] and $data[ 'post_title' ] .= ' ';
-			$data[ 'post_title' ] .= $this->append_to_title;
+		if ( $this->append_to_title && ! empty( $data['post_type'] ) && $data['post_type'] === 'tmanager_cart' ) {
+			empty( $data['post_title'] ) and $data['post_title'] = '';
+			$data['post_title'] and $data['post_title'] .= ' ';
+			$data['post_title'] .= $this->append_to_title;
 		}
 
 		return $data;
 	}
-
 }

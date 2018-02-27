@@ -27,8 +27,10 @@ add_action( 'plugins_loaded', function () {
 	// Load bootstrap.
 	require_once __DIR__ . '/bootstrap.php';
 
-	// Check the requirements and in case prevent code execution by returning.
 	$requirements = new Translationmanager\Requirements();
+	$plugin       = new Translationmanager\Plugin( __FILE__ );
+
+	// Check the requirements and in case prevent code execution by returning.
 	if ( ! $requirements->is_php_version_ok() ) {
 		add_action( 'admin_notices', function () use ( $requirements ) {
 
@@ -42,16 +44,6 @@ add_action( 'plugins_loaded', function () {
 		} );
 
 		return;
-	}
-
-	// Then everything else.
-	foreach ( glob( TRANSLATIONMANAGER_DIR . '/includes/*.php' ) as $feature ) {
-		require_once $feature;
-	}
-
-	// In admin context we load some more.
-	foreach ( glob( TRANSLATIONMANAGER_DIR . '/includes/admin/*.php' ) as $feature ) {
-		require_once $feature;
 	}
 
 	// Register Activation.

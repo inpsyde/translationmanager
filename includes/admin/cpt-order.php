@@ -2,7 +2,7 @@
 
 function translationmanager_cpt_order() {
 	register_post_type(
-		TRANSLATIONMANAGER_ORDER,
+		'tmanager_order',
 		array(
 			'capabilities' => array(
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
@@ -13,7 +13,7 @@ function translationmanager_cpt_order() {
 			'label'        => __( 'Order', 'translationmanager' ),
 			'map_meta_cap' => true,
 			'public'       => true,
-			'show_in_menu' => 'edit.php?post_type=' . TRANSLATIONMANAGER_TRANS_STATUS,
+			'show_in_menu' => 'edit.php?post_type=translationmanager_trans_status',
 			'supports'     => array( 'title' ),
 		)
 	);
@@ -23,12 +23,12 @@ add_action( 'init', 'translationmanager_cpt_order' );
 
 function tmanager_order_clean() {
 	// Remove all WordPress basics as this post type is not meant to be maintained by users.
-	remove_meta_box( 'submitdiv', TRANSLATIONMANAGER_ORDER, 'side' );
-	remove_meta_box( 'slugdiv', TRANSLATIONMANAGER_ORDER, 'normal' );
+	remove_meta_box( 'submitdiv', 'tmanager_order', 'side' );
+	remove_meta_box( 'slugdiv', 'tmanager_order', 'normal' );
 
 	$screen = get_current_screen();
 
-	if ( TRANSLATIONMANAGER_ORDER != $screen->post_type ) {
+	if ( 'tmanager_order' !== $screen->post_type ) {
 		return;
 	}
 
@@ -44,7 +44,7 @@ function translationmanager_bulk_actions_order( $actions ) {
 	return $actions;
 }
 
-add_filter( 'bulk_actions-edit-' . TRANSLATIONMANAGER_ORDER, 'translationmanager_bulk_actions_order' );
+add_filter( 'bulk_actions-edit-tmanager_order', 'translationmanager_bulk_actions_order' );
 
 /**
  * Order items have no trash.
@@ -54,7 +54,7 @@ add_filter( 'bulk_actions-edit-' . TRANSLATIONMANAGER_ORDER, 'translationmanager
 function tmanager_order_trashed( $post_id ) {
 	$post_type = get_post_type($post_id);
 
-	if ( TRANSLATIONMANAGER_ORDER != $post_type ) {
+	if ( 'tmanager_order' !== $post_type ) {
 		return;
 	}
 
@@ -69,7 +69,7 @@ add_action( 'trashed_post', 'tmanager_order_trashed' );
  */
 function tmanager_order_row_actions( $actions, $post ) {
 
-	if ( $post && TRANSLATIONMANAGER_ORDER != $post->post_type ) {
+	if ( $post && 'tmanager_order' !== $post->post_type ) {
 		return $actions;
 	}
 

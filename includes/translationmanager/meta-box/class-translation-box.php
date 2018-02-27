@@ -71,7 +71,7 @@ class Translation_Box {
 		/** @var \WP_Term[] $terms */
 		$terms = get_terms(
 			array(
-				'taxonomy'   => TRANSLATIONMANAGER_TAX_PROJECT,
+				'taxonomy'   => 'translationmanager_project',
 				'hide_empty' => false,
 				'meta_query' => array(
 					array(

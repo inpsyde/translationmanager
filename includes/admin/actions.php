@@ -6,6 +6,7 @@
  * @return bool|int
  */
 function translationmanager_action_project_add_translation( $arguments ) {
+
 	// defaults
 	$request = wp_parse_args(
 		$arguments,
@@ -44,14 +45,14 @@ function translationmanager_action_project_add_translation( $arguments ) {
 	 * @see wp_insert_post() actions and filter to access each single transation that is added to cart.
 	 */
 	$valid = apply_filters(
-		TRANSLATIONMANAGER_FILTER_BEFORE_ADD_TO_PROJECT,
+		'translationmanager_filter_before_add_to_project',
 		true,
 		$project,
 		$request['post_ID'],
 		$request['translationmanager_language']
 	);
 
-	if (true !== $valid) {
+	if ( true !== $valid ) {
 		return false;
 	}
 
@@ -70,15 +71,15 @@ function translationmanager_action_project_add_translation( $arguments ) {
 	 * One last time you can filter to which project it will redirect (by using the ID)
 	 * or if should'nt redirect at all (by setting the value to "false").
 	 *
-	 * @param int   $project ID of the project (actually a term ID).
-	 * @param int   $post_id ID of the post that will be added to the cart.
+	 * @param int   $project   ID of the project (actually a term ID).
+	 * @param int   $post_id   ID of the post that will be added to the cart.
 	 * @param int[] $languages IDs of the target languages (assoc pair).
 	 *
 	 * @see translationmanager_action_project_add_translation() where this filter resides.
 	 * @see translationmanager_get_languages() how languages are gathered.
 	 */
 	return apply_filters(
-		TRANSLATIONMANAGER_FILTER_PROJECT_ADD_TRANSLATION,
+		'translationmanager_action_project_add_translation',
 		$project,
 		$request['post_ID'],
 		$request['translationmanager_language']
@@ -90,16 +91,16 @@ function _translationmanager_handle_actions() {
 	$post_data = filter_input_array(
 		INPUT_POST,
 		array(
-			TRANSLATIONMANAGER_ACTION_PROJECT_ORDER           => FILTER_SANITIZE_STRING,
-			TRANSLATIONMANAGER_ACTION_PROJECT_UPDATE          => FILTER_SANITIZE_STRING,
-			TRANSLATIONMANAGER_ACTION_PROJECT_ADD_TRANSLATION => FILTER_SANITIZE_STRING,
-			'_translationmanager_project_id'                  => FILTER_SANITIZE_STRING,
-			'translationmanager_project_id'                   => FILTER_SANITIZE_NUMBER_INT,
-			'post_ID'                           => FILTER_SANITIZE_NUMBER_INT,
-			'translationmanager_language'                     => array(
+			'translationmanager_action_project_order'           => FILTER_SANITIZE_STRING,
+			'translationmanager_action_project_update'          => FILTER_SANITIZE_STRING,
+			'translationmanager_action_project_add_translation' => FILTER_SANITIZE_STRING,
+			'_translationmanager_project_id'                    => FILTER_SANITIZE_STRING,
+			'translationmanager_project_id'                     => FILTER_SANITIZE_NUMBER_INT,
+			'post_ID'                                           => FILTER_SANITIZE_NUMBER_INT,
+			'translationmanager_language'                       => array(
 				'filter' => FILTER_SANITIZE_STRING,
-				'flags'  => FILTER_FORCE_ARRAY
-			)
+				'flags'  => FILTER_FORCE_ARRAY,
+			),
 		)
 	);
 
@@ -107,16 +108,16 @@ function _translationmanager_handle_actions() {
 	if (
 		! $post_data
 		|| (
-			null === $post_data[ TRANSLATIONMANAGER_ACTION_PROJECT_ORDER ]
-			&& null === $post_data[ TRANSLATIONMANAGER_ACTION_PROJECT_UPDATE ]
-			&& null === $post_data[ TRANSLATIONMANAGER_ACTION_PROJECT_ADD_TRANSLATION ]
+			null === $post_data['translationmanager_action_project_order']
+			&& null === $post_data['translationmanager_action_project_update']
+			&& null === $post_data['translationmanager_action_project_add_translation']
 		)
 	) {
 		return;
 	}
 
-	if ( null !== $post_data[ TRANSLATIONMANAGER_ACTION_PROJECT_ORDER ] ) {
-		$term = get_term_by( 'slug', $post_data['_translationmanager_project_id'], TRANSLATIONMANAGER_TAX_PROJECT );
+	if ( null !== $post_data['translationmanager_action_project_order'] ) {
+		$term = get_term_by( 'slug', $post_data['_translationmanager_project_id'], 'translationmanager_project' );
 
 		_translationmanager_project_order( $term );
 
@@ -126,8 +127,8 @@ function _translationmanager_handle_actions() {
 				'edit.php?' .
 				http_build_query(
 					array(
-						TRANSLATIONMANAGER_TAX_PROJECT => $post_data[ '_translationmanager_project_id' ],
-						'post_type'      => TMANAGER_CART,
+						'translationmanager_project' => $post_data['_translationmanager_project_id'],
+						'post_type'                  => 'tmanager_cart',
 					)
 				)
 			)
@@ -136,8 +137,8 @@ function _translationmanager_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
-	if ( null !== $post_data[ TRANSLATIONMANAGER_ACTION_PROJECT_UPDATE ] ) {
-		$term = get_term_by( 'slug', $post_data['_translationmanager_project_id'], TRANSLATIONMANAGER_TAX_PROJECT );
+	if ( null !== $post_data['translationmanager_action_project_update'] ) {
+		$term = get_term_by( 'slug', $post_data['_translationmanager_project_id'], 'translationmanager_project' );
 
 		_translationmanager_project_update( $term );
 
@@ -147,8 +148,8 @@ function _translationmanager_handle_actions() {
 				'edit.php?' .
 				http_build_query(
 					array(
-						TRANSLATIONMANAGER_TAX_PROJECT => $post_data[ '_translationmanager_project_id' ],
-						'post_type'      => TMANAGER_CART,
+						'translationmanager_project' => $post_data['_translationmanager_project_id'],
+						'post_type'                  => 'tmanager_cart',
 					)
 				)
 			)
@@ -157,7 +158,7 @@ function _translationmanager_handle_actions() {
 		wp_die( '', '', array( 'response' => 302 ) );
 	}
 
-	if ( null !== $post_data[ TRANSLATIONMANAGER_ACTION_PROJECT_ADD_TRANSLATION ] ) {
+	if ( null !== $post_data['translationmanager_action_project_add_translation'] ) {
 
 		$updater = new \Translationmanager\Admin\Cart_Updater();
 		$updater->setup();
@@ -166,7 +167,7 @@ function _translationmanager_handle_actions() {
 			array(
 				'translationmanager_language'   => $post_data['translationmanager_language'],
 				'translationmanager_project_id' => $post_data['translationmanager_project_id'],
-				'post_ID'         => $post_data['post_ID'],
+				'post_ID'                       => $post_data['post_ID'],
 			)
 		);
 
@@ -181,9 +182,9 @@ function _translationmanager_handle_actions() {
 				'edit.php?' .
 				http_build_query(
 					array(
-						TRANSLATIONMANAGER_TAX_PROJECT => get_term_field( 'slug', $project ),
-						'post_type'      => TMANAGER_CART,
-						'updated'        => - 1,
+						'translationmanager_project' => get_term_field( 'slug', $project ),
+						'post_type'                  => 'tmanager_cart',
+						'updated'                    => - 1,
 					)
 				)
 			)
@@ -201,18 +202,19 @@ function _translationmanager_handle_actions() {
  * @return array
  */
 function translationmanager_get_project_items( $term_id ) {
+
 	$get_posts = get_posts(
 		array(
-			'post_type'      => TMANAGER_CART,
+			'post_type'      => 'tmanager_cart',
 			'tax_query'      => array(
 				array(
-					'taxonomy' => TRANSLATIONMANAGER_TAX_PROJECT,
+					'taxonomy' => 'translationmanager_project',
 					'field'    => 'id',
-					'terms'    => $term_id
-				)
+					'terms'    => $term_id,
+				),
 			),
 			'posts_per_page' => - 1,
-			'post_status'    => array('draft', 'published'),
+			'post_status'    => array( 'draft', 'published' ),
 		)
 	);
 
@@ -227,6 +229,7 @@ function translationmanager_get_project_items( $term_id ) {
  * @param \WP_Term $project_term
  */
 function _translationmanager_project_order( $project_term ) {
+
 	global $wp_version;
 
 	$project_id = translationmanager_api()->project()->create(
@@ -274,13 +277,15 @@ function _translationmanager_project_order( $project_term ) {
 		 *
 		 * @param \Translationmanager\Translation_Data $data
 		 */
-		do_action_ref_array( TRANSLATIONMANAGER_OUTGOING_DATA, array( $data ) );
+		do_action_ref_array( 'translationmanager_outgoing_data', array( $data ) );
 		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ][] = $data->to_array();
 	}
 
-	foreach( $post_types as $post_type_target_language => $post_types_data ) {
-		foreach( $post_types_data as $post_type_name => $post_type_content ) {
-			translationmanager_api()->project_item()->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
+	foreach ( $post_types as $post_type_target_language => $post_types_data ) {
+		foreach ( $post_types_data as $post_type_name => $post_type_content ) {
+			translationmanager_api()
+				->project_item()
+				->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
 		}
 	}
 
@@ -291,6 +296,7 @@ function _translationmanager_project_order( $project_term ) {
  * @param \WP_Term $project_term
  */
 function _translationmanager_project_update( $project_term ) {
+
 	$project_id = get_term_meta( $project_term->term_id, '_tmanager_order_id', true );
 
 	if ( ! $project_id ) {
@@ -309,12 +315,12 @@ function _translationmanager_project_update( $project_term ) {
 			 *
 			 * @param \Translationmanager\Translation_Data $translation Translation data built from data received from API
 			 */
-			do_action( TRANSLATIONMANAGER_INCOMING_DATA, $translation );
+			do_action( 'translationmanager_incoming_data', $translation );
 
 			/**
 			 * Filters the updater that executed have to return the updated post
 			 */
-			$updater = apply_filters( TRANSLATIONMANAGER_POST_UPDATER, null, $translation );
+			$updater = apply_filters( 'translationmanager_post_updater', null, $translation );
 
 			$post = is_callable( $updater ) ? $updater( $translation ) : null;
 
@@ -323,10 +329,10 @@ function _translationmanager_project_update( $project_term ) {
 				/**
 				 * Fires after the updater has updated the post.
 				 *
-				 * @param \WP_Post $post Just updated post
+				 * @param \WP_Post                             $post        Just updated post
 				 * @param \Translationmanager\Translation_Data $translation Translation data built from data received from API
 				 */
-				do_action( TRANSLATIONMANAGER_UPDATED_POST, $post, $translation );
+				do_action( 'translationmanager_updated_post', $post, $translation );
 			}
 		}
 	}

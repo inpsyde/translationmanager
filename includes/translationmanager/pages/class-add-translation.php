@@ -7,7 +7,8 @@ class Add_Translation {
 	 * @see ::handle_post()
 	 */
 	public function dispatch() {
-		if ( ! current_user_can( TRANSLATIONMANAGER_CAP_TRANSLATION_REQUEST ) ) {
+
+		if ( ! current_user_can( 'edit_others_pages' ) ) {
 			wp_die( __( 'You are not allowed to do this' ) );
 		}
 
@@ -34,8 +35,8 @@ class Add_Translation {
 				null,
 				'edit.php?' . http_build_query(
 					array(
-						'post_type' => TMANAGER_CART,
-						'success'   => __( 'Item added to cart.', 'translationmanager' )
+						'post_type' => 'tmanager_cart',
+						'success'   => esc_html__( 'Item added to cart.', 'translationmanager' ),
 					)
 				)
 			)
@@ -43,6 +44,7 @@ class Add_Translation {
 	}
 
 	protected function handle_post( $id ) {
+
 		$post = get_post( $id );
 
 		if ( is_wp_error( $post ) ) {
@@ -54,7 +56,7 @@ class Add_Translation {
 
 		$post_type_labels = get_post_type_labels( get_post_type_object( $post->post_type ) );
 
-		$languages      = array( 0, 1 );
+		$languages       = array( 0, 1 );
 		$valid_languages = translationmanager_get_languages();
 
 		foreach ( $languages as $language_id ) {
@@ -64,7 +66,7 @@ class Add_Translation {
 
 			$id = wp_insert_post(
 				array(
-					'post_type'  => TMANAGER_CART,
+					'post_type'  => 'tmanager_cart',
 					'post_title' => sprintf(
 						__( '%s: "%s"', 'translationmanager' ),
 						$post_type_labels->singular_name,
@@ -72,8 +74,8 @@ class Add_Translation {
 					),
 					'meta_input' => array(
 						'_translationmanager_related_' . $post->post_type => $id,
-						'_target_language'                    => $valid_languages[$language_id]['lang_code'],
-					)
+						'_target_language'                                => $valid_languages[ $language_id ]['lang_code'],
+					),
 				)
 			);
 		}

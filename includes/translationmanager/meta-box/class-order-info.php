@@ -18,7 +18,7 @@ class Order_Info {
 			static::ID,
 			__( 'Order information', 'translationmanager' ),
 			array( $this, 'dispatch' ),
-			TRANSLATIONMANAGER_ORDER,
+			'tmanager_order',
 			self::CONTEXT
 		);
 	}

@@ -3,7 +3,7 @@
 namespace Translationmanager\Taxonomy;
 
 class Project {
-	const TAXONOMY = TRANSLATIONMANAGER_TAX_PROJECT;
+	const TAXONOMY = 'translationmanager_project';
 
 	const COL_STATUS = 'tmanager_order_status';
 	const COL_ACTIONS = 'tmanager_order_action';
@@ -16,10 +16,11 @@ class Project {
 	 * @param \WP_Term $term
 	 */
 	public static function modify_row_actions( $columns, $term ) {
+
 		$columns['view'] = sprintf(
 			'<a href="%s">%s</a>',
 			self::get_project_link( $term->term_id ),
-			__('View')
+			__( 'View' )
 		);
 
 		return $columns;
@@ -31,13 +32,14 @@ class Project {
 	 * @return string
 	 */
 	public static function get_project_link( $term_id ) {
+
 		return get_admin_url(
 			null,
 			'edit.php?' .
 			http_build_query(
 				array(
-					TRANSLATIONMANAGER_TAX_PROJECT => get_term_field( 'slug', $term_id ),
-					'post_type'        => TMANAGER_CART,
+					'translationmanager_project' => get_term_field( 'slug', $term_id ),
+					'post_type'                  => 'tmanager_cart',
 				)
 			)
 		);
@@ -67,6 +69,7 @@ class Project {
 	}
 
 	public static function print_column( $value, $column_name, $term_id ) {
+
 		switch ( $column_name ) {
 			case static::COL_STATUS:
 				if ( ! get_term_meta( $term_id, '_tmanager_order_id', true ) ) {

@@ -1,50 +1,68 @@
 {
-  "name": "eurotext/translationmanager",
-  "description": "WordPress Plugin to connect to the Eurotext REST API.",
-  "license": "proprietary",
-  "type": "wordpress-plugin",
-  "config": {
-    "sort-packages": true
-  },
-  "autoload": {
-    "files": [
-      "bootstrap.php"
-    ]
-  },
-  "extra": {
-    "wordpress-install-dir": "html",
-    "installer-paths": {
-      "html/wp-content/plugins/{$name}": ["type:wordpress-plugin"],
-      "html/wp-content/themes/{$name}": ["type:wordpress-theme"]
-    }
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url":"https://wpackagist.org"
-    }
-  ],
-  "require": {
-    "php": ">=5.6"
-  },
-  "require-dev": {
-    "johnpbloch/wordpress-core": "~4.7",
-    "johnpbloch/wordpress-core-installer": "~0.2",
-    "wpackagist-plugin/multilingual-press": "^2.6",
-    "phpunit/phpunit": "~5",
-    "brain/monkey": "2.*",
-    "sourcerer-mike/wp-readme-validator": "dev-master",
-    "squizlabs/php_codesniffer": "~2.7",
-    "wimg/php-compatibility": "^7.0",
-    "wp-coding-standards/wpcs": "dev-master",
-    "wpackagist-plugin/debug-bar": "~0",
-    "wpackagist-plugin/debug-bar-actions-and-filters-addon": "~1",
-    "wpackagist-plugin/debug-bar-constants": "~1",
-    "wpackagist-plugin/debug-bar-screen-info": "~1"
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Translationmanager\\Tests\\": "tests/unit/src"
-    }
-  }
+	"name" : "eurotext/translationmanager",
+	"description" : "WordPress Plugin to connect to the Eurotext REST API.",
+	"license" : "proprietary",
+	"type" : "wordpress-plugin",
+	"config" : {
+		"sort-packages" : true
+	},
+	"extra" : {
+		"wordpress-install-dir" : "html",
+		"installer-paths" : {
+			"html/wp-content/plugins/{$name}" : [
+				"type:wordpress-plugin"
+			],
+			"html/wp-content/themes/{$name}" : [
+				"type:wordpress-theme"
+			]
+		}
+	},
+	"repositories" : [
+		{
+			"type" : "composer",
+			"url" : "https://wpackagist.org"
+		}
+	],
+	"require" : {
+		"php" : ">=5.6"
+	},
+	"require-dev" : {
+		"johnpbloch/wordpress-core" : "~4.7",
+		"johnpbloch/wordpress-core-installer" : "~0.2",
+		"wpackagist-plugin/multilingual-press" : "^2.6",
+		"phpunit/phpunit" : "~5",
+		"brain/monkey" : "2.*",
+		"sourcerer-mike/wp-readme-validator" : "dev-master",
+		"squizlabs/php_codesniffer" : "~2.7",
+		"wimg/php-compatibility" : "^7.0",
+		"wp-coding-standards/wpcs" : "dev-master",
+		"wpackagist-plugin/debug-bar" : "~0",
+		"wpackagist-plugin/debug-bar-actions-and-filters-addon" : "~1",
+		"wpackagist-plugin/debug-bar-constants" : "~1",
+		"wpackagist-plugin/debug-bar-screen-info" : "~1"
+	},
+	"autoload" : {
+		"files" : [
+			"includes/api.php",
+			"includes/interface.php",
+			"includes/logging.php",
+			"includes/modules.php",
+			"includes/options-page.php",
+			"includes/wonolog.php",
+			"includes/admin/actions.php",
+			"includes/admin/add-translation.php",
+			"includes/admin/add-translation.php",
+			"includes/admin/common.php",
+			"includes/admin/cpt-order.php",
+			"includes/admin/cpt-project.php",
+			"includes/admin/functions.php",
+			"includes/admin/tax-project.php",
+			"includes/admin/translation-box.php"
+		]
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"Translationmanager\\Tests\\" : "tests/unit/src"
+		}
+	}
 }

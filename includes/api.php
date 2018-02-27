@@ -50,5 +50,5 @@ function translationmanager_api_fetch() {
 	 * @param string $target_language Target language as language tag (like "en-CA").
 	 * @param array  $response        The response as of `wp_remote_request()`.
 	 */
-	do_action( TRANSLATIONMANAGER_API_PROCESS_ORDER, $data, $target_language, $response );
+	do_action( 'translationmanager_api_process_order', $data, $target_language, $response );
 }

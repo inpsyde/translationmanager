@@ -2,7 +2,7 @@
 
 function translationmanager_cpt_cart() {
 	register_post_type(
-		TMANAGER_CART,
+		'tmanager_cart',
 		array(
 			'label'         => __( 'Cart', 'translationmanager' ),
 			'labels'        => array(
@@ -19,7 +19,7 @@ function translationmanager_cpt_cart() {
 			'menu_position' => 100,
 			'supports'      => array( 'title' ),
 			'menu_icon'     => plugins_url( 'public/tm-icon-bw.png', TRANSLATIONMANAGER_FILE ),
-			// 'show_in_menu'  => 'edit.php?post_type=' . TRANSLATIONMANAGER_TRANS_STATUS,
+			// 'show_in_menu'  => 'edit.php?post_type=translationmanager_trans_status',
 		)
 	);
 
@@ -32,13 +32,12 @@ add_action( 'init', 'translationmanager_cpt_cart' );
  */
 function tmanager_cart_remove_month() {
 	if ( ! get_current_screen()
-	     || TMANAGER_CART != get_current_screen()->post_type
+	     || 'tmanager_cart' != get_current_screen()->post_type
 	) {
 		return;
 	}
 
 	add_filter( 'months_dropdown_results', '__return_empty_array' );
-
 }
 
 add_action( 'admin_head', 'tmanager_cart_remove_month' );
@@ -53,14 +52,14 @@ function translationmanager_bulk_actions_cart( $actions ) {
 	return $actions;
 }
 
-add_filter( 'bulk_actions-edit-' . TMANAGER_CART, 'translationmanager_bulk_actions_cart' );
+add_filter( 'bulk_actions-edit-tmanager_carttmanager_cart', 'translationmanager_bulk_actions_cart' );
 
 /**
  * @param          $actions
  * @param \WP_Post $post
  */
 function tmanager_cart_row_actions( $actions, $post ) {
-	if ( $post && TMANAGER_CART != $post->post_type ) {
+	if ( $post && 'tmanager_cart' != $post->post_type ) {
 		return $actions;
 	}
 
@@ -81,7 +80,7 @@ function tmanager_cart_row_actions( $actions, $post ) {
 add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
 
 //function tmanager_cart_footer( $which ) {
-//	if ( 'edit-' . TMANAGER_CART != get_current_screen()->id ) {
+//	if ( 'edit-tmanager_cart' != get_current_screen()->id ) {
 //		return;
 //	}
 //
@@ -93,13 +92,13 @@ add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
 //	$request = wp_parse_args(
 //		$_GET,  // Input var ok.
 //		array(
-//			TRANSLATIONMANAGER_TAX_PROJECT => null,
+//			'translationmanager_project' => null,
 //		)
 //	);
 //
 //	if ( isset( $request['translationmanager_project'] ) && $_GET['translationmanager_project'] ) {
 //		$current_slug = $_GET['translationmanager_project']; // Input var ok.
-//		$term         = get_term_by( 'slug', $current_slug, TRANSLATIONMANAGER_TAX_PROJECT );
+//		$term         = get_term_by( 'slug', $current_slug, 'translationmanager_project' );
 //
 //		if ( ! is_wp_error( $term )
 //		     && get_term_meta( $term->term_id, '_tmanager_order_id' )
@@ -128,7 +127,7 @@ add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
  * @return array
  */
 function _tmanager_cart_remove_states( $post_states, $post ) {
-	if ( TMANAGER_CART != $post->post_type ) {
+	if ( 'tmanager_cart' != $post->post_type ) {
 		return $post_states;
 	}
 
@@ -140,7 +139,7 @@ add_filter( 'display_post_states', '_tmanager_cart_remove_states', 10, 2 );
 add_action( 'admin_init', array( \Translationmanager\Post_Type\Project_Item::class, 'register_post_status' ) );
 
 add_filter(
-	'manage_' . TMANAGER_CART . '_posts_columns',
+	'manage_tmanager_cart_posts_columns',
 	array(
 		\Translationmanager\Post_Type\Project_Item::class,
 		'modify_columns'
@@ -148,7 +147,7 @@ add_filter(
 );
 
 add_filter(
-	'manage_edit-' . TRANSLATIONMANAGER_TAX_PROJECT . '_columns',
+	'manage_edit-translationmanager_project_columns',
 	array(
 		\Translationmanager\Taxonomy\Project::class,
 		'modify_columns'
@@ -156,7 +155,7 @@ add_filter(
 );
 
 add_filter(
-	TRANSLATIONMANAGER_TAX_PROJECT . '_row_actions',
+	'translationmanager_project_row_actions',
 	array(
 		\Translationmanager\Taxonomy\Project::class,
 		'modify_row_actions'
@@ -168,12 +167,12 @@ add_filter(
 add_filter( 'views_edit-tmanager_cart', function ( $value ) {
 	$request = $_GET; // Input var ok.
 
-	if ( ! isset( $request[ TRANSLATIONMANAGER_TAX_PROJECT ] ) || ! $request[ TRANSLATIONMANAGER_TAX_PROJECT ] ) {
+	if ( ! isset( $request[ 'translationmanager_project' ] ) || ! $request[ 'translationmanager_project' ] ) {
 		// Not on a specific project so we can't show details.
 		return $value;
 	}
 
-	$term = get_term_by( 'slug', $request[ TRANSLATIONMANAGER_TAX_PROJECT ], TRANSLATIONMANAGER_TAX_PROJECT );
+	$term = get_term_by( 'slug', $request[ 'translationmanager_project' ], 'translationmanager_project' );
 
 	$info = new \Translationmanager\Meta_Box\Order_Info( $term->term_id );
 
@@ -186,7 +185,7 @@ add_filter( 'views_edit-tmanager_cart', function ( $value ) {
 
 add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_counts ) {
 
-	$bulk_messages[ TMANAGER_CART ] = array(
+	$bulk_messages[ 'tmanager_cart' ] = array(
 		'updated'   => __( 'Project has been updated.', 'translationmanager' ),
 		'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( '1 page not updated, somebody is editing it.' ) :
 			_n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] ),
@@ -196,7 +195,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 	);
 
 	if ( isset( $_GET['updated'] ) && - 1 == intval( $_GET['updated'] ) ) { // Input var ok.
-		$bulk_messages[ TMANAGER_CART ]['updated'] = __( 'Project has been created', 'translationmanager' );
+		$bulk_messages[ 'tmanager_cart' ]['updated'] = esc_html__( 'Project has been created', 'translationmanager' );
 	}
 
 	return $bulk_messages;
@@ -204,7 +203,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 
 add_action( 'admin_head-edit.php', function () {
 	if ( ! get_current_screen()
-	     || TMANAGER_CART != get_current_screen()->post_type
+	     || 'tmanager_cart' != get_current_screen()->post_type
 	) {
 		return;
 	}

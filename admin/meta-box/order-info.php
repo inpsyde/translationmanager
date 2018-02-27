@@ -30,10 +30,10 @@
 		<?php if ( ! $this->get_translated_at() ): ?>
 			<div class="textright">
 				<input type="submit"
-				       name="<?php echo TRANSLATIONMANAGER_ACTION_PROJECT_UPDATE ?>"
+				       name="translationmanager_action_project_update"
 				       class="button button-primary"
-				       onclick="jQuery('#<?php echo TRANSLATIONMANAGER_ACTION_PROJECT_UPDATE ?>').click();"
-				       value="<?php _e( 'Update', 'translationmanager' ) ?>"/>
+				       onclick="jQuery('#translationmanager_action_project_update').click();"
+				       value="<?php esc_html_e( 'Update', 'translationmanager' ) ?>"/>
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>
@@ -51,9 +51,9 @@
 	<br>
 	<div class="textright">
 		<input type="submit"
-		       name="<?php echo TRANSLATIONMANAGER_ACTION_PROJECT_ORDER ?>"
+		       name="<?php echo 'translationmanager_action_project_order' ?>"
 		       class="button button-primary"
-		       onclick="jQuery('#<?php echo TRANSLATIONMANAGER_ACTION_PROJECT_ORDER ?>').click();"
+		       onclick="jQuery('#translationmanager_action_project_order').click();"
 		       value="<?php _e( 'Order project', 'translationmanager' ) ?>"/>
 	</div>
 <?php endif; ?>

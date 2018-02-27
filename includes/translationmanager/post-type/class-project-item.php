@@ -15,6 +15,7 @@ class Project_Item {
 	}
 
 	public static function modify_columns( $columns ) {
+
 		if ( ! static::is_subject() ) {
 			return $columns;
 		}
@@ -35,15 +36,17 @@ class Project_Item {
 	}
 
 	public static function is_subject() {
+
 		return get_current_screen()
 		       && static::POST_TYPE == get_current_screen()->post_type;
 	}
 
 	public static function _column_project( $columns ) {
+
 		$request = wp_parse_args(
 			$_GET,
 			array(
-				TRANSLATIONMANAGER_TAX_PROJECT => null,
+				'translationmanager_project' => null,
 			)
 		); // Input var ok.
 
@@ -52,7 +55,7 @@ class Project_Item {
 			return $columns;
 		}
 
-		if ( $request[ TRANSLATIONMANAGER_TAX_PROJECT ] ) {
+		if ( $request[ 'translationmanager_project' ] ) {
 			// Term/Project filter is active so this col is not needed.
 			return $columns;
 		}
@@ -63,15 +66,17 @@ class Project_Item {
 	}
 
 	protected static function _column_language( $columns ) {
+
 		$columns[ self::COLUMN_LANGUAGE ] = __( 'Target language', 'translationmanager' );
 
 		return $columns;
 	}
 
 	public static function print_column( $column_name, $post_id ) {
+
 		switch ( $column_name ) {
 			case static::COLUMN_PROJECT:
-				$terms = get_the_terms( $post_id, TRANSLATIONMANAGER_TAX_PROJECT );
+				$terms = get_the_terms( $post_id, 'translationmanager_project' );
 
 				if ( ! $terms ) {
 					break;
@@ -84,8 +89,8 @@ class Project_Item {
 						'edit.php?' .
 						http_build_query(
 							array(
-								TRANSLATIONMANAGER_TAX_PROJECT => $term->slug,
-								'post_type'        => TMANAGER_CART
+								'translationmanager_project' => $term->slug,
+								'post_type'                    => 'tmanager_cart',
 							)
 						),
 						$term->name

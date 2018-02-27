@@ -71,7 +71,7 @@ class Api {
 		}
 
 		do_action(
-			TRANSLATIONMANAGER_ACTION_LOG,
+			'translationmanager_log',
 			[
 				'message' => sprintf(
 					'%s: %s',
@@ -94,7 +94,7 @@ class Api {
 		$response_code = wp_remote_retrieve_response_code( $response );
 		if ( $response_code < 200 || $response_code >= 300 ) {
 			do_action(
-				TRANSLATIONMANAGER_ACTION_LOG,
+				'translationmanager_log',
 				[
 					'message' => 'Request against API failed.',
 					'context' => array_merge(

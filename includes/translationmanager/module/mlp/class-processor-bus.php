@@ -63,7 +63,7 @@ class Processor_Bus {
 				&& apply_filters( 'translationmanager_mlp_data_processor_enabled', true, $processor, $data )
 			) {
 				do_action(
-					TRANSLATIONMANAGER_ACTION_LOG,
+					'translationmanager_log',
 					[
 						'message' => 'Processing with ' . get_class( $processor ) . '::' . $method . '()',
 						'context' => [

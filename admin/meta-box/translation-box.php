@@ -111,7 +111,7 @@
 <?php if( !empty($this->get_languages())):?>
 <p id="translationmanager-inquery-button-id">
 	<button type="submit"
-	        name="<?php echo TRANSLATIONMANAGER_ACTION_PROJECT_ADD_TRANSLATION ?>"
+	        name="<?php echo 'translationmanager_action_project_add_translation' ?>"
 	        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'translationmanager' ) ?>"
 	        class="button button-primary translationmanager-inquery-button">
 		<?php if ( ! $this->get_projects() ): ?>

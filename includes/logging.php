@@ -5,7 +5,7 @@
  * @package translationmanager
  */
 
-add_action( TRANSLATIONMANAGER_ACTION_LOG, function ( array $log_data ) {
+add_action( 'translationmanager_log', function ( array $log_data ) {
 
 	if ( ! array_key_exists( 'message', $log_data ) || ! $log_data['message'] ) {
 		return;
@@ -16,7 +16,5 @@ add_action( TRANSLATIONMANAGER_ACTION_LOG, function ( array $log_data ) {
 		$context = '; context: ' . json_encode( $log_data['context'] );
 	}
 
-	error_log( TRANSLATIONMANAGER_PREFIX . ': ' . esc_html( $log_data['message'] ) . $context );
+	error_log( 'translationmanager' . ': ' . esc_html( $log_data['message'] ) . $context );
 } );
-
-
