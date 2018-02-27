@@ -24,12 +24,16 @@ add_action( 'plugins_loaded', function () {
 		return;
 	}
 
-	// Load bootstrap.
-	require_once __DIR__ . '/bootstrap.php';
+	// Register autoloader.
+	require_once __DIR__ . '/includes/translationmanager/class-loader.php';
+	spl_autoload_register( array( new \Translationmanager\Loader(), 'load_class' ) );
+
+	// Require composer autoloader if exists.
+	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		require_once __DIR__ . '/vendor/autoload.php';
+	}
 
 	$requirements = new Translationmanager\Requirements();
-	$plugin       = new Translationmanager\Plugin( __FILE__ );
-
 	// Check the requirements and in case prevent code execution by returning.
 	if ( ! $requirements->is_php_version_ok() ) {
 		add_action( 'admin_notices', function () use ( $requirements ) {

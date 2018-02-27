@@ -43,6 +43,7 @@
 	},
 	"autoload" : {
 		"files" : [
+			"includes/commons.php",
 			"includes/api.php",
 			"includes/interface.php",
 			"includes/logging.php",
