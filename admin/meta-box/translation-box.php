@@ -1,16 +1,16 @@
 <?php /** @var \Translationmanager\Meta_Box\Translation_Box $this */ ?>
 <script>
-	(function($){
-		$(function(){
-			$('#translationmanager-inquery-button-id').on('click', '.translationmanager-inquery-button', function() {
-				var checked = $("input.translationmanager_languages_class").is(':checked');
-				if(!checked) {
+	(function ( $ ) {
+		$( function () {
+			$( '#translationmanager-inquery-button-id' ).on( 'click', '.translationmanager-inquery-button', function () {
+				var checked = $( "input.translationmanager_languages_class" ).is( ':checked' );
+				if ( ! checked ) {
 					alert( "You must check at least one language." );
 					return false;
 				}
-			});
-		})
-	})(jQuery)
+			} );
+		} )
+	})( jQuery )
 </script>
 <?php if ( ! $this->get_customer_key() ): ?>
 	<em>
@@ -23,8 +23,8 @@
 
 <!-- TODO values need to be transferred. -->
 <div style="line-height: 2em;">
-	<?php if( !empty($this->get_languages())):?>
-	<?php if ( $this->get_projects() ): ?>
+	<?php if ( ! empty( $this->get_languages() ) ): ?>
+		<?php if ( $this->get_projects() ): ?>
 		<div class="misc-pub-section misc-pub-fff-status">
 			<?php _e( 'Project', 'translationmanager' ) ?>:
 			<strong>
@@ -58,35 +58,35 @@
 		</div>
 
 		<script>
-			var $fffStatusSelect = jQuery('#fff-status-select');
+			var $fffStatusSelect = jQuery( '#fff-status-select' );
 
 			// fff Status edit click.
-			$fffStatusSelect.siblings('a.edit-fff-status').click(function (event) {
-				if ($fffStatusSelect.is(':hidden')) {
-					$fffStatusSelect.slideDown('fast', function () {
-						$fffStatusSelect.find('select').focus();
-					});
-					jQuery(this).hide();
+			$fffStatusSelect.siblings( 'a.edit-fff-status' ).click( function ( event ) {
+				if ( $fffStatusSelect.is( ':hidden' ) ) {
+					$fffStatusSelect.slideDown( 'fast', function () {
+						$fffStatusSelect.find( 'select' ).focus();
+					} );
+					jQuery( this ).hide();
 				}
 				event.preventDefault();
-			});
+			} );
 
 			// Save the Post Status changes and hide the options.
-			$fffStatusSelect.find('.save-fff-status').click(function (event) {
-				$fffStatusSelect.slideUp('fast').siblings('a.edit-fff-status').show().focus();
+			$fffStatusSelect.find( '.save-fff-status' ).click( function ( event ) {
+				$fffStatusSelect.slideUp( 'fast' ).siblings( 'a.edit-fff-status' ).show().focus();
 
-				jQuery('#fff-status-display').html(jQuery('#fff_status option:selected').text());
-				jQuery('#translationmanager_project_id').val(jQuery('#fff_status').val());
+				jQuery( '#fff-status-display' ).html( jQuery( '#fff_status option:selected' ).text() );
+				jQuery( '#translationmanager_project_id' ).val( jQuery( '#fff_status' ).val() );
 
 				event.preventDefault();
-			});
+			} );
 
 			// Cancel Post Status editing and hide the options.
-			$fffStatusSelect.find('.cancel-fff-status').click(function (event) {
-				$fffStatusSelect.slideUp('fast').siblings('a.edit-fff-status').show().focus();
+			$fffStatusSelect.find( '.cancel-fff-status' ).click( function ( event ) {
+				$fffStatusSelect.slideUp( 'fast' ).siblings( 'a.edit-fff-status' ).show().focus();
 
 				event.preventDefault();
-			});
+			} );
 		</script>
 	<?php endif; ?>
 
@@ -94,31 +94,31 @@
 		<div>
 			<label for="language_<?php esc_attr_e( $language->get_lang_code() ) ?>">
 				<input type="checkbox"
-						class="translationmanager_languages_class"
+				       class="translationmanager_languages_class"
 				       name="translationmanager_language[]"
 				       value="<?php esc_attr_e( $key ) ?>"
-				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>" />
+				       id="language_<?php esc_attr_e( $language->get_lang_code() ) ?>"/>
 				<?php esc_html_e( $language->get_label() ) ?>
 			</label>
 		</div>
 	<?php endforeach; ?>
-	<?php else:?>
-		<p>No language found !</p>
-	<?php endif?>
+	<?php else: ?>
+		<p><?php esc_html_e( 'No language found !', 'translationmanager' ) ?></p>
+	<?php endif ?>
 
 </div>
 
-<?php if( !empty($this->get_languages())):?>
-<p id="translationmanager-inquery-button-id">
-	<button type="submit"
-	        name="<?php echo 'translationmanager_action_project_add_translation' ?>"
-	        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'translationmanager' ) ?>"
-	        class="button button-primary translationmanager-inquery-button">
-		<?php if ( ! $this->get_projects() ): ?>
-			<?php esc_html_e( 'Create new project', 'translationmanager' ) ?>
-		<?php else: ?>
-			<?php esc_html_e( 'Add to project', 'translationmanager' ) ?>
-		<?php endif; ?>
-	</button>
-</p>
+<?php if ( ! empty( $this->get_languages() ) ): ?>
+	<p id="translationmanager-inquery-button-id">
+		<button type="submit"
+		        name="<?php echo 'translationmanager_action_project_add_translation' ?>"
+		        title="<?php esc_attr_e( 'Create a new project containing the selected languages.', 'translationmanager' ) ?>"
+		        class="button button-primary translationmanager-inquery-button">
+			<?php if ( ! $this->get_projects() ): ?>
+				<?php esc_html_e( 'Create new project', 'translationmanager' ) ?>
+			<?php else: ?>
+				<?php esc_html_e( 'Add to project', 'translationmanager' ) ?>
+			<?php endif; ?>
+		</button>
+	</p>
 <?php endif ?>
