@@ -36,27 +36,3 @@ function translationmanager_activate() {
 	$setup = new \Translationmanager\Admin\Setup();
 	$setup->plugin_activate();
 }
-
-/**
- * Translation Manager Die
- *
- * It's a wrapper for `wp_die`.
- *
- * @since 1.0.0
- *
- * @param string $message The message.
- * @param string $title   The title.
- * @param array  $args    Additiona arguments.
- */
-function translationmanager_die( $message = '', $title = '', $args = array() ) {
-
-	if ( ! $title ) {
-		$title = __( 'We are sorry!', 'translationmanager' );
-	}
-
-	if ( ! $message ) {
-		$message = __( 'Something went wrong. Please contact us.', 'translationmanager' );
-	}
-
-	wp_die( wp_kses_post( $message ), $title, $args );
-}
