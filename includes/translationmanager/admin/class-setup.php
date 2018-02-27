@@ -1,12 +1,30 @@
 <?php
 /**
- * PHP 5.4
+ * Setup
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Admin
  */
 
 namespace Translationmanager\Admin;
 
+/**
+ * Class Setup
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Admin
+ */
 class Setup {
+
+	/**
+	 * Activate plugin
+	 *
+	 * @since 1.0.0
+	 *
+	 * @throws \Exception In caset the plugin version isn't set.
+	 */
 	public function plugin_activate() {
+
 		$plugin_data = get_plugin_data( TRANSLATIONMANAGER_FILE );
 
 		if ( ! isset( $plugin_data['Version'] ) || ! $plugin_data['Version'] ) {

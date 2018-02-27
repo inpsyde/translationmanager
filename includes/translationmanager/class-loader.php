@@ -21,13 +21,13 @@ class Loader {
 	 * @param string $class_name The class to load / search for.
 	 */
 	public function load_class( $class_name ) {
-		if ( strpos( $class_name, __NAMESPACE__ ) !== 0 ) {
+
+		if ( false === strpos( $class_name, __NAMESPACE__ ) ) {
 			// Not our scope => ignore.
 			return;
 		}
 
-		$file_name = dirname( dirname( __FILE__ ) )
-		             . DIRECTORY_SEPARATOR . $this->class_to_file( $class_name );
+		$file_name = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . $this->class_to_file( $class_name );
 
 		if ( ! is_readable( $file_name ) ) {
 			// not found => do nothing.
@@ -49,6 +49,7 @@ class Loader {
 	 * @return string Relative path to a class by using WP Coding Standards.
 	 */
 	protected function class_to_file( $class_name ) {
+
 		$file_name = $class_name;
 		$file_name = strtolower( $file_name );
 		$file_name = strtr(
