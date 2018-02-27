@@ -135,7 +135,7 @@ class InpsydeCustomFunctions {
 						<div id="translationmanager-project-wrap-div">
 							<h2>Select Projects:</h2>
 							<select name="translationmanager-projects" id="translationmanager-">
-								<option value="-1"><?php _e( 'New project', 'translationmanager' ) ?></option>
+								<option value="-1"><?php esc_html_e( 'New project', 'translationmanager' ) ?></option>
 								<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
 									<option value="<?php echo esc_attr( $project_id ) ?>">
 										<?php echo esc_html( $project_label ) ?>
@@ -235,8 +235,8 @@ class InpsydeCustomFunctions {
 
 		add_submenu_page(
 			'edit.php?post_type=tmanager_cart',
-			__( 'About', 'tmanager_cart' ),
-			__( 'About', 'tmanager_cart' ),
+			esc_html__( 'About', 'translationmanager' ),
+			esc_html__( 'About', 'translationmanager' ),
 			'manage_options',
 			'inpsyde-translationmanager-about',
 			array( $this, 'inpsyde_translationmanager_about_page_callback' )
@@ -455,7 +455,7 @@ class InpsydeCustomFunctions {
 
 	public function translate_bulk_actions( $actions ) {
 
-		$actions['bulk_translate'] = __( 'Bulk Translate', 'translationmanager' );
+		$actions['bulk_translate'] = esc_html__( 'Bulk Translate', 'translationmanager' );
 
 		return $actions;
 	}

@@ -33,7 +33,7 @@
 				<?php settings_fields( $this::OPTION_GROUP ); ?>
 				<?php
 				do_settings_sections( 'translationmanager_api' );
-				submit_button( __( 'Save changes' ), 'primary', 'save_action' );
+				submit_button( esc_html__( 'Save changes', 'translationmanager' ), 'primary', 'save_action' );
 				?>
 			</div>
 

@@ -28,7 +28,7 @@ class Project_Handler {
 			array(
 				'post_type'  => 'tmanager_cart',
 				'post_title' => sprintf(
-					__( '%s: "%s"', 'translationmanager' ),
+					esc_html__( '%s: "%s"', 'translationmanager' ),
 					$labels->singular_name,
 					get_the_title( $post_id )
 				),

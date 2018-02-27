@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="form-field term-description-wrap">
-			<label for="description"><?php _e( 'Description' ); ?></label>
+			<label for="description"><?php esc_html_e( 'Description', 'translationmanager' ); ?></label>
 			<textarea name="description" id="description" rows="5" cols="40">
 				<?php echo ( is_object( $term ) ) ? $term->description : ''; ?>
 			</textarea>

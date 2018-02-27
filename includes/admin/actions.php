@@ -22,7 +22,7 @@ function translationmanager_action_project_add_translation( $arguments ) {
 
 	if ( ! $project ) {
 		$project = $handler->create_project(
-			sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
+			sprintf( esc_html__( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
 		);
 	}
 

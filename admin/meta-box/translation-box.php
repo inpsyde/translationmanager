@@ -26,15 +26,15 @@
 	<?php if ( ! empty( $this->get_languages() ) ): ?>
 		<?php if ( $this->get_projects() ): ?>
 		<div class="misc-pub-section misc-pub-fff-status">
-			<?php _e( 'Project', 'translationmanager' ) ?>:
+			<?php esc_html_e( 'Project', 'translationmanager' ) ?>:
 			<strong>
 				<span id="fff-status-display">
 					<?php esc_html_e( $this->get_recent_project_name() ) ?>
 				</span>
 			</strong>
 			<a href="#fff_status" class="edit-fff-status hide-if-no-js" role="button" style="display: inline;">
-				<span aria-hidden="true"><?php _e( 'Edit' ) ?></span>
-				<span class="screen-reader-text"><?php _e( 'Edit status' ) ?></span>
+				<span aria-hidden="true"><?php esc_html_e( 'Edit', 'translationmanager' ) ?></span>
+				<span class="screen-reader-text"><?php esc_html_e( 'Edit status', 'translationmanager' ) ?></span>
 			</a>
 
 			<div id="fff-status-select" class="hide-if-js" style="display: none;">
@@ -44,7 +44,7 @@
 				       value="<?php echo $this->get_recent_project_id() ?>">
 				<label for="fff_status" class="screen-reader-text">Set status</label>
 				<select name="fff_status" id="fff_status">
-					<option value="0"><?php _e( 'New project', 'translationmanager' ) ?></option>
+					<option value="0"><?php esc_html_e( 'New project', 'translationmanager' ) ?></option>
 					<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
 						<option value="<?php esc_attr_e( $project_id ) ?>">
 							<?php esc_html_e( $project_label ) ?>

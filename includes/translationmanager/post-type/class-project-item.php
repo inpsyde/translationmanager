@@ -62,14 +62,14 @@ class Project_Item {
 			return $columns;
 		}
 
-		$columns[ self::COLUMN_PROJECT ] = __( 'Project', 'translationmanager' );
+		$columns[ self::COLUMN_PROJECT ] = esc_html__( 'Project', 'translationmanager' );
 
 		return $columns;
 	}
 
 	protected static function _column_language( $columns ) {
 
-		$columns[ self::COLUMN_LANGUAGE ] = __( 'Target language', 'translationmanager' );
+		$columns[ self::COLUMN_LANGUAGE ] = esc_html__( 'Target language', 'translationmanager' );
 
 		return $columns;
 	}

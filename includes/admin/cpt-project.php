@@ -5,12 +5,12 @@ function translationmanager_cpt_cart() {
 	register_post_type(
 		'tmanager_cart',
 		array(
-			'label'         => __( 'Cart', 'translationmanager' ),
+			'label'         => esc_html__( 'Cart', 'translationmanager' ),
 			'labels'        => array(
-				'name'      => __( 'Projects', 'translationmanager' ),
-				'menu_name' => __( 'Translations', 'translationmanager' ),
+				'name'      => esc_html__( 'Projects', 'translationmanager' ),
+				'menu_name' => esc_html__( 'Translations', 'translationmanager' ),
 			),
-			'description'   => __( 'What you are about to order.', 'translationmanager' ),
+			'description'   => esc_html__( 'What you are about to order.', 'translationmanager' ),
 			'public'        => true,
 			'capabilities'  => array(
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
@@ -49,7 +49,7 @@ function translationmanager_bulk_actions_cart( $actions ) {
 	unset( $actions['edit'] );
 
 	if ( isset( $actions['trash'] ) ) {
-		$actions['trash'] = __( 'Remove from project', 'translationmanager' );
+		$actions['trash'] = esc_html__( 'Remove from project', 'translationmanager' );
 	}
 
 	return $actions;
@@ -75,7 +75,7 @@ function tmanager_cart_row_actions( $actions, $post ) {
 	return array(
 		'trash' => str_replace(
 			'>Trash<',
-			'>' . __( 'Remove from project', 'translationmanager' ) . '<',
+			'>' . esc_html__( 'Remove from project', 'translationmanager' ) . '<',
 			$actions['trash']
 		),
 	);
@@ -191,8 +191,8 @@ add_filter( 'views_edit-tmanager_cart', function ( $value ) {
 add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_counts ) {
 
 	$bulk_messages['tmanager_cart'] = array(
-		'updated'   => __( 'Project has been updated.', 'translationmanager' ),
-		'locked'    => ( 1 === $bulk_counts['locked'] ) ? __( '1 page not updated, somebody is editing it.' ) :
+		'updated'   => esc_html__( 'Project has been updated.', 'translationmanager' ),
+		'locked'    => ( 1 === $bulk_counts['locked'] ) ? esc_html__( '1 page not updated, somebody is editing it.', 'translationmanager' ) :
 			_n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] ),
 		'deleted'   => _n( '%s page permanently deleted.', '%s pages permanently deleted.', $bulk_counts['deleted'] ),
 		'trashed'   => _n( '%s page moved to the Trash.', '%s pages moved to the Trash.', $bulk_counts['trashed'] ),

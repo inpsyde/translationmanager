@@ -70,7 +70,7 @@ class Add_Translation {
 				array(
 					'post_type'  => 'tmanager_cart',
 					'post_title' => sprintf(
-						__( '%s: "%s"', 'translationmanager' ),
+						esc_html__( '%s: "%s"', 'translationmanager' ),
 						$post_type_labels->singular_name,
 						$post->post_title
 					),

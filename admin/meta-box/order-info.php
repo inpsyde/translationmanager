@@ -1,7 +1,7 @@
 <?php /** @var \Translationmanager\Meta_Box\Order_Info $this */ ?>
 <div>
 	<span class="dashicons dashicons-yes"></span>
-	<?php _e( 'Status', 'translationmanager' ) ?>:
+	<?php esc_html_e( 'Status', 'translationmanager' ) ?>:
 	<b>
 		<?php echo esc_html( $this->get_status() ) ?>
 	</b>
@@ -17,7 +17,7 @@
 	<?php if ( $this->get_order_id() ): ?>
 		<div>
 			<span class="dashicons dashicons-testimonial"></span>
-			<?php _e( 'Project number', 'translationmanager' ) ?>:
+			<?php esc_html_e( 'Project number', 'translationmanager' ) ?>:
 			<b>
 				<?php echo esc_html( $this->get_order_id() ) ?>
 			</b>
@@ -26,7 +26,7 @@
 		<?php if ( $this->get_ordered_at() instanceof \DateTime ): ?>
 			<div>
 				<span class="dashicons dashicons-calendar-alt"></span>
-				<?php _e( 'Ordered at', 'translationmanager' ) ?>:
+				<?php esc_html_e( 'Ordered at', 'translationmanager' ) ?>:
 				<b>
 					<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
 				</b>
@@ -46,7 +46,7 @@
 		<?php if ( $this->get_translated_at() instanceof \DateTime ): ?>
 			<div>
 				<span class="dashicons dashicons-calendar-alt"></span>
-				<?php _e( 'Translated at', 'translationmanager' ) ?>:
+				<?php esc_html_e( 'Translated at', 'translationmanager' ) ?>:
 				<b>
 					<?php echo $this->get_translated_at()->format( 'Y-m-d' ) ?>
 				</b>
@@ -59,7 +59,7 @@
 			       name="<?php echo 'translationmanager_action_project_order' ?>"
 			       class="button button-primary"
 			       onclick="jQuery('#translationmanager_action_project_order').click();"
-			       value="<?php _e( 'Order project', 'translationmanager' ) ?>"/>
+			       value="<?php esc_html_e( 'Order project', 'translationmanager' ) ?>"/>
 		</div>
 	<?php endif; ?>
 </form>

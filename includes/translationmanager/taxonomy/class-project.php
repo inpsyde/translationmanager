@@ -20,7 +20,7 @@ class Project {
 		$columns['view'] = sprintf(
 			'<a href="%s">%s</a>',
 			self::get_project_link( $term->term_id ),
-			__( 'View' )
+			esc_html__( 'View', 'translationmanager' )
 		);
 
 		return $columns;
@@ -53,7 +53,7 @@ class Project {
 
 		// Add status ad second place.
 		$columns = array_slice( $columns, 0, 1 )
-		           + array( static::COL_STATUS => __( 'Status', 'translationmanager' ) )
+		           + array( static::COL_STATUS => esc_html__( 'Status', 'translationmanager' ) )
 		           + array_slice( $columns, 1 );
 
 		$columns[ static::COL_ACTIONS ] = '';
@@ -73,11 +73,11 @@ class Project {
 		switch ( $column_name ) {
 			case static::COL_STATUS:
 				if ( ! get_term_meta( $term_id, '_tmanager_order_id', true ) ) {
-					return __( 'New', 'translationmanager' );
+					return esc_html__( 'New', 'translationmanager' );
 				}
 
 				return sprintf(
-					__( 'Ordered at %s', 'translationmanager' ),
+					esc_html__( 'Ordered at %s', 'translationmanager' ),
 					date( 'Y-m-d' )
 				);
 				break;
@@ -85,7 +85,7 @@ class Project {
 				return sprintf(
 					'<a href="%s" class="button">%s</a>',
 					self::get_project_link( $term_id ),
-					__( 'Show project', 'translationmanager' )
+					esc_html__( 'Show project', 'translationmanager' )
 				);
 		}
 

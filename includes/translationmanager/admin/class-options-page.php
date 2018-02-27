@@ -44,8 +44,8 @@ class Options_Page {
 	 */
 	public function add_options_page() {
 		add_options_page(
-			__( 'Translations', 'translationmanager' ),
-			__( 'Translations', 'translationmanager' ),
+			esc_html__( 'Translations', 'translationmanager' ),
+			esc_html__( 'Translations', 'translationmanager' ),
 			'manage_options',
 			self::SLUG,
 			array( $this, 'dispatch' )
@@ -100,7 +100,7 @@ class Options_Page {
 	public function register_setting() {
 		add_settings_section(
 			self::SECTION_CREDENTIALS,
-			__( 'Credentials', 'translationmanager_api' ),
+			esc_html__( 'Credentials', 'translationmanager_api' ),
 			'__return_false',
 			self::OPTION_GROUP
 		);
@@ -111,7 +111,7 @@ class Options_Page {
 		// Base URL of the API.
 		$this->_add_settings_field(
 			static::URL,
-			__( 'URL', 'translationmanager-api' ),
+			esc_html__( 'URL', 'translationmanager-api' ),
 			array( $this, 'dispatch_input_text' ),
 			static::OPTION_GROUP,
 			static::SECTION_CREDENTIALS,
@@ -119,7 +119,7 @@ class Options_Page {
 				'value' => get_option(
 					static::URL,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					__( 'Not set', 'translationmanager-api' )
+					esc_html__( 'Not set', 'translationmanager' )
 				)
 			)
 		);
@@ -127,7 +127,7 @@ class Options_Page {
 		// Token
 		$this->_add_settings_field(
 			static::REFRESH_TOKEN,
-			__( 'Token', 'translationmanager-api' ),
+			esc_html__( 'Token', 'translationmanager' ),
 			array( $this, 'dispatch_input_text' ),
 			static::OPTION_GROUP,
 			static::SECTION_CREDENTIALS,
@@ -135,7 +135,7 @@ class Options_Page {
 				'value' => get_option(
 					static::REFRESH_TOKEN,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					__( 'Not set', 'translationmanager-api' )
+					esc_html__( 'Not set', 'translationmanager' )
 				)
 			)
 		);

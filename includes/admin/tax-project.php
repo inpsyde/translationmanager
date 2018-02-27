@@ -5,9 +5,9 @@ function tmanager_cart_taxonomy() {
 		'translationmanager_project',
 		'tmanager_cart',
 		array(
-			'label'  => __( 'Projects', 'translationmanager' ),
+			'label'  => esc_html__( 'Projects', 'translationmanager' ),
 			'labels' => array(
-				'add_new_item' => __( 'Create new project', 'translationmanager' )
+				'add_new_item' => esc_html__( 'Create new project', 'translationmanager' )
 			),
 			'public' => true,
 		)
