@@ -19,31 +19,7 @@ composer.lock
 .idea/tasks.xml
 
 # Sensitive or high-churn files:
-.idea/dataSources/
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
-
-# Gradle:
-.idea/gradle.xml
-.idea/libraries
-
-# Mongo Explorer plugin:
-.idea/mongoSettings.xml
-
-.idea/copyright/
-.idea/deployment.xml
-.idea/encodings.xml
-.idea/inspectionProfiles/
-.idea/modules.xml
-.idea/php.xml
-.idea/translationmanager.iml
-.idea/vcs.xml
-.idea/webResources.xml
-.idea/codeStyleSettings.xml
+.idea/
 
 ## File-based project format:
 *.iws
