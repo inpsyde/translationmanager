@@ -198,20 +198,20 @@ class InpsydeCustomFunctions {
 
 		if ( 'edit' === $screen->base
 		     && $input->translationmanager_project
-		     && 'tmanager_cart' === $input->post_type
+		     && 'tm_cart' === $input->post_type
 		) {
-			echo '<style type="text/css">.post-type-tmanager_cart #posts-filter .search-box {display: none !important;}</style>';
+			echo '<style type="text/css">.post-type-tm_cart #posts-filter .search-box {display: none !important;}</style>';
 		}
 
 		if ( 'edit-tags' === $screen->base
 		     && 'translationmanager_project' === $input->taxonomy
-		     && 'tmanager_cart' === $input->post_type
+		     && 'tm_cart' === $input->post_type
 		) {
 			echo '
 			<style type="text/css">
-				.post-type-tmanager_cart .row-actions span.edit, 
-				.post-type-tmanager_cart .row-actions span.inline.hide-if-no-js, 
-				.post-type-tmanager_cart .row-actions span.view {display: none !important;}
+				.post-type-tm_cart .row-actions span.edit, 
+				.post-type-tm_cart .row-actions span.inline.hide-if-no-js, 
+				.post-type-tm_cart .row-actions span.view {display: none !important;}
 			</style>
 			';
 		}
@@ -223,9 +223,9 @@ class InpsydeCustomFunctions {
 	public function inpsyde_translationmanager_settings_menu_item() {
 
 		global $submenu;
-		unset( $submenu['edit.php?post_type=tmanager_cart'][5] );
+		unset( $submenu['edit.php?post_type=tm_cart'][5] );
 		$url                                           = 'options-general.php?page=translationmanager_settings';
-		$submenu['edit.php?post_type=tmanager_cart'][] = array( 'Settings', 'manage_options', $url );
+		$submenu['edit.php?post_type=tm_cart'][] = array( 'Settings', 'manage_options', $url );
 	}
 
 	/**
@@ -234,7 +234,7 @@ class InpsydeCustomFunctions {
 	public function inpsyde_translationmanager_about_page() {
 
 		add_submenu_page(
-			'edit.php?post_type=tmanager_cart',
+			'edit.php?post_type=tm_cart',
 			esc_html__( 'About', 'translationmanager' ),
 			esc_html__( 'About', 'translationmanager' ),
 			'manage_options',
@@ -403,7 +403,7 @@ class InpsydeCustomFunctions {
 	/* Filter post updated messages for custom post types. */
 	public function bulk_post_updated_messages( $bulk_messages, $bulk_counts ) {
 
-		$bulk_messages['tmanager_cart'] = array(
+		$bulk_messages['tm_cart'] = array(
 			'updated'   => _n( '%s translation updated.', '%s translations updated.', $bulk_counts['updated'] ),
 			'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
 			'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
@@ -470,7 +470,7 @@ class InpsydeCustomFunctions {
 				'hide_empty' => false,
 				'meta_query' => array(
 					array(
-						'key'     => '_tmanager_order_id',
+						'key'     => '_translationmanager_order_id',
 						'compare' => 'NOT EXISTS',
 						'value'   => '',
 					),

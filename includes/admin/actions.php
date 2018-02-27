@@ -128,7 +128,7 @@ function _translationmanager_handle_actions() {
 				http_build_query(
 					array(
 						'translationmanager_project' => $post_data['_translationmanager_project_id'],
-						'post_type'                  => 'tmanager_cart',
+						'post_type'                  => 'tm_cart',
 					)
 				)
 			)
@@ -149,7 +149,7 @@ function _translationmanager_handle_actions() {
 				http_build_query(
 					array(
 						'translationmanager_project' => $post_data['_translationmanager_project_id'],
-						'post_type'                  => 'tmanager_cart',
+						'post_type'                  => 'tm_cart',
 					)
 				)
 			)
@@ -183,7 +183,7 @@ function _translationmanager_handle_actions() {
 				http_build_query(
 					array(
 						'translationmanager_project' => get_term_field( 'slug', $project ),
-						'post_type'                  => 'tmanager_cart',
+						'post_type'                  => 'tm_cart',
 						'updated'                    => - 1,
 					)
 				)
@@ -205,7 +205,7 @@ function translationmanager_get_project_items( $term_id ) {
 
 	$get_posts = get_posts(
 		array(
-			'post_type'      => 'tmanager_cart',
+			'post_type'      => 'tm_cart',
 			'tax_query'      => array(
 				array(
 					'taxonomy' => 'translationmanager_project',
@@ -289,7 +289,7 @@ function _translationmanager_project_order( $project_term ) {
 		}
 	}
 
-	update_term_meta( $project_term->term_id, '_tmanager_order_id', $project_id );
+	update_term_meta( $project_term->term_id, '_translationmanager_order_id', $project_id );
 }
 
 /**
@@ -297,7 +297,7 @@ function _translationmanager_project_order( $project_term ) {
  */
 function _translationmanager_project_update( $project_term ) {
 
-	$project_id = get_term_meta( $project_term->term_id, '_tmanager_order_id', true );
+	$project_id = get_term_meta( $project_term->term_id, '_translationmanager_order_id', true );
 
 	if ( ! $project_id ) {
 		// ID missing.
@@ -342,4 +342,4 @@ function _translationmanager_project_update( $project_term ) {
 add_action( 'load-post.php', '_translationmanager_handle_actions' );
 add_action( 'load-edit.php', '_translationmanager_handle_actions' );
 
-add_action( 'admin_post_tmanager_order_or_update_projects', '_translationmanager_handle_actions' );
+add_action( 'admin_post_translationmanager_order_or_update_projects', '_translationmanager_handle_actions' );

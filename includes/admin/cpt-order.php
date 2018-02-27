@@ -2,7 +2,7 @@
 
 function translationmanager_cpt_order() {
 	register_post_type(
-		'tmanager_order',
+		'tm_order',
 		array(
 			'capabilities' => array(
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
@@ -23,12 +23,12 @@ add_action( 'init', 'translationmanager_cpt_order' );
 
 function tmanager_order_clean() {
 	// Remove all WordPress basics as this post type is not meant to be maintained by users.
-	remove_meta_box( 'submitdiv', 'tmanager_order', 'side' );
-	remove_meta_box( 'slugdiv', 'tmanager_order', 'normal' );
+	remove_meta_box( 'submitdiv', 'translationmanager_order', 'side' );
+	remove_meta_box( 'slugdiv', 'translationmanager_order', 'normal' );
 
 	$screen = get_current_screen();
 
-	if ( 'tmanager_order' !== $screen->post_type ) {
+	if ( 'tm_order' !== $screen->post_type ) {
 		return;
 	}
 
@@ -44,7 +44,7 @@ function translationmanager_bulk_actions_order( $actions ) {
 	return $actions;
 }
 
-add_filter( 'bulk_actions-edit-tmanager_order', 'translationmanager_bulk_actions_order' );
+add_filter( 'bulk_actions-edit-tm_order', 'translationmanager_bulk_actions_order' );
 
 /**
  * Order items have no trash.
@@ -54,14 +54,14 @@ add_filter( 'bulk_actions-edit-tmanager_order', 'translationmanager_bulk_actions
 function tmanager_order_trashed( $post_id ) {
 	$post_type = get_post_type($post_id);
 
-	if ( 'tmanager_order' !== $post_type ) {
+	if ( 'tm_order' !== $post_type ) {
 		return;
 	}
 
 	wp_delete_post( $post_id );
 }
 
-add_action( 'trashed_post', 'tmanager_order_trashed' );
+add_action( 'trashed_post', 'tm_order_trashed' );
 
 /**
  * @param          $actions
@@ -69,7 +69,7 @@ add_action( 'trashed_post', 'tmanager_order_trashed' );
  */
 function tmanager_order_row_actions( $actions, $post ) {
 
-	if ( $post && 'tmanager_order' !== $post->post_type ) {
+	if ( $post && 'tm_order' !== $post->post_type ) {
 		return $actions;
 	}
 

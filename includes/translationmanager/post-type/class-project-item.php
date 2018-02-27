@@ -5,7 +5,7 @@ namespace Translationmanager\Post_Type;
 class Project_Item {
 	const STATUS_TRASH = 'trash';
 
-	const POST_TYPE = 'tmanager_cart';
+	const POST_TYPE = 'tm_cart';
 
 	const COLUMN_PROJECT = 'translationmanager_project';
 
@@ -92,7 +92,7 @@ class Project_Item {
 						http_build_query(
 							array(
 								'translationmanager_project' => $term->slug,
-								'post_type'                  => 'tmanager_cart',
+								'post_type'                  => 'tm_cart',
 							)
 						),
 						$term->name

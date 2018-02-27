@@ -3,7 +3,7 @@
 function tmanager_cart_taxonomy() {
 	register_taxonomy(
 		'translationmanager_project',
-		'tmanager_cart',
+		'tm_cart',
 		array(
 			'label'  => esc_html__( 'Projects', 'translationmanager' ),
 			'labels' => array(
@@ -27,7 +27,7 @@ function _translationmanager_project_delete_coalesce( $term_id ) {
 
 	$posts = get_posts(
 		array(
-			'post_type'      => 'tmanager_cart',
+			'post_type'      => 'tm_cart',
 			'post_status'    => 'any',
 			'posts_per_page' => - 1,
 			'tax_query'      => array(

@@ -3,7 +3,7 @@
 function translationmanager_cpt_cart() {
 
 	register_post_type(
-		'tmanager_cart',
+		'tm_cart',
 		array(
 			'label'         => esc_html__( 'Cart', 'translationmanager' ),
 			'labels'        => array(
@@ -34,7 +34,7 @@ add_action( 'init', 'translationmanager_cpt_cart' );
 function tmanager_cart_remove_month() {
 
 	if ( ! get_current_screen()
-	     || 'tmanager_cart' !== get_current_screen()->post_type
+	     || 'tm_cart' !== get_current_screen()->post_type
 	) {
 		return;
 	}
@@ -63,7 +63,7 @@ add_filter( 'bulk_actions-edit-tmanager_carttmanager_cart', 'translationmanager_
  */
 function tmanager_cart_row_actions( $actions, $post ) {
 
-	if ( $post && 'tmanager_cart' !== $post->post_type ) {
+	if ( $post && 'tm_cart' !== $post->post_type ) {
 		return $actions;
 	}
 
@@ -105,7 +105,7 @@ add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
 //		$term         = get_term_by( 'slug', $current_slug, 'translationmanager_project' );
 //
 //		if ( ! is_wp_error( $term )
-//		     && get_term_meta( $term->term_id, '_tmanager_order_id' )
+//		     && get_term_meta( $term->term_id, '_translationmanager_order_id' )
 //		) {
 //			// This has an order id so we show the update button.
 //			require translationmanager_get_template( 'admin/cart/manage-cart-extra-tablenav-update.php' );
@@ -132,7 +132,7 @@ add_filter( 'post_row_actions', 'tmanager_cart_row_actions', 10, 2 );
  */
 function _tmanager_cart_remove_states( $post_states, $post ) {
 
-	if ( 'tmanager_cart' !== $post->post_type ) {
+	if ( 'tm_cart' !== $post->post_type ) {
 		return $post_states;
 	}
 
@@ -144,7 +144,7 @@ add_filter( 'display_post_states', '_tmanager_cart_remove_states', 10, 2 );
 add_action( 'admin_init', array( \Translationmanager\Post_Type\Project_Item::class, 'register_post_status' ) );
 
 add_filter(
-	'manage_tmanager_cart_posts_columns',
+	'manage_tm_cart_posts_columns',
 	array(
 		\Translationmanager\Post_Type\Project_Item::class,
 		'modify_columns',
@@ -169,7 +169,7 @@ add_filter(
 	2
 );
 
-add_filter( 'views_edit-tmanager_cart', function ( $value ) {
+add_filter( 'views_edit-tm_cart', function ( $value ) {
 
 	$slug = sanitize_title( filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) );
 
@@ -190,7 +190,7 @@ add_filter( 'views_edit-tmanager_cart', function ( $value ) {
 
 add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_counts ) {
 
-	$bulk_messages['tmanager_cart'] = array(
+	$bulk_messages['tm_cart'] = array(
 		'updated'   => esc_html__( 'Project has been updated.', 'translationmanager' ),
 		'locked'    => ( 1 === $bulk_counts['locked'] ) ? esc_html__( '1 page not updated, somebody is editing it.', 'translationmanager' ) :
 			_n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] ),
@@ -201,7 +201,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 
 	$updated = filter_input( INPUT_GET, 'updated', FILTER_SANITIZE_NUMBER_INT );
 	if ( - 1 === $updated ) {
-		$bulk_messages['tmanager_cart']['updated'] = esc_html__( 'Project has been created', 'translationmanager' );
+		$bulk_messages['tm_cart']['updated'] = esc_html__( 'Project has been created', 'translationmanager' );
 	}
 
 	return $bulk_messages;
@@ -209,9 +209,7 @@ add_filter( 'bulk_post_updated_messages', function ( $bulk_messages, $bulk_count
 
 add_action( 'admin_head-edit.php', function () {
 
-	if ( ! get_current_screen()
-	     || 'tmanager_cart' !== get_current_screen()->post_type
-	) {
+	if ( ! get_current_screen() || 'tm_cart' !== get_current_screen()->post_type ) {
 		return;
 	}
 

@@ -53,7 +53,7 @@ class Cart_Updater {
 		$cart_items = get_posts(
 			array(
 				'fields'    => 'ids',
-				'post_type' => 'tmanager_cart',
+				'post_type' => 'tm_cart',
 				'nopaging'  => true,
 				'tax_query' => array(
 					array(
@@ -112,7 +112,7 @@ class Cart_Updater {
 	 */
 	public function update_cart_item_title( array $data ) {
 
-		if ( $this->append_to_title && ! empty( $data['post_type'] ) && $data['post_type'] === 'tmanager_cart' ) {
+		if ( $this->append_to_title && ! empty( $data['post_type'] ) && $data['post_type'] === 'tm_cart' ) {
 			empty( $data['post_title'] ) and $data['post_title'] = '';
 			$data['post_title'] and $data['post_title'] .= ' ';
 			$data['post_title'] .= $this->append_to_title;

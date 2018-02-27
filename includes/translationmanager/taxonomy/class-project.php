@@ -5,8 +5,8 @@ namespace Translationmanager\Taxonomy;
 class Project {
 	const TAXONOMY = 'translationmanager_project';
 
-	const COL_STATUS = 'tmanager_order_status';
-	const COL_ACTIONS = 'tmanager_order_action';
+	const COL_STATUS = 'translationmanager_order_status';
+	const COL_ACTIONS = 'translationmanager_order_action';
 
 	public static function register_post_status() {
 	}
@@ -39,7 +39,7 @@ class Project {
 			http_build_query(
 				array(
 					'translationmanager_project' => get_term_field( 'slug', $term_id ),
-					'post_type'                  => 'tmanager_cart',
+					'post_type'                  => 'tm_cart',
 				)
 			)
 		);
@@ -72,7 +72,7 @@ class Project {
 
 		switch ( $column_name ) {
 			case static::COL_STATUS:
-				if ( ! get_term_meta( $term_id, '_tmanager_order_id', true ) ) {
+				if ( ! get_term_meta( $term_id, '_translationmanager_order_id', true ) ) {
 					return esc_html__( 'New', 'translationmanager' );
 				}
 

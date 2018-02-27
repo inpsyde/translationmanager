@@ -37,7 +37,7 @@ class Add_Translation {
 				null,
 				'edit.php?' . http_build_query(
 					array(
-						'post_type' => 'tmanager_cart',
+						'post_type' => 'tm_cart',
 						'success'   => esc_html__( 'Item added to cart.', 'translationmanager' ),
 					)
 				)
@@ -68,7 +68,7 @@ class Add_Translation {
 
 			$id = wp_insert_post(
 				array(
-					'post_type'  => 'tmanager_cart',
+					'post_type'  => 'tm_cart',
 					'post_title' => sprintf(
 						esc_html__( '%s: "%s"', 'translationmanager' ),
 						$post_type_labels->singular_name,

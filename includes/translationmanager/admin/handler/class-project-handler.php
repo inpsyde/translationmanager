@@ -26,7 +26,7 @@ class Project_Handler {
 
 		$translation_id = wp_insert_post(
 			array(
-				'post_type'  => 'tmanager_cart',
+				'post_type'  => 'tm_cart',
 				'post_title' => sprintf(
 					esc_html__( '%s: "%s"', 'translationmanager' ),
 					$labels->singular_name,

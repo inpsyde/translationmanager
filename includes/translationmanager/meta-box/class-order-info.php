@@ -18,7 +18,7 @@ class Order_Info {
 			static::ID,
 			esc_html__( 'Order information', 'translationmanager' ),
 			array( $this, 'dispatch' ),
-			'tmanager_order',
+			'tm_order',
 			self::CONTEXT
 		);
 	}
@@ -50,7 +50,7 @@ class Order_Info {
 			return esc_html__( 'Ready to order', 'translationmanager' );
 		}
 
-		return apply_filters( 'tmanager_order_status', 'In preparation', get_the_ID() );
+		return apply_filters( 'translationmanager_order_status', 'In preparation', get_the_ID() );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class Order_Info {
 	 * @return string
 	 */
 	public function get_order_id() {
-		return get_term_meta( $this->get_project_id(), '_tmanager_order_id', true );
+		return get_term_meta( $this->get_project_id(), '_translationmanager_order_id', true );
 	}
 
 	/**

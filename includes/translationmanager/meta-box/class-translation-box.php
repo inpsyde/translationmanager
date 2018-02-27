@@ -75,7 +75,7 @@ class Translation_Box {
 				'hide_empty' => false,
 				'meta_query' => array(
 					array(
-						'key'     => '_tmanager_order_id',
+						'key'     => '_translationmanager_order_id',
 						'compare' => 'NOT EXISTS',
 						'value'   => '',
 					),
