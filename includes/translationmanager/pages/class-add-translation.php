@@ -8,26 +8,28 @@ class Add_Translation {
 	 */
 	public function dispatch() {
 
+		$type = sanitize_key( filter_input( INPUT_GET, 'type', FILTER_SANITIZE_STRING ) );
+		$id   = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
+
 		if ( ! current_user_can( 'edit_others_pages' ) ) {
-			wp_die( __( 'You are not allowed to do this' ) );
+			wp_die( esc_html__( 'You are not allowed to do this.', 'translationmanager' ) );
 		}
 
-		if ( ! isset( $_GET['type'] ) ) { // Input var okay
-			wp_die( __( 'Something went wrong - missing type.' ) );
+		if ( ! $type ) {
+			wp_die( esc_html__( 'Something went wrong - missing type.', 'translationmanager' ) );
 		}
 
-		$type   = sanitize_key( $_GET['type'] ); // Input var okay
 		$method = 'handle_' . $type;
 
 		if ( ! method_exists( $this, $method ) ) {
-			wp_die( __( 'Invalid type' ) );
+			wp_die( esc_html__( 'Invalid type', 'translationmanager' ) );
 		}
 
-		if ( ! isset( $_GET['id'] ) || ! intval( $_GET['id'] ) ) { // Input var okay
-			wp_die( __( 'Something went wrong - missing ID.' ) );
+		if ( ! $id ) {
+			wp_die( esc_html__( 'Something went wrong - missing ID.', 'translationmanager' ) );
 		}
 
-		$this->$method( intval( $_GET['id'] ) ); // Input var okay; WPCS: sanitization okay
+		$this->$method( $id );
 
 		// Redirect to cart.
 		wp_redirect(

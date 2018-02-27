@@ -43,19 +43,21 @@ class Project_Item {
 
 	public static function _column_project( $columns ) {
 
-		$request = wp_parse_args(
-			$_GET,
-			array(
-				'translationmanager_project' => null,
-			)
-		); // Input var ok.
+		$request = $_GET; // phpcs:ignore
+		foreach ( $request as $key => $val ) {
+			$request[ $key ] = sanitize_text_field( filter_input( INPUT_GET, $key, FILTER_SANITIZE_STRING ) );
+		}
 
-		if ( isset( $request['post_status'] ) && static::STATUS_TRASH == $request['post_status'] ) {
+		$request = wp_parse_args( $request, array(
+			'translationmanager_project' => null,
+		) );
+
+		if ( isset( $request['post_status'] ) && static::STATUS_TRASH === $request['post_status'] ) {
 			// This is trash so we show no project column.
 			return $columns;
 		}
 
-		if ( $request[ 'translationmanager_project' ] ) {
+		if ( $request['translationmanager_project'] ) {
 			// Term/Project filter is active so this col is not needed.
 			return $columns;
 		}
@@ -90,7 +92,7 @@ class Project_Item {
 						http_build_query(
 							array(
 								'translationmanager_project' => $term->slug,
-								'post_type'                    => 'tmanager_cart',
+								'post_type'                  => 'tmanager_cart',
 							)
 						),
 						$term->name

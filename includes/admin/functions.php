@@ -137,8 +137,8 @@ class InpsydeCustomFunctions {
 							<select name="translationmanager-projects" id="translationmanager-">
 								<option value="-1"><?php _e( 'New project', 'translationmanager' ) ?></option>
 								<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
-									<option value="<?php esc_attr_e( $project_id ) ?>">
-										<?php esc_html_e( $project_label ) ?>
+									<option value="<?php echo esc_attr( $project_id ) ?>">
+										<?php echo esc_html( $project_label ) ?>
 									</option>
 								<?php endforeach; ?>
 							</select>
@@ -147,8 +147,11 @@ class InpsydeCustomFunctions {
 						<div id="translationmanager-lang-wrap-div">
 							<h2>Select languages:</h2>
 							<?php foreach ( $this->get_languages( get_current_blog_id() ) as $lang_key => $lang ): ?>
-								<input type="checkbox" name="translationmanager_bulk_languages[]"
-								       value="<?php echo $lang_key ?>"><?php echo $lang->get_label() ?><br>
+								<input type="checkbox"
+								       name="translationmanager_bulk_languages[]"
+								       value="<?php echo $lang_key ?>">
+								<?php echo esc_html( $lang->get_label() ) ?>
+								<br>
 							<?php endforeach; ?>
 						</div>
 
@@ -190,20 +193,19 @@ class InpsydeCustomFunctions {
 
 	public function inpsyde_remove_search_box() {
 
+		$input  = self::taxonomy_post_type_sanitized_from_request();
 		$screen = get_current_screen();
-		if ( 'edit' == $screen->base
-		     && isset( $_GET['translationmanager_project'] )
-		     && isset( $_GET['post_type'] )
-		     && 'tmanager_cart' == $_GET['post_type']
+
+		if ( 'edit' === $screen->base
+		     && $input->translationmanager_project
+		     && 'tmanager_cart' === $input->post_type
 		) {
 			echo '<style type="text/css">.post-type-tmanager_cart #posts-filter .search-box {display: none !important;}</style>';
 		}
 
-		if ( 'edit-tags' == $screen->base
-		     && isset( $_GET['taxonomy'] )
-		     && 'translationmanager_project' == $_GET['taxonomy']
-		     && isset( $_GET['post_type'] )
-		     && 'tmanager_cart' == $_GET['post_type']
+		if ( 'edit-tags' === $screen->base
+		     && 'translationmanager_project' === $input->taxonomy
+		     && 'tmanager_cart' === $input->post_type
 		) {
 			echo '
 			<style type="text/css">
@@ -489,20 +491,17 @@ class InpsydeCustomFunctions {
 	 */
 	public function bulk_translate_action_handler( $redirect_to, $action, $post_ids ) {
 
-		if ( $action !== 'bulk_translate' || empty( $post_ids ) || ! isset( $_GET['translationmanager_bulk_languages'] ) ) {
+		$languages = filter_input( INPUT_GET, 'translationmanager_bulk_languages', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+		$project   = filter_input( INPUT_GET, 'translationmanager-projects', FILTER_SANITIZE_NUMBER_INT );
+		$handler   = new Translationmanager\Admin\Handler\Project_Handler;
+
+		if ( $action !== 'bulk_translate' || empty( $post_ids ) || ! $languages ) {
 			return $redirect_to;
 		}
 
-		$languages = $_GET['translationmanager_bulk_languages'];
-		$project   = (int) $_GET['translationmanager-projects'];
-
-		//print_r($languages);die();
-
-		$handler = new Translationmanager\Admin\Handler\Project_Handler;
-
-		if ( '-1' == $project ) {
+		if ( -1 === $project ) {
 			$project = (int) $handler->create_project(
-				sprintf( __( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
+				sprintf( esc_html__( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
 			);
 		}
 
@@ -517,6 +516,21 @@ class InpsydeCustomFunctions {
 
 		return $redirect_to;
 
+	}
+
+	private static function taxonomy_post_type_sanitized_from_request() {
+
+		static $input = null;
+
+		if ( null == $input ) {
+			$input = (object) [
+				'taxonomy'                   => filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING ),
+				'post_type'                  => filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ),
+				'translationmanager_project' => filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ),
+			];
+		}
+
+		return $input;
 	}
 }
 

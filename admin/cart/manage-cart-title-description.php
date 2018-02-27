@@ -2,7 +2,7 @@
 	<input type="hidden" name="action" value="translationmanager_project_info_save">
 	<input type="hidden"
 	       name="_translationmanager_project_id"
-	       value="<?php echo $_GET['translationmanager_project'] ?>">
+	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) ?>">
 	<div class="alignleft actions" style="padding-bottom: 20px">
 		<div class="form-field form-required term-name-wrap">
 			<label for="tag-name">
