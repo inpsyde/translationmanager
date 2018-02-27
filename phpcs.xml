@@ -7,14 +7,12 @@
     <description>Coding standards for the Eurotext WordPress Plugins.</description>
 
     <!-- Check for desired PHP version -->
-    <config name="testVersion" value="5.3-7.1"/>
+    <config name="testVersion" value="5.6-7.1"/>
     <rule ref="PHPCompatibility" />
 
     <!-- Include the WordPress ruleset, with exclusions. -->
-    <rule ref="WordPress.VIP">
-
+    <rule ref="WordPress">
         <!-- Discurage following VIP functions as long as this is not a VIP plugin. -->
         <exclude name="WordPress.VIP.RestrictedFunctions" />
-
     </rule>
 </ruleset>
