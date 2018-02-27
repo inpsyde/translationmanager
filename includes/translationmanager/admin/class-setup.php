@@ -21,7 +21,7 @@ class Setup {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @throws \Exception In caset the plugin version isn't set.
+	 * @throws \Exception In case the plugin version isn't set.
 	 */
 	public function plugin_activate() {
 
