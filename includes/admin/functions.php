@@ -224,7 +224,7 @@ class InpsydeCustomFunctions {
 
 		global $submenu;
 		unset( $submenu['edit.php?post_type=tm_cart'][5] );
-		$url                                           = 'options-general.php?page=translationmanager_settings';
+		$url                                     = 'options-general.php?page=translationmanager_settings';
 		$submenu['edit.php?post_type=tm_cart'][] = array( 'Settings', 'manage_options', $url );
 	}
 
@@ -495,11 +495,14 @@ class InpsydeCustomFunctions {
 		$project   = filter_input( INPUT_GET, 'translationmanager-projects', FILTER_SANITIZE_NUMBER_INT );
 		$handler   = new Translationmanager\Admin\Handler\Project_Handler;
 
+		// Be sure we have only valid elements.
+		$languages = array_filter( $languages );
+
 		if ( $action !== 'bulk_translate' || empty( $post_ids ) || ! $languages ) {
 			return $redirect_to;
 		}
 
-		if ( -1 === $project ) {
+		if ( - 1 === $project ) {
 			$project = (int) $handler->create_project(
 				sprintf( esc_html__( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
 			);
