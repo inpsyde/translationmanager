@@ -1,0 +1,23 @@
+{
+	"name": "translationmanager",
+	"version": "1.0.0",
+	"description": "=== TranslationMANAGER for WordPress === Contributors: Inpsyde, Eurotext, paddyullrich Tags: translation, api, I18N Donate link: https://eurotext-ecommerce.com Requires at least: 3.9 Tested up to: 4.7.0 Stable tag: 4.3 License: GPLv2 or later License URI: http://www.gnu.org/licenses/gpl-2.0.html",
+	"main": "index.js",
+	"directories": {
+		"test": "tests"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@bitbucket.org/inpsyde/translationmanager.git"
+	},
+	"author": "Inpsyde",
+	"license": "ISC",
+	"homepage": "https://bitbucket.org/inpsyde/translationmanager#readme",
+	"devDependencies": {
+		"eslint": "^4.17.0",
+		"eslint-config-inpsyde": "^2.2.0"
+	}
+}
