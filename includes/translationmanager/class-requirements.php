@@ -2,7 +2,7 @@
 /**
  * Requirements
  *
- * @since 1.0.0
+ * @since   1.0.0
  * @package Translationmanager
  */
 
@@ -11,7 +11,7 @@ namespace Translationmanager;
 /**
  * Class Requirements
  *
- * @since 1.0.0
+ * @since   1.0.0
  * @package Translationmanager
  */
 class Requirements {
@@ -43,6 +43,15 @@ class Requirements {
 	 */
 	public function is_php_version_ok() {
 
-		return version_compare( self::PHP_MIN_VERSION, self::PHP_CURR_VERSION, '<=' );
+		$php_version = false;
+		if ( preg_match( '!^([0-9]+\.([0-9]+\.)?[0-9]+)!', self::PHP_MIN_VERSION, $m ) ) {
+			$php_version = $m[1];
+		}
+
+		if ( ! $php_version ) {
+			return false;
+		}
+
+		return version_compare( $php_version, self::PHP_CURR_VERSION, '<=' );
 	}
 }
