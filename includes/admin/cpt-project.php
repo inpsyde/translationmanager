@@ -55,7 +55,7 @@ function translationmanager_bulk_actions_cart( $actions ) {
 	return $actions;
 }
 
-add_filter( 'bulk_actions-edit-tmanager_carttmanager_cart', 'translationmanager_bulk_actions_cart' );
+add_filter( 'bulk_actions-edit-tm_cart', 'translationmanager_bulk_actions_cart' );
 
 /**
  * @param          $actions
