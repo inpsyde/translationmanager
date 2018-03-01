@@ -28,8 +28,8 @@ class Project_Handler {
 			array(
 				'post_type'  => 'project_item',
 				'post_title' => sprintf(
-					esc_html__( '%s: "%s"', 'translationmanager' ),
-					$labels->singular_name,
+					__( '%s: "%s"', 'translationmanager' ),
+					esc_html( $labels->singular_name ),
 					get_the_title( $post_id )
 				),
 				'meta_input' => array(
