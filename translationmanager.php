@@ -52,6 +52,8 @@ add_action( 'plugins_loaded', function () {
 	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();
 	// Restrict Manage Posts.
 	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
+	// Assets.
+	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();
 
 	// Register Activation.
 	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );
