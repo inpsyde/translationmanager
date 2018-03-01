@@ -4,6 +4,12 @@ namespace Translationmanager\Meta_Box;
 
 use Translationmanager\Functions;
 
+/**
+ * Class Order_Info
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Meta_Box
+ */
 class Order_Info {
 
 	/**
@@ -21,22 +27,22 @@ class Order_Info {
 	const CONTEXT = 'side';
 
 	/**
-	 * Project ID
+	 * Projects Term ID
 	 *
-	 * @var null
+	 * @var int The ID used to retrieve the projects associated to this term.
 	 */
-	private $project_id;
+	private $projects_term_id;
 
 	/**
 	 * Order_Info constructor
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param null $project_id
+	 * @param int $projects_term_id The order ID that include project items.
 	 */
-	public function __construct( $project_id = null ) {
+	public function __construct( $projects_term_id ) {
 
-		$this->project_id = $project_id;
+		$this->projects_term_id = $projects_term_id;
 	}
 
 	/**
@@ -111,19 +117,7 @@ class Order_Info {
 	 */
 	public function get_order_id() {
 
-		return get_term_meta( $this->get_project_id(), '_translationmanager_order_id', true );
-	}
-
-	/**
-	 * Project ID
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return mixed
-	 */
-	public function get_project_id() {
-
-		return $this->project_id;
+		return get_term_meta( $this->projects_term_id, '_translationmanager_order_id', true );
 	}
 
 	/**
@@ -165,7 +159,7 @@ class Order_Info {
 	 */
 	public function has_projects() {
 
-		$posts = Functions\get_project_items( $this->project_id );
+		$posts = Functions\get_project_items( $this->projects_term_id );
 
 		return count( $posts );
 	}
