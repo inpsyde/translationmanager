@@ -247,7 +247,7 @@ function update_project_order_meta( \WP_Term $project_term ) {
 
 	foreach ( $post_types as $post_type_target_language => $post_types_data ) {
 		foreach ( $post_types_data as $post_type_name => $post_type_content ) {
-			api()
+			translationmanager_api()
 				->project_item()
 				->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
 		}
