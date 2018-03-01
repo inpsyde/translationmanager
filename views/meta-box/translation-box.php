@@ -21,7 +21,7 @@
 <?php endif; ?>
 
 <!-- TODO values need to be transferred. -->
-<div style="line-height: 2em;">
+<div class="translationmanager-translation-box">
 	<?php if ( ! empty( $this->get_languages() ) ): ?>
 		<?php if ( $this->get_projects() ): ?>
 		<div class="misc-pub-section misc-pub-fff-status">
@@ -31,17 +31,19 @@
 					<?php esc_html_e( $this->get_recent_project_name() ) ?>
 				</span>
 			</strong>
-			<a href="#fff_status" class="edit-fff-status hide-if-no-js" role="button" style="display: inline;">
+			<a href="#fff_status" class="edit-fff-status hide-if-no-js" role="button">
 				<span aria-hidden="true"><?php esc_html_e( 'Edit', 'translationmanager' ) ?></span>
 				<span class="screen-reader-text"><?php esc_html_e( 'Edit status', 'translationmanager' ) ?></span>
 			</a>
 
-			<div id="fff-status-select" class="hide-if-js" style="display: none;">
+			<div id="fff-status-select" class="fff-status-select hide-if-js">
 				<input type="hidden"
 				       name="translationmanager_project_id"
 				       id="translationmanager_project_id"
 				       value="<?php echo $this->get_recent_project_id() ?>">
-				<label for="fff_status" class="screen-reader-text">Set status</label>
+				<label for="fff_status" class="screen-reader-text">
+					<?php esc_html_e( 'Set status', 'translationmanager' ); ?>
+				</label>
 				<select name="fff_status" id="fff_status">
 					<option value="0"><?php esc_html_e( 'New project', 'translationmanager' ) ?></option>
 					<?php foreach ( $this->get_projects() as $project_id => $project_label ): ?>
@@ -50,8 +52,12 @@
 						</option>
 					<?php endforeach; ?>
 				</select>
-				<a href="#fff_status" class="save-fff-status hide-if-no-js button">OK</a>
-				<a href="#fff_status" class="cancel-fff-status hide-if-no-js button-cancel">Cancel</a>
+				<a href="#fff_status" class="save-fff-status hide-if-no-js button">
+					<?php esc_html_e( 'OK', 'translation manager' ); ?>
+				</a>
+				<a href="#fff_status" class="cancel-fff-status hide-if-no-js button-cancel">
+					<?php esc_html_e( 'Cancel', 'translationmanager' ); ?>
+				</a>
 			</div>
 
 		</div>

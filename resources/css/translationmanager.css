@@ -1,2 +1,60 @@
 @charset "UTF-8";
 
+/* ========================================
+ * Order Info
+ * ===================================== */
+
+.translationmanager-order-or-update-projects input[type="submit"] {
+  margin-top: .63em;
+}
+
+/* ========================================
+ * Project Box
+ * ===================================== */
+
+.translationmanager-postbox-container {
+  float:       right;
+  margin-left: 1em;
+}
+
+.translationmanager-postbox-container .box-status-title {
+  margin-left: 1em;
+}
+
+/* ========================================
+ * Translation Box
+ * ===================================== */
+
+.translationmanager-translation-box {
+  line-height: 2em;
+}
+
+.translationmanager-translation-box .edit-fff-status {
+  display: inline;
+}
+
+.translationmanager-translation-box .fff-status-select {
+  display: none;
+}
+
+/* ========================================
+ * Form Project Details Info
+ * ===================================== */
+
+.translationmanager-project-details-form .actions {
+  padding-bottom: 20px;
+}
+
+.translationmanager-project-details-form .term-description-wrap {
+  margin-bottom: .63em;
+}
+
+/* ========================================
+ * Form Order Request
+ * ===================================== */
+.translationmanager-order-or-update-projects .no-projects-found {
+  color:      red;
+  float:      right;
+  max-width:  200px;
+  text-align: right;
+}

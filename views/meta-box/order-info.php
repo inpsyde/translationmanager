@@ -7,6 +7,7 @@
 </div>
 
 <form id="translationmanager_order_or_update_projects"
+      class="translationmanager-order-or-update-projects"
       method="post"
       action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 	<input type="hidden" name="action" value="translationmanager_order_or_update_projects">
@@ -56,12 +57,12 @@
 	else :
 		if ( ! $this->has_projects() ) {
 			printf(
-				'<p style="color:red;max-width:200px;text-align:right;float:right">%s</p>',
+				'<p class="no-projects-found">%s</p>',
 				esc_html__( 'Please add at least one post to be able to submit the project.', 'translationmanager' )
 			);
 		}
 		?>
-		<div class="textright" style="margin-top: .63em">
+		<div class="textright">
 			<input type="submit"
 			       name="translationmanager_action_project_order"
 			       id="translationmanager_action_project_order"

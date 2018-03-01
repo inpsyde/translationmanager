@@ -1,9 +1,11 @@
-<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+<form method="post"
+      action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
+      class="translationmanager-project-details-form">
 	<input type="hidden" name="action" value="translationmanager_project_info_save">
 	<input type="hidden"
 	       name="_translationmanager_project_id"
 	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) ?>">
-	<div class="alignleft actions" style="padding-bottom: 20px">
+	<div class="alignleft actions">
 		<div class="form-field form-required term-name-wrap">
 			<label for="tag-name">
 				<?php _ex( 'Name', 'term name' ); ?>
@@ -16,7 +18,7 @@
 			       aria-required="true"/>
 		</div>
 
-		<div class="form-field term-description-wrap" style="margin-bottom: .63em">
+		<div class="form-field term-description-wrap">
 			<label for="description"><?php esc_html_e( 'Description', 'translationmanager' ); ?></label>
 			<textarea
 				name="description"
