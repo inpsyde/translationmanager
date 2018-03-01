@@ -58,7 +58,7 @@ add_action( 'plugins_loaded', function () {
 
 	// Register Activation.
 	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );
-} );
+}, -1 );
 
 /**
  * Admin Notice
