@@ -7,8 +7,6 @@
 
 namespace Translationmanager;
 
-use Translationmanager\Domain\Language;
-
 /**
  * Class Restrict_Manage_Posts
  *
