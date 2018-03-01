@@ -43,22 +43,16 @@
 	},
 	"autoload" : {
 		"files" : [
-			"includes/commons.php",
-			"includes/api.php",
-			"includes/interface.php",
-			"includes/logging.php",
-			"includes/modules.php",
-			"includes/options-page.php",
-			"includes/wonolog.php",
-			"includes/admin/actions.php",
-			"includes/admin/add-translation.php",
-			"includes/admin/add-translation.php",
-			"includes/admin/common.php",
-			"includes/admin/cpt-order.php",
-			"includes/admin/cpt-project.php",
-			"includes/admin/functions.php",
-			"includes/admin/tax-project.php",
-			"includes/admin/translation-box.php"
+			"src/functions/commons.php",
+			"src/functions/actions.php",
+			"src/functions/cpt-project.php",
+			"src/functions/language.php",
+			"src/functions/modules.php",
+			"src/functions/translation.php",
+			"src/functions/api.php",
+			"src/functions/cpt-order.php",
+			"src/functions/tax-project.php",
+			"inc/hooks.php"
 		]
 	},
 	"autoload-dev" : {

@@ -1,0 +1,142 @@
+<?php
+/**
+ * Hooks
+ *
+ * @since 1.0.0
+ */
+
+// Handle Actions.
+add_action( 'load-post.php', 'Translationmanager\\Functions\\handle_actions' );
+add_action( 'load-edit.php', 'Translationmanager\\Functions\\handle_actions' );
+add_action( 'admin_post_translationmanager_order_or_update_projects', 'Translationmanager\\Functions\\handle_actions' );
+
+// CPT Project.
+add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_cart_posttype' );
+add_action( 'admin_head', 'Translationmanager\\Functions\\cart_remove_month' );
+add_action( 'admin_init', [ \Translationmanager\Post_Type\Project_Item::class, 'register_post_status' ] );
+add_action( 'admin_head-edit.php', 'Translationmanager\\Functions\\hide_project_actions_links_from_edit_page' );
+add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
+
+add_filter( 'bulk_actions-edit-tm_cart', 'Translationmanagere\\Functions\\filter_bulk_actions_labels_for_project' );
+add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actions_for_project', 10, 2 );
+add_filter( 'display_post_states', 'Translationmanager\\Functions\\remove_states_from_project', 10, 2 );
+add_filter( 'views_edit-tm_cart', 'Translationmanager\\Functions\\template_project_box_form_in_edit_page' );
+add_filter( 'views_edit-tm_cart', 'Translationmanager\\Functions\\template_project_title_description_form_in_edit_page' );
+add_filter( 'manage_tm_cart_posts_columns', [ \Translationmanager\Post_Type\Project_Item::class, 'modify_columns' ] );
+add_filter( 'manage_edit-translationmanager_project_columns', [
+	\Translationmanager\Taxonomy\Project::class,
+	'modify_columns',
+] );
+add_filter( 'translationmanager_project_row_actions', [
+	\Translationmanager\Taxonomy\Project::class,
+	'modify_row_actions',
+], 10, 2 );
+add_filter( 'bulk_post_updated_messages', 'Translationmanager\\Functions\\filter_bulk_updated_messages_for_project', 10, 2 );
+
+// CPT Order.
+add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_order_posttype' );
+add_action( 'admin_head', 'Translationmanager\\Functions\\order_remove_month' );
+add_action( 'trashed_post', 'Translatemanager\\Functions\\delete_post_order_on_trashing' );
+add_action( 'add_meta_boxes', [ new \Translationmanager\Meta_Box\Order_Info(), 'add_meta_box' ] );
+
+// Projects Taxonomy.
+add_action( 'init', 'Translationmanager\\Functions\\register_projects_taxonomy' );
+add_action( 'translationmanager_project_pre_add_form', 'Translationmanager\\Functions\\project_hide_slug' );
+add_action( 'translationmanager_project_pre_edit_form', 'Translationmanager\\Functions\\project_hide_slug' );
+add_action( 'admin_post_translationmanager_project_info_save', 'Translationmanager\\Functions\\project_info_save' );
+
+add_filter( 'bulk_actions-edit-tm_order', 'Translationmanager\\Functions\\filter_bulk_actions_for_order' );
+add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actions_for_order', 10, 2 );
+add_filter( 'get_edit_term_link', 'Translationmanager\\Functions\\edit_term_link_for_project_taxonomy', 10, 3 );
+add_filter( 'handle_bulk_actions-edit-post', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
+add_filter( 'handle_bulk_actions-edit-page', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
+
+// Translations.
+add_action( 'admin_menu', 'Translationmanager\\Functions\\add_translation_menu_page' );
+add_action( 'load-dashboard_page_translationmanager_add_translation', 'Translationmanager\\Functions\\add_translation_action' );
+add_action( 'add_meta_boxes', 'Translationmanager\\Functions\\add_translation_meta_box' );
+
+// Misc.
+add_action( 'admin_head', function () {
+
+	$screen = get_current_screen();
+	$input  = (object) [
+		'taxonomy'                   => filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING ),
+		'post_type'                  => filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ),
+		'translationmanager_project' => filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ),
+	];
+
+	if ( 'edit' === $screen->base
+	     && $input->translationmanager_project
+	     && 'tm_cart' === $input->post_type
+	) {
+		echo '<style type="text/css">.post-type-tm_cart #posts-filter .search-box {display: none !important;}</style>';
+	}
+
+	if ( 'edit-tags' === $screen->base
+	     && 'translationmanager_project' === $input->taxonomy
+	     && 'tm_cart' === $input->post_type
+	) {
+		echo '
+			<style type="text/css">
+				.post-type-tm_cart .row-actions span.edit, 
+				.post-type-tm_cart .row-actions span.inline.hide-if-no-js, 
+				.post-type-tm_cart .row-actions span.view {display: none !important;}
+			</style>
+			';
+	}
+} );
+add_action( 'admin_menu', function () {
+
+	global $submenu;
+
+	unset( $submenu['edit.php?post_type=tm_cart'][5] );
+
+	$url = 'options-general.php?page=translationmanager_settings';
+
+	$submenu['edit.php?post_type=tm_cart'][] = [ 'Settings', 'manage_options', $url ];
+} );
+
+add_filter( 'plugin_row_meta', function ( array $links, $file ) {
+
+	static $plugin = null;
+
+	// Avoid to create the same instance multiple times.
+	// The action is performed for every plugin in the list.
+	if ( null === $plugin ) {
+		$plugin = new \Translationmanager\Plugin();
+	}
+
+	if ( false !== strpos( $file, 'translationmanager.php' ) ) {
+		$links[1] = strip_tags( __(
+			'By <a href="https://eurotext.de/">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>',
+			'translationmanager'
+		), '<a>' );
+	}
+
+	return $links;
+}, 10, 2 );
+add_filter( 'admin_footer_text', function ( $admin_footer_text ) {
+
+	$default_text = $admin_footer_text;
+	$page         = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+
+	if ( false !== strstr( $page, 'inpsyde-translationmanager-about' ) ) {
+		$admin_footer_text = '<a href="http://inpsyde.com" class="inpsyde_logo_translationmanager" title="Inpsyde GmbH">Inpsyde GmbH</a></br>'
+		                     . $default_text;
+	}
+
+	return $admin_footer_text;
+} );
+add_filter( 'bulk_actions-edit-post', function ( $actions ) {
+
+	$actions['bulk_translate'] = esc_html__( 'Bulk Translate', 'translationmanager' );
+
+	return $actions;
+} );
+add_filter( 'bulk_actions-edit-page', function ( $actions ) {
+
+	$actions['bulk_translate'] = esc_html__( 'Bulk Translate', 'translationmanager' );
+
+	return $actions;
+} );
