@@ -19,13 +19,13 @@ function register_projects_taxonomy() {
 	register_taxonomy(
 		'translationmanager_project',
 		'project_item',
-		array(
+		[
 			'label'  => esc_html__( 'Projects', 'translationmanager' ),
-			'labels' => array(
+			'labels' => [
 				'add_new_item' => esc_html__( 'Create new project', 'translationmanager' ),
-			),
+			],
 			'public' => true,
-		)
+		]
 	);
 }
 

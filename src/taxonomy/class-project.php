@@ -5,7 +5,7 @@ namespace Translationmanager\Taxonomy;
 class Project {
 	const TAXONOMY = 'translationmanager_project';
 
-	const COL_STATUS = 'translationmanager_order_status';
+	const COL_STATUS  = 'translationmanager_order_status';
 	const COL_ACTIONS = 'translationmanager_order_action';
 
 	public static function register_post_status() {
@@ -36,12 +36,10 @@ class Project {
 		return get_admin_url(
 			null,
 			'edit.php?' .
-			http_build_query(
-				array(
-					'translationmanager_project' => get_term_field( 'slug', $term_id ),
-					'post_type'                  => 'project_item',
-				)
-			)
+			http_build_query( [
+				'translationmanager_project' => get_term_field( 'slug', $term_id ),
+				'post_type'                  => 'project_item',
+			] )
 		);
 	}
 
@@ -53,14 +51,14 @@ class Project {
 
 		// Add status ad second place.
 		$columns = array_slice( $columns, 0, 1 )
-		           + array( static::COL_STATUS => esc_html__( 'Status', 'translationmanager' ) )
+		           + [ static::COL_STATUS => esc_html__( 'Status', 'translationmanager' ) ]
 		           + array_slice( $columns, 1 );
 
 		$columns[ static::COL_ACTIONS ] = '';
 
 		add_action(
 			'manage_' . static::TAXONOMY . '_custom_column',
-			array( __CLASS__, 'print_column' ),
+			[ __CLASS__, 'print_column' ],
 			10,
 			3
 		);

@@ -30,16 +30,16 @@ class Project_Item {
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
-	public function create( $project_id, $post_type_name, $target_language, $data = array() ) {
+	public function create( $project_id, $post_type_name, $target_language, $data = [] ) {
 		$body = $this->get_api()->post(
 			$this->get_url( $project_id ),
 			$data,
-			array(
+			[
 				'X-Source' => Functions\current_lang_code(),
 				'X-Target' => $target_language,
 				'X-TextType' => $this->get_text_type( $post_type_name ),
 				'X-System-Module' => $post_type_name,
-			)
+			]
 		);
 
 		if ( ! isset( $body['id'] ) ) {
@@ -73,8 +73,8 @@ class Project_Item {
 	private function get_text_type( $post_type_name ) {
 
 		$text_type_name = str_replace(
-			array( 'post', 'page'),
-			array( 'marketing', 'specialized-text'),
+			[ 'post', 'page' ],
+			[ 'marketing', 'specialized-text' ],
 			$post_type_name
 		);
 

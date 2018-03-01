@@ -57,7 +57,7 @@ class Order_Info {
 		add_meta_box(
 			static::ID,
 			esc_html__( 'Order information', 'translationmanager' ),
-			array( $this, 'dispatch' ),
+			[ $this, 'dispatch' ],
 			'tm_order',
 			self::CONTEXT
 		);

@@ -22,18 +22,18 @@ class WordPress_Seo {
 
 		$source_post_id = $data->source_post_id();
 
-		$to_translate = array(
+		$to_translate = [
 			'title',
 			'metadesc',
 			'metakeywords',
 			'bctitle',
-		);
+		];
 
-		$to_not_translate = array(
+		$to_not_translate = [
 			'meta-robots-noindex',
 			'meta-robots-nofollow',
 			'meta-robots-adv',
-		);
+		];
 
 		foreach ( $to_translate as $key ) {
 			$field = get_post_meta( $source_post_id, \WPSEO_Meta::$meta_prefix . $key, true );

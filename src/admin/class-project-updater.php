@@ -67,21 +67,21 @@ class Project_Updater {
 		}
 
 		$project_items = get_posts(
-			array(
+			[
 				'fields'    => 'ids',
 				'post_type' => 'project_item',
 				'nopaging'  => true,
-				'tax_query' => array(
-					array(
+				'tax_query' => [
+					[
 						'taxonomy' => 'translationmanager_project',
-						'terms'    => array( $project ),
+						'terms'    => [ $project ],
 						'field'    => 'term_id',
-					),
-				),
-			)
+					],
+				],
+			]
 		);
 
-		$already_in_project = array();
+		$already_in_project = [];
 		foreach ( $project_items as $project_item_id ) {
 
 			$lang = get_post_meta( $project_item_id, '_translationmanager_target_id', true );
@@ -102,7 +102,7 @@ class Project_Updater {
 
 		$handler = new Handler\Project_Handler();
 
-		add_filter( 'wp_insert_post_data', array( $this, 'update_project_item_title' ), 10 );
+		add_filter( 'wp_insert_post_data', [ $this, 'update_project_item_title' ], 10 );
 
 		foreach ( $languages as $lang_id ) {
 			foreach ( $ancestors as $ancestor_id ) {
@@ -113,7 +113,7 @@ class Project_Updater {
 		}
 
 		$this->append_to_title = '';
-		remove_filter( 'wp_insert_post_data', array( $this, 'update_project_item_title' ), 10 );
+		remove_filter( 'wp_insert_post_data', [ $this, 'update_project_item_title' ], 10 );
 
 		return $project;
 	}

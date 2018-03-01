@@ -43,7 +43,7 @@ class Translation_Box {
 		add_meta_box(
 			static::ID,
 			esc_html__( 'Inquiry for translation', 'translationmanager' ),
-			array( $this, 'dispatch' ),
+			[ $this, 'dispatch' ],
 			$box_screen,
 			self::CONTEXT
 		);

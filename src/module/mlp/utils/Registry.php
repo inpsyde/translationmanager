@@ -7,7 +7,7 @@ class Registry {
 	/**
 	 * @var array
 	 */
-	private $services = array();
+	private $services = [];
 
 	/**
 	 * @param  \Mlp_Content_Relations $content_relations

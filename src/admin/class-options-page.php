@@ -35,12 +35,12 @@ class Options_Page {
 	 *
 	 * @var string[]
 	 */
-	protected $actions = array(
+	protected $actions = [
 		'fetch_files',
 		'save',
 		'save_categories',
 		'update_categories',
-	);
+	];
 
 	/**
 	 * Set Hooks
@@ -67,10 +67,10 @@ class Options_Page {
 			esc_html__( 'Translations', 'translationmanager' ),
 			'manage_options',
 			self::SLUG,
-			array( $this, 'dispatch' )
+			[ $this, 'dispatch' ]
 		);
 
-		add_filter( 'option_page_capability_' . static::OPTION_GROUP, array( $this, 'filter_capabilities' ) );
+		add_filter( 'option_page_capability_' . static::OPTION_GROUP, [ $this, 'filter_capabilities' ] );
 	}
 
 	/**
@@ -130,38 +130,38 @@ class Options_Page {
 		);
 
 		add_filter( 'sanitize_option_' . static::URL, 'trim' );
-		add_filter( 'sanitize_option_' . static::URL, array( $this, 'sanitize_url' ) );
+		add_filter( 'sanitize_option_' . static::URL, [ $this, 'sanitize_url' ] );
 
 		// Base URL of the API.
 		$this->add_settings_field(
 			static::URL,
 			esc_html__( 'URL', 'translationmanager' ),
-			array( $this, 'dispatch_input_text' ),
+			[ $this, 'dispatch_input_text' ],
 			static::OPTION_GROUP,
 			static::SECTION_CREDENTIALS,
-			array(
+			[
 				'value' => get_option(
 					static::URL,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
 					esc_html__( 'Not set', 'translationmanager' )
 				),
-			)
+			]
 		);
 
 		// Token.
 		$this->add_settings_field(
 			static::REFRESH_TOKEN,
 			esc_html__( 'Token', 'translationmanager' ),
-			array( $this, 'dispatch_input_text' ),
+			[ $this, 'dispatch_input_text' ],
 			static::OPTION_GROUP,
 			static::SECTION_CREDENTIALS,
-			array(
+			[
 				'value' => get_option(
 					static::REFRESH_TOKEN,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
 					esc_html__( 'Not set', 'translationmanager' )
 				),
-			)
+			]
 		);
 
 		add_filter( 'sanitize_option_' . static::REFRESH_TOKEN, 'trim' );
@@ -243,7 +243,7 @@ class Options_Page {
 
 		$collections = translationmanager_api_collections_get();
 
-		$collectionTransient = array();
+		$collectionTransient = [];
 		foreach ( $collections as $collection ) {
 			$collectionTransient[ $collection['id'] ] = $collection;
 		}
@@ -275,7 +275,7 @@ class Options_Page {
 	 *                             field is output.
 	 * }
 	 */
-	protected function add_settings_field( $id, $title, $callback, $page, $section, $args = array() ) {
+	protected function add_settings_field( $id, $title, $callback, $page, $section, $args = [] ) {
 
 		if ( ! isset( $args['name'] ) ) {
 			$args['name'] = $id;

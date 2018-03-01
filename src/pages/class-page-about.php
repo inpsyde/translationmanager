@@ -84,7 +84,7 @@ class Page_About {
 			esc_html__( 'About', 'translationmanager' ),
 			'manage_options',
 			'inpsyde-translationmanager-about',
-			array( $this, 'page_callback' )
+			[ $this, 'page_callback' ]
 		);
 	}
 

@@ -20,13 +20,10 @@ use Translationmanager\Plugin;
  */
 function action_project_add_translation( $arguments ) {
 
-	$request = wp_parse_args(
-		$arguments,
-		array(
-			'translationmanager_language'   => array_keys( get_languages() ),
-			'translationmanager_project_id' => null,
-		)
-	);
+	$request = wp_parse_args( $arguments, [
+		'translationmanager_language'   => array_keys( get_languages() ),
+		'translationmanager_project_id' => null,
+	] );
 
 	$handler = new \Translationmanager\Admin\Handler\Project_Handler();
 
@@ -107,21 +104,18 @@ function action_project_add_translation( $arguments ) {
  */
 function handle_actions() {
 
-	$post_data = filter_input_array(
-		INPUT_POST,
-		array(
-			'translationmanager_action_project_order'           => FILTER_SANITIZE_STRING,
-			'translationmanager_action_project_update'          => FILTER_SANITIZE_STRING,
-			'translationmanager_action_project_add_translation' => FILTER_SANITIZE_STRING,
-			'_translationmanager_project_id'                    => FILTER_SANITIZE_STRING,
-			'translationmanager_project_id'                     => FILTER_SANITIZE_NUMBER_INT,
-			'post_ID'                                           => FILTER_SANITIZE_NUMBER_INT,
-			'translationmanager_language'                       => array(
-				'filter' => FILTER_SANITIZE_STRING,
-				'flags'  => FILTER_FORCE_ARRAY,
-			),
-		)
-	);
+	$post_data = filter_input_array( INPUT_POST, [
+		'translationmanager_action_project_order'           => FILTER_SANITIZE_STRING,
+		'translationmanager_action_project_update'          => FILTER_SANITIZE_STRING,
+		'translationmanager_action_project_add_translation' => FILTER_SANITIZE_STRING,
+		'_translationmanager_project_id'                    => FILTER_SANITIZE_STRING,
+		'translationmanager_project_id'                     => FILTER_SANITIZE_NUMBER_INT,
+		'post_ID'                                           => FILTER_SANITIZE_NUMBER_INT,
+		'translationmanager_language'                       => [
+			'filter' => FILTER_SANITIZE_STRING,
+			'flags'  => FILTER_FORCE_ARRAY,
+		],
+	] );
 
 	if ( ! $post_data ) {
 		return;
@@ -158,13 +152,11 @@ function handle_actions() {
 		$updater = new \Translationmanager\Admin\Project_Updater();
 		$updater->init();
 
-		$project = action_project_add_translation(
-			array(
-				'translationmanager_language'   => $post_data['translationmanager_language'],
-				'translationmanager_project_id' => $post_data['translationmanager_project_id'],
-				'post_ID'                       => $post_data['post_ID'],
-			)
-		);
+		$project = action_project_add_translation( [
+			'translationmanager_language'   => $post_data['translationmanager_language'],
+			'translationmanager_project_id' => $post_data['translationmanager_project_id'],
+			'post_ID'                       => $post_data['post_ID'],
+		] );
 
 		if ( false === $project ) {
 			// Project has been invalidated so we don't redirect there.
@@ -240,7 +232,7 @@ function update_project_order_meta( \WP_Term $project_term ) {
 		 *
 		 * @param \Translationmanager\Translation_Data $data
 		 */
-		do_action_ref_array( 'translationmanager_outgoing_data', array( $data ) );
+		do_action_ref_array( 'translationmanager_outgoing_data', [ $data ] );
 
 		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ][] = $data->to_array();
 	}

@@ -75,8 +75,8 @@ class Taxonomies_Sync implements Incoming_Processor {
 		$post_types_to_sync = apply_filters(
 			'translationmanager_mlp_module_sync_taxonomies_post_types',
 			array_merge(
-				array( 'post', 'page' ),
-				get_post_types( array( 'public' => true, '_builtin' => false ) )
+				[ 'post', 'page' ],
+				get_post_types( [ 'public' => true, '_builtin' => false ] )
 			),
 			$data
 		);
@@ -104,17 +104,17 @@ class Taxonomies_Sync implements Incoming_Processor {
 		$source_post = $data->source_post();
 
 		if ( ! $source_post ) {
-			return array();
+			return [];
 		}
 
 		/** @var \WP_Taxonomy[] $taxonomies */
 		$taxonomies = get_object_taxonomies( $source_post, 'objects' );
 
 		if ( ! $taxonomies ) {
-			return array();
+			return [];
 		}
 
-		$taxonomies_to_sync = array();
+		$taxonomies_to_sync = [];
 		foreach ( $taxonomies as $taxonomy ) {
 			$taxonomy->public and $taxonomies_to_sync[] = $taxonomy->name;
 		}
@@ -126,18 +126,18 @@ class Taxonomies_Sync implements Incoming_Processor {
 		);
 
 		if ( ! $taxonomies_to_sync ) {
-			return array();
+			return [];
 		}
 
 		$term_query = new \WP_Term_Query();
 
 		$terms = $term_query->query(
-			array(
+			[
 				'taxonomy'   => $taxonomies_to_sync,
-				'object_ids' => array( $source_post->ID ),
+				'object_ids' => [ $source_post->ID ],
 				'hide_empty' => false,
 				'fields'     => 'tt_ids'
-			)
+			]
 		);
 
 		return $terms;
@@ -168,7 +168,7 @@ class Taxonomies_Sync implements Incoming_Processor {
 
 		$source_site_id = $data->source_site_id();
 		$target_site_id = $data->target_site_id();
-		$target_post_term_tt_ids  = $target_post_new_terms = array();
+		$target_post_term_tt_ids  = $target_post_new_terms = [];
 
 		// Loop through source term ids to find a related term on target site
 		foreach ( $source_term_taxonomy_ids as $source_tt_id ) {
@@ -196,7 +196,7 @@ class Taxonomies_Sync implements Incoming_Processor {
 			}
 		}
 
-		return array( $target_post_term_tt_ids, $target_post_new_terms );
+		return [ $target_post_term_tt_ids, $target_post_new_terms ];
 	}
 
 	/**
@@ -220,12 +220,12 @@ class Taxonomies_Sync implements Incoming_Processor {
 
 		$source_site_id = $data->source_site_id();
 		$target_site_id = $data->target_site_id();
-		$target_terms   = array();
+		$target_terms   = [];
 
 		foreach ( $terms_to_relate as $source_term_tt_id => $term_to_relate ) {
 
 			if ( empty( $target_terms[ $term_to_relate->taxonomy ] ) ) {
-				$target_terms[ $term_to_relate->taxonomy ] = array();
+				$target_terms[ $term_to_relate->taxonomy ] = [];
 			}
 
 			// We got an existing term, just set relation and store its id in target terms to be returned
@@ -263,11 +263,11 @@ class Taxonomies_Sync implements Incoming_Processor {
 			$insert = wp_insert_term(
 				$term_to_relate->name,
 				$term_to_relate->taxonomy,
-				array(
+				[
 					'slug'        => $term_to_relate->slug,
 					'parent'      => $term_to_relate->parent,
 					'description' => $term_to_relate->description,
-				)
+				]
 			);
 			// ... and if saved correctly, set relation, then store its id in target terms to be returned
 			if ( is_array( $insert ) && ! empty( $insert[ 'term_id' ] ) && ! empty( $insert[ 'term_taxonomy_id' ] ) ) {
@@ -320,7 +320,7 @@ class Taxonomies_Sync implements Incoming_Processor {
 			}
 
 			if ( ! array_key_exists( $linked_term->taxonomy, $target_term_ids ) ) {
-				$target_term_ids[ $linked_term->taxonomy ] = array();
+				$target_term_ids[ $linked_term->taxonomy ] = [];
 			}
 
 			$target_term_ids[ $linked_term->taxonomy ][] = (int) $linked_term->term_id;

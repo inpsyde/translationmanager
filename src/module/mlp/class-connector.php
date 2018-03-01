@@ -70,7 +70,7 @@ class Connector {
 	 */
 	public function prepare_updater() {
 
-		return array( $this, 'update_translations' );
+		return [ $this, 'update_translations' ];
 	}
 
 	/**

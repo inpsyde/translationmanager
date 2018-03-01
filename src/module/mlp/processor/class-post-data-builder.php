@@ -9,7 +9,7 @@ class Post_Data_Builder implements Incoming_Processor {
 
 	const IS_UPDATE_KEY = 'is-update';
 
-	private static $unwanted_data = array(
+	private static $unwanted_data = [
 		'ID'                => '',
 		'guid'              => '',
 		'ancestors'         => '',
@@ -18,7 +18,7 @@ class Post_Data_Builder implements Incoming_Processor {
 		'tags_input'        => '',
 		'post_modified_gmt' => '',
 		'filter'            => '',
-	);
+	];
 
 	/**
 	 * @param Translation_Data       $data
@@ -52,12 +52,12 @@ class Post_Data_Builder implements Incoming_Processor {
 
 		restore_current_blog();
 
-		$linked_post_data = $linked_post ? $linked_post->to_array() : array();
+		$linked_post_data = $linked_post ? $linked_post->to_array() : [];
 
 		$post_vars = get_object_vars( new \WP_Post( new \stdClass() ) );
 
 		// Let's extract only post data from received translation data
-		$translated_data = array();
+		$translated_data = [];
 		foreach ( array_keys( $post_vars ) as $key ) {
 			if ( $data->has_value( $key ) ) {
 				$translated_data[ $key ] = $data->get_value( $key );

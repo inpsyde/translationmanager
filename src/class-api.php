@@ -43,7 +43,7 @@ class Api {
 		$this->base_url   = $base_url;
 	}
 
-	public function post( $path, $data = array(), $headers = array() ) {
+	public function post( $path, $data = array(), $headers = [] ) {
 		return $this->request( 'POST', $path, $data, $headers );
 	}
 
@@ -55,7 +55,7 @@ class Api {
 	 *
 	 * @return string[]
 	 */
-	public function request( $method, $path, $data = array(), $headers = array() ) {
+	public function request( $method, $path, $data = [], $headers = array() ) {
 		$url     = $this->get_url( $path );
 		$context = [
 			// Add headers early to context to keep api key out of it.

@@ -25,20 +25,20 @@ class Project_Handler {
 		$labels = get_post_type_labels( get_post_type_object( get_post_type( $post_id ) ) );
 
 		$translation_id = wp_insert_post(
-			array(
+			[
 				'post_type'  => 'project_item',
 				'post_title' => sprintf(
 					__( '%s: "%s"', 'translationmanager' ),
 					esc_html( $labels->singular_name ),
 					get_the_title( $post_id )
 				),
-				'meta_input' => array(
+				'meta_input' => [
 					'_translationmanager_target_id' => $lang_id,
 					'_translationmanager_post_id'   => $post_id,
-				),
-			)
+				],
+			]
 		);
 
-		wp_set_post_terms( $translation_id, array( $project ), 'translationmanager_project' );
+		wp_set_post_terms( $translation_id, [ $project ], 'translationmanager_project' );
 	}
 }

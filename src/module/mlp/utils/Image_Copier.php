@@ -94,7 +94,7 @@ class Image_Copier {
 
 			$switched and restore_current_blog();
 
-			return array( null, '' );
+			return [ null, '' ];
 		}
 
 		$source_file = get_attached_file( $source_attachment_id, true );
@@ -102,10 +102,10 @@ class Image_Copier {
 		$switched and restore_current_blog();
 
 		if ( ! file_exists( $source_file ) ) {
-			return array( $attachment, '' );
+			return [ $attachment, '' ];
 		}
 
-		return array( $attachment, $source_file );
+		return [ $attachment, $source_file ];
 	}
 
 	/**
@@ -136,7 +136,7 @@ class Image_Copier {
 
 		$new_attachment = array_diff_key(
 			$attachment->to_array(),
-			array(
+			[
 				'ID'                => '',
 				'guid'              => '',
 				'ancestors'         => '',
@@ -145,7 +145,7 @@ class Image_Copier {
 				'tags_input'        => '',
 				'post_modified_gmt' => '',
 				'filter'            => '',
-			)
+			]
 		);
 
 		$attachment_id = wp_insert_attachment( $new_attachment, $filepath );

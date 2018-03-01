@@ -76,7 +76,7 @@ class Processor_Bus {
 				);
 
 				/** @var callable $cb */
-				$cb = array( $processor, $method );
+				$cb = [ $processor, $method ];
 				$cb( $data, $site_relations, $content_relations );
 			}
 		}

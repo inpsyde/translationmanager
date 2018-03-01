@@ -29,7 +29,7 @@ class Project_Item {
 
 		add_action(
 			'manage_' . static::POST_TYPE . '_posts_custom_column',
-			array( __CLASS__, 'print_column' ),
+			[ __CLASS__, 'print_column' ],
 			10,
 			2
 		);
@@ -50,9 +50,9 @@ class Project_Item {
 			$request[ $key ] = sanitize_text_field( filter_input( INPUT_GET, $key, FILTER_SANITIZE_STRING ) );
 		}
 
-		$request = wp_parse_args( $request, array(
+		$request = wp_parse_args( $request, [
 			'translationmanager_project' => null,
-		) );
+		] );
 
 		if ( isset( $request['post_status'] ) && static::STATUS_TRASH === $request['post_status'] ) {
 			// This is trash so we show no project column.
@@ -91,12 +91,10 @@ class Project_Item {
 					printf(
 						'<a href="%s">%s</a>',
 						'edit.php?' .
-						http_build_query(
-							array(
-								'translationmanager_project' => $term->slug,
-								'post_type'                  => 'project_item',
-							)
-						),
+						http_build_query( [
+							'translationmanager_project' => $term->slug,
+							'post_type'                  => 'project_item',
+						] ),
 						$term->name
 					);
 				}

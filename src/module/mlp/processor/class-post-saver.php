@@ -23,7 +23,7 @@ class Post_Saver implements Incoming_Processor {
 	) {
 
 		$post_vars = get_object_vars( new \WP_Post( new \stdClass() ) );
-		$post_data = array();
+		$post_data = [];
 
 		foreach ( $post_vars as $key => $value ) {
 			if ( $data->has_value( $key ) ) {

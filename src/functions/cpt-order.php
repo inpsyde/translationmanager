@@ -15,19 +15,19 @@ function register_translationmanager_order_posttype() {
 
 	register_post_type(
 		'tm_order',
-		array(
-			'capabilities' => array(
+		[
+			'capabilities' => [
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
 				'create_posts' => false,
-			),
+			],
 			'description'  => esc_html__( 'Your placed orders.', 'translationmanager' ),
 			'hierarchical' => true,
 			'label'        => esc_html__( 'Order', 'translationmanager' ),
 			'map_meta_cap' => true,
 			'public'       => true,
 			'show_in_menu' => 'edit.php?post_type=translationmanager_trans_status',
-			'supports'     => array( 'title' ),
-		)
+			'supports'     => [ 'title' ],
+		]
 	);
 }
 

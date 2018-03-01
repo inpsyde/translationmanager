@@ -153,15 +153,15 @@ function kses_post( $data, array $extra_attrs = [] ) {
 	}
 
 	// Form attributes.
-	$tags_input_included['form'] = array_merge( $tags_input_included['form'], array( 'novalidate' => true ) );
+	$tags_input_included['form'] = array_merge( $tags_input_included['form'], [ 'novalidate' => true ] );
 	// Fieldset attributes.
 	// WordPress have an empty array.
-	$tags_input_included['fieldset'] = array_merge( $tags_input_included['fieldset'], array(
+	$tags_input_included['fieldset'] = array_merge( $tags_input_included['fieldset'], [
 		'id'    => true,
 		'class' => true,
 		'form'  => true,
 		'name'  => true,
-	) );
+	] );
 
 	return wp_kses( $data, $tags_input_included );
 }

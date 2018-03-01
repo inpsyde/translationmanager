@@ -53,7 +53,7 @@ class Project {
 	}
 
 	public function to_header_array() {
-		return array(
+		return [
 			'X-System'         => $this->get_system(),
 			'X-System-Version' => $this->get_system_version(),
 			'X-Plugin'         => $this->get_plugin(),
@@ -61,7 +61,7 @@ class Project {
 			'X-Name'           => $this->get_name(),
 			'X-Type'           => $this->get_type(),
 			'X-Callback'       => $this->get_callback(),
-		);
+		];
 	}
 
 	/**
