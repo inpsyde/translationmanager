@@ -52,14 +52,22 @@
 				</b>
 			</div>
 		<?php endif; ?>
-	<?php else : ?>
-		<br>
-		<div class="textright">
+	<?php
+	else :
+		if ( ! $this->has_projects() ) {
+			printf(
+				'<p style="color:red;max-width:200px;text-align:right;float:right">%s</p>',
+				esc_html__( 'Please add at least one post to be able to submit the project.', 'translationmanager' )
+			);
+		}
+		?>
+		<div class="textright" style="margin-top: .63em">
 			<input type="submit"
 			       name="translationmanager_action_project_order"
 			       id="translationmanager_action_project_order"
 			       class="button button-primary"
-			       value="<?php esc_html_e( 'Order project', 'translationmanager' ); ?>"/>
+				<?php echo( ! $this->has_projects() ? 'disabled="disabled"' : '' ); ?>
+				   value="<?php esc_html_e( 'Order project', 'translationmanager' ); ?>"/>
 		</div>
 	<?php endif; ?>
 </form>

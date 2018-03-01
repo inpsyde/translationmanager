@@ -6,16 +6,46 @@ use Translationmanager\Functions;
 
 class Order_Info {
 
+	/**
+	 * The metabox ID
+	 *
+	 * @since 1.0.0
+	 */
 	const ID = 'translationmanager_order_info';
 
+	/**
+	 * Context for the metabox
+	 *
+	 * @since 1.0.0
+	 */
 	const CONTEXT = 'side';
+
+	/**
+	 * Project ID
+	 *
+	 * @var null
+	 */
 	private $project_id;
 
+	/**
+	 * Order_Info constructor
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param null $project_id
+	 */
 	public function __construct( $project_id = null ) {
 
 		$this->project_id = $project_id;
 	}
 
+	/**
+	 * Add Meta Box
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	public function add_meta_box() {
 
 		add_meta_box(
@@ -27,6 +57,13 @@ class Order_Info {
 		);
 	}
 
+	/**
+	 * Dispatch
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	public function dispatch() {
 
 		$template = Functions\get_template( 'views/meta-box/order-info.php' );
@@ -45,9 +82,12 @@ class Order_Info {
 	 * - In Arbeit
 	 * - Geliefert
 	 *
-	 * @todo Correct status.
+	 * @since 1.0.0
 	 *
-	 * @return mixed
+	 * @todo  Correct status.
+	 * @fixme Why pass the post ID loop in a term context?
+	 *
+	 * @return string The status for the current order.
 	 */
 	public function get_status() {
 
@@ -61,12 +101,13 @@ class Order_Info {
 	/**
 	 * Returns REST API ID or Plunet ID.
 	 *
-	 * Returns rest ID
-	 * and as soon as given the plunet ID.
+	 * Returns rest ID and as soon as given the plunet ID.
+	 *
+	 * @since 1.0.0
 	 *
 	 * TODO return correct number.
 	 *
-	 * @return string
+	 * @return string The meta value
 	 */
 	public function get_order_id() {
 
@@ -74,6 +115,10 @@ class Order_Info {
 	}
 
 	/**
+	 * Project ID
+	 *
+	 * @since 1.0.0
+	 *
 	 * @return mixed
 	 */
 	public function get_project_id() {
@@ -82,6 +127,10 @@ class Order_Info {
 	}
 
 	/**
+	 * Get ordered date
+	 *
+	 * @since 1.0.0
+	 *
 	 * @return \DateTime
 	 */
 	public function get_ordered_at() {
@@ -94,10 +143,30 @@ class Order_Info {
 	}
 
 	/**
+	 * Get translated date
+	 *
+	 * @todo  To Implement get_translated_at.
+	 *
+	 * @since 1.0.0
+	 *
 	 * @return \DateTime
 	 */
 	public function get_translated_at() {
 
 		return null;
+	}
+
+	/**
+	 * Has Projects
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return int The number of projects within the current order
+	 */
+	public function has_projects() {
+
+		$posts = Functions\get_project_items( $this->project_id );
+
+		return count( $posts );
 	}
 }
