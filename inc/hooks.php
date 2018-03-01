@@ -17,7 +17,7 @@ add_action( 'admin_init', [ \Translationmanager\Post_Type\Project_Item::class, '
 add_action( 'admin_head-edit.php', 'Translationmanager\\Functions\\hide_project_actions_links_from_edit_page' );
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
 
-add_filter( 'bulk_actions-edit-project_item', 'Translationmanagere\\Functions\\filter_bulk_actions_labels_for_project' );
+add_filter( 'bulk_actions-edit-project_item', 'Translationmanager\\Functions\\filter_bulk_actions_labels_for_project' );
 add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actions_for_project', 10, 2 );
 add_filter( 'display_post_states', 'Translationmanager\\Functions\\remove_states_from_project', 10, 2 );
 add_filter( 'views_edit-project_item', 'Translationmanager\\Functions\\template_project_box_form_in_edit_page' );
@@ -36,7 +36,7 @@ add_filter( 'bulk_post_updated_messages', 'Translationmanager\\Functions\\filter
 // CPT Order.
 add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_order_posttype' );
 add_action( 'admin_head', 'Translationmanager\\Functions\\order_remove_month' );
-add_action( 'trashed_post', 'Translatemanager\\Functions\\delete_post_order_on_trashing' );
+add_action( 'trashed_post', 'Translationmanager\\Functions\\delete_post_order_on_trashing' );
 add_action( 'add_meta_boxes', [ new \Translationmanager\Meta_Box\Order_Info(), 'add_meta_box' ] );
 
 // Projects Taxonomy.
