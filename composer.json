@@ -53,7 +53,10 @@
 			"src/functions/cpt-order.php",
 			"src/functions/tax-project.php",
 			"inc/hooks.php"
-		]
+		],
+		"psr-4" : {
+			"Translationmanager\\" : "src/"
+		}
 	},
 	"autoload-dev" : {
 		"psr-4" : {

@@ -3,7 +3,7 @@
 namespace Translationmanager\Functions;
 
 use Translationmanager\Api;
-use Translationmanager\Admin\Options_Page;
+use Translationmanager\Pages\PageOptions;
 
 /**
  * Retrieve API Instance
@@ -23,9 +23,9 @@ function translationmanager_api() {
 
 	if ( null === $api ) {
 		$api = new Api(
-			get_option( Options_Page::REFRESH_TOKEN ),
+			get_option( PageOptions::REFRESH_TOKEN ),
 			'b37270d25d5b3fccf137f7462774fe76',
-			get_option( Options_Page::URL, 'http://api.eurotext.de/api/v1' )
+			get_option( PageOptions::URL, 'http://api.eurotext.de/api/v1' )
 		);
 	}
 
@@ -91,12 +91,12 @@ function project_update( $project_term ) {
 
 	foreach ( $translation_data['items'] as $items ) {
 		foreach ( $items['data'] as $item ) {
-			$translation = \Translationmanager\Translation_Data::for_incoming( (array) $item );
+			$translation = \Translationmanager\TranslationData::for_incoming( (array) $item );
 
 			/**
 			 * Fires for each item or translation received from the API.
 			 *
-			 * @param \Translationmanager\Translation_Data $translation Translation data built from data received from API
+			 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
 			 */
 			do_action( 'translationmanager_incoming_data', $translation );
 
@@ -112,8 +112,8 @@ function project_update( $project_term ) {
 				/**
 				 * Fires after the updater has updated the post.
 				 *
-				 * @param \WP_Post                             $post        Just updated post
-				 * @param \Translationmanager\Translation_Data $translation Translation data built from data received from API
+				 * @param \WP_Post                            $post        Just updated post
+				 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
 				 */
 				do_action( 'translationmanager_updated_post', $post, $translation );
 			}

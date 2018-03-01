@@ -1,4 +1,3 @@
-<?php /** @var \Translationmanager\Meta_Box\Translation_Box $this */ ?>
 <script>
 	(function ( $ ) {
 		$( function () {
@@ -14,7 +13,7 @@
 </script>
 <?php if ( ! $this->get_customer_key() ): ?>
 	<em>
-		<a href="<?php echo get_admin_url( null, '/options-general.php?page=' . \Translationmanager\Admin\Options_Page::SLUG ) ?>">
+		<a href="<?php echo get_admin_url( null, '/options-general.php?page=' . \Translationmanager\Pages\PageOptions::SLUG ) ?>">
 			<?php esc_html_e( 'Click here to setup the Eurotext Translation Plugin.', 'translationmanager' ) ?>
 		</a>
 	</em>

@@ -7,7 +7,7 @@ use Translationmanager\Plugin;
 /**
  * Register Cart Post Type
  *
- * @todo  Create class to manage cpt project filters. See Project_Item
+ * @todo  Create class to manage cpt project filters. See ProjectItem
  *
  * @since 1.0.0
  *
@@ -37,7 +37,7 @@ function register_translationmanager_project_posttype() {
 /**
  * Remove month from Project post type page
  *
- * @todo  Move into the cpt project class. See Project_Item
+ * @todo  Move into the cpt project class. See ProjectItem
  *
  * @since 1.0.0
  *
@@ -61,7 +61,7 @@ function project_remove_month() {
 /**
  * Change the Bulk Actions labels for projects
  *
- * @todo  Move into the cpt project class. See Project_Item
+ * @todo  Move into the cpt project class. See ProjectItem
  *
  * @since 1.0.0
  *
@@ -83,7 +83,7 @@ function filter_bulk_actions_labels_for_project( array $actions ) {
 /**
  * Filter Row Actions for Project post type
  *
- * @todo  Move into the cpt project class. See Project_Item
+ * @todo  Move into the cpt project class. See ProjectItem
  *
  * @since 1.0.0
  *
@@ -115,7 +115,7 @@ function filter_row_actions_for_project( array $actions, \WP_Post $post ) {
 /**
  * Remove states from Project Post Type
  *
- * @todo  Move into the cpt project class. See Project_Item
+ * @todo  Move into the cpt project class. See ProjectItem
  *
  * @since 1.0.0
  *
@@ -149,7 +149,7 @@ function template_project_box_form_in_edit_page( $value ) {
 	if ( $slug ) {
 		$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
 		// This is used inside the view.
-		$info = new \Translationmanager\Meta_Box\Order_Info( $term->term_id );
+		$info = new \Translationmanager\MetaBox\OrderInfo( $term->term_id );
 
 		require get_template( 'views/meta-box/project-box.php' );
 	}

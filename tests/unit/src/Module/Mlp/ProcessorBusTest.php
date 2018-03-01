@@ -4,19 +4,19 @@ namespace Translationmanager\Tests\Module\Mlp;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
-use Translationmanager\Module\Mlp\Processor\Incoming_Processor;
-use Translationmanager\Module\Mlp\Processor\Outgoing_Processor;
+use Translationmanager\Module\Mlp\Processor\IncomingProcessor;
+use Translationmanager\Module\Mlp\Processor\OutgoingProcessor;
 use Translationmanager\Tests\TestCase;
-use Translationmanager\Translation_Data;
-use Translationmanager\Module\Mlp\Processor_Bus;
+use Translationmanager\TranslationData;
+use Translationmanager\Module\Mlp\ProcessorBus;
 
 class ProcessorBusTest extends TestCase {
 
 	public function test_process_fires_hooks() {
 
-		$bus = new Processor_Bus();
+		$bus = new ProcessorBus();
 
-		$data = Translation_Data::for_incoming( [] );
+		$data = TranslationData::for_incoming( [] );
 
 		/** @var \Mlp_Site_Relations $site_relations */
 		$site_relations = \Mockery::mock( \Mlp_Site_Relations::class );
@@ -25,16 +25,16 @@ class ProcessorBusTest extends TestCase {
 
 		Filters\expectApplied( 'translationmanager_mlp_data_processor_enabled' )
 			->once()
-			->with( true, \Mockery::type( Incoming_Processor::class ), $data )
+			->with( true, \Mockery::type( IncomingProcessor::class ), $data )
 			->andReturnFirstArg();
 
 		Actions\expectDone( 'translationmanager_mlp_data_processors' )
 			->once()
-			->with( \Mockery::type( Processor_Bus::class ), $data )
-			->whenHappen( function ( Processor_Bus $bus ) use ( $data, $site_relations, $content_relations ) {
+			->with( \Mockery::type( ProcessorBus::class ), $data )
+			->whenHappen( function ( ProcessorBus $bus ) use ( $data, $site_relations, $content_relations ) {
 
-				/** @var Incoming_Processor|\Mockery\MockInterface $processor */
-				$processor = \Mockery::mock( Incoming_Processor::class );
+				/** @var IncomingProcessor|\Mockery\MockInterface $processor */
+				$processor = \Mockery::mock( IncomingProcessor::class );
 				$processor
 					->shouldReceive( 'process_incoming' )
 					->once()
@@ -53,14 +53,14 @@ class ProcessorBusTest extends TestCase {
 
 	public function test_process_incoming_data_not_executes_outgoing_processors() {
 
-		/** @var Outgoing_Processor|\Mockery\MockInterface $processor */
-		$processor = \Mockery::mock( Outgoing_Processor::class );
+		/** @var OutgoingProcessor|\Mockery\MockInterface $processor */
+		$processor = \Mockery::mock( OutgoingProcessor::class );
 		$processor->shouldReceive( 'process_outgoing' )->never();
 
-		$bus = new Processor_Bus();
+		$bus = new ProcessorBus();
 		$bus->push_processor( $processor );
 
-		$data = Translation_Data::for_incoming( [] );
+		$data = TranslationData::for_incoming( [] );
 
 		/** @var \Mlp_Site_Relations $site_relations */
 		$site_relations = \Mockery::mock( \Mlp_Site_Relations::class );
@@ -71,27 +71,27 @@ class ProcessorBusTest extends TestCase {
 
 		Actions\expectDone( 'translationmanager_mlp_data_processors' )
 			->once()
-			->with( \Mockery::type( Processor_Bus::class ), $data );
+			->with( \Mockery::type( ProcessorBus::class ), $data );
 
 		$bus->process( $data, $site_relations, $content_relations );
 	}
 
 	public function test_processor_can_be_skipped_via_filter() {
 
-		/** @var Outgoing_Processor|\Mockery\MockInterface $processor_a */
-		$processor_a = \Mockery::mock( Incoming_Processor::class );
+		/** @var OutgoingProcessor|\Mockery\MockInterface $processor_a */
+		$processor_a = \Mockery::mock( IncomingProcessor::class );
 		$processor_a->shouldReceive( 'process_incoming' )->never();
 
-		/** @var Outgoing_Processor|\Mockery\MockInterface $processor_b */
-		$processor_b = \Mockery::mock( Incoming_Processor::class );
+		/** @var OutgoingProcessor|\Mockery\MockInterface $processor_b */
+		$processor_b = \Mockery::mock( IncomingProcessor::class );
 		$processor_b->shouldReceive( 'process_incoming' )->once()->andReturnUsing(function() {
 			echo 'Processor B executed!';
 		});
 
-		$bus = new Processor_Bus();
+		$bus = new ProcessorBus();
 		$bus->push_processor( $processor_a )->push_processor( $processor_b );
 
-		$data = Translation_Data::for_incoming( [] );
+		$data = TranslationData::for_incoming( [] );
 
 		/** @var \Mlp_Site_Relations $site_relations */
 		$site_relations = \Mockery::mock( \Mlp_Site_Relations::class );

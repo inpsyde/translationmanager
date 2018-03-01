@@ -27,7 +27,7 @@ function action_project_add_translation( $arguments ) {
 		'translationmanager_project_id' => null,
 	] );
 
-	$handler = new \Translationmanager\Admin\Handler\Project_Handler();
+	$handler = new \Translationmanager\ProjectHandler();
 
 	$project = (int) $request['translationmanager_project_id'];
 
@@ -151,7 +151,7 @@ function handle_actions() {
 	}
 
 	if ( null !== $post_data['translationmanager_action_project_add_translation'] ) {
-		$updater = new \Translationmanager\Admin\Project_Updater();
+		$updater = new \Translationmanager\Admin\ProjectUpdater();
 		$updater->init();
 
 		$project = action_project_add_translation( [
@@ -220,7 +220,7 @@ function update_project_order_meta( \WP_Term $project_term ) {
 
 		$source_site_id = get_current_blog_id();
 
-		$data = \Translationmanager\Translation_Data::for_outgoing(
+		$data = \Translationmanager\TranslationData::for_outgoing(
 			$source_post,
 			$source_site_id,
 			$post->_translationmanager_target_id,
@@ -232,7 +232,7 @@ function update_project_order_meta( \WP_Term $project_term ) {
 		 *
 		 * Data can be edited in place by listeners.
 		 *
-		 * @param \Translationmanager\Translation_Data $data
+		 * @param \Translationmanager\TranslationData $data
 		 */
 		do_action_ref_array( 'translationmanager_outgoing_data', [ $data ] );
 

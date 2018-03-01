@@ -1,4 +1,3 @@
-<?php /** @var \Translationmanager\Admin\Options_Page $this */ ?>
 <div class="wrap">
 
 	<h2 class="settings__headline">

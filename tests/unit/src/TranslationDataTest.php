@@ -3,7 +3,7 @@
 namespace Translationmanager\Tests;
 
 use Brain\Monkey\Functions;
-use Translationmanager\Translation_Data;
+use Translationmanager\TranslationData;
 
 class TranslationDataTest extends TestCase {
 
@@ -19,13 +19,13 @@ class TranslationDataTest extends TestCase {
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 		Functions\expect( 'get_post' )->once()->with( 123 )->andReturn( $post );
 
-		$incoming = Translation_Data::for_incoming(
+		$incoming = TranslationData::for_incoming(
 			[
-				Translation_Data::META_KEY => [
-					Translation_Data::SOURCE_POST_ID_KEY => 123,
-					Translation_Data::SOURCE_SITE_KEY    => 1,
-					Translation_Data::TARGET_SITE_KEY    => 2,
-					Translation_Data::TARGET_LANG_KEY    => 'de',
+				TranslationData::META_KEY => [
+					TranslationData::SOURCE_POST_ID_KEY => 123,
+					TranslationData::SOURCE_SITE_KEY    => 1,
+					TranslationData::TARGET_SITE_KEY    => 2,
+					TranslationData::TARGET_LANG_KEY    => 'de',
 				]
 			]
 		);
@@ -48,7 +48,7 @@ class TranslationDataTest extends TestCase {
 		$post->post_content = '<b>Content</b>';
 		$post->post_excerpt = 'Excerpt';
 
-		$outgoing = Translation_Data::for_outgoing( $post, 1, 2, 'de', [] );
+		$outgoing = TranslationData::for_outgoing( $post, 1, 2, 'de', [] );
 
 		static::assertFalse( $outgoing->is_incoming() );
 		static::assertTrue( $outgoing->is_outgoing() );
@@ -61,7 +61,7 @@ class TranslationDataTest extends TestCase {
 
 	public function testHasGetSetValue() {
 
-		$incoming = Translation_Data::for_incoming( [] );
+		$incoming = TranslationData::for_incoming( [] );
 
 		$incoming->set_value( 'foo', 'foo' );
 		$incoming->set_value( 'bar', 'bar!!', '_ns' );
@@ -81,7 +81,7 @@ class TranslationDataTest extends TestCase {
 
 	public function testHasGetSetMeta() {
 
-		$incoming = Translation_Data::for_incoming( [] );
+		$incoming = TranslationData::for_incoming( [] );
 
 		$incoming->set_meta( 'foo', 'foo' );
 		$incoming->set_meta( 'bar', 'bar!!', '_ns' );
@@ -104,7 +104,7 @@ class TranslationDataTest extends TestCase {
 
 	public function testRemoveValue() {
 
-		$incoming = Translation_Data::for_incoming( [] );
+		$incoming = TranslationData::for_incoming( [] );
 
 		$incoming->set_value( 'foo', 'foo' );
 		$incoming->set_value( 'bar', 'bar!!', '_ns' );
@@ -128,7 +128,7 @@ class TranslationDataTest extends TestCase {
 
 	public function testRemoveMeta() {
 
-		$incoming = Translation_Data::for_incoming( [] );
+		$incoming = TranslationData::for_incoming( [] );
 
 		$incoming->set_meta( 'foo', 'foo' );
 		$incoming->set_meta( 'bar', 'bar!!', '_ns' );
@@ -152,11 +152,11 @@ class TranslationDataTest extends TestCase {
 
 	public function testToArray() {
 
-		$incoming = Translation_Data::for_incoming(
+		$incoming = TranslationData::for_incoming(
 			[
 				'foo'                      => 'Foo',
 				'bar'                      => 'Bar',
-				Translation_Data::META_KEY => [
+				TranslationData::META_KEY => [
 					'source_post_id'  => 1,
 					'source_site_id'  => 2,
 					'target_site_id'  => 3,
@@ -190,7 +190,7 @@ class TranslationDataTest extends TestCase {
 				'hello'   => 'Hello',
 				'goodbye' => 'Goodbye',
 			],
-			Translation_Data::META_KEY => [
+			TranslationData::META_KEY => [
 				'source_post_id'  => 1,
 				'source_site_id'  => 2,
 				'target_site_id'  => 3,

@@ -14,7 +14,7 @@ function add_translation_action() {
 	static $add_translation = null;
 
 	if ( null === $add_translation ) {
-		$add_translation = new \Translationmanager\Pages\Add_Translation();
+		$add_translation = new \Translationmanager\Pages\PageAddTranslation();
 	}
 
 	$add_translation->dispatch();
@@ -23,7 +23,7 @@ function add_translation_action() {
 /**
  * Add Translation menu page
  *
- * @todo Move into Add_Translation class?
+ * @todo  Move into PageAddTranslation class?
  *
  * @since 1.0.0
  *
@@ -61,5 +61,5 @@ function add_translation_meta_box() {
 		return;
 	}
 
-	( new \Translationmanager\Meta_Box\Translation_Box() )->add_meta_box();
+	( new \Translationmanager\MetaBox\TranslationBox() )->add_meta_box();
 }

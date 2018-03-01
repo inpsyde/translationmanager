@@ -3,7 +3,6 @@
 namespace Translationmanager\Functions;
 
 use Translationmanager\Taxonomy;
-use Translationmanager\Admin;
 
 /**
  * Register the Project Taxonomy
@@ -121,7 +120,7 @@ function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_
 
 	$languages = filter_input( INPUT_GET, 'translationmanager_bulk_languages', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
 	$project   = filter_input( INPUT_GET, 'translationmanager-projects', FILTER_SANITIZE_NUMBER_INT );
-	$handler   = new Admin\Handler\Project_Handler();
+	$handler   = new \Translationmanager\ProjectHandler();
 
 	// Be sure we have only valid elements.
 	$languages = array_filter( $languages );

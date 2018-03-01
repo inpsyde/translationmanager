@@ -12,7 +12,7 @@ class Registry {
 	/**
 	 * @param  \Mlp_Content_Relations $content_relations
 	 *
-	 * @return Image_Copier
+	 * @return ImageCopier
 	 */
 	public function image_sync( \Mlp_Content_Relations $content_relations ) {
 
@@ -20,18 +20,17 @@ class Registry {
 		$id = spl_object_hash( $content_relations );
 
 		if ( ! array_key_exists( $id, $this->services[ __FUNCTION__ ] ) ) {
-			$this->services[ __FUNCTION__ ][ $id ] = new Image_Copier( $content_relations );
+			$this->services[ __FUNCTION__ ][ $id ] = new ImageCopier( $content_relations );
 		}
 
 		return $this->services[ __FUNCTION__ ][ $id ];
 	}
 
 	/**
-	 * @return Network_State
+	 * @return NetworkState
 	 */
 	public function network_state() {
 		
-		return Network_State::create();
+		return NetworkState::create();
 	}
-
 }

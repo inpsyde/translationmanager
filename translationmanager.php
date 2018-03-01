@@ -19,14 +19,11 @@ add_action( 'plugins_loaded', function () {
 		return;
 	}
 
-	// Register autoloader.
-	require_once __DIR__ . '/src/class-loader.php';
-	spl_autoload_register( array( new \Translationmanager\Loader(), 'load_class' ) );
-
 	// Require composer autoloader if exists.
-	if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-		require_once __DIR__ . '/vendor/autoload.php';
+	if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+		return;
 	}
+	require_once __DIR__ . '/vendor/autoload.php';
 
 	$requirements = new Translationmanager\Requirements();
 	// Check the requirements and in case prevent code execution by returning.
@@ -50,15 +47,15 @@ add_action( 'plugins_loaded', function () {
 	// Include modules.
 	Translationmanager\Functions\include_modules();
 	// Initialize Options Page.
-	( new \Translationmanager\Admin\Options_Page() )->init();
+	( new \Translationmanager\Pages\PageOptions() )->init();
 	// Add Pages.
-	( new \Translationmanager\Pages\Page_About( $plugin ) )->init();
+	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();
 	// Restrict Manage Posts.
-	( new \Translationmanager\Restrict_Manage_Posts( $plugin ) )->init();
+	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
 
 	// Register Activation.
 	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );
-}, -1 );
+}, - 1 );
 
 /**
  * Admin Notice
@@ -88,9 +85,12 @@ function translationmanager_admin_notice( $message, $severity ) {
  * and static methods are considered as bad coding style / hard to test.
  *
  * @since 1.0.0
+ *
+ * @throws \Exception In case of plugin contain invalid data.
+ *
+ * @return void
  */
 function translationmanager_activate() {
 
-	$setup = new \Translationmanager\Admin\Setup();
-	$setup->plugin_activate();
+	( new \Translationmanager\PluginActivate() )->store_version();
 }
