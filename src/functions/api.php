@@ -11,6 +11,8 @@ use Translationmanager\Admin\Options_Page;
  * Helper function to retrieve the instance of the translation manager api.
  * It's always return the same instance.
  *
+ * @api
+ *
  * @since 1.0.0
  *
  * @return \Translationmanager\Api The Instance
@@ -36,6 +38,8 @@ function translationmanager_api() {
  * This asks the API about the status of pending orders.
  * Usually this is done twice daily via cron
  * or manually by the site admin.
+ *
+ * @api
  *
  * @since 1.0.0
  *
@@ -65,6 +69,8 @@ function translationmanager_api_fetch() {
 
 /**
  * Update Project
+ *
+ * @api
  *
  * @since 1.0.0
  *
