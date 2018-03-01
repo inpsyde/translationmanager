@@ -12,7 +12,7 @@
 	<input type="hidden" name="action" value="translationmanager_order_or_update_projects">
 	<input type="hidden"
 	       name="_translationmanager_project_id"
-	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_NUMBER_INT ); ?>">
+	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ); ?>">
 
 	<?php if ( $this->get_order_id() ): ?>
 		<div>
