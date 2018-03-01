@@ -16,7 +16,7 @@
 			       aria-required="true"/>
 		</div>
 
-		<div class="form-field term-description-wrap">
+		<div class="form-field term-description-wrap" style="margin-bottom: .63em">
 			<label for="description"><?php esc_html_e( 'Description', 'translationmanager' ); ?></label>
 			<textarea name="description" id="description" rows="5" cols="40"><?php echo ( is_object( $term ) ) ? $term->description : ''; ?></textarea>
 		</div>
