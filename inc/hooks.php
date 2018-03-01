@@ -22,7 +22,10 @@ add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actio
 add_filter( 'display_post_states', 'Translationmanager\\Functions\\remove_states_from_project', 10, 2 );
 add_filter( 'views_edit-project_item', 'Translationmanager\\Functions\\template_project_box_form_in_edit_page' );
 add_filter( 'views_edit-project_item', 'Translationmanager\\Functions\\template_project_title_description_form_in_edit_page' );
-add_filter( 'manage_project_item_posts_columns', [ \Translationmanager\Post_Type\Project_Item::class, 'modify_columns' ] );
+add_filter( 'manage_project_item_posts_columns', [
+	\Translationmanager\Post_Type\Project_Item::class,
+	'modify_columns',
+] );
 add_filter( 'manage_edit-translationmanager_project_columns', [
 	\Translationmanager\Taxonomy\Project::class,
 	'modify_columns',
@@ -37,7 +40,7 @@ add_filter( 'bulk_post_updated_messages', 'Translationmanager\\Functions\\filter
 add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_order_posttype' );
 add_action( 'admin_head', 'Translationmanager\\Functions\\order_remove_month' );
 add_action( 'trashed_post', 'Translationmanager\\Functions\\delete_post_order_on_trashing' );
-add_action( 'add_meta_boxes', [ new \Translationmanager\Meta_Box\Order_Info(), 'add_meta_box' ] );
+add_action( 'add_meta_boxes', [ new \Translationmanager\Meta_Box\Order_Info( 0 ), 'add_meta_box' ] );
 
 // Projects Taxonomy.
 add_action( 'init', 'Translationmanager\\Functions\\register_projects_taxonomy' );
