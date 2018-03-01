@@ -18,7 +18,16 @@
 
 		<div class="form-field term-description-wrap" style="margin-bottom: .63em">
 			<label for="description"><?php esc_html_e( 'Description', 'translationmanager' ); ?></label>
-			<textarea name="description" id="description" rows="5" cols="40"><?php echo ( is_object( $term ) ) ? $term->description : ''; ?></textarea>
+			<textarea
+				name="description"
+				id="description"
+				rows="5"
+				cols="40"><?php echo ( is_object( $term ) ) ? $term->description : ''; ?></textarea>
+			<p>
+				<i>
+					<?php esc_html_e( 'Note: Only plain text allowed. No markup', 'translationmanager' ); ?>
+				</i>
+			</p>
 		</div>
 		<?php wp_referer_field() ?>
 		<input type="submit"
