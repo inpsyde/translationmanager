@@ -14,6 +14,8 @@ use Translationmanager\Plugin;
  *
  * @since 1.0.0
  *
+ * @throws \Exception In case the project cannot be created
+ *
  * @param array $arguments Arguments to add languages.
  *
  * @return bool|int

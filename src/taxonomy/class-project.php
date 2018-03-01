@@ -1,7 +1,19 @@
 <?php
+/**
+ * Project
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Taxonomy
+ */
 
 namespace Translationmanager\Taxonomy;
 
+/**
+ * Class Project
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Taxonomy
+ */
 class Project {
 	const TAXONOMY = 'translationmanager_project';
 
@@ -12,8 +24,14 @@ class Project {
 	}
 
 	/**
-	 * @param string[] $columns
-	 * @param \WP_Term $term
+	 * Edit Row Actions
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] $columns The columns contain the values for the row.
+	 * @param \WP_Term $term    The term instance related to the columns.
+	 *
+	 * @return array The columns content
 	 */
 	public static function modify_row_actions( $columns, $term ) {
 

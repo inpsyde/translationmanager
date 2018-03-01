@@ -39,10 +39,20 @@ class Project {
 	 * @param string $system_version Version of the CMS or Framework.
 	 * @param string $plugin         Plugin or extension allowing API communication.
 	 * @param string $plugin_version Version of this plugin.
+	 * @param string $name           Project Name.
 	 * @param string $type           Could be "order" or "quote".
 	 * @param null   $callback       URL to trigger after translation is completely done.
 	 */
-	public function __construct( $system, $system_version, $plugin, $plugin_version, $name = '', $type = 'quote', $callback = null ) {
+	public function __construct(
+		$system,
+		$system_version,
+		$plugin,
+		$plugin_version,
+		$name = '',
+		$type = 'quote',
+		$callback = null
+	) {
+
 		$this->system         = $system;
 		$this->system_version = $system_version;
 		$this->plugin         = $plugin;
@@ -53,6 +63,7 @@ class Project {
 	}
 
 	public function to_header_array() {
+
 		return [
 			'X-System'         => $this->get_system(),
 			'X-System-Version' => $this->get_system_version(),
@@ -68,6 +79,7 @@ class Project {
 	 * @return string
 	 */
 	public function get_system() {
+
 		return $this->system;
 	}
 
@@ -75,6 +87,7 @@ class Project {
 	 * @return string
 	 */
 	public function get_system_version() {
+
 		return $this->system_version;
 	}
 
@@ -82,6 +95,7 @@ class Project {
 	 * @return string
 	 */
 	public function get_plugin() {
+
 		return $this->plugin;
 	}
 
@@ -89,6 +103,7 @@ class Project {
 	 * @return string
 	 */
 	public function get_plugin_version() {
+
 		return $this->plugin_version;
 	}
 
@@ -96,6 +111,7 @@ class Project {
 	 * @return string
 	 */
 	public function get_name() {
+
 		return $this->name;
 	}
 
@@ -103,6 +119,7 @@ class Project {
 	 * @return string
 	 */
 	public function get_type() {
+
 		return $this->type;
 	}
 
@@ -110,6 +127,7 @@ class Project {
 	 * @return null|string
 	 */
 	public function get_callback() {
+
 		return $this->callback;
 	}
 }

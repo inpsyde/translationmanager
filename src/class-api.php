@@ -35,6 +35,7 @@ class Api {
 	 * @param null|string $base_url   URL to the API.
 	 */
 	public function __construct( $api_key, $plugin_key, $base_url = null ) {
+
 		if ( null === $base_url ) {
 			$base_url = 'http://api.eurotext.de/api';
 		}
@@ -44,22 +45,26 @@ class Api {
 	}
 
 	public function post( $path, $data = array(), $headers = [] ) {
+
 		return $this->request( 'POST', $path, $data, $headers );
 	}
 
 	/**
+	 * Request
+	 *
 	 * @param string $method
 	 * @param string $path
-	 * @param string $data
+	 * @param array  $data
 	 * @param string $headers
 	 *
 	 * @return string[]
 	 */
 	public function request( $method, $path, $data = [], $headers = array() ) {
+
 		$url     = $this->get_url( $path );
 		$context = [
 			// Add headers early to context to keep api key out of it.
-			'headers' => $headers
+			'headers' => $headers,
 		];
 
 		$headers['Content-Type'] = 'application/json';
@@ -78,7 +83,7 @@ class Api {
 					$method,
 					$url
 				),
-				'context' => $context
+				'context' => $context,
 			]
 		);
 
@@ -112,6 +117,7 @@ class Api {
 	}
 
 	public function get_url( $path ) {
+
 		if ( null !== $path ) {
 			$path .= '.json';
 		}
@@ -120,6 +126,7 @@ class Api {
 	}
 
 	public function get( $path, $data = array(), $headers = array() ) {
+
 		return $this->request( 'GET', $path, $data, $headers );
 	}
 
@@ -127,6 +134,7 @@ class Api {
 	 * @return Project
 	 */
 	public function project() {
+
 		if ( null === $this->project ) {
 			$this->project = new Project( $this );
 		}
@@ -138,6 +146,7 @@ class Api {
 	 * @return Project_Item
 	 */
 	public function project_item() {
+
 		if ( null === $this->project_item ) {
 			$this->project_item = new Project_Item( $this );
 		}

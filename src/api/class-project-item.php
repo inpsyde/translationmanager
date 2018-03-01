@@ -18,6 +18,7 @@ class Project_Item {
 	private $api;
 
 	public function __construct( Api $api ) {
+
 		$this->api = $api;
 	}
 
@@ -26,18 +27,20 @@ class Project_Item {
 	 *
 	 * @param        $project_id
 	 * @param string $post_type_name
+	 * @param string $target_language
 	 * @param array  $data
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
 	public function create( $project_id, $post_type_name, $target_language, $data = [] ) {
+
 		$body = $this->get_api()->post(
 			$this->get_url( $project_id ),
 			$data,
 			[
-				'X-Source' => Functions\current_lang_code(),
-				'X-Target' => $target_language,
-				'X-TextType' => $this->get_text_type( $post_type_name ),
+				'X-Source'        => Functions\current_lang_code(),
+				'X-Target'        => $target_language,
+				'X-TextType'      => $this->get_text_type( $post_type_name ),
 				'X-System-Module' => $post_type_name,
 			]
 		);
@@ -53,13 +56,17 @@ class Project_Item {
 	 * @return Api
 	 */
 	protected function get_api() {
+
 		return $this->api;
 	}
 
 	/**
+	 * @param string $project_id
+	 *
 	 * @return string
 	 */
 	protected function get_url( $project_id ) {
+
 		return sprintf( self::URL, $project_id );
 	}
 
