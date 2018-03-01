@@ -39,22 +39,22 @@ function action_project_add_translation( $arguments ) {
 	}
 
 	/**
-	 * Runs before adding translations to the cart.
+	 * Runs before adding translations to the project.
 	 *
-	 * You might add other things to the cart before the translations kick in
-	 * or check against some other things (like account balance) to stop adding things to the cart
+	 * You might add other things to the project before the translations kick in
+	 * or check against some other things (like account balance) to stop adding things to the project
 	 * and show some error message.
 	 *
 	 * For those scenarios this filter allows turn it's value into false.
-	 * In that case it will neither add things to the project/cart
-	 * nor redirect to the project- / cart-view.
+	 * In that case it will neither add things to the project/project
+	 * nor redirect to the project- / project-view.
 	 *
-	 * @param bool  $valid     Initially true and can be torn to false to stop adding items to the cart.
+	 * @param bool  $valid     Initially true and can be torn to false to stop adding items to the project.
 	 * @param int   $project   ID of the project (actually a term ID).
-	 * @param int   $post_id   ID of the post that will be added to the cart.
+	 * @param int   $post_id   ID of the post that will be added to the project.
 	 * @param int[] $languages IDs of the target languages (assoc pair).
 	 *
-	 * @see wp_insert_post() actions and filter to access each single transation that is added to cart.
+	 * @see wp_insert_post() actions and filter to access each single transation that is added to project.
 	 */
 	$valid = apply_filters(
 		'translationmanager_filter_before_add_to_project',
@@ -79,12 +79,12 @@ function action_project_add_translation( $arguments ) {
 	/**
 	 * Filter the output of the `translationmanager_action_project_add_translation` function.
 	 *
-	 * After adding posts to a project / cart it will redirect to this project.
+	 * After adding posts to a project / project it will redirect to this project.
 	 * One last time you can filter to which project it will redirect (by using the ID)
 	 * or if should'nt redirect at all (by setting the value to "false").
 	 *
 	 * @param int   $project   ID of the project (actually a term ID).
-	 * @param int   $post_id   ID of the post that will be added to the cart.
+	 * @param int   $post_id   ID of the post that will be added to the project.
 	 * @param int[] $languages IDs of the target languages (assoc pair).
 	 *
 	 * @see \Translationmanager\Functions\action_project_add_translation() where this filter resides.
@@ -149,14 +149,14 @@ function handle_actions() {
 
 			redirect_admin_page_network( 'edit.php?', [
 				'translationmanager_project' => $post_data['_translationmanager_project_id'],
-				'post_type'                  => 'tm_cart',
+				'post_type'                  => 'project_item',
 			] );
 		}
 	}
 
 	if ( null !== $post_data['translationmanager_action_project_add_translation'] ) {
-		$updater = new \Translationmanager\Admin\Cart_Updater();
-		$updater->setup();
+		$updater = new \Translationmanager\Admin\Project_Updater();
+		$updater->init();
 
 		$project = action_project_add_translation(
 			array(
@@ -173,7 +173,7 @@ function handle_actions() {
 
 		redirect_admin_page_network( 'edit.php?', [
 			'translationmanager_project' => get_term_field( 'slug', $project ),
-			'post_type'                  => 'tm_cart',
+			'post_type'                  => 'project_item',
 			'updated'                    => - 1,
 		] );
 	}

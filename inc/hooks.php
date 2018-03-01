@@ -11,18 +11,18 @@ add_action( 'load-edit.php', 'Translationmanager\\Functions\\handle_actions' );
 add_action( 'admin_post_translationmanager_order_or_update_projects', 'Translationmanager\\Functions\\handle_actions' );
 
 // CPT Project.
-add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_cart_posttype' );
-add_action( 'admin_head', 'Translationmanager\\Functions\\cart_remove_month' );
+add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_project_posttype' );
+add_action( 'admin_head', 'Translationmanager\\Functions\\project_remove_month' );
 add_action( 'admin_init', [ \Translationmanager\Post_Type\Project_Item::class, 'register_post_status' ] );
 add_action( 'admin_head-edit.php', 'Translationmanager\\Functions\\hide_project_actions_links_from_edit_page' );
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
 
-add_filter( 'bulk_actions-edit-tm_cart', 'Translationmanagere\\Functions\\filter_bulk_actions_labels_for_project' );
+add_filter( 'bulk_actions-edit-project_item', 'Translationmanagere\\Functions\\filter_bulk_actions_labels_for_project' );
 add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actions_for_project', 10, 2 );
 add_filter( 'display_post_states', 'Translationmanager\\Functions\\remove_states_from_project', 10, 2 );
-add_filter( 'views_edit-tm_cart', 'Translationmanager\\Functions\\template_project_box_form_in_edit_page' );
-add_filter( 'views_edit-tm_cart', 'Translationmanager\\Functions\\template_project_title_description_form_in_edit_page' );
-add_filter( 'manage_tm_cart_posts_columns', [ \Translationmanager\Post_Type\Project_Item::class, 'modify_columns' ] );
+add_filter( 'views_edit-project_item', 'Translationmanager\\Functions\\template_project_box_form_in_edit_page' );
+add_filter( 'views_edit-project_item', 'Translationmanager\\Functions\\template_project_title_description_form_in_edit_page' );
+add_filter( 'manage_project_item_posts_columns', [ \Translationmanager\Post_Type\Project_Item::class, 'modify_columns' ] );
 add_filter( 'manage_edit-translationmanager_project_columns', [
 	\Translationmanager\Taxonomy\Project::class,
 	'modify_columns',
@@ -68,20 +68,20 @@ add_action( 'admin_head', function () {
 
 	if ( 'edit' === $screen->base
 	     && $input->translationmanager_project
-	     && 'tm_cart' === $input->post_type
+	     && 'project_item' === $input->post_type
 	) {
-		echo '<style type="text/css">.post-type-tm_cart #posts-filter .search-box {display: none !important;}</style>';
+		echo '<style type="text/css">.post-type-project_item #posts-filter .search-box {display: none !important;}</style>';
 	}
 
 	if ( 'edit-tags' === $screen->base
 	     && 'translationmanager_project' === $input->taxonomy
-	     && 'tm_cart' === $input->post_type
+	     && 'project_item' === $input->post_type
 	) {
 		echo '
 			<style type="text/css">
-				.post-type-tm_cart .row-actions span.edit, 
-				.post-type-tm_cart .row-actions span.inline.hide-if-no-js, 
-				.post-type-tm_cart .row-actions span.view {display: none !important;}
+				.post-type-project_item .row-actions span.edit, 
+				.post-type-project_item .row-actions span.inline.hide-if-no-js, 
+				.post-type-project_item .row-actions span.view {display: none !important;}
 			</style>
 			';
 	}
@@ -90,11 +90,11 @@ add_action( 'admin_menu', function () {
 
 	global $submenu;
 
-	unset( $submenu['edit.php?post_type=tm_cart'][5] );
+	unset( $submenu['edit.php?post_type=project_item'][5] );
 
 	$url = 'options-general.php?page=translationmanager_settings';
 
-	$submenu['edit.php?post_type=tm_cart'][] = [ 'Settings', 'manage_options', $url ];
+	$submenu['edit.php?post_type=project_item'][] = [ 'Settings', 'manage_options', $url ];
 } );
 
 add_filter( 'plugin_row_meta', function ( array $links, $file ) {

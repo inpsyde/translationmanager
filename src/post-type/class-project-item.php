@@ -7,7 +7,7 @@ use Translationmanager\Functions;
 class Project_Item {
 	const STATUS_TRASH = 'trash';
 
-	const POST_TYPE = 'tm_cart';
+	const POST_TYPE = 'project_item';
 
 	const COLUMN_PROJECT = 'translationmanager_project';
 
@@ -94,7 +94,7 @@ class Project_Item {
 						http_build_query(
 							array(
 								'translationmanager_project' => $term->slug,
-								'post_type'                  => 'tm_cart',
+								'post_type'                  => 'project_item',
 							)
 						),
 						$term->name

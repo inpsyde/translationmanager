@@ -79,7 +79,7 @@ class Page_About {
 	public function add_menu_page() {
 
 		add_submenu_page(
-			'edit.php?post_type=tm_cart',
+			'edit.php?post_type=project_item',
 			esc_html__( 'About', 'translationmanager' ),
 			esc_html__( 'About', 'translationmanager' ),
 			'manage_options',

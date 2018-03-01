@@ -1,26 +1,40 @@
 <?php
+/**
+ * Project Updater
+ *
+ * @package Translationmanager\Admin
+ */
 
 namespace Translationmanager\Admin;
 
 /**
+ * @since   1.0.0
  * @package Translationmanager\Admin
  */
-class Cart_Updater {
+class Project_Updater {
 
 	/**
+	 * Append to Title
+	 *
+	 * @since 1.0.0
+	 *
 	 * @var string
 	 */
 	private $append_to_title = '';
 
 	/**
+	 * Set Hooks
+	 *
+	 * @since 1.0.0
+	 *
 	 * Add action and filters to make the thing work
 	 */
-	public function setup() {
+	public function init() {
 
-		add_filter( 'translationmanager_action_project_add_translation', array(
+		add_filter( 'translationmanager_action_project_add_translation', [
 			$this,
-			'force_ancestors_in_cart',
-		), 10, 4 );
+			'force_ancestors_in_project',
+		], 10, 4 );
 	}
 
 	/**
@@ -30,13 +44,15 @@ class Cart_Updater {
 	 *
 	 * @wp-hook translationmanager_action_project_add_translation
 	 *
-	 * @param int $project
-	 * @param int $post_id
-	 * @param array() $languages
+	 * @since   1.0.0
 	 *
-	 * @return mixed
+	 * @param int                                   $project   The project ID.
+	 * @param int                                   $post_id   The post ID.
+	 * @param \Translationmanager\Domain\Language[] $languages A list of languages.
+	 *
+	 * @return int The project ID
 	 */
-	public function force_ancestors_in_cart( $project, $post_id, $languages ) {
+	public function force_ancestors_in_project( $project, $post_id, $languages ) {
 
 		$post = get_post( $post_id );
 
@@ -50,10 +66,10 @@ class Cart_Updater {
 			return $project;
 		}
 
-		$cart_items = get_posts(
+		$project_items = get_posts(
 			array(
 				'fields'    => 'ids',
-				'post_type' => 'tm_cart',
+				'post_type' => 'project_item',
 				'nopaging'  => true,
 				'tax_query' => array(
 					array(
@@ -65,18 +81,18 @@ class Cart_Updater {
 			)
 		);
 
-		$already_in_cart = array();
-		foreach ( $cart_items as $cart_item_id ) {
+		$already_in_project = array();
+		foreach ( $project_items as $project_item_id ) {
 
-			$lang = get_post_meta( $cart_item_id, '_translationmanager_target_id', true );
+			$lang = get_post_meta( $project_item_id, '_translationmanager_target_id', true );
 			if ( ! $lang || ! in_array( $lang, $languages, true ) ) {
 				continue;
 			}
 
-			$added_ancestor_id = (int) get_post_meta( $cart_item_id, '_translationmanager_post_id', true );
+			$added_ancestor_id = (int) get_post_meta( $project_item_id, '_translationmanager_post_id', true );
 			if ( $added_ancestor_id && in_array( $added_ancestor_id, $ancestors, true ) ) {
-				empty( $already_in_cart[ $lang ] ) and $already_in_cart[ $lang ] = array();
-				$already_in_cart[ $lang ][ $added_ancestor_id ] = true;
+				empty( $already_in_project[ $lang ] ) and $already_in_project[ $lang ] = [];
+				$already_in_project[ $lang ][ $added_ancestor_id ] = true;
 			}
 		}
 
@@ -86,18 +102,18 @@ class Cart_Updater {
 
 		$handler = new Handler\Project_Handler();
 
-		add_filter( 'wp_insert_post_data', array( $this, 'update_cart_item_title' ), 10 );
+		add_filter( 'wp_insert_post_data', array( $this, 'update_project_item_title' ), 10 );
 
 		foreach ( $languages as $lang_id ) {
 			foreach ( $ancestors as $ancestor_id ) {
-				if ( empty( $already_in_cart[ $lang_id ][ $ancestor_id ] ) ) {
+				if ( empty( $already_in_project[ $lang_id ][ $ancestor_id ] ) ) {
 					$handler->add_translation( $project, $ancestor_id, $lang_id );
 				}
 			}
 		}
 
 		$this->append_to_title = '';
-		remove_filter( 'wp_insert_post_data', array( $this, 'update_cart_item_title' ), 10 );
+		remove_filter( 'wp_insert_post_data', array( $this, 'update_project_item_title' ), 10 );
 
 		return $project;
 	}
@@ -106,15 +122,21 @@ class Cart_Updater {
 	 * Filter the cart item post data being added, appending to title an hint that post was added automatically because
 	 * ancestor of another post.
 	 *
-	 * @param array $data
+	 * @since 1.0.0
 	 *
-	 * @return array
+	 * @param array $data Data to update.
+	 *
+	 * @return array data updated
 	 */
-	public function update_cart_item_title( array $data ) {
+	public function update_project_item_title( array $data ) {
 
-		if ( $this->append_to_title && ! empty( $data['post_type'] ) && $data['post_type'] === 'tm_cart' ) {
+		if ( $this->append_to_title
+		     & ! empty( $data['post_type'] )
+		     & $data['post_type'] === 'project_item'
+		) {
 			empty( $data['post_title'] ) and $data['post_title'] = '';
 			$data['post_title'] and $data['post_title'] .= ' ';
+
 			$data['post_title'] .= $this->append_to_title;
 		}
 

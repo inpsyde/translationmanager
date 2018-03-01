@@ -18,7 +18,7 @@ function register_projects_taxonomy() {
 
 	register_taxonomy(
 		'translationmanager_project',
-		'tm_cart',
+		'project_item',
 		array(
 			'label'  => esc_html__( 'Projects', 'translationmanager' ),
 			'labels' => array(

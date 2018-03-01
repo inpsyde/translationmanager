@@ -39,7 +39,7 @@ class Project {
 			http_build_query(
 				array(
 					'translationmanager_project' => get_term_field( 'slug', $term_id ),
-					'post_type'                  => 'tm_cart',
+					'post_type'                  => 'project_item',
 				)
 			)
 		);

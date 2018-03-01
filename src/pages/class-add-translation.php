@@ -34,8 +34,8 @@ class Add_Translation {
 		$this->$method( $id );
 
 		Functions\redirect_admin_page_network( 'edit.php?', [
-			'post_type' => 'tm_cart',
-			'success'   => esc_html__( 'Item added to cart.', 'translationmanager' ),
+			'post_type' => 'project_item',
+			'success'   => esc_html__( 'Item added to project.', 'translationmanager' ),
 		] );
 	}
 
@@ -62,7 +62,7 @@ class Add_Translation {
 
 			$id = wp_insert_post(
 				array(
-					'post_type'  => 'tm_cart',
+					'post_type'  => 'project_item',
 					'post_title' => sprintf(
 						esc_html__( '%s: "%s"', 'translationmanager' ),
 						$post_type_labels->singular_name,

@@ -13,13 +13,13 @@ use Translationmanager\Plugin;
  *
  * @return void
  */
-function register_translationmanager_cart_posttype() {
+function register_translationmanager_project_posttype() {
 
-	register_post_type( 'tm_cart', [
-		'label'         => esc_html__( 'Cart', 'translationmanager' ),
+	register_post_type( 'project_item', [
+		'label'         => esc_html__( 'Project', 'translationmanager' ),
 		'labels'        => [
-			'name'      => esc_html__( 'Projects', 'translationmanager' ),
-			'menu_name' => esc_html__( 'Translations', 'translationmanager' ),
+			'name'      => esc_html__( 'Project', 'translationmanager' ),
+			'menu_name' => esc_html__( 'Translation', 'translationmanager' ),
 		],
 		'description'   => esc_html__( 'What you are about to order.', 'translationmanager' ),
 		'public'        => true,
@@ -35,7 +35,7 @@ function register_translationmanager_cart_posttype() {
 }
 
 /**
- * Remove month from Cart post type page
+ * Remove month from Project post type page
  *
  * @todo  Move into the cpt project class. See Project_Item
  *
@@ -43,7 +43,7 @@ function register_translationmanager_cart_posttype() {
  *
  * @return void
  */
-function cart_remove_month() {
+function project_remove_month() {
 
 	$screen = get_current_screen();
 
@@ -51,7 +51,7 @@ function cart_remove_month() {
 		return;
 	}
 
-	if ( 'tm_cart' !== $screen->post_type ) {
+	if ( 'project_item' !== $screen->post_type ) {
 		return;
 	}
 
@@ -94,7 +94,7 @@ function filter_bulk_actions_labels_for_project( array $actions ) {
  */
 function filter_row_actions_for_project( array $actions, \WP_Post $post ) {
 
-	if ( 'tm_cart' !== $post->post_type ) {
+	if ( 'project_item' !== $post->post_type ) {
 		return $actions;
 	}
 
@@ -126,7 +126,7 @@ function filter_row_actions_for_project( array $actions, \WP_Post $post ) {
  */
 function remove_states_from_project( array $post_states, \WP_Post $post ) {
 
-	if ( 'tm_cart' !== $post->post_type ) {
+	if ( 'project_item' !== $post->post_type ) {
 		return $post_states;
 	}
 
@@ -173,7 +173,7 @@ function template_project_title_description_form_in_edit_page( $value ) {
 	if ( $slug ) {
 		$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
 
-		require get_template( '/views/cart/form-title-description.php' );
+		require get_template( '/views/project/form-title-description.php' );
 	}
 
 	return $value;
@@ -195,7 +195,7 @@ function filter_bulk_updated_messages_for_project( array $bulk_messages, array $
 		? esc_html__( '1 page not updated, somebody is editing it.', 'translationmanager' )
 		: _n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] );
 
-	$bulk_messages['tm_cart'] = [
+	$bulk_messages['project_item'] = [
 		'updated'   => esc_html__( 'Project has been updated.', 'translationmanager' ),
 		'locked'    => $locked_msg,
 		'deleted'   => _n(
@@ -218,7 +218,7 @@ function filter_bulk_updated_messages_for_project( array $bulk_messages, array $
 		),
 	];
 
-//	$bulk_messages['tm_cart'] = array(
+//	$bulk_messages['project_item'] = array(
 //		'updated'   => _n( '%s translation updated.', '%s translations updated.', $bulk_counts['updated'] ),
 //		'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
 //		'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
@@ -228,7 +228,7 @@ function filter_bulk_updated_messages_for_project( array $bulk_messages, array $
 
 	$updated = filter_input( INPUT_GET, 'updated', FILTER_SANITIZE_NUMBER_INT );
 	if ( - 1 === $updated ) {
-		$bulk_messages['tm_cart']['updated'] = esc_html__( 'Project has been created.', 'translationmanager' );
+		$bulk_messages['project_item']['updated'] = esc_html__( 'Project has been created.', 'translationmanager' );
 	}
 
 	return $bulk_messages;
@@ -243,7 +243,7 @@ function filter_bulk_updated_messages_for_project( array $bulk_messages, array $
  */
 function hide_project_actions_links_from_edit_page() {
 
-	if ( ! get_current_screen() || 'tm_cart' !== get_current_screen()->post_type ) {
+	if ( ! get_current_screen() || 'project_item' !== get_current_screen()->post_type ) {
 		return;
 	}
 
@@ -260,7 +260,7 @@ function hide_project_actions_links_from_edit_page() {
 function get_project_items( $term_id ) {
 
 	$get_posts = get_posts( [
-		'post_type'      => 'tm_cart',
+		'post_type'      => 'project_item',
 		'tax_query'      => [
 			[
 				'taxonomy' => 'translationmanager_project',
@@ -305,7 +305,7 @@ function delete_all_projects_posts_based_on_project_taxonomy_term( $term_id ) {
 	}
 
 	$posts = get_posts( [
-		'post_type'      => 'tm_cart',
+		'post_type'      => 'project_item',
 		'post_status'    => 'any',
 		'posts_per_page' => - 1,
 		'tax_query'      => [
