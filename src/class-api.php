@@ -72,7 +72,7 @@ class Api {
 		$headers['apikey']       = $this->api_key;
 
 		if ( 'GET' !== $method ) {
-			$data = json_encode( $data );
+			$data = wp_json_encode( $data );
 		}
 
 		do_action(
