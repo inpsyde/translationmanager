@@ -56,9 +56,9 @@
 		<br>
 		<div class="textright">
 			<input type="submit"
-			       name="<?php echo 'translationmanager_action_project_order' ?>"
+			       name="translationmanager_action_project_order"
+			       id="translationmanager_action_project_order"
 			       class="button button-primary"
-			       onclick="jQuery('#translationmanager_action_project_order').click();"
 			       value="<?php esc_html_e( 'Order project', 'translationmanager' ); ?>"/>
 		</div>
 	<?php endif; ?>
