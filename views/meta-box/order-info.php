@@ -1,11 +1,3 @@
-<div>
-	<span class="dashicons dashicons-yes"></span>
-	<?php esc_html_e( 'Status', 'translationmanager' ); ?>:
-	<b>
-		<?php echo esc_html( $this->get_status() ); ?>
-	</b>
-</div>
-
 <form id="translationmanager_order_or_update_projects"
       class="translationmanager-order-or-update-projects"
       method="post"
@@ -16,43 +8,53 @@
 	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ); ?>">
 
 	<?php if ( $this->get_order_id() ): ?>
-		<div>
-			<span class="dashicons dashicons-testimonial"></span>
-			<?php esc_html_e( 'Project number', 'translationmanager' ) ?>:
-			<b>
-				<?php echo esc_html( $this->get_order_id() ) ?>
-			</b>
-		</div>
-
-		<?php if ( $this->get_ordered_at() instanceof \DateTime ): ?>
-			<div>
-				<span class="dashicons dashicons-calendar-alt"></span>
-				<?php esc_html_e( 'Ordered at', 'translationmanager' ) ?>:
+		<ul class="translationmanager-order-info">
+			<li class="translationmanager-order-info-item">
+				<span class="dashicons dashicons-yes"></span>
+				<?php esc_html_e( 'Status', 'translationmanager' ); ?>:
 				<b>
-					<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
+					<?php echo esc_html( $this->get_status() ); ?>
 				</b>
-			</div>
+			</li>
 
-			<?php if ( ! $this->get_translated_at() ): ?>
-				<div class="textright">
-					<input type="submit"
-					       name="translationmanager_action_project_update"
-					       class="button button-primary"
-					       onclick="jQuery('#translationmanager_action_project_update').click();"
-					       value="<?php esc_html_e( 'Update', 'translationmanager' ); ?>"/>
-				</div>
+			<li class="translationmanager-order-info-item">
+				<span class="dashicons dashicons-testimonial"></span>
+				<?php esc_html_e( 'Project number', 'translationmanager' ) ?>:
+				<b>
+					<?php echo esc_html( $this->get_order_id() ) ?>
+				</b>
+			</li>
+
+			<?php if ( $this->get_ordered_at() instanceof \DateTime ): ?>
+				<li class="translationmanager-order-info-item">
+					<span class="dashicons dashicons-calendar-alt"></span>
+					<?php esc_html_e( 'Ordered at', 'translationmanager' ) ?>:
+					<b>
+						<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
+					</b>
+				</li>
+
+				<?php if ( ! $this->get_translated_at() ): ?>
+					<div class="textright">
+						<input type="submit"
+						       name="translationmanager_action_project_update"
+						       class="button button-primary"
+						       onclick="jQuery('#translationmanager_action_project_update').click();"
+						       value="<?php esc_html_e( 'Update', 'translationmanager' ); ?>"/>
+					</div>
+				<?php endif; ?>
 			<?php endif; ?>
-		<?php endif; ?>
 
-		<?php if ( $this->get_translated_at() instanceof \DateTime ) : ?>
-			<div>
-				<span class="dashicons dashicons-calendar-alt"></span>
-				<?php esc_html_e( 'Translated at', 'translationmanager' ); ?>:
-				<b>
-					<?php echo $this->get_translated_at()->format( 'Y-m-d' ); ?>
-				</b>
-			</div>
-		<?php endif; ?>
+			<?php if ( $this->get_translated_at() instanceof \DateTime ) : ?>
+				<li class="translationmanager-order-info-item">
+					<span class="dashicons dashicons-calendar-alt"></span>
+					<?php esc_html_e( 'Translated at', 'translationmanager' ); ?>:
+					<b>
+						<?php echo $this->get_translated_at()->format( 'Y-m-d' ); ?>
+					</b>
+				</li>
+			<?php endif; ?>
+		</ul>
 	<?php
 	else :
 		if ( ! $this->has_projects() ) {
@@ -62,13 +64,11 @@
 			);
 		}
 		?>
-		<div class="textright">
-			<input type="submit"
-			       name="translationmanager_action_project_order"
-			       id="translationmanager_action_project_order"
-			       class="button button-primary"
-				<?php echo( ! $this->has_projects() ? 'disabled="disabled"' : '' ); ?>
-				   value="<?php esc_html_e( 'Order project', 'translationmanager' ); ?>"/>
-		</div>
+		<input type="submit"
+		       name="translationmanager_action_project_order"
+		       id="translationmanager_action_project_order"
+		       class="button button-primary"
+			<?php echo( ! $this->has_projects() ? 'disabled="disabled"' : '' ); ?>
+			   value="<?php esc_html_e( 'Order project', 'translationmanager' ); ?>"/>
 	<?php endif; ?>
 </form>

@@ -17,8 +17,32 @@
   margin-left: 1em;
 }
 
+.translationmanager-postbox-container .inside {
+  margin:      0;
+  padding:     1em;
+  padding-top: 0;
+}
+
 .translationmanager-postbox-container .box-status-title {
-  margin-left: 1em;
+  margin-left:  1em;
+  margin-right: 1em;
+}
+
+/* ========================================
+ * Order Info
+ * ===================================== */
+
+.translationmanager-order-info {
+  margin: 0;
+}
+
+.translationmanager-order-info .translationmanager-order-info-item {
+  margin:      .63em 0;
+  line-height: 1.5;
+}
+
+.translationmanager-order-info .translationmanager-order-info-item .dashicons {
+  color: #5b5b5b;
 }
 
 /* ========================================
