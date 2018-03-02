@@ -40,7 +40,7 @@ class ActionOrderProjectHandler implements ActionHandle {
 	 *
 	 * @var string The capability needed by the user to be able to perform the request
 	 */
-	private static $capability = 'read';
+	private static $capability = 'manage_options';
 
 	/**
 	 * AddTranslationActionHandler constructor
