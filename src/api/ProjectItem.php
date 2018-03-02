@@ -45,7 +45,9 @@ class ProjectItem {
 	/**
 	 * Create a new project.
 	 *
-	 * @param        $project_id
+	 * @since 1.0.0
+	 *
+	 * @param int    $project_id
 	 * @param string $post_type_name
 	 * @param string $target_language
 	 * @param array  $data
@@ -58,8 +60,8 @@ class ProjectItem {
 			$this->get_url( $project_id ),
 			$data,
 			[
-				'X-Source'        => Functions\current_lang_code(),
-				'X-Target'        => $target_language,
+				'X-Source'        => $this->normalize_language_code( Functions\current_lang_code() ),
+				'X-Target'        => $this->normalize_language_code( $target_language ),
 				'X-TextType'      => $this->get_text_type( $post_type_name ),
 				'X-System-Module' => $post_type_name,
 			]
@@ -73,6 +75,8 @@ class ProjectItem {
 	}
 
 	/**
+	 * @since 1.0.0
+	 *
 	 * @return Api
 	 */
 	protected function get_api() {
@@ -81,9 +85,11 @@ class ProjectItem {
 	}
 
 	/**
-	 * @param string $project_id
+	 * @since 1.0.0
 	 *
-	 * @return string
+	 * @param string $project_id Project ID.
+	 *
+	 * @return string The url for the request
 	 */
 	protected function get_url( $project_id ) {
 
@@ -93,7 +99,9 @@ class ProjectItem {
 	/**
 	 * Get the Text-Type based on the Post-Type
 	 *
-	 * @param string $post_type_name
+	 * @since 1.0.0
+	 *
+	 * @param string $post_type_name The post type name.
 	 *
 	 * @return string text-type name for REST-API
 	 */
@@ -108,5 +116,19 @@ class ProjectItem {
 		$text_type_name = apply_filters( 'translationmanager_get_text_type', $text_type_name, $post_type_name );
 
 		return $text_type_name;
+	}
+
+	/**
+	 * Normalize language code for translation manager api request
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $lang_code The language code to normalize.
+	 *
+	 * @return string The normalize language code
+	 */
+	private function normalize_language_code( $lang_code ) {
+
+		return strtolower( str_replace( '-', '_', $lang_code ) );
 	}
 }
