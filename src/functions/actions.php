@@ -7,8 +7,6 @@
 
 namespace Translationmanager\Functions;
 
-use Translationmanager\Plugin;
-
 /**
  * Add Project Translation
  *
@@ -95,81 +93,4 @@ function action_project_add_translation( $arguments ) {
 		$request['post_ID'],
 		$request['translationmanager_language']
 	);
-}
-
-/**
- * Project Order
- *
- * @todo  Move in cpt-order.
- *
- * @since 1.0.0
- *
- * @param \WP_Term $project_term The project term associated.
- *
- * @return mixed Whatever the update_term_meta returns
- */
-function update_project_order_meta( \WP_Term $project_term ) {
-
-	global $wp_version;
-
-	$project_id = translationmanager_api()->project()->create(
-		new \Translationmanager\Domain\Project(
-			'WordPress',
-			$wp_version,
-			'translationmanager',
-			Plugin::VERSION,
-			$project_term->name
-		)
-	);
-
-	if ( ! $project_id ) {
-		return false;
-	}
-
-	// Posts get collected by post type.
-	$post_types    = [];
-	$languages     = get_languages();
-	$project_items = get_project_items( $project_term->term_id );
-
-	foreach ( $project_items as $post ) {
-		if ( ! $post->_translationmanager_post_id || ! isset( $languages[ $post->_translationmanager_target_id ] ) ) {
-			// Invalid state, try next one.
-			continue;
-		}
-
-		$source_post = get_post( $post->_translationmanager_post_id );
-		if ( ! $source_post ) {
-			continue;
-		}
-
-		$source_site_id = get_current_blog_id();
-
-		$data = \Translationmanager\TranslationData::for_outgoing(
-			$source_post,
-			$source_site_id,
-			$post->_translationmanager_target_id,
-			$languages[ $post->_translationmanager_target_id ]->get_lang_code()
-		);
-
-		/**
-		 * Fires before translation data is transfered to the API.
-		 *
-		 * Data can be edited in place by listeners.
-		 *
-		 * @param \Translationmanager\TranslationData $data
-		 */
-		do_action_ref_array( 'translationmanager_outgoing_data', [ $data ] );
-
-		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ][] = $data->to_array();
-	}
-
-	foreach ( $post_types as $post_type_target_language => $post_types_data ) {
-		foreach ( $post_types_data as $post_type_name => $post_type_content ) {
-			translationmanager_api()
-				->project_item()
-				->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
-		}
-	}
-
-	return update_term_meta( $project_term->term_id, '_translationmanager_order_id', $project_id );
 }

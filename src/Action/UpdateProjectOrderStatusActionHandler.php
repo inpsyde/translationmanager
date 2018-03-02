@@ -91,6 +91,11 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 
 			$this->update_project_status( $project, $status );
 			$this->update_project_status_request_date( $project );
+
+			if ( 'finished' === strtolower( $status ) ) {
+				// Update the translated at meta.
+				$this->update_project_translated_at( $project );
+			}
 		} catch ( \Exception $e ) {
 			throw new ActionException( $e->getMessage(), $e->getCode() );
 		}
@@ -138,7 +143,7 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 	 * @param \WP_Term $project The term object for which update the meta.
 	 * @param string   $status  The value to store as meta value.
 	 *
-	 * @return bool|int|\WP_Error Whatever the *_term_meta returns
+	 * @return mixed Whatever the *_term_meta returns
 	 */
 	private function update_project_status( \WP_Term $project, $status ) {
 
@@ -152,13 +157,31 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 	 *
 	 * @param \WP_Term $project The term object for which update the meta.
 	 *
-	 * @return bool|int|\WP_Error Whatever the *_term_meta returns
+	 * @return mixed Whatever the *_term_meta returns
 	 */
 	private function update_project_status_request_date( \WP_Term $project ) {
 
 		return set_unique_term_meta(
 			$project,
 			'_translationmanager_order_status_last_update_request',
+			( new \DateTime( 'now', ( new TimeZone() )->value() ) )->getTimestamp()
+		);
+	}
+
+	/**
+	 * Update Project Translated at meta
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param \WP_Term $project The term object for which update the meta.
+	 *
+	 * @return mixed Whatever the *_term_meta returns
+	 */
+	private function update_project_translated_at( \WP_Term $project ) {
+
+		return set_unique_term_meta(
+			$project,
+			'_translationmanager_order_translated_at',
 			( new \DateTime( 'now', ( new TimeZone() )->value() ) )->getTimestamp()
 		);
 	}

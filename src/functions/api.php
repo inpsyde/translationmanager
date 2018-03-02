@@ -4,6 +4,7 @@ namespace Translationmanager\Functions;
 
 use Translationmanager\Api;
 use Translationmanager\Pages\PageOptions;
+use Translationmanager\Plugin;
 
 /**
  * Retrieve API Instance
@@ -70,7 +71,7 @@ function translationmanager_api_fetch() {
 /**
  * Update Project
  *
- * @todo Check where this function `project_update` is used or remove it?
+ * @todo  Check where this function `project_update` is used or remove it?
  *
  * @api
  *
@@ -185,4 +186,93 @@ function project_global_status( \WP_Term $project_term ) {
 	return ( count( $status ) === count( $unique_statuses )
 		? esc_html__( 'Finished', 'translationmanager' )
 		: esc_html__( 'In Progress', 'translationmanager' ) );
+}
+
+/**
+ * Project Order
+ *
+ * @api
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_Term $project_term The project term associated.
+ *
+ * @return mixed Whatever the update_term_meta returns
+ */
+function create_project_order( \WP_Term $project_term ) {
+
+	global $wp_version;
+
+	$project_id = translationmanager_api()->project()->create(
+		new \Translationmanager\Domain\Project(
+			'WordPress',
+			$wp_version,
+			'translationmanager',
+			Plugin::VERSION,
+			$project_term->name
+		)
+	);
+
+	if ( ! $project_id ) {
+		return false;
+	}
+
+	// Posts get collected by post type.
+	$post_types    = [];
+	$languages     = get_languages();
+	$project_items = get_project_items( $project_term->term_id );
+
+	foreach ( $project_items as $post ) {
+		if ( ! $post->_translationmanager_post_id || ! isset( $languages[ $post->_translationmanager_target_id ] ) ) {
+			// Invalid state, try next one.
+			continue;
+		}
+
+		$source_post = get_post( $post->_translationmanager_post_id );
+		if ( ! $source_post ) {
+			continue;
+		}
+
+		$source_site_id = get_current_blog_id();
+
+		$data = \Translationmanager\TranslationData::for_outgoing(
+			$source_post,
+			$source_site_id,
+			$post->_translationmanager_target_id,
+			$languages[ $post->_translationmanager_target_id ]->get_lang_code()
+		);
+
+		/**
+		 * Fires before translation data is transfered to the API.
+		 *
+		 * Data can be edited in place by listeners.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param \Translationmanager\TranslationData $data
+		 */
+		do_action_ref_array( 'translationmanager_outgoing_data', [ $data ] );
+
+		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ][] = $data->to_array();
+	}
+
+	foreach ( $post_types as $post_type_target_language => $post_types_data ) {
+		foreach ( $post_types_data as $post_type_name => $post_type_content ) {
+			translationmanager_api()
+				->project_item()
+				->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
+		}
+	}
+
+	// Set the order ID.
+	if ( ! set_unique_term_meta( $project_term, '_translationmanager_order_id', $project_id ) ) {
+		return false;
+	}
+
+	// Set the default order status.
+	return set_unique_term_meta(
+		$project_term,
+		'_translationmanager_order_status',
+		esc_html__( 'Ready to order', 'translationmanager' )
+	);
 }

@@ -7,16 +7,16 @@
 	       name="_translationmanager_project_id"
 	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ); ?>">
 
-	<?php if ( $this->get_order_id() ): ?>
-		<ul class="translationmanager-order-info">
-			<li class="translationmanager-order-info-item">
-				<span class="dashicons dashicons-yes"></span>
-				<?php esc_html_e( 'Status', 'translationmanager' ); ?>:
-				<b>
-					<?php echo esc_html( $this->get_status_label() ); ?>
-				</b>
-			</li>
+	<ul class="translationmanager-order-info">
+		<li class="translationmanager-order-info-item">
+			<span class="dashicons dashicons-yes"></span>
+			<?php esc_html_e( 'Status', 'translationmanager' ); ?>:
+			<b>
+				<?php echo esc_html( $this->get_status_label() ); ?>
+			</b>
+		</li>
 
+		<?php if ( $this->get_order_id() ): ?>
 			<li class="translationmanager-order-info-item">
 				<span class="dashicons dashicons-testimonial"></span>
 				<?php esc_html_e( 'Project number', 'translationmanager' ) ?>:
@@ -25,7 +25,7 @@
 				</b>
 			</li>
 
-			<?php if ( $this->get_ordered_at() instanceof \DateTime ): ?>
+			<?php if ( $this->get_ordered_at() instanceof \DateTime ) : ?>
 				<li class="translationmanager-order-info-item">
 					<span class="dashicons dashicons-calendar-alt"></span>
 					<?php esc_html_e( 'Ordered at', 'translationmanager' ) ?>:
@@ -64,17 +64,18 @@
 				</li>
 			<?php endif; ?>
 
-			<?php if ( ! $this->get_translated_at() ): ?>
+			<?php if ( ! $this->get_translated_at() ) : ?>
 				<input type="submit"
 				       name="translationmanager_action_project_update"
 				       class="button button-primary"
 				       onclick="jQuery('#translationmanager_action_project_update').click();"
 				       value="<?php esc_html_e( 'Update', 'translationmanager' ); ?>"/>
 			<?php endif; ?>
-		</ul>
-	<?php
-	else :
-		if ( ! $this->has_projects() ) {
+		<?php endif; ?>
+	</ul>
+
+	<?php if ( ! $this->get_order_id() ) : ?>
+		<?php if ( ! $this->has_projects() ) {
 			printf(
 				'<p class="no-projects-found">%s</p>',
 				esc_html__( 'Please add at least one post to be able to submit the project.', 'translationmanager' )
@@ -85,7 +86,7 @@
 		       name="translationmanager_action_project_order"
 		       id="translationmanager_action_project_order"
 		       class="button button-primary"
-			<?php echo( ! $this->has_projects() ? 'disabled="disabled"' : '' ); ?>
+			<?php echo( ! $this->has_projects() ? ' disabled="disabled" ' : '' ); ?>
 			   value="<?php esc_html_e( 'Order project', 'translationmanager' ); ?>"/>
 	<?php endif; ?>
 

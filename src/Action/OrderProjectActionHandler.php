@@ -4,6 +4,7 @@ namespace Translationmanager\Action;
 
 use Brain\Nonces\NonceInterface;
 use Translationmanager\Auth\AuthRequest;
+use function Translationmanager\Functions\create_project_order;
 use function Translationmanager\Functions\redirect_admin_page_network;
 use function Translationmanager\Functions\update_project_order_meta;
 
@@ -83,7 +84,12 @@ class OrderProjectActionHandler implements ActionHandle {
 
 		$term = get_term_by( 'slug', $data['_translationmanager_project_id'], 'translationmanager_project' );
 
-		update_project_order_meta( $term );
+		if ( ! create_project_order( $term ) ) {
+			throw new ActionException( sprintf(
+				'Impossible to update the project order meta for project %s',
+				esc_html( $term->name )
+			) );
+		}
 
 		redirect_admin_page_network( 'edit.php?', [
 			'translationmanager_project' => $data['_translationmanager_project_id'],

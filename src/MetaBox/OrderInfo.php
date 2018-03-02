@@ -178,15 +178,22 @@ class OrderInfo {
 	/**
 	 * Get translated date
 	 *
-	 * @todo  To Implement get_translated_at.
-	 *
 	 * @since 1.0.0
 	 *
 	 * @return \DateTime
 	 */
 	public function get_translated_at() {
 
-		return null;
+		$timestamp = get_term_meta( $this->projects_term_id, '_translationmanager_order_translated_at', true );
+
+		if ( ! $timestamp ) {
+			return null;
+		}
+
+		$date = new \DateTime( 'now', ( new TimeZone() )->value() );
+		$date->setTimestamp( $timestamp );
+
+		return $date;
 	}
 
 	/**
