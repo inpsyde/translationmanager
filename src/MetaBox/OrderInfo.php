@@ -9,6 +9,7 @@
 namespace Translationmanager\MetaBox;
 
 use Translationmanager\Functions;
+use Translationmanager\Utils\TimeZone;
 
 /**
  * Class OrderInfo
@@ -90,24 +91,56 @@ class OrderInfo {
 	/**
 	 * States can be (german):
 	 *
-	 * - In Vorbereitung
-	 * - In Arbeit
-	 * - Geliefert
+	 * - In Vorbereitung ( In Preparation )
+	 * - In Arbeit ( In Progress )
+	 * - Geliefert ( Supplied )
 	 *
 	 * @since 1.0.0
 	 *
-	 * @todo  Correct status.
-	 * @fixme Why pass the post ID loop in a term context?
-	 *
 	 * @return string The status for the current order.
 	 */
-	public function get_status() {
+	public function get_status_label() {
 
-		if ( ! $this->get_order_id() ) {
+		$order_status = $this->get_order_status();
+
+		if ( ! $order_status ) {
 			return esc_html__( 'Ready to order', 'translationmanager' );
 		}
 
-		return apply_filters( 'translationmanager_order_status', 'In preparation', get_the_ID() );
+		return apply_filters( 'translationmanager_order_status', $order_status, $this );
+	}
+
+	/**
+	 * Get Order Status
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The status of the project translation order
+	 */
+	public function get_order_status() {
+
+		return get_term_meta( $this->projects_term_id, '_translationmanager_order_status', true );
+	}
+
+	/**
+	 * Retrieve the latest request order status Date
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return \DateTime|null Null if the value doesn't exists. DateTime instance otherwise.
+	 */
+	public function get_latest_update_request_date() {
+
+		$timestamp = get_term_meta( $this->projects_term_id, '_translationmanager_order_status_last_update_request', true );
+
+		if ( ! $timestamp ) {
+			return null;
+		}
+
+		$date = new \DateTime( 'now', ( new TimeZone() )->value() );
+		$date->setTimestamp( $timestamp );
+
+		return $date;
 	}
 
 	/**
@@ -139,7 +172,7 @@ class OrderInfo {
 			return null;
 		}
 
-		return new \DateTime( get_post()->post_date );
+		return new \DateTime( get_post()->post_date, ( new TimeZone() )->value() );
 	}
 
 	/**

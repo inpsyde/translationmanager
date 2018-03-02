@@ -193,3 +193,26 @@ function post_type_name_by_request() {
 
 	return ( $post_type ?: '' );
 }
+
+/**
+ * Set Unique Term Meta
+ *
+ * This function store a new term meta if not exists by adding the flag
+ * for the unique value. Allow us to not add multiple meta keys with the same key value.
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_Term $term  The instance of the term for which set the meta.
+ * @param string   $meta  The meta key value.
+ * @param mixed    $value The value for the meta.
+ *
+ * @return mixed Whatever the *_term_meta function returns
+ */
+function set_unique_term_meta( \WP_Term $term, $meta, $value ) {
+
+	if ( ! get_term_meta( $term->term_id, $meta ) ) {
+		return add_term_meta( $term->term_id, $meta, $value, true );
+	}
+
+	return update_term_meta( $term->term_id, $meta, $value );
+}

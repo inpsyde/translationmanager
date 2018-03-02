@@ -13,7 +13,7 @@
 				<span class="dashicons dashicons-yes"></span>
 				<?php esc_html_e( 'Status', 'translationmanager' ); ?>:
 				<b>
-					<?php echo esc_html( $this->get_status() ); ?>
+					<?php echo esc_html( $this->get_status_label() ); ?>
 				</b>
 			</li>
 
@@ -30,17 +30,12 @@
 					<span class="dashicons dashicons-calendar-alt"></span>
 					<?php esc_html_e( 'Ordered at', 'translationmanager' ) ?>:
 					<b>
-						<?php echo $this->get_ordered_at()->format( 'Y-m-d' ) ?>
+						<?php echo esc_html(
+							$this->get_ordered_at()
+							     ->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) )
+						); ?>
 					</b>
 				</li>
-
-				<?php if ( ! $this->get_translated_at() ): ?>
-					<input type="submit"
-					       name="translationmanager_action_project_update"
-					       class="button button-primary"
-					       onclick="jQuery('#translationmanager_action_project_update').click();"
-					       value="<?php esc_html_e( 'Update', 'translationmanager' ); ?>"/>
-				<?php endif; ?>
 			<?php endif; ?>
 
 			<?php if ( $this->get_translated_at() instanceof \DateTime ) : ?>
@@ -48,9 +43,33 @@
 					<span class="dashicons dashicons-calendar-alt"></span>
 					<?php esc_html_e( 'Translated at', 'translationmanager' ); ?>:
 					<b>
-						<?php echo $this->get_translated_at()->format( 'Y-m-d' ); ?>
+						<?php echo esc_html(
+							$this->get_translated_at()
+							     ->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) )
+						); ?>
 					</b>
 				</li>
+			<?php endif; ?>
+
+			<?php if ( $this->get_latest_update_request_date() instanceof \DateTime ) : ?>
+				<li class="translationmanager-order-info-item">
+					<span class="dashicons dashicons-calendar-alt"></span>
+					<?php esc_html_e( 'Lastest Update at', 'translationmanager' ); ?>:
+					<b>
+						<?php echo esc_html(
+							$this->get_latest_update_request_date()
+							     ->format( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) )
+						); ?>
+					</b>
+				</li>
+			<?php endif; ?>
+
+			<?php if ( ! $this->get_translated_at() ): ?>
+				<input type="submit"
+				       name="translationmanager_action_project_update"
+				       class="button button-primary"
+				       onclick="jQuery('#translationmanager_action_project_update').click();"
+				       value="<?php esc_html_e( 'Update', 'translationmanager' ); ?>"/>
 			<?php endif; ?>
 		</ul>
 	<?php

@@ -70,6 +70,8 @@ function translationmanager_api_fetch() {
 /**
  * Update Project
  *
+ * @todo Check where this function `project_update` is used or remove it?
+ *
  * @api
  *
  * @since 1.0.0
@@ -119,4 +121,68 @@ function project_update( \WP_Term $project_term ) {
 			}
 		}
 	}
+}
+
+/**
+ * Retrieve project items statuses
+ *
+ * @api
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_Term $project_term The term instance to retrieve the project data.
+ *
+ * @return array All posts statues
+ */
+function project_items_statuses( \WP_Term $project_term ) {
+
+	$statuses = [];
+
+	$project_id = get_term_meta( $project_term->term_id, '_translationmanager_order_id', true );
+	if ( ! $project_id ) {
+		return $statuses;
+	}
+
+	$translation_data = translationmanager_api()->project()->get( 9 );
+	if ( ! $translation_data ) {
+		return $statuses;
+	}
+
+	foreach ( $translation_data['items'] as $item ) {
+		$slug              = sanitize_title( $item[0]['post_title'] );
+		$statuses[ $slug ] = $item['status'];
+	}
+
+	return $statuses;
+}
+
+/**
+ * Get Global Project status
+ *
+ * @api
+ *
+ * @since 1.0.0
+ *
+ * param \WP_Term $project_term The term instance to retrieve the project data.
+ *
+ * @return string The translation status label
+ */
+function project_global_status( \WP_Term $project_term ) {
+
+	$statuses = array_values( project_items_statuses( $project_term ) );
+
+	if ( ! $statuses ) {
+		return esc_html__( 'Unknown Status', 'translationmanager' );
+	}
+
+	$unique_statuses = array_unique( $statuses );
+
+	$status = array_filter( $unique_statuses, function ( $status ) {
+
+		return 'finished' === $status;
+	} );
+
+	return ( count( $status ) === count( $unique_statuses )
+		? esc_html__( 'Finished', 'translationmanager' )
+		: esc_html__( 'In Progress', 'translationmanager' ) );
 }
