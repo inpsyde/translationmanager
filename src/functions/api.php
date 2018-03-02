@@ -78,7 +78,7 @@ function translationmanager_api_fetch() {
  *
  * @return void
  */
-function project_update( $project_term ) {
+function project_update( \WP_Term $project_term ) {
 
 	$project_id = get_term_meta( $project_term->term_id, '_translationmanager_order_id', true );
 
