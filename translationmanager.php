@@ -64,7 +64,7 @@ add_action( 'plugins_loaded', function () {
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'add_translation' )
 	) )->init();
-	( new \Translationmanager\Action\ActionOrderProjectHandler(
+	( new \Translationmanager\Action\OrderProjectActionHandler(
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'order_translation' )
 	) )->init();

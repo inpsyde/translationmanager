@@ -8,12 +8,12 @@ use function Translationmanager\Functions\redirect_admin_page_network;
 use function Translationmanager\Functions\update_project_order_meta;
 
 /**
- * Class ActionOrderProject
+ * Class OrderProjectActionHandler
  *
  * @since   1.0.0
  * @package Translationmanager\Action
  */
-class ActionOrderProjectHandler implements ActionHandle {
+class OrderProjectActionHandler implements ActionHandle {
 
 	/**
 	 * Auth
