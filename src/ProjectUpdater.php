@@ -5,7 +5,7 @@
  * @package Translationmanager\Admin
  */
 
-namespace Translationmanager\Admin;
+namespace Translationmanager;
 
 /**
  * @since   1.0.0

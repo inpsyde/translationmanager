@@ -151,7 +151,7 @@ function handle_actions() {
 	}
 
 	if ( null !== $post_data['translationmanager_action_project_add_translation'] ) {
-		$updater = new \Translationmanager\Admin\ProjectUpdater();
+		$updater = new \Translationmanager\ProjectUpdater();
 		$updater->init();
 
 		$project = action_project_add_translation( [
