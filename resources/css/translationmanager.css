@@ -47,6 +47,7 @@
 }
 
 .translationmanager-order-or-update-projects input[type="submit"] {
+  clear: both;
   float: right;
 }
 
