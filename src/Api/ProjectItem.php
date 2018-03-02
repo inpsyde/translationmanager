@@ -35,7 +35,7 @@ class ProjectItem {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \Translationmanager\Api $api
+	 * @param \Translationmanager\Api $api The Api instance.
 	 */
 	public function __construct( Api $api ) {
 
@@ -56,7 +56,7 @@ class ProjectItem {
 	 */
 	public function create( $project_id, $post_type_name, $target_language, $data = [] ) {
 
-		$body = $this->get_api()->post(
+		$body = $this->api->post(
 			$this->get_url( $project_id ),
 			$data,
 			[
@@ -72,16 +72,6 @@ class ProjectItem {
 		}
 
 		return (int) $body['id'];
-	}
-
-	/**
-	 * @since 1.0.0
-	 *
-	 * @return Api
-	 */
-	private function get_api() {
-
-		return $this->api;
 	}
 
 	/**
