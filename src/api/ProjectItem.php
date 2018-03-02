@@ -79,7 +79,7 @@ class ProjectItem {
 	 *
 	 * @return Api
 	 */
-	protected function get_api() {
+	private function get_api() {
 
 		return $this->api;
 	}
@@ -91,7 +91,7 @@ class ProjectItem {
 	 *
 	 * @return string The url for the request
 	 */
-	protected function get_url( $project_id ) {
+	private function get_url( $project_id ) {
 
 		return sprintf( self::URL, $project_id );
 	}
