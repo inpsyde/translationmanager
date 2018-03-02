@@ -21,6 +21,7 @@
   margin:      0;
   padding:     1em;
   padding-top: 0;
+  overflow:    hidden;
 }
 
 .translationmanager-postbox-container .box-status-title {
@@ -43,6 +44,10 @@
 
 .translationmanager-order-info .translationmanager-order-info-item .dashicons {
   color: #5b5b5b;
+}
+
+.translationmanager-order-or-update-projects input[type="submit"] {
+  float: right;
 }
 
 /* ========================================

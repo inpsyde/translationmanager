@@ -169,4 +169,16 @@ class OrderInfo {
 
 		return count( $posts );
 	}
+
+	/**
+	 * Nonce Instance
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return \Brain\Nonces\WpNonce The nonce instance
+	 */
+	public function nonce() {
+
+		return new \Brain\Nonces\WpNonce( 'order_translation' );
+	}
 }

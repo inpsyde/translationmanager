@@ -140,4 +140,16 @@ class TranslationBox {
 
 		return get_user_meta( get_current_user_id(), 'translationmanager_project_recent', true );
 	}
+
+	/**
+	 * Nonce Instance
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return \Brain\Nonces\WpNonce The nonce instance
+	 */
+	public function nonce() {
+
+		return new \Brain\Nonces\WpNonce( 'add_translation' );
+	}
 }

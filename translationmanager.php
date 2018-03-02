@@ -46,14 +46,28 @@ add_action( 'plugins_loaded', function () {
 
 	// Include modules.
 	Translationmanager\Functions\include_modules();
+
 	// Initialize Options Page.
 	( new \Translationmanager\Pages\PageOptions() )->init();
+
 	// Add Pages.
 	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();
+
 	// Restrict Manage Posts.
 	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
+
 	// Assets.
 	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();
+
+	// Actions.
+	( new \Translationmanager\Action\AddTranslationActionHandler(
+		new \Translationmanager\Auth\AuthRequestValidator(),
+		new \Brain\Nonces\WpNonce( 'add_translation' )
+	) )->init();
+	( new \Translationmanager\Action\ActionOrderProjectHandler(
+		new \Translationmanager\Auth\AuthRequestValidator(),
+		new \Brain\Nonces\WpNonce( 'order_translation' )
+	) )->init();
 
 	// Register Activation.
 	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );

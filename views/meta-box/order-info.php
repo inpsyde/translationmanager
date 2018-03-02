@@ -35,13 +35,11 @@
 				</li>
 
 				<?php if ( ! $this->get_translated_at() ): ?>
-					<div class="textright">
-						<input type="submit"
-						       name="translationmanager_action_project_update"
-						       class="button button-primary"
-						       onclick="jQuery('#translationmanager_action_project_update').click();"
-						       value="<?php esc_html_e( 'Update', 'translationmanager' ); ?>"/>
-					</div>
+					<input type="submit"
+					       name="translationmanager_action_project_update"
+					       class="button button-primary"
+					       onclick="jQuery('#translationmanager_action_project_update').click();"
+					       value="<?php esc_html_e( 'Update', 'translationmanager' ); ?>"/>
 				<?php endif; ?>
 			<?php endif; ?>
 
@@ -71,4 +69,8 @@
 			<?php echo( ! $this->has_projects() ? 'disabled="disabled"' : '' ); ?>
 			   value="<?php esc_html_e( 'Order project', 'translationmanager' ); ?>"/>
 	<?php endif; ?>
+
+	<input type="hidden"
+	       name="<?php echo esc_attr( $this->nonce()->action() ) ?>"
+	       value="<?php echo esc_attr( $this->nonce() ) ?>"/>
 </form>

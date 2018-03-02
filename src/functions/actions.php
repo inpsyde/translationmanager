@@ -14,7 +14,7 @@ use Translationmanager\Plugin;
  *
  * @since 1.0.0
  *
- * @throws \Exception In case the project cannot be created
+ * @throws \Exception In case the project cannot be created.
  *
  * @param array $arguments Arguments to add languages.
  *
@@ -95,82 +95,6 @@ function action_project_add_translation( $arguments ) {
 		$request['post_ID'],
 		$request['translationmanager_language']
 	);
-}
-
-/**
- * Handle Actions for Translations
- *
- * @since 1.0.0
- *
- * @return void
- */
-function handle_actions() {
-
-	$post_data = filter_input_array( INPUT_POST, [
-		'translationmanager_action_project_order'           => FILTER_SANITIZE_STRING,
-		'translationmanager_action_project_update'          => FILTER_SANITIZE_STRING,
-		'translationmanager_action_project_add_translation' => FILTER_SANITIZE_STRING,
-		'_translationmanager_project_id'                    => FILTER_SANITIZE_STRING,
-		'translationmanager_project_id'                     => FILTER_SANITIZE_NUMBER_INT,
-		'post_ID'                                           => FILTER_SANITIZE_NUMBER_INT,
-		'translationmanager_language'                       => [
-			'filter' => FILTER_SANITIZE_STRING,
-			'flags'  => FILTER_FORCE_ARRAY,
-		],
-	] );
-
-	if ( ! $post_data ) {
-		return;
-	}
-
-	// If nothing submitted or no action detected we stop processing.
-	if (
-		null === $post_data['translationmanager_action_project_order']
-		&& null === $post_data['translationmanager_action_project_update']
-		&& null === $post_data['translationmanager_action_project_add_translation']
-	) {
-		return;
-	}
-
-	$actions = [
-		$post_data['translationmanager_action_project_order'],
-		$post_data['translationmanager_action_project_update'],
-	];
-
-	foreach ( $actions as $action ) {
-		if ( null !== $action ) {
-			$term = get_term_by( 'slug', $post_data['_translationmanager_project_id'], 'translationmanager_project' );
-
-			update_project_order_meta( $term );
-
-			redirect_admin_page_network( 'edit.php?', [
-				'translationmanager_project' => $post_data['_translationmanager_project_id'],
-				'post_type'                  => 'project_item',
-			] );
-		}
-	}
-
-	if ( null !== $post_data['translationmanager_action_project_add_translation'] ) {
-		$updater = new \Translationmanager\ProjectUpdater();
-		$updater->init();
-
-		$project = action_project_add_translation( [
-			'translationmanager_language'   => $post_data['translationmanager_language'],
-			'translationmanager_project_id' => $post_data['translationmanager_project_id'],
-			'post_ID'                       => $post_data['post_ID'],
-		] );
-
-		if ( false === $project ) {
-			// Project has been invalidated so we don't redirect there.
-			return;
-		}
-
-		redirect_admin_page_network( 'edit.php?', [
-			'translationmanager_project' => get_term_field( 'slug', $project ),
-			'post_type'                  => 'project_item',
-			'updated'                    => - 1,
-		] );
-	}
 }
 
 /**

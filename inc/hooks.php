@@ -5,11 +5,6 @@
  * @since 1.0.0
  */
 
-// Handle Actions.
-add_action( 'load-post.php', 'Translationmanager\\Functions\\handle_actions' );
-add_action( 'load-edit.php', 'Translationmanager\\Functions\\handle_actions' );
-add_action( 'admin_post_translationmanager_order_or_update_projects', 'Translationmanager\\Functions\\handle_actions' );
-
 // CPT Project.
 add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_project_posttype' );
 add_action( 'admin_head', 'Translationmanager\\Functions\\project_remove_month' );
