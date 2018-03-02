@@ -112,11 +112,12 @@ class AddTranslationActionHandler implements ActionHandle {
 	 */
 	public function is_valid_request() {
 
-		if ( ! isset( $_POST['translationmanager_action_project_add_translation'] ) ) {
+		if ( ! isset( $_POST['translationmanager_action_project_add_translation'] ) ) { // phpcs:ignore
 			return false;
 		}
 
-		return $this->auth->can( wp_get_current_user(), self::$capability ) and $this->auth->request_is_valid( $this->nonce );
+		return $this->auth->can( wp_get_current_user(), self::$capability )
+		       && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**

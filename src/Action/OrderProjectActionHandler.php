@@ -100,7 +100,8 @@ class OrderProjectActionHandler implements ActionHandle {
 			return false;
 		}
 
-		return $this->auth->can( wp_get_current_user(), self::$capability ) and $this->auth->request_is_valid( $this->nonce );
+		return $this->auth->can( wp_get_current_user(), self::$capability )
+		       && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**
