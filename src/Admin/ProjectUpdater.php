@@ -38,7 +38,7 @@ class ProjectUpdater {
 	}
 
 	/**
-	 * Run after all the cart items referring a post have been created and assigned to a project, extracts the
+	 * Run after all the projects items referring a post have been created and assigned to a project, extracts the
 	 * ancestor ids of the post being translated and add those ancestors to cart as well, ith they are not there
 	 * already.
 	 *
