@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: translationMANAGER
- * Plugin URI:  https://eurotext.com
+ * Plugin URI:  https://eurotext.de/en
  * Description: Translate your contents in a WordPress Multisite and MultilingualPress.
  * Version:     1.0.0
  * Author:      Inpsyde
