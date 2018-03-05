@@ -48,6 +48,8 @@ class PluginSettings {
 	/**
 	 * The refresh api token
 	 *
+	 * @todo May be this should be called TOKEN since it's the option not the time for the refresh?.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @var string The value for when the token must be refreshed
