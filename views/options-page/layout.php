@@ -29,7 +29,7 @@
 			<div id="tab--connection" class="inpsyde-tab__content">
 				<h3 class="screen-reader-text"><?php esc_html_e( 'Credentials', 'translationmanager' ); ?></h3>
 				<?php
-				settings_fields( $this::OPTION_GROUP );
+				settings_fields( \Translationmanager\Setting\PluginSettings::OPTION_GROUP );
 				do_settings_sections( 'translationmanager_api' );
 				submit_button( esc_html__( 'Save changes', 'translationmanager' ), 'primary', 'save_action' );
 				?>

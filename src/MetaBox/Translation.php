@@ -8,9 +8,9 @@
 
 namespace Translationmanager\MetaBox;
 
-use Translationmanager\Pages\PageOptions;
 use Translationmanager\Functions;
 use Translationmanager\Domain\Language;
+use Translationmanager\Setting\PluginSettings;
 
 /**
  * Class Translation
@@ -112,7 +112,7 @@ class Translation implements Metabox {
 	 */
 	public function get_customer_key() {
 
-		return get_option( PageOptions::REFRESH_TOKEN );
+		return get_option( PluginSettings::REFRESH_TOKEN );
 	}
 
 	/**

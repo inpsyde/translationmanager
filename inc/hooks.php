@@ -78,16 +78,6 @@ add_action( 'admin_head', function () {
 			';
 	}
 } );
-add_action( 'admin_menu', function () {
-
-	global $submenu;
-
-	unset( $submenu['edit.php?post_type=project_item'][5] );
-
-	$url = 'options-general.php?page=translationmanager_settings';
-
-	$submenu['edit.php?post_type=project_item'][] = [ 'Settings', 'manage_options', $url ];
-} );
 
 add_filter( 'plugin_row_meta', function ( array $links, $file ) {
 

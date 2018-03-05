@@ -48,7 +48,9 @@ add_action( 'plugins_loaded', function () {
 	Translationmanager\Functions\include_modules();
 
 	// Initialize Options Page.
-	( new \Translationmanager\Pages\PageOptions() )->init();
+	( new \Translationmanager\Pages\PageOptions(
+		new \Translationmanager\Setting\PluginSettings()
+	) )->init();
 
 	// Add Pages.
 	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();

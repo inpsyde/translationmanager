@@ -9,19 +9,18 @@ namespace Translationmanager\Pages;
 
 use Translationmanager\Functions;
 use Translationmanager\Plugin;
+use Translationmanager\Setting;
 
 /**
  * Controller / Model for translationmanager options page.
  *
  * @package Translationmanager\Admin
  */
-class PageOptions {
-	const OPTION_GROUP         = 'translationmanager_api';
-	const USERNAME             = 'translationmanager_api_username';
-	const PASSWORD             = 'translationmanager_api_password';
-	const SECTION_CREDENTIALS  = 'translationmanager_api_credentials';
-	const URL                  = 'translationmanager_api_url';
-	const REFRESH_TOKEN        = 'translationmanager_api_token';
+class PageOptions implements Page {
+
+	const USERNAME = 'translationmanager_api_username';
+	const PASSWORD = 'translationmanager_api_password';
+
 	const TRANSIENT_CATEGORIES = 'translationmanager_categories';
 	const SELECTED_CATEGORIES  = 'translationmanager_sync_categories';
 	const SLUG                 = 'translationmanager_settings';
@@ -35,12 +34,33 @@ class PageOptions {
 	 *
 	 * @var string[]
 	 */
-	protected $actions = [
+	private $actions = [
 		'fetch_files',
 		'save',
 		'save_categories',
 		'update_categories',
 	];
+
+	/**
+	 * Plugin Settings
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var Setting\PluginSettings The instance of the class
+	 */
+	private $settings;
+
+	/**
+	 * PageOptions constructor
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param Setting\PluginSettings $settings The plugin settings.
+	 */
+	public function __construct( Setting\PluginSettings $settings ) {
+
+		$this->settings = $settings;
+	}
 
 	/**
 	 * Set Hooks
@@ -51,26 +71,41 @@ class PageOptions {
 	 */
 	public function init() {
 
-		add_action( 'admin_menu', [ $this, 'add_options_page' ] );
-		add_action( 'admin_init', [ $this, 'register_setting' ] );
+		add_action( 'admin_menu', [ $this, 'add_page' ] );
+		add_action( 'admin_init', [ $this->settings, 'register_setting' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_style' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_script' ] );
+
+		add_filter( 'option_page_capability_' . Setting\PluginSettings::OPTION_GROUP, [
+			$this,
+			'filter_capabilities',
+		] );
 	}
 
 	/**
-	 * Add in WordPress settings.
+	 * @inheritdoc
 	 */
-	public function add_options_page() {
+	public function add_page() {
 
-		add_options_page(
-			esc_html__( 'Translations', 'translationmanager' ),
-			esc_html__( 'Translations', 'translationmanager' ),
+		add_submenu_page(
+			'edit.php?post_type=project_item',
+			esc_html__( 'Settings', 'translationmanager' ),
+			esc_html__( 'Settings', 'translationmanager' ),
 			'manage_options',
 			self::SLUG,
-			[ $this, 'dispatch' ]
+			[ $this, 'render_template' ]
 		);
+	}
 
-		add_filter( 'option_page_capability_' . static::OPTION_GROUP, [ $this, 'filter_capabilities' ] );
+	/**
+	 * @inheritdoc
+	 */
+	public function render_template() {
+
+		wp_enqueue_style( 'translationmanager-options-page' );
+
+		// Render the template.
+		require_once Functions\get_template( '/views/options-page/layout.php' );
 	}
 
 	/**
@@ -84,7 +119,7 @@ class PageOptions {
 	 */
 	public function filter_capabilities( $capabilities ) {
 
-		if ( ! check_admin_referer( static::OPTION_GROUP . '-options' ) ) {
+		if ( ! check_admin_referer( Setting\PluginSettings::OPTION_GROUP . '-options' ) ) {
 			// Seems like some other page so we won't do stuff.
 			return $capabilities;
 		}
@@ -103,115 +138,12 @@ class PageOptions {
 	}
 
 	/**
-	 * Create input field for option.
+	 * Enqueue Style
 	 *
-	 * @param array $field Must have a "name" key with the actual option name/id as its value.
+	 * @since 1.0.0
+	 *
+	 * @return void
 	 */
-	public function dispatch_input_text( $field ) {
-
-		$prefix = '';
-		$suffix = '';
-
-		extract( $field, EXTR_OVERWRITE );
-
-		require Functions\get_template( 'views/options-page/input-field.php' );
-	}
-
-	/**
-	 * Register all settings.
-	 */
-	public function register_setting() {
-
-		add_settings_section(
-			self::SECTION_CREDENTIALS,
-			esc_html__( 'Credentials', 'translationmanager' ),
-			'__return_false',
-			self::OPTION_GROUP
-		);
-
-		add_filter( 'sanitize_option_' . static::URL, 'trim' );
-		add_filter( 'sanitize_option_' . static::URL, [ $this, 'sanitize_url' ] );
-
-		// Base URL of the API.
-		$this->add_settings_field(
-			static::URL,
-			esc_html__( 'URL', 'translationmanager' ),
-			[ $this, 'dispatch_input_text' ],
-			static::OPTION_GROUP,
-			static::SECTION_CREDENTIALS,
-			[
-				'value' => get_option(
-					static::URL,
-					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					esc_html__( 'Not set', 'translationmanager' )
-				),
-			]
-		);
-
-		// Token.
-		$this->add_settings_field(
-			static::REFRESH_TOKEN,
-			esc_html__( 'Token', 'translationmanager' ),
-			[ $this, 'dispatch_input_text' ],
-			static::OPTION_GROUP,
-			static::SECTION_CREDENTIALS,
-			[
-				'value' => get_option(
-					static::REFRESH_TOKEN,
-					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					esc_html__( 'Not set', 'translationmanager' )
-				),
-			]
-		);
-
-		add_filter( 'sanitize_option_' . static::REFRESH_TOKEN, 'trim' );
-		add_filter( 'sanitize_option_' . static::URL, 'trim' );
-	}
-
-	/**
-	 * Trim common mistakes from this field.
-	 *
-	 * - Empty spaces.
-	 * - Parts of URL surrounding.
-	 *
-	 * @param $url
-	 *
-	 * @return string
-	 */
-	public function sanitize_url( $url ) {
-
-		return trim( trim( $url ), '://.' );
-	}
-
-	/**
-	 * Send output to client.
-	 *
-	 * @see ::render()
-	 */
-	public function dispatch() {
-
-		echo Functions\kses_post( $this->render() ); // WPCS: XSS ok. Use wrapper for `wp_kses_post`.
-	}
-
-	/**
-	 * Render the options page.
-	 *
-	 * @return string Content of the options page.
-	 */
-	public function render() {
-
-		wp_enqueue_style( 'translationmanager-options-page' );
-		ob_start();
-		require_once Functions\get_template( '/views/options-page/layout.php' );
-
-		return ob_get_clean();
-	}
-
-	public function has_refresh_token() {
-
-		return (bool) get_option( static::REFRESH_TOKEN, false );
-	}
-
 	public function enqueue_style() {
 
 		wp_register_style(
@@ -223,6 +155,13 @@ class PageOptions {
 		);
 	}
 
+	/**
+	 * Enqueue Script
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	public function enqueue_script() {
 
 		wp_enqueue_script(
@@ -232,65 +171,5 @@ class PageOptions {
 			filemtime( ( new Plugin() )->dir( '/resources/js/options-page.js' ) ),
 			true
 		);
-	}
-
-	protected function fetch_files_action() {
-
-		translationmanager_api_fetch_all();
-	}
-
-	protected function update_categories_action() {
-
-		$collections = translationmanager_api_collections_get();
-
-		$collectionTransient = [];
-		foreach ( $collections as $collection ) {
-			$collectionTransient[ $collection['id'] ] = $collection;
-		}
-
-		set_transient( static::TRANSIENT_CATEGORIES, $collectionTransient, DAY_IN_SECONDS );
-	}
-
-	/**
-	 * Simplify adding setting fields.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string   $id        Slug-name to identify the field. Used in the 'id' attribute of tags.
-	 * @param string   $title     Formatted title of the field. Shown as the label for the field
-	 *                            during output.
-	 * @param callable $callback  Function that fills the field with the desired form inputs. The
-	 *                            function should echo its output.
-	 * @param string   $page      The slug-name of the settings page on which to show the section
-	 *                            (general, reading, writing, ...).
-	 * @param string   $section   Optional. The slug-name of the section of the settings page
-	 *                            in which to show the box. Default 'default'.
-	 * @param array    $args      {
-	 *                            Optional. Extra arguments used when outputting the field.
-	 *
-	 * @type string    $label_for When supplied, the setting title will be wrapped
-	 *                             in a `<label>` element, its `for` attribute populated
-	 *                             with this value.
-	 * @type string    $class     CSS Class to be added to the `<tr>` element when the
-	 *                             field is output.
-	 * }
-	 */
-	protected function add_settings_field( $id, $title, $callback, $page, $section, $args = [] ) {
-
-		if ( ! isset( $args['name'] ) ) {
-			$args['name'] = $id;
-		}
-
-		if ( ! isset( $args['type'] ) ) {
-			$args['type'] = 'text';
-		}
-
-		if ( ! isset( $args['value'] ) ) {
-			$args['value'] = get_option( $args['name'] );
-		}
-
-		register_setting( $page, $args['name'] );
-
-		add_settings_field( $id, $title, $callback, $page, $section, $args );
 	}
 }
