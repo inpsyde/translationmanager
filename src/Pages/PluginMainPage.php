@@ -66,15 +66,6 @@ class PluginMainPage implements Page {
 			$this->plugin->url( '/resources/img/tm-icon-bw.png' ),
 			100
 		);
-
-		add_submenu_page(
-			'translationmanager',
-			esc_html__( 'Projects', 'translationmanager' ),
-			esc_html__( 'Projects', 'translationmanager' ),
-			'manage_options',
-			admin_url( 'edit-tags.php?taxonomy=translationmanager_project&post_type=project_item' ),
-			'__return_false'
-		);
 	}
 
 	/**

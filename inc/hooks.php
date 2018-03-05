@@ -11,6 +11,23 @@ add_action( 'admin_head', 'Translationmanager\\Functions\\project_remove_month' 
 add_action( 'admin_init', [ \Translationmanager\PostType\ProjectItem::class, 'register_post_status' ] );
 add_action( 'admin_head-edit.php', 'Translationmanager\\Functions\\hide_project_actions_links_from_edit_page' );
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
+add_action( 'admin_menu', function () {
+
+	add_submenu_page(
+		'translationmanager',
+		esc_html__( 'Projects', 'translationmanager' ),
+		esc_html__( 'Projects', 'translationmanager' ),
+		'manage_options',
+		'translationmanager-projects',
+		'__return_false'
+	);
+} );
+add_action( 'admin_menu', function () {
+
+	global $submenu;
+
+	$submenu['translationmanager'][0][2] = admin_url( 'edit-tags.php?taxonomy=translationmanager_project&post_type=project_item' );
+} );
 
 add_filter( 'bulk_actions-edit-project_item', 'Translationmanager\\Functions\\filter_bulk_actions_labels_for_project' );
 add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actions_for_project', 10, 2 );
