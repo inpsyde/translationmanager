@@ -49,7 +49,6 @@
 			"src/functions/cpt-project.php",
 			"src/functions/language.php",
 			"src/functions/modules.php",
-			"src/functions/translation.php",
 			"src/functions/api.php",
 			"src/functions/cpt-order.php",
 			"src/functions/tax-project.php",

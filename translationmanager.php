@@ -53,6 +53,9 @@ add_action( 'plugins_loaded', function () {
 	// Add Pages.
 	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();
 
+	// Meta Boxes.
+	( new \Translationmanager\MetaBox\TranslationBox() )->init();
+
 	// Restrict Manage Posts.
 	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
 

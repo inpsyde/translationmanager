@@ -49,9 +49,6 @@ add_filter( 'get_edit_term_link', 'Translationmanager\\Functions\\edit_term_link
 add_filter( 'handle_bulk_actions-edit-post', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
 add_filter( 'handle_bulk_actions-edit-page', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
 
-// Translations.
-add_action( 'add_meta_boxes', 'Translationmanager\\Functions\\add_translation_meta_box' );
-
 // Misc.
 add_action( 'admin_head', function () {
 

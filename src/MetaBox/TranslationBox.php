@@ -30,15 +30,30 @@ class TranslationBox {
 	 */
 	const CONTEXT = 'side';
 
-	/**
-	 * @var @since 1.0.0
-	 */
-	private $projects;
+	public function init() {
+
+		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
+	}
 
 	/**
 	 * @since 1.0.0
 	 */
 	public function add_meta_box() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if ( ! $screen ) {
+			return;
+		}
+
+		// There shall be no translation option while creating a new entry.
+		if ( 'add' === $screen->action ) {
+			return;
+		}
 
 		/**
 		 * Define where the translation box shall be shown.
