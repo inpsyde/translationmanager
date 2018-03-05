@@ -15,7 +15,7 @@ use Translationmanager\Plugin;
  * @since   1.0.0
  * @package Translationmanager\Pages
  */
-class PageAbout {
+class PageAbout implements Page {
 
 	/**
 	 * Plugin
@@ -47,7 +47,7 @@ class PageAbout {
 	 */
 	public function init() {
 
-		add_action( 'admin_menu', [ $this, 'add_menu_page' ] );
+		add_action( 'admin_menu', [ $this, 'add_page' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_styles' ] );
 	}
 
@@ -76,7 +76,7 @@ class PageAbout {
 	 *
 	 * @return void
 	 */
-	public function add_menu_page() {
+	public function add_page() {
 
 		add_submenu_page(
 			'translationmanager',
@@ -84,7 +84,7 @@ class PageAbout {
 			esc_html__( 'About', 'translationmanager' ),
 			'manage_options',
 			'inpsyde-translationmanager-about',
-			[ $this, 'page_callback' ]
+			[ $this, 'render_template' ]
 		);
 	}
 
@@ -95,7 +95,7 @@ class PageAbout {
 	 *
 	 * @return void
 	 */
-	public function page_callback() {
+	public function render_template() {
 
 		wp_enqueue_style( 'translationmanager-page-about' );
 
