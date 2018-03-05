@@ -149,9 +149,7 @@ function template_project_box_form_in_edit_page( $value ) {
 	if ( $slug ) {
 		$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
 		// This is used inside the view.
-		$info = new \Translationmanager\MetaBox\OrderInfo( $term->term_id );
-
-		require get_template( 'views/meta-box/project-box.php' );
+		( new \Translationmanager\MetaBox\OrderInfo( $term->term_id ) )->render_template();
 	}
 
 	return $value;
@@ -218,13 +216,13 @@ function filter_bulk_updated_messages_for_project( array $bulk_messages, array $
 		),
 	];
 
-//	$bulk_messages['project_item'] = array(
-//		'updated'   => _n( '%s translation updated.', '%s translations updated.', $bulk_counts['updated'] ),
-//		'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
-//		'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
-//		'trashed'   => _n( '%s translation removed from the project.', '%s translations removed from the project.', $bulk_counts['trashed'] ),
-//		'untrashed' => _n( '%s translation restored at the project.', '%s translations restored at the project.', $bulk_counts['untrashed'] ),
-//	);
+	//	$bulk_messages['project_item'] = array(
+	//		'updated'   => _n( '%s translation updated.', '%s translations updated.', $bulk_counts['updated'] ),
+	//		'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
+	//		'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
+	//		'trashed'   => _n( '%s translation removed from the project.', '%s translations removed from the project.', $bulk_counts['trashed'] ),
+	//		'untrashed' => _n( '%s translation restored at the project.', '%s translations restored at the project.', $bulk_counts['untrashed'] ),
+	//	);
 
 	$updated = filter_input( INPUT_GET, 'updated', FILTER_SANITIZE_NUMBER_INT );
 	if ( - 1 === $updated ) {
