@@ -88,7 +88,7 @@ class PageOptions implements Page {
 	public function add_page() {
 
 		add_submenu_page(
-			'edit.php?post_type=project_item',
+			'translationmanager',
 			esc_html__( 'Settings', 'translationmanager' ),
 			esc_html__( 'Settings', 'translationmanager' ),
 			'manage_options',

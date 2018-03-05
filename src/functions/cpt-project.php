@@ -21,6 +21,7 @@ function register_translationmanager_project_posttype() {
 			'name'      => esc_html__( 'Project', 'translationmanager' ),
 			'menu_name' => esc_html__( 'Translation', 'translationmanager' ),
 		],
+		'show_in_menu'  => false,
 		'description'   => esc_html__( 'What you are about to order.', 'translationmanager' ),
 		'public'        => true,
 		'capabilities'  => [
