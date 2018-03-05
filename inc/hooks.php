@@ -101,7 +101,7 @@ add_filter( 'plugin_row_meta', function ( array $links, $file ) {
 
 	if ( false !== strpos( $file, 'translationmanager.php' ) ) {
 		$links[1] = strip_tags( __(
-			'By <a href="https://eurotext.de/">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>',
+			'By <a href="https://eurotext.de/en">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>',
 			'translationmanager'
 		), '<a>' );
 	}
