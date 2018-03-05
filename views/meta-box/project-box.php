@@ -5,7 +5,7 @@
 			<?php esc_html_e( 'Status', 'translationmanager' ); ?>
 		</h2>
 		<div class="inside">
-			<?php $info->dispatch(); ?>
+			<?php $info->render_template(); ?>
 		</div>
 	</div>
 </div>

@@ -21,24 +21,6 @@ use Translationmanager\Domain\Language;
 class Translation implements Metabox {
 
 	/**
-	 * The Metabox ID
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The metabox ID
-	 */
-	const ID = 'translationmanager_translation_box';
-
-	/**
-	 * The Context
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The metabox position
-	 */
-	const CONTEXT = 'side';
-
-	/**
 	 * Set Hooks
 	 *
 	 * @since 1.0.0
@@ -89,11 +71,11 @@ class Translation implements Metabox {
 		] ) );
 
 		add_meta_box(
-			static::ID,
+			'translationmanager_translation_box',
 			esc_html__( 'Inquiry for translation', 'translationmanager' ),
 			[ $this, 'render_template' ],
 			$box_screen,
-			self::CONTEXT
+			'side'
 		);
 	}
 
@@ -134,11 +116,12 @@ class Translation implements Metabox {
 	}
 
 	/**
+	 * Get Language
 	 *
 	 * @since 1.0.0
 	 * @todo  Fetch real languages.
 	 *
-	 * @return Language[]
+	 * @return Language[] A list of allowed languages
 	 */
 	public function get_languages() {
 
@@ -146,9 +129,11 @@ class Translation implements Metabox {
 	}
 
 	/**
+	 * Get Projects
 	 *
 	 * @since 1.0.0
-	 * @return array
+	 *
+	 * @return array A collection of project
 	 */
 	public function get_projects() {
 
@@ -156,9 +141,11 @@ class Translation implements Metabox {
 	}
 
 	/**
+	 * Get Recent Project Name
 	 *
 	 * @since 1.0.0
-	 * @return int|null|string|\WP_Error
+	 *
+	 * @return mixed Whatever the get_term_field returns
 	 */
 	public function get_recent_project_name() {
 
@@ -170,9 +157,11 @@ class Translation implements Metabox {
 	}
 
 	/**
+	 * Get Recent Project ID
 	 *
 	 * @since 1.0.0
-	 * @return int|null
+	 *
+	 * @return mixed Whatever the get_user_meta returns
 	 */
 	public function get_recent_project_id() {
 

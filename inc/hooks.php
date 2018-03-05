@@ -35,7 +35,6 @@ add_filter( 'bulk_post_updated_messages', 'Translationmanager\\Functions\\filter
 add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_order_posttype' );
 add_action( 'admin_head', 'Translationmanager\\Functions\\order_remove_month' );
 add_action( 'trashed_post', 'Translationmanager\\Functions\\delete_post_order_on_trashing' );
-add_action( 'add_meta_boxes', [ new \Translationmanager\MetaBox\OrderInfo( 0 ), 'add_meta_box' ] );
 
 // Projects Taxonomy.
 add_action( 'init', 'Translationmanager\\Functions\\register_projects_taxonomy' );

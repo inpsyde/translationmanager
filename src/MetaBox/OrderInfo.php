@@ -14,24 +14,13 @@ use Translationmanager\Utils\TimeZone;
 /**
  * Class OrderInfo
  *
+ * @fixme This is an old implementation, please remove the class from MetaBox package, instead try to solve by creating a new package for this kind of things.
+ *        see template_project_box_form_in_edit_page() function to know what this class is used for.
+ *
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
 class OrderInfo implements Metabox {
-
-	/**
-	 * The metabox ID
-	 *
-	 * @since 1.0.0
-	 */
-	const ID = 'translationmanager_order_info';
-
-	/**
-	 * Context for the metabox
-	 *
-	 * @since 1.0.0
-	 */
-	const CONTEXT = 'side';
 
 	/**
 	 * Projects Term ID
@@ -53,17 +42,33 @@ class OrderInfo implements Metabox {
 	}
 
 	/**
+	 * Set Hooks
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function init() {
+
+//		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function add_meta_box() {
 
-		add_meta_box(
-			static::ID,
-			esc_html__( 'Order information', 'translationmanager' ),
-			[ $this, 'render_template' ],
-			'tm_order',
-			self::CONTEXT
-		);
+//		if ( ! current_user_can( 'manage_options' ) ) {
+//			return;
+//		}
+//
+//		add_meta_box(
+//			'translationmanager_order_info',
+//			esc_html__( 'Order information', 'translationmanager' ),
+//			[ $this, 'render_template' ],
+//			'tm_order',
+//			'side'
+//		);
 	}
 
 	/**
