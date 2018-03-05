@@ -195,6 +195,8 @@ function project_global_status( \WP_Term $project_term ) {
  *
  * @since 1.0.0
  *
+ * @throws \Translationmanager\Api\ApiException In case the project cannot be created.
+ *
  * @param \WP_Term $project_term The project term associated.
  *
  * @return mixed Whatever the update_term_meta returns
@@ -212,10 +214,6 @@ function create_project_order( \WP_Term $project_term ) {
 			$project_term->name
 		)
 	);
-
-	if ( ! $project_id ) {
-		return false;
-	}
 
 	// Posts get collected by post type.
 	$post_types    = [];

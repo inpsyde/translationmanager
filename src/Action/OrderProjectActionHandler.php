@@ -3,10 +3,12 @@
 namespace Translationmanager\Action;
 
 use Brain\Nonces\NonceInterface;
+use Translationmanager\Api\ApiException;
+use Translationmanager\Api\Responses;
 use Translationmanager\Auth\AuthRequest;
+use Translationmanager\Notice\TransientNoticeService;
 use function Translationmanager\Functions\create_project_order;
 use function Translationmanager\Functions\redirect_admin_page_network;
-use function Translationmanager\Functions\update_project_order_meta;
 
 /**
  * Class OrderProjectActionHandler
@@ -79,16 +81,19 @@ class OrderProjectActionHandler implements ActionHandle {
 		$data = $this->request_data();
 
 		if ( ! $data ) {
-			throw new ActionException( 'Request is valid but no data found in it.' );
+			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
 		}
 
 		$term = get_term_by( 'slug', $data['_translationmanager_project_id'], 'translationmanager_project' );
 
-		if ( ! create_project_order( $term ) ) {
-			throw new ActionException( sprintf(
-				'Impossible to update the project order meta for project %s',
-				esc_html( $term->name )
-			) );
+		try {
+			create_project_order( $term );
+		} catch ( ApiException $e ) {
+			TransientNoticeService::add_notice( sprintf(
+				esc_html__( 'translatioinMANAGER: Server response with a %1$d : %2$s', 'translationmanager' ),
+				$e->getCode(),
+				( new Responses() )->response_by_id( $e->getCode() )
+			), 'error' );
 		}
 
 		redirect_admin_page_network( 'edit.php?', [

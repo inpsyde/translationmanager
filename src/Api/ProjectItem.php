@@ -47,6 +47,8 @@ class ProjectItem {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @throws \Translationmanager\Api\ApiException In case the project item cannot be created.
+	 *
 	 * @param int    $project_id
 	 * @param string $post_type_name
 	 * @param string $target_language
@@ -68,7 +70,10 @@ class ProjectItem {
 		);
 
 		if ( ! isset( $body['id'] ) ) {
-			return null;
+			throw new ApiException(
+				isset( $body['message'] ) ? $body['message'] : esc_html__( 'Unknown exception during Create the project item.' ),
+				isset( $body['code'] ) ? $body['code'] : 501
+			);
 		}
 
 		return (int) $body['id'];

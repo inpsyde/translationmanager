@@ -6,6 +6,7 @@ use Brain\Nonces\NonceInterface;
 use Translationmanager\Auth\AuthRequest;
 use function Translationmanager\Functions\action_project_add_translation;
 use function Translationmanager\Functions\redirect_admin_page_network;
+use Translationmanager\Notice\TransientNoticeService;
 
 /**
  * Class AddTranslationActionHandler
@@ -79,7 +80,7 @@ class AddTranslationActionHandler implements ActionHandle {
 		$data = $this->request_data();
 
 		if ( ! $data ) {
-			throw new ActionException( 'Request is valid but no data found in it.' );
+			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
 		}
 
 		$updater = new \Translationmanager\ProjectUpdater();
@@ -92,7 +93,7 @@ class AddTranslationActionHandler implements ActionHandle {
 				'post_ID'                       => $data['post_ID'],
 			] );
 		} catch ( \Exception $e ) {
-			throw new ActionException( $e->getMessage(), $e->getCode() );
+			TransientNoticeService::add_notice( $e->getMessage(), 'error' );
 		}
 
 		if ( false === $project ) {

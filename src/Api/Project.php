@@ -55,6 +55,8 @@ class Project {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @throws ApiException In case the project cannot be created.
+	 *
 	 * @param \Translationmanager\Domain\Project $project The project info needed to create the project in the server.
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
@@ -64,7 +66,10 @@ class Project {
 		$body = $this->api->post( self::URL, [], $project->to_header_array() );
 
 		if ( ! isset( $body['id'] ) ) {
-			return null;
+			throw new ApiException(
+				isset( $body['message'] ) ? $body['message'] : esc_html__( 'Unknown exception during Create the project.' ),
+				isset( $body['code'] ) ? $body['code'] : 501
+			);
 		}
 
 		return (int) $body['id'];

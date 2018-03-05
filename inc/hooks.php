@@ -78,6 +78,10 @@ add_action( 'admin_head', function () {
 			';
 	}
 } );
+add_action( 'all_admin_notices', function () {
+
+	\Translationmanager\Notice\TransientNoticeService::show();
+} );
 
 add_filter( 'plugin_row_meta', function ( array $links, $file ) {
 

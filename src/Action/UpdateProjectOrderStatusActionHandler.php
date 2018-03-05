@@ -7,6 +7,7 @@ use Translationmanager\Auth\AuthRequest;
 use function Translationmanager\Functions\project_global_status;
 use function Translationmanager\Functions\redirect_admin_page_network;
 use function Translationmanager\Functions\set_unique_term_meta;
+use Translationmanager\Notice\TransientNoticeService;
 use Translationmanager\Utils\TimeZone;
 
 /**
@@ -80,7 +81,7 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 		$data = $this->request_data();
 
 		if ( ! $data ) {
-			throw new ActionException( 'Request is valid but no data found in it.' );
+			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
 		}
 
 		try {
@@ -97,7 +98,7 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 				$this->update_project_translated_at( $project );
 			}
 		} catch ( \Exception $e ) {
-			throw new ActionException( $e->getMessage(), $e->getCode() );
+			TransientNoticeService::add_notice( $e->getMessage(), 'error' );
 		}
 
 		if ( false === $project ) {

@@ -15,8 +15,6 @@ interface ActionHandle {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @throws ActionException In case the request cannot be handled correctly.
-	 *
 	 * @return void
 	 */
 	public function handle();
