@@ -54,7 +54,7 @@ add_action( 'plugins_loaded', function () {
 	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();
 
 	// Meta Boxes.
-	( new \Translationmanager\MetaBox\TranslationBox() )->init();
+	( new \Translationmanager\MetaBox\Translation() )->init();
 
 	// Restrict Manage Posts.
 	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();

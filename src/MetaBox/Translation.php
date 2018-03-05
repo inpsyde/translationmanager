@@ -13,12 +13,12 @@ use Translationmanager\Functions;
 use Translationmanager\Domain\Language;
 
 /**
- * Class TranslationBox
+ * Class Translation
  *
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
-class TranslationBox {
+class Translation {
 
 	/**
 	 * @since 1.0.0
