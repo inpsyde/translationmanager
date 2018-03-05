@@ -18,25 +18,40 @@ use Translationmanager\Domain\Language;
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
-class Translation {
+class Translation implements Metabox {
 
 	/**
+	 * The Metabox ID
+	 *
 	 * @since 1.0.0
+	 *
+	 * @var string The metabox ID
 	 */
 	const ID = 'translationmanager_translation_box';
 
 	/**
+	 * The Context
+	 *
 	 * @since 1.0.0
+	 *
+	 * @var string The metabox position
 	 */
 	const CONTEXT = 'side';
 
+	/**
+	 * Set Hooks
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
 	public function init() {
 
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
 	}
 
 	/**
-	 * @since 1.0.0
+	 * @inheritdoc
 	 */
 	public function add_meta_box() {
 
@@ -76,16 +91,16 @@ class Translation {
 		add_meta_box(
 			static::ID,
 			esc_html__( 'Inquiry for translation', 'translationmanager' ),
-			[ $this, 'dispatch' ],
+			[ $this, 'render_template' ],
 			$box_screen,
 			self::CONTEXT
 		);
 	}
 
 	/**
-	 * @since 1.0.0
+	 * @inheritdoc
 	 */
-	public function dispatch() {
+	public function render_template() {
 
 		$template = Functions\get_template( 'views/meta-box/translation-box.php' );
 
@@ -94,6 +109,14 @@ class Translation {
 		}
 
 		require $template;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function nonce() {
+
+		return new \Brain\Nonces\WpNonce( 'add_translation' );
 	}
 
 	/**
@@ -154,17 +177,5 @@ class Translation {
 	public function get_recent_project_id() {
 
 		return get_user_meta( get_current_user_id(), 'translationmanager_project_recent', true );
-	}
-
-	/**
-	 * Nonce Instance
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return \Brain\Nonces\WpNonce The nonce instance
-	 */
-	public function nonce() {
-
-		return new \Brain\Nonces\WpNonce( 'add_translation' );
 	}
 }

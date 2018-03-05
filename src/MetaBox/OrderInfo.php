@@ -17,7 +17,7 @@ use Translationmanager\Utils\TimeZone;
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
-class OrderInfo {
+class OrderInfo implements Metabox {
 
 	/**
 	 * The metabox ID
@@ -53,31 +53,23 @@ class OrderInfo {
 	}
 
 	/**
-	 * Add Meta Box
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
+	 * @inheritdoc
 	 */
 	public function add_meta_box() {
 
 		add_meta_box(
 			static::ID,
 			esc_html__( 'Order information', 'translationmanager' ),
-			[ $this, 'dispatch' ],
+			[ $this, 'render_template' ],
 			'tm_order',
 			self::CONTEXT
 		);
 	}
 
 	/**
-	 * Dispatch
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
+	 * @inheritdoc
 	 */
-	public function dispatch() {
+	public function render_template() {
 
 		$template = Functions\get_template( 'views/meta-box/order-info.php' );
 
@@ -86,6 +78,14 @@ class OrderInfo {
 		}
 
 		require $template;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function nonce() {
+
+		return new \Brain\Nonces\WpNonce( 'order_translation' );
 	}
 
 	/**
@@ -208,17 +208,5 @@ class OrderInfo {
 		$posts = Functions\get_project_items( $this->projects_term_id );
 
 		return count( $posts );
-	}
-
-	/**
-	 * Nonce Instance
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return \Brain\Nonces\WpNonce The nonce instance
-	 */
-	public function nonce() {
-
-		return new \Brain\Nonces\WpNonce( 'order_translation' );
 	}
 }
