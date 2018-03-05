@@ -25,7 +25,10 @@ add_action( 'plugins_loaded', function () {
 	}
 	require_once __DIR__ . '/vendor/autoload.php';
 
-	$requirements = new Translationmanager\Requirements();
+	$requirements    = new Translationmanager\Requirements();
+	$plugin          = new \Translationmanager\Plugin();
+	$plugin_settings = new \Translationmanager\Setting\PluginSettings();
+
 	// Check the requirements and in case prevent code execution by returning.
 	if ( ! $requirements->is_php_version_ok() ) {
 		add_action( 'admin_notices', function () use ( $requirements ) {
@@ -42,18 +45,36 @@ add_action( 'plugins_loaded', function () {
 		return;
 	}
 
-	$plugin = new \Translationmanager\Plugin();
-
 	// Include modules.
 	Translationmanager\Functions\include_modules();
 
-	// Initialize Options Page.
-	( new \Translationmanager\Pages\PageOptions(
-		new \Translationmanager\Setting\PluginSettings()
-	) )->init();
-
 	// Add Pages.
+	( new \Translationmanager\Pages\PageOptions( $plugin_settings ) )->init();
 	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();
+
+	// Show Notice in case Token or URL isn't set.
+	if (
+		! get_option( \Translationmanager\Setting\PluginSettings::REFRESH_TOKEN )
+		|| ! get_option( \Translationmanager\Setting\PluginSettings::URL )
+	) {
+		add_action( 'admin_notices', function () use ( $requirements ) {
+
+			translationmanager_admin_notice(
+				wp_kses( sprintf( __( // phpcs:ignore
+					'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
+					'translationmanager'
+				),
+					'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG, false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
+				),
+					[
+						'a'      => [ 'href' => true ],
+						'strong' => [],
+					]
+				),
+				'error'
+			);
+		} );
+	}
 
 	// Meta Boxes.
 	( new \Translationmanager\MetaBox\Translation() )->init();
