@@ -50,8 +50,6 @@ add_filter( 'handle_bulk_actions-edit-post', 'Translationmanager\\Functions\\bul
 add_filter( 'handle_bulk_actions-edit-page', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
 
 // Translations.
-add_action( 'admin_menu', 'Translationmanager\\Functions\\add_translation_menu_page' );
-add_action( 'load-dashboard_page_translationmanager_add_translation', 'Translationmanager\\Functions\\add_translation_action' );
 add_action( 'add_meta_boxes', 'Translationmanager\\Functions\\add_translation_meta_box' );
 
 // Misc.
