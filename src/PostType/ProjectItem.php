@@ -168,11 +168,7 @@ class ProjectItem {
 				$languages = Functions\current_language();
 
 				if ( $languages ) {
-					printf(
-						'<a href="%1$s">%2$s</a>',
-						esc_url( get_blog_details( get_current_blog_id() )->siteurl ),
-						esc_html( $languages->get_label() )
-					);
+					echo esc_html( $languages->get_label() );
 					break;
 				}
 
