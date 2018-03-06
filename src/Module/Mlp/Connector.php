@@ -101,7 +101,7 @@ class Connector {
 	 */
 	public function current_language() {
 
-		$site_id   = get_current_site()->id;
+		$site_id   = get_current_blog_id();
 		$lang_iso  = mlp_get_blog_language( $site_id, false );
 		$lang_name = mlp_get_lang_by_iso( $lang_iso );
 
