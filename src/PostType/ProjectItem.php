@@ -13,9 +13,6 @@ class ProjectItem {
 
 	const COLUMN_LANGUAGE = 'translationmanager_language';
 
-	public static function register_post_status() {
-	}
-
 	public static function modify_columns( $columns ) {
 
 		if ( ! static::is_subject() ) {
