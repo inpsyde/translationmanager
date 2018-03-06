@@ -6,41 +6,23 @@
 	"config" : {
 		"sort-packages" : true
 	},
-	"extra" : {
-		"wordpress-install-dir" : "html",
-		"installer-paths" : {
-			"html/wp-content/plugins/{$name}" : [
-				"type:wordpress-plugin"
-			],
-			"html/wp-content/themes/{$name}" : [
-				"type:wordpress-theme"
-			]
-		}
-	},
-	"repositories" : [
+	"authors" : [
 		{
-			"type" : "composer",
-			"url" : "https://wpackagist.org"
+			"name" : "Inpsyde GmbH",
+			"email" : "info@inpsyde.com",
+			"homepage" : "https://inpsyde.com/en/"
 		}
 	],
 	"require" : {
-		"php" : ">=5.6",
-		"brain/nonces": "1.0.*"
+		"brain/nonces" : "1.0.*"
 	},
 	"require-dev" : {
-		"johnpbloch/wordpress-core" : "~4.7",
-		"johnpbloch/wordpress-core-installer" : "~0.2",
-		"wpackagist-plugin/multilingual-press" : "^2.6",
+		"php" : ">=5.6",
 		"phpunit/phpunit" : "~5",
 		"brain/monkey" : "2.*",
-		"sourcerer-mike/wp-readme-validator" : "dev-master",
 		"squizlabs/php_codesniffer" : "~2.7",
 		"wimg/php-compatibility" : "^7.0",
-		"wp-coding-standards/wpcs" : "dev-master",
-		"wpackagist-plugin/debug-bar" : "~0",
-		"wpackagist-plugin/debug-bar-actions-and-filters-addon" : "~1",
-		"wpackagist-plugin/debug-bar-constants" : "~1",
-		"wpackagist-plugin/debug-bar-screen-info" : "~1"
+		"wp-coding-standards/wpcs" : "dev-master"
 	},
 	"autoload" : {
 		"files" : [
