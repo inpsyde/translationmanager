@@ -95,6 +95,8 @@
  * ===================================== */
 
 /* Hide Actions */
-.edit-php.post-type-project_item ul.subsubsub {
+.edit-php.post-type-project_item ul.subsubsub,
+/* Hide the Search Box */
+.post-type-project_item #posts-filter .search-box {
   display: none;
 }

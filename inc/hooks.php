@@ -52,35 +52,6 @@ add_filter( 'handle_bulk_actions-edit-post', 'Translationmanager\\Functions\\bul
 add_filter( 'handle_bulk_actions-edit-page', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
 
 // Misc.
-add_action( 'admin_head', function () {
-
-	$screen = get_current_screen();
-	$input  = (object) [
-		'taxonomy'                   => filter_input( INPUT_GET, 'taxonomy', FILTER_SANITIZE_STRING ),
-		'post_type'                  => filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ),
-		'translationmanager_project' => filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ),
-	];
-
-	if ( 'edit' === $screen->base
-	     && $input->translationmanager_project
-	     && 'project_item' === $input->post_type
-	) {
-		echo '<style type="text/css">.post-type-project_item #posts-filter .search-box {display: none !important;}</style>';
-	}
-
-	if ( 'edit-tags' === $screen->base
-	     && 'translationmanager_project' === $input->taxonomy
-	     && 'project_item' === $input->post_type
-	) {
-		echo '
-			<style type="text/css">
-				.post-type-project_item .row-actions span.edit, 
-				.post-type-project_item .row-actions span.inline.hide-if-no-js, 
-				.post-type-project_item .row-actions span.view {display: none !important;}
-			</style>
-			';
-	}
-} );
 add_action( 'all_admin_notices', function () {
 
 	\Translationmanager\Notice\TransientNoticeService::show();
