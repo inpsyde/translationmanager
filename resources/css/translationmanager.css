@@ -82,9 +82,19 @@
 /* ========================================
  * Form Order Request
  * ===================================== */
+
 .translationmanager-order-or-update-projects .no-projects-found {
   color:      red;
   float:      right;
   max-width:  200px;
   text-align: right;
+}
+
+/* ========================================
+ * Project Item Edit Page
+ * ===================================== */
+
+/* Hide Actions */
+.edit-php.post-type-project_item ul.subsubsub {
+  display: none;
 }

@@ -9,7 +9,6 @@
 add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_project_posttype' );
 add_action( 'admin_head', 'Translationmanager\\Functions\\project_remove_month' );
 add_action( 'admin_init', [ \Translationmanager\PostType\ProjectItem::class, 'register_post_status' ] );
-add_action( 'admin_head-edit.php', 'Translationmanager\\Functions\\hide_project_actions_links_from_edit_page' );
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
 add_action( 'admin_menu', function () {
 

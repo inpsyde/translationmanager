@@ -234,22 +234,6 @@ function filter_bulk_updated_messages_for_project( array $bulk_messages, array $
 }
 
 /**
- * Hide the actions links from the edit page
- *
- * @since 1.0.0
- *
- * @return void
- */
-function hide_project_actions_links_from_edit_page() {
-
-	if ( ! get_current_screen() || 'project_item' !== get_current_screen()->post_type ) {
-		return;
-	}
-
-	echo '<style>ul.subsubsub { display: none; }</style>';
-}
-
-/**
  * Fetch all project items.
  *
  * @param int $term_id The term id from which retrieve the posts.
