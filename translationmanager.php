@@ -48,6 +48,9 @@ add_action( 'plugins_loaded', function () {
 	// Include modules.
 	Translationmanager\Functions\include_modules();
 
+	// Register Post Types & Taxonomies.
+	( new \Translationmanager\PostType\ProjectItem( $plugin ) )->init();
+
 	// Add Pages.
 	( new \Translationmanager\Pages\PluginMainPage( $plugin ) )->init();
 	( new \Translationmanager\Pages\PageOptions( $plugin_settings ) )->init();

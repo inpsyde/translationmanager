@@ -6,8 +6,6 @@
  */
 
 // CPT Project.
-add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_project_posttype' );
-add_action( 'admin_head', 'Translationmanager\\Functions\\project_remove_month' );
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
 add_action( 'admin_menu', function () {
 
@@ -27,15 +25,6 @@ add_action( 'admin_menu', function () {
 	$submenu['translationmanager'][0][2] = admin_url( 'edit-tags.php?taxonomy=translationmanager_project&post_type=project_item' );
 } );
 
-add_filter( 'bulk_actions-edit-project_item', 'Translationmanager\\Functions\\filter_bulk_actions_labels_for_project' );
-add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actions_for_project', 10, 2 );
-add_filter( 'display_post_states', 'Translationmanager\\Functions\\remove_states_from_project', 10, 2 );
-add_filter( 'views_edit-project_item', 'Translationmanager\\Functions\\template_project_box_form_in_edit_page' );
-add_filter( 'views_edit-project_item', 'Translationmanager\\Functions\\template_project_title_description_form_in_edit_page' );
-add_filter( 'manage_project_item_posts_columns', [
-	\Translationmanager\PostType\ProjectItem::class,
-	'modify_columns',
-] );
 add_filter( 'manage_edit-translationmanager_project_columns', [
 	\Translationmanager\Taxonomy\Project::class,
 	'modify_columns',
@@ -44,7 +33,6 @@ add_filter( 'translationmanager_project_row_actions', [
 	\Translationmanager\Taxonomy\Project::class,
 	'modify_row_actions',
 ], 10, 2 );
-add_filter( 'bulk_post_updated_messages', 'Translationmanager\\Functions\\filter_bulk_updated_messages_for_project', 10, 2 );
 
 // CPT Order.
 add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_order_posttype' );
