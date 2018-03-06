@@ -48,15 +48,9 @@ function project_remove_month() {
 
 	$screen = get_current_screen();
 
-	if ( ! $screen ) {
-		return;
+	if ( $screen && 'project_item' === $screen->post_type ) {
+		add_filter( 'months_dropdown_results', '__return_empty_array' );
 	}
-
-	if ( 'project_item' !== $screen->post_type ) {
-		return;
-	}
-
-	add_filter( 'months_dropdown_results', '__return_empty_array' );
 }
 
 /**
