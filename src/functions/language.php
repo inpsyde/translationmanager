@@ -83,6 +83,15 @@ function current_lang_code() {
 	return $current_language->get_lang_code();
 }
 
+/**
+ * Get Language Label
+ *
+ * @since 1.0.0
+ *
+ * @param string $lang_code The language code to convert to label.
+ *
+ * @return string The language label
+ */
 function translationmanager_get_language_label( $lang_code ) {
 
 	$languages = get_languages();

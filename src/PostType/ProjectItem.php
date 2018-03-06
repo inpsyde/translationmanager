@@ -17,24 +17,6 @@ class ProjectItem {
 	const STATUS_TRASH = 'trash';
 
 	/**
-	 * Column Project
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The name of the project column
-	 */
-	const COLUMN_PROJECT = 'translationmanager_project';
-
-	/**
-	 * Language Column
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string THe name of the column language
-	 */
-	const COLUMN_LANGUAGE = 'translationmanager_language';
-
-	/**
 	 * Plugin Instance
 	 *
 	 * @since 1.0.0
@@ -67,7 +49,9 @@ class ProjectItem {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		add_action( 'admin_head', [ $this, 'remove_month_dropdown_results' ] );
 		add_action( 'manage_project_item_posts_columns', [ $this, 'filter_columns' ], 10, 2 );
+		add_action( 'manage_edit-project_item_sortable_columns', [ $this, 'filter_sortable_columns' ], 10, 2 );
 		add_action( 'manage_project_item_posts_custom_column', [ $this, 'print_column' ], 10, 2 );
+		add_action( 'pre_get_posts', [ $this, 'filter_order_by' ] );
 
 		add_filter( 'bulk_actions-edit-project_item', [ $this, 'filter_bulk_actions_labels' ] );
 		add_filter( 'post_row_actions', [ $this, 'filter_row_actions' ], 10, 2 );
@@ -124,9 +108,30 @@ class ProjectItem {
 		unset( $columns['date'] );
 
 		$columns = $this->column_project( $columns );
-		$columns = $this->column_language( $columns );
+		$columns = $this->column_languages( $columns );
+
+		$columns['translationmanager_added_by'] = esc_html__( 'Added By', 'translationmanager' );
+		$columns['translationmanager_added_at'] = esc_html__( 'Added At', 'translationmanager' );
 
 		return $columns;
+	}
+
+	/**
+	 * Filter Sortable Columns
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $columns The sortable columns.
+	 *
+	 * @return array The filtered sortable columns
+	 */
+	public function filter_sortable_columns( $columns ) {
+
+		return array_merge( $columns, [
+			'translationmanager_added_by'               => 'translationmanager_added_by',
+			'translationmanager_added_at'               => 'translationmanager_added_at',
+			'translationmanager_target_language_column' => 'translationmanager_target_language_column',
+		] );
 	}
 
 	/**
@@ -140,7 +145,7 @@ class ProjectItem {
 	public function print_column( $column_name, $post_id ) {
 
 		switch ( $column_name ) {
-			case static::COLUMN_PROJECT:
+			case 'translationmanager_project':
 				$terms = get_the_terms( $post_id, 'translationmanager_project' );
 
 				if ( ! $terms ) {
@@ -159,19 +164,82 @@ class ProjectItem {
 				}
 				break;
 
-			case static::COLUMN_LANGUAGE:
-				$lang_id   = get_post_meta( $post_id, '_translationmanager_target_id', true );
-				$languages = Functions\get_languages();
-				$label     = __( 'Unknown', 'translationmanager' );
+			case 'translationmanager_source_language_column':
+				$languages = Functions\current_language();
 
-				if ( $lang_id && isset( $languages[ $lang_id ] ) ) {
-					$label = $languages[ $lang_id ]->get_label();
+				if ( $languages ) {
+					printf(
+						'<a href="%1$s">%2$s</a>',
+						esc_url( get_blog_details( get_current_blog_id() )->siteurl ),
+						esc_html( $languages->get_label() )
+					);
+					break;
 				}
 
-				// Print the label.
-				echo esc_html( $label );
+				// In case of failure.
+				echo esc_html__( 'Unknown', 'translationmanager' );
+				break;
+
+			case 'translationmanager_target_language_column':
+				$lang_id   = get_post_meta( $post_id, '_translationmanager_target_id', true );
+				$languages = Functions\get_languages();
+
+				if ( $lang_id && isset( $languages[ $lang_id ] ) ) {
+					printf(
+						'<a href="%1$s">%2$s</a>',
+						esc_url( get_blog_details( intval( $lang_id ) )->siteurl ),
+						esc_html( $languages[ $lang_id ]->get_label() )
+					);
+					break;
+				}
+
+				// In case of failure.
+				echo esc_html__( 'Unknown', 'translationmanager' );
+				break;
+
+			case 'translationmanager_added_by':
+				$user = new \WP_User( get_post( $post_id )->post_author );
+				echo esc_html( esc_html( ucfirst( Functions\username( $user ) ) ) );
+				break;
+
+			case 'translationmanager_added_at':
+				echo esc_html( get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post_id ) );
 				break;
 		}
+	}
+
+	/**
+	 * Filter filter order by
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param \WP_Query $query The current query to filter.
+	 *
+	 * @return void
+	 */
+	public function filter_order_by( \WP_Query $query ) {
+
+		if ( $this->is_project_item_cpt() ) {
+			$orderby = $query->get( 'orderby' );
+
+			switch ( $orderby ) {
+				case 'translationmanager_added_by':
+					$query->set( 'orderby', 'author' );
+					break;
+
+				case 'translationmanager_added_at':
+					$query->set( 'orderby', 'date' );
+					break;
+
+				case 'translationmanager_target_language_column':
+					$query->set( 'meta_key', '_translationmanager_target_id' );
+					$query->set( 'orderby', 'meta_value' );
+					break;
+			}
+		}
+
+		// Remove after done.
+		remove_action( 'pre_get_posts', [ $this, 'filter_order_by' ] );
 	}
 
 	/**
@@ -383,7 +451,7 @@ class ProjectItem {
 			return $columns;
 		}
 
-		$columns[ self::COLUMN_PROJECT ] = esc_html__( 'Project', 'translationmanager' );
+		$columns['translationmanager_project'] = esc_html__( 'Project', 'translationmanager' );
 
 		return $columns;
 	}
@@ -397,9 +465,10 @@ class ProjectItem {
 	 *
 	 * @return array The filtered columns
 	 */
-	private function column_language( $columns ) {
+	private function column_languages( $columns ) {
 
-		$columns[ self::COLUMN_LANGUAGE ] = esc_html__( 'Target language', 'translationmanager' );
+		$columns['translationmanager_source_language_column'] = esc_html__( 'Source language', 'translationmanager' );
+		$columns['translationmanager_target_language_column'] = esc_html__( 'Target language', 'translationmanager' );
 
 		return $columns;
 	}

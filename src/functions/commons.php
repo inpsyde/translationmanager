@@ -216,3 +216,30 @@ function set_unique_term_meta( \WP_Term $term, $meta, $value ) {
 
 	return update_term_meta( $term->term_id, $meta, $value );
 }
+
+/**
+ * Retrieve the username
+ *
+ * @since 1.0.0
+ *
+ * @param \WP_User $user The user instance from which retrieve the username.
+ *
+ * @return string The username
+ */
+function username( \WP_User $user ) {
+
+	$firstname = $user->first_name ?: '';
+	$lastname  = $user->last_name ?: '';
+
+	if ( $firstname && $lastname ) {
+		return $firstname . ' ' . $lastname;
+	}
+
+	$username = $user->display_name ?: '';
+
+	if ( ! $username ) {
+		$username = $user->user_nicename ?: '';
+	}
+
+	return $username;
+}
