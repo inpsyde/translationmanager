@@ -7,23 +7,6 @@
 
 // CPT Project.
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
-add_action( 'admin_menu', function () {
-
-	add_submenu_page(
-		'translationmanager',
-		esc_html__( 'Projects', 'translationmanager' ),
-		esc_html__( 'Projects', 'translationmanager' ),
-		'manage_options',
-		'translationmanager-projects',
-		'__return_false'
-	);
-} );
-add_action( 'admin_menu', function () {
-
-	global $submenu;
-
-	$submenu['translationmanager'][0][2] = admin_url( 'edit-tags.php?taxonomy=translationmanager_project&post_type=project_item' );
-} );
 
 add_filter( 'manage_edit-translationmanager_project_columns', [
 	\Translationmanager\Taxonomy\Project::class,

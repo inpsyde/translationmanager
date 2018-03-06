@@ -49,15 +49,15 @@ class ProjectItem {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		add_action( 'admin_head', [ $this, 'remove_month_dropdown_results' ] );
 		add_action( 'manage_project_item_posts_columns', [ $this, 'filter_columns' ], 10, 2 );
-		add_action( 'manage_edit-project_item_sortable_columns', [ $this, 'filter_sortable_columns' ], 10, 2 );
-		add_action( 'manage_project_item_posts_custom_column', [ $this, 'print_column' ], 10, 2 );
+		add_action( 'manage_project_item_sortable_columns', [ $this, 'filter_sortable_columns' ], 10, 2 );
+		add_action( 'manage_project_item_custom_column', [ $this, 'print_column' ], 10, 2 );
 		add_action( 'pre_get_posts', [ $this, 'filter_order_by' ] );
 
-		add_filter( 'bulk_actions-edit-project_item', [ $this, 'filter_bulk_actions_labels' ] );
-		add_filter( 'post_row_actions', [ $this, 'filter_row_actions' ], 10, 2 );
+		add_filter( 'bulk_actions-project_item', [ $this, 'filter_bulk_actions_labels' ] );
+		add_filter( 'project_item_row_actions', [ $this, 'filter_row_actions' ], 10, 2 );
 		add_filter( 'display_post_states', [ $this, 'remove_states_from_table_list' ], 10, 2 );
-		add_filter( 'views_edit-project_item', [ $this, 'order_project_box_form' ] );
-		add_filter( 'views_edit-project_item', [ $this, 'project_form' ] );
+		add_filter( 'views_project_item', [ $this, 'order_project_box_form' ] );
+		add_filter( 'views_project_item', [ $this, 'project_form' ] );
 		add_filter( 'bulk_post_updated_messages', [ $this, 'filter_bulk_updated_messages' ], 10, 2 );
 	}
 
@@ -263,9 +263,7 @@ class ProjectItem {
 	 */
 	public function filter_bulk_actions_labels( array $actions ) {
 
-		unset( $actions['edit'] );
-
-		if ( isset( $actions['trash'] ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
 			$actions['trash'] = esc_html__( 'Remove from project', 'translationmanager' );
 		}
 
@@ -284,7 +282,7 @@ class ProjectItem {
 	 */
 	public function filter_row_actions( array $actions, \WP_Post $post ) {
 
-		if ( $this->is_project_item_cpt() && isset( $actions['trash'] ) ) {
+		if ( $this->is_project_item_cpt() ) {
 			$actions = [
 				'trash' => sprintf(
 					'<a href="%s" class="submitdelete" aria-label="%s">%s</a>',

@@ -64,7 +64,7 @@ class Project {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $term_id
+	 * @param int $term_id The term id from which retrieve the project name.
 	 *
 	 * @return string
 	 */
@@ -72,11 +72,11 @@ class Project {
 
 		return get_admin_url(
 			null,
-			'edit.php?' .
-			http_build_query( [
+			add_query_arg( [
+				'page'                       => 'translationmanager-project',
 				'translationmanager_project' => get_term_field( 'slug', $term_id ),
 				'post_type'                  => 'project_item',
-			] )
+			], 'admin.php' )
 		);
 	}
 
