@@ -150,10 +150,10 @@ class ProjectItem {
 				foreach ( $terms as $term ) {
 					printf(
 						'<a href="%s">%s</a>',
-						'edit.php?' . http_build_query( [
+						add_query_arg( [
 							'translationmanager_project' => $term->slug,
 							'post_type'                  => 'project_item',
-						] ),
+						], 'edit.php' ),
 						$term->name
 					);
 				}
