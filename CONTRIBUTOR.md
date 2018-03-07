@@ -40,7 +40,7 @@ Within your module you might be interested in the following.
 
 ### Translation data
 
-`Translationmanager\TranslationData` is a DTO object that is used to encapsulate that data that is being sent and received to and
+`Translationmanager\TranslationData` is a data transfer object that is used to encapsulate that data that is being sent and received to and
 from API.
 
 There are accessor methods for values to be translated and metadata (that will be returned unchanged).
