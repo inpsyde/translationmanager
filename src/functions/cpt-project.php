@@ -5,13 +5,16 @@ namespace Translationmanager\Functions;
 /**
  * Fetch all project items.
  *
- * @param int $term_id The term id from which retrieve the posts.
+ * @since 1.0.0
+ *
+ * @param int   $term_id The term id from which retrieve the posts.
+ * @param array $args    Additional arguments to set to the query. This take precedence.
  *
  * @return array The posts
  */
-function get_project_items( $term_id ) {
+function get_project_items( $term_id, array $args = [] ) {
 
-	$get_posts = get_posts( [
+	$get_posts = get_posts( array_merge( [
 		'post_type'      => 'project_item',
 		'tax_query'      => [
 			[
@@ -22,7 +25,7 @@ function get_project_items( $term_id ) {
 		],
 		'posts_per_page' => - 1,
 		'post_status'    => [ 'draft', 'published' ],
-	] );
+	], $args ) );
 
 	if ( ! $get_posts || is_wp_error( $get_posts ) ) {
 		return [];

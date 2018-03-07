@@ -133,6 +133,32 @@ final class ProjectItem extends TableList {
 				$query->set( 'author', $user_id );
 			}
 		} );
+
+		$this->set_pagination();
+	}
+
+	/**
+	 * Set Pagination
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	private function set_pagination() {
+
+		global $wp_query;
+
+		if ( $wp_query->found_posts || $this->get_pagenum() === 1 ) {
+			$total_items = $wp_query->found_posts;
+		} else {
+			$total_items = (array) wp_count_posts( $this->screen->id, 'readable' );
+			$total_items = intval( $total_items['draft'] );
+		}
+
+		$this->set_pagination_args( [
+			'total_items' => $total_items,
+			'per_page'    => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
+		] );
 	}
 
 	/**
@@ -142,29 +168,32 @@ final class ProjectItem extends TableList {
 
 		?>
 		<div class="alignleft actions">
-		<?php
-		if ( 'top' === $which && ! is_singular() ) {
-			ob_start();
+			<?php
+			if ( 'top' === $which && ! is_singular() ) {
+				ob_start();
 
-			do_action( 'restrict_manage_project', $this->screen->post_type, $which );
+				do_action( 'restrict_manage_project', $this->screen->post_type, $which );
 
-			// Filters.
-			$this->target_language_filter_template();
-			$this->added_by_filter_template();
+				// Filters.
+				$this->target_language_filter_template();
+				$this->added_by_filter_template();
 
-			$output = ob_get_clean();
+				$output = ob_get_clean();
 
-			if ( ! empty( $output ) ) {
-				echo Functions\kses_post( $output ); // phpcs:ignore
-				submit_button(
-					esc_html__( 'Filter', 'translationmanager' ),
-					'',
-					'filter_action',
-					false,
-					array( 'id' => 'post-query-submit' )
-				);
+				if ( ! empty( $output ) ) {
+					echo Functions\kses_post( $output ); // phpcs:ignore
+					submit_button(
+						esc_html__( 'Filter', 'translationmanager' ),
+						'',
+						'filter_action',
+						false,
+						array( 'id' => 'post-query-submit' )
+					);
+				}
 			}
-		}
+			?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -286,7 +315,10 @@ final class ProjectItem extends TableList {
 				return [];
 			}
 
-			$this->items = Functions\get_project_items( $term->term_id );
+			$this->items = Functions\get_project_items( $term->term_id, [
+				'posts_per_page' => $this->_pagination_args['per_page'],
+				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
+			] );
 		}
 
 		return $this->items;
