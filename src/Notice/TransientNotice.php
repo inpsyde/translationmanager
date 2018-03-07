@@ -44,8 +44,15 @@ class TransientNotice implements StorableNotice {
 
 		$severity = sanitize_key( $severity );
 
-		$transient                = $this->transient();
-		$transient[ $severity ][] = wp_kses_post( $message );
+		$transient = $this->transient();
+		$message   = wp_kses_post( $message );
+
+		// If the same message is all-ready in the transient, let's skip it.
+		if ( isset( $transient[ $severity ] ) && in_array( $message, $transient[ $severity ], true ) ) {
+			return false;
+		}
+
+		$transient[ $severity ][] = $message;
 
 		return set_transient( $this->key, $transient );
 	}
