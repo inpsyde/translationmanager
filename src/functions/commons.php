@@ -46,7 +46,7 @@ function get_template( $name ) {
  */
 function redirect_admin_page_network( $page, $args, $blog_id = null, $status = 302 ) {
 
-	wp_safe_redirect( get_admin_url( $blog_id, $page . http_build_query( $args ) ), $status );
+	wp_safe_redirect( get_admin_url( $blog_id, add_query_arg( $args, $page ) ), $status );
 
 	die;
 }
