@@ -71,11 +71,11 @@ function translationmanager_api_fetch() {
 /**
  * Update Project
  *
- * @todo  Check where this function `project_update` is used or remove it?
- *
  * @api
  *
  * @since 1.0.0
+ *
+ * @throws \Exception In case the project ID cannot be retrieved.
  *
  * @param \WP_Term $project_term The project term to use to retrieve the info to update the post.
  *
@@ -86,14 +86,15 @@ function project_update( \WP_Term $project_term ) {
 	$project_id = get_term_meta( $project_term->term_id, '_translationmanager_order_id', true );
 
 	if ( ! $project_id ) {
-		// ID missing.
-		return;
+		throw new \Exception(
+			esc_html__( 'Invalid Project ID, impossible to update the project', 'translationmanager' )
+		);
 	}
 
 	$translation_data = translationmanager_api()->project()->get( $project_id );
 
 	foreach ( $translation_data['items'] as $items ) {
-		foreach ( $items['data'] as $item ) {
+		foreach ( $items as $item ) {
 			$translation = \Translationmanager\TranslationData::for_incoming( (array) $item );
 
 			/**
@@ -151,7 +152,7 @@ function project_items_statuses( \WP_Term $project_term ) {
 
 	foreach ( $translation_data['items'] as $item ) {
 		$slug              = sanitize_title( $item[0]['post_title'] );
-		$statuses[ $slug ] = $item['status'];
+		$statuses[ $slug ] = 'finished';
 	}
 
 	return $statuses;

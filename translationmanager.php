@@ -104,6 +104,10 @@ add_action( 'plugins_loaded', function () {
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'order_translation' )
 	) )->init();
+	( new \Translationmanager\Action\ImportProjectActionHandler(
+		new \Translationmanager\Auth\AuthRequestValidator(),
+		new \Brain\Nonces\WpNonce( 'order_translation' )
+	) )->init();
 
 	// Register Activation.
 	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );

@@ -57,6 +57,12 @@
 									); ?>
 								</b>
 							</li>
+
+							<input type="submit"
+							       name="translationmanager_import_project_translation"
+							       class="button button-primary"
+							       onclick="jQuery('#translationmanager_action_project_update').click();"
+							       value="<?php esc_html_e( 'Import', 'translationmanager' ); ?>"/>
 						<?php endif; ?>
 
 						<?php if ( $this->get_latest_update_request_date() instanceof \DateTime ) : ?>
