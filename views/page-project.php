@@ -10,7 +10,7 @@
 
 		<?php $bind->wp_list_table->views(); ?>
 
-		<form id="posts-filter" method="get">
+		<form id="posts-filter" method="get" action="<?php echo esc_url( admin_url( 'edit.php' ) ) ?>">
 			<?php $bind->wp_list_table->display(); ?>
 		</form>
 

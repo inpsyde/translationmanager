@@ -39,8 +39,8 @@ final class ProjectItem extends TableList {
 		$this->post_type = $post_type;
 
 		parent::__construct( [
-			'plural'   => esc_html__( 'Project', 'translationmanager' ),
-			'singular' => esc_html__( 'Project', 'translationmanager' ),
+			'plural'   => 'posts',
+			'singular' => 'post',
 			'ajax'     => false,
 			'screen'   => $this->post_type->name,
 		] );
