@@ -81,6 +81,8 @@ class AddTranslationActionHandler implements ActionHandle {
 
 		if ( ! $data ) {
 			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
+
+			return;
 		}
 
 		$updater = new \Translationmanager\ProjectUpdater();

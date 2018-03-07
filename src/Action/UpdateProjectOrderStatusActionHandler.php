@@ -82,11 +82,20 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 
 		if ( ! $data ) {
 			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
+
+			return;
 		}
 
 		try {
 			// Retrieve the project info.
 			$project = get_term_by( 'slug', $data['_translationmanager_project_id'], 'translationmanager_project' );
+
+			if ( ! $project instanceof \WP_Term ) {
+				TransientNoticeService::add_notice( esc_html__( 'Invalid Project Name.' ), 'error' );
+
+				return;
+			}
+
 			// Retrieve the generic status for the translation.
 			$status = project_global_status( $project );
 
@@ -99,11 +108,6 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 			}
 		} catch ( \Exception $e ) {
 			TransientNoticeService::add_notice( $e->getMessage(), 'error' );
-		}
-
-		if ( false === $project ) {
-			// Project has been invalidated so we don't redirect there.
-			return;
 		}
 
 		redirect_admin_page_network( 'admin.php', [

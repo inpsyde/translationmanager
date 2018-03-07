@@ -82,12 +82,20 @@ class OrderProjectActionHandler implements ActionHandle {
 
 		if ( ! $data ) {
 			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
+
+			return;
 		}
 
-		$term = get_term_by( 'slug', $data['_translationmanager_project_id'], 'translationmanager_project' );
+		$project = get_term_by( 'slug', $data['_translationmanager_project_id'], 'translationmanager_project' );
+
+		if ( ! $project instanceof \WP_Term ) {
+			TransientNoticeService::add_notice( esc_html__( 'Invalid Project Name.' ), 'error' );
+
+			return;
+		}
 
 		try {
-			create_project_order( $term );
+			create_project_order( $project );
 		} catch ( ApiException $e ) {
 			TransientNoticeService::add_notice( sprintf(
 				esc_html__( 'translatioinMANAGER: Server response with a %1$d : %2$s', 'translationmanager' ),
