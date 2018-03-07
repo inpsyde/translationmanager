@@ -40,7 +40,7 @@
 				<input type="hidden"
 				       name="translationmanager_project_id"
 				       id="translationmanager_project_id"
-				       value="<?php echo $this->get_recent_project_id() ?>">
+				       value="<?php echo intval( $this->get_recent_project_id() ); ?>">
 				<label for="fff_status" class="screen-reader-text">
 					<?php esc_html_e( 'Set status', 'translationmanager' ); ?>
 				</label>
