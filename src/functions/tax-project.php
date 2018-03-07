@@ -47,41 +47,6 @@ function edit_term_link_for_project_taxonomy( $location, $term_id, $taxonomy ) {
 }
 
 /**
- * Save Project Info based on request
- *
- * @since 1.0.0
- *
- * @return void
- */
-function project_info_save() {
-
-	$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
-	if ( 'translationmanager_project_info_save' !== $action ) {
-		return;
-	}
-
-	$project_id = sanitize_title( filter_input( INPUT_POST, '_translationmanager_project_id', FILTER_SANITIZE_STRING ) );
-	if ( ! $project_id ) {
-		return;
-	}
-
-	$term = get_term_by( 'slug', $project_id, 'translationmanager_project' );
-
-	$update = wp_update_term( $term->term_id, 'translationmanager_project', [
-		'name'        => sanitize_text_field( filter_input( INPUT_POST, 'tag-name', FILTER_SANITIZE_STRING ) ),
-		'description' => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING ),
-	] );
-
-	if ( is_wp_error( $update ) ) {
-		wp_die( esc_html__( 'Something went wrong. Please go back and try again.', 'translationmanager' ) );
-	}
-
-	wp_safe_redirect( wp_get_referer() );
-
-	die;
-}
-
-/**
  * Bulk translate project
  *
  * @throws \Exception If isn't possible to create a project.

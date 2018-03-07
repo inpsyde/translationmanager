@@ -31,7 +31,11 @@
 				</i>
 			</p>
 		</div>
-		<?php wp_referer_field() ?>
+
+		<input type="hidden"
+		       name="<?php echo esc_attr( $this->nonce()->action() ) ?>"
+		       value="<?php echo esc_attr( $this->nonce() ) ?>"/>
+
 		<input type="submit"
 		       name="translationmanager_project_info_save"
 		       class="button button-primary"

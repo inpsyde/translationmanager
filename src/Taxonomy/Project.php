@@ -8,6 +8,10 @@
 
 namespace Translationmanager\Taxonomy;
 
+use Translationmanager\Functions;
+
+use Translationmanager\Notice\TransientNoticeService;
+
 /**
  * Class Project
  *
@@ -37,9 +41,116 @@ class Project {
 
 		add_action( 'init', [ $this, 'register_taxonomy' ] );
 		add_action( 'manage_translationmanager_project_custom_column', [ $this, 'print_column' ], 10, 3 );
+		add_action( 'admin_post_translationmanager_project_info_save', [ $this, 'project_info_save' ] );
 
 		add_filter( 'manage_edit-translationmanager_project_columns', [ $this, 'modify_columns' ] );
 		add_filter( 'translationmanager_project_row_actions', [ $this, 'modify_row_actions' ], 10, 2 );
+		add_filter( 'views_project_item', [ $this, 'order_project_box_form' ] );
+		add_filter( 'views_project_item', [ $this, 'project_form' ] );
+	}
+
+	/**
+	 * Project Title and Description Form in edit page.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $value The views link. Untouched.
+	 *
+	 * @return string The untouched parameter
+	 */
+	public function project_form( $value ) {
+
+		$slug = sanitize_title( filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) );
+
+		if ( $slug ) {
+			$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
+
+			require Functions\get_template( '/views/project/form-title-description.php' );
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Project Box in Edit Page
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $value The views link. Untouched.
+	 *
+	 * @return string The untouched parameter
+	 */
+	public function order_project_box_form( $value ) {
+
+		$slug = sanitize_title( filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) );
+
+		if ( $slug ) {
+			$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
+			// This is used inside the view.
+			( new \Translationmanager\MetaBox\OrderInfo( $term->term_id ) )->render_template();
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Nonce
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return \Brain\Nonces\WpNonce The nonce instance
+	 */
+	public function nonce() {
+
+		return new \Brain\Nonces\WpNonce( 'update_project_info' );
+	}
+
+	/**
+	 * Save Project Info based on request
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function project_info_save() {
+
+		// Check Action and auth.
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+		if ( 'translationmanager_project_info_save' !== $action ) {
+			return;
+		}
+
+		if ( ! $this->nonce()->validate() || ! current_user_can( 'manage_options' ) ) {
+			wp_die( 'Cheating Uh?' );
+		}
+
+		$project_id = sanitize_title( filter_input( INPUT_POST, '_translationmanager_project_id', FILTER_SANITIZE_STRING ) );
+		$project    = get_term_by( 'slug', $project_id, 'translationmanager_project' );
+
+		if ( ! $project instanceof \WP_Term ) {
+			TransientNoticeService::add_notice( esc_html__(
+				'Invalid project ID, impossible to update the info.', 'translationmanager'
+			), 'warning' );
+		}
+
+		$update = wp_update_term( $project->term_id, 'translationmanager_project', [
+			'name'        => sanitize_text_field( filter_input( INPUT_POST, 'tag-name', FILTER_SANITIZE_STRING ) ),
+			'description' => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING ),
+		] );
+
+		if ( is_wp_error( $update ) ) {
+			TransientNoticeService::add_notice( esc_html__(
+				'Something went wrong. Please go back and try again.', 'translationmanager'
+			), 'warning' );
+		}
+
+		TransientNoticeService::add_notice( sprintf( esc_html__(
+			'Project %s updated.', 'translationmanager'
+		), '<strong>' . $project_id . '</strong>' ), 'success' );
+
+		wp_safe_redirect( wp_get_referer() );
+
+		die;
 	}
 
 	/**

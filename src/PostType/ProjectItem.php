@@ -2,7 +2,6 @@
 
 namespace Translationmanager\PostType;
 
-use Translationmanager\Functions;
 use Translationmanager\Plugin;
 
 class ProjectItem {
@@ -50,8 +49,6 @@ class ProjectItem {
 		add_action( 'pre_get_posts', [ $this, 'filter_order_by' ] );
 
 		add_filter( 'translationmanager_project_item_row_actions', [ $this, 'filter_row_actions' ], 10, 2 );
-		add_filter( 'views_project_item', [ $this, 'order_project_box_form' ] );
-		add_filter( 'views_project_item', [ $this, 'project_form' ] );
 	}
 
 	/**
@@ -161,50 +158,6 @@ class ProjectItem {
 		}
 
 		return [];
-	}
-
-	/**
-	 * Project Box in Edit Page
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $value The views link. Untouched.
-	 *
-	 * @return string The untouched parameter
-	 */
-	public function order_project_box_form( $value ) {
-
-		$slug = sanitize_title( filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) );
-
-		if ( $slug ) {
-			$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
-			// This is used inside the view.
-			( new \Translationmanager\MetaBox\OrderInfo( $term->term_id ) )->render_template();
-		}
-
-		return $value;
-	}
-
-	/**
-	 * Project Title and Description Form in edit page.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $value The views link. Untouched.
-	 *
-	 * @return string The untouched parameter
-	 */
-	public function project_form( $value ) {
-
-		$slug = sanitize_title( filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) );
-
-		if ( $slug ) {
-			$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
-
-			require Functions\get_template( '/views/project/form-title-description.php' );
-		}
-
-		return $value;
 	}
 
 	/**

@@ -16,7 +16,6 @@ add_action( 'trashed_post', 'Translationmanager\\Functions\\delete_post_order_on
 // Projects Taxonomy.
 add_action( 'translationmanager_project_pre_add_form', 'Translationmanager\\Functions\\project_hide_slug' );
 add_action( 'translationmanager_project_pre_edit_form', 'Translationmanager\\Functions\\project_hide_slug' );
-add_action( 'admin_post_translationmanager_project_info_save', 'Translationmanager\\Functions\\project_info_save' );
 
 add_filter( 'bulk_actions-edit-tm_order', 'Translationmanager\\Functions\\filter_bulk_actions_for_order' );
 add_filter( 'post_row_actions', 'Translationmanager\\Functions\\filter_row_actions_for_order', 10, 2 );
