@@ -124,6 +124,6 @@ class ProjectItem {
 	 */
 	private function normalize_language_code( $lang_code ) {
 
-		return strtolower( str_replace( '-', '_', $lang_code ) );
+		return strtolower( str_replace( '_', '-', $lang_code ) );
 	}
 }
