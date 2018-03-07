@@ -173,6 +173,87 @@ final class ProjectItem extends TableList {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	protected function get_bulk_actions() {
+
+		if ( current_user_can( 'manage_options' ) ) {
+			$actions['trash'] = esc_html__( 'Remove from project', 'translationmanager' );
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * Project Column
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param \WP_Post $item The post instance.
+	 */
+	protected function column_default( $item, $column_name ) {
+
+		switch ( $column_name ) {
+			case 'translationmanager_project':
+				$terms = get_the_terms( $item->ID, 'translationmanager_project' );
+
+				if ( ! $terms ) {
+					break;
+				}
+
+				foreach ( $terms as $term ) {
+					printf(
+						'<a href="%s">%s</a>',
+						esc_url( add_query_arg( [
+							'translationmanager_project' => $term->slug,
+							'post_type'                  => 'project_item',
+						], 'edit.php' ) ),
+						esc_html( $term->name )
+					);
+				}
+				break;
+
+			case 'translationmanager_source_language_column':
+				$languages = Functions\current_language();
+
+				if ( $languages ) {
+					echo esc_html( $languages->get_label() );
+					break;
+				}
+
+				// In case of failure.
+				echo esc_html__( 'Unknown', 'translationmanager' );
+				break;
+
+			case 'translationmanager_target_language_column':
+				$lang_id   = get_post_meta( $item->ID, '_translationmanager_target_id', true );
+				$languages = Functions\get_languages();
+
+				if ( $lang_id && isset( $languages[ $lang_id ] ) ) {
+					printf(
+						'<a href="%1$s">%2$s</a>',
+						esc_url( get_blog_details( intval( $lang_id ) )->siteurl ),
+						esc_html( $languages[ $lang_id ]->get_label() )
+					);
+					break;
+				}
+
+				// In case of failure.
+				echo esc_html__( 'Unknown', 'translationmanager' );
+				break;
+
+			case 'translationmanager_added_by':
+				$user = new \WP_User( get_post( $item->ID )->post_author );
+				echo esc_html( esc_html( ucfirst( Functions\username( $user ) ) ) );
+				break;
+
+			case 'translationmanager_added_at':
+				echo esc_html( get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $item->ID ) );
+				break;
+		}
+	}
+
+	/**
 	 * Set languages found in posts
 	 *
 	 * The function store all of the target languages found in the project items.
@@ -257,86 +338,6 @@ final class ProjectItem extends TableList {
 		include Functions\get_template( '/views/type/select.php' );
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function get_bulk_actions() {
-
-		if ( current_user_can( 'manage_options' ) ) {
-			$actions['trash'] = esc_html__( 'Remove from project', 'translationmanager' );
-		}
-
-		return $actions;
-	}
-
-	/**
-	 * Project Column
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param \WP_Post $item The post instance.
-	 */
-	protected function column_default( $item, $column_name ) {
-
-		switch ( $column_name ) {
-			case 'translationmanager_project':
-				$terms = get_the_terms( $item->ID, 'translationmanager_project' );
-
-				if ( ! $terms ) {
-					break;
-				}
-
-				foreach ( $terms as $term ) {
-					printf(
-						'<a href="%s">%s</a>',
-						esc_url( add_query_arg( [
-							'translationmanager_project' => $term->slug,
-							'post_type'                  => 'project_item',
-						], 'edit.php' ) ),
-						esc_html( $term->name )
-					);
-				}
-				break;
-
-			case 'translationmanager_source_language_column':
-				$languages = Functions\current_language();
-
-				if ( $languages ) {
-					echo esc_html( $languages->get_label() );
-					break;
-				}
-
-				// In case of failure.
-				echo esc_html__( 'Unknown', 'translationmanager' );
-				break;
-
-			case 'translationmanager_target_language_column':
-				$lang_id   = get_post_meta( $item->ID, '_translationmanager_target_id', true );
-				$languages = Functions\get_languages();
-
-				if ( $lang_id && isset( $languages[ $lang_id ] ) ) {
-					printf(
-						'<a href="%1$s">%2$s</a>',
-						esc_url( get_blog_details( intval( $lang_id ) )->siteurl ),
-						esc_html( $languages[ $lang_id ]->get_label() )
-					);
-					break;
-				}
-
-				// In case of failure.
-				echo esc_html__( 'Unknown', 'translationmanager' );
-				break;
-
-			case 'translationmanager_added_by':
-				$user = new \WP_User( get_post( $item->ID )->post_author );
-				echo esc_html( esc_html( ucfirst( Functions\username( $user ) ) ) );
-				break;
-
-			case 'translationmanager_added_at':
-				echo esc_html( get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $item->ID ) );
-				break;
-		}
-	}
 
 	/**
 	 * Fill the Items list with posts instances
