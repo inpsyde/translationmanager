@@ -14,7 +14,7 @@ namespace Translationmanager\Notice;
  * @since   1.0.0
  * @package Translationmanager\Notice
  */
-interface StorableNotice {
+interface StorableNotice extends Notice {
 
 	/**
 	 * Store Notice
@@ -27,13 +27,4 @@ interface StorableNotice {
 	 * @return bool true if stored, false otherwise
 	 */
 	public function store( $message, $severity );
-
-	/**
-	 * Show Messages
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void All of the messages will be showed
-	 */
-	public function show();
 }

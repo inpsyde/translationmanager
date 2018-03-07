@@ -134,6 +134,8 @@ final class ProjectItem extends TableList {
 			}
 		} );
 
+		( new ProjectItemBulkActionsHandler() )->handle();
+
 		$this->set_pagination();
 	}
 
@@ -337,7 +339,6 @@ final class ProjectItem extends TableList {
 
 		include Functions\get_template( '/views/type/select.php' );
 	}
-
 
 	/**
 	 * Fill the Items list with posts instances
