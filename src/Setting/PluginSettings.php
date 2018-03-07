@@ -48,7 +48,7 @@ class PluginSettings {
 	/**
 	 * The refresh api token
 	 *
-	 * @todo May be this should be called TOKEN since it's the option not the time for the refresh?.
+	 * @todo  May be this should be called TOKEN since it's the option not the time for the refresh?.
 	 *
 	 * @since 1.0.0
 	 *
@@ -120,12 +120,11 @@ class PluginSettings {
 	 */
 	public function dispatch_input_text( $field ) {
 
-		$prefix = '';
-		$suffix = '';
+		$bind = (object) $field;
 
-		extract( $field, EXTR_OVERWRITE ); // phpcs:ignore
+		unset( $field );
 
-		require Functions\get_template( 'views/options-page/input-field.php' );
+		require Functions\get_template( 'views/type/default.php' );
 	}
 
 	/**
