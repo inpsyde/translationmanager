@@ -95,7 +95,7 @@
 					       id="translationmanager_action_project_order"
 					       class="button button-primary"
 						<?php echo( ! $this->has_projects() ? ' disabled="disabled" ' : '' ); ?>
-						   value="<?php esc_html_e( 'Place Order', 'translationmanager' ); ?>"/>
+						   value="<?php esc_attr_e( 'Place Order', 'translationmanager' ); ?>"/>
 				<?php endif; ?>
 
 				<input type="hidden"
