@@ -8,22 +8,12 @@
 // CPT Project.
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
 
-add_filter( 'manage_edit-translationmanager_project_columns', [
-	\Translationmanager\Taxonomy\Project::class,
-	'modify_columns',
-] );
-add_filter( 'translationmanager_project_row_actions', [
-	\Translationmanager\Taxonomy\Project::class,
-	'modify_row_actions',
-], 10, 2 );
-
 // CPT Order.
 add_action( 'init', 'Translationmanager\\Functions\\register_translationmanager_order_posttype' );
 add_action( 'admin_head', 'Translationmanager\\Functions\\order_remove_month' );
 add_action( 'trashed_post', 'Translationmanager\\Functions\\delete_post_order_on_trashing' );
 
 // Projects Taxonomy.
-add_action( 'init', 'Translationmanager\\Functions\\register_projects_taxonomy' );
 add_action( 'translationmanager_project_pre_add_form', 'Translationmanager\\Functions\\project_hide_slug' );
 add_action( 'translationmanager_project_pre_edit_form', 'Translationmanager\\Functions\\project_hide_slug' );
 add_action( 'admin_post_translationmanager_project_info_save', 'Translationmanager\\Functions\\project_info_save' );

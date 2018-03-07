@@ -15,10 +15,6 @@ namespace Translationmanager\Taxonomy;
  * @package Translationmanager\Taxonomy
  */
 class Project {
-	/**
-	 * @since 1.0.0
-	 */
-	const TAXONOMY = 'translationmanager_project';
 
 	/**
 	 * @since 1.0.0
@@ -29,6 +25,44 @@ class Project {
 	 * @since 1.0.0
 	 */
 	const COL_ACTIONS = 'translationmanager_order_action';
+
+	/**
+	 * Set Hooks
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function init() {
+
+		add_action( 'init', [ $this, 'register_taxonomy' ] );
+		add_action( 'manage_translationmanager_project_custom_column', [ $this, 'print_column' ], 10, 3 );
+
+		add_filter( 'manage_edit-translationmanager_project_columns', [ $this, 'modify_columns' ] );
+		add_filter( 'translationmanager_project_row_actions', [ $this, 'modify_row_actions' ], 10, 2 );
+	}
+
+	/**
+	 * Register Taxonomy
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function register_taxonomy() {
+
+		register_taxonomy(
+			'translationmanager_project',
+			'project_item',
+			[
+				'label'  => esc_html__( 'Projects', 'translationmanager' ),
+				'labels' => [
+					'add_new_item' => esc_html__( 'Create new project', 'translationmanager' ),
+				],
+				'public' => true,
+			]
+		);
+	}
 
 	/**
 	 * Register Status for Post
@@ -50,13 +84,16 @@ class Project {
 	 */
 	public static function modify_row_actions( $columns, $term ) {
 
-		$columns['view'] = sprintf(
-			'<a href="%s">%s</a>',
-			self::get_project_link( $term->term_id ),
-			esc_html__( 'View', 'translationmanager' )
-		);
+		$new_columns = [
+			'delete' => $columns['delete'],
+			'view'   => sprintf(
+				'<a href="%s">%s</a>',
+				self::get_project_link( $term->term_id ),
+				esc_html__( 'View', 'translationmanager' )
+			),
+		];
 
-		return $columns;
+		return $new_columns;
 	}
 
 	/**
@@ -99,13 +136,6 @@ class Project {
 		           + array_slice( $columns, 1 );
 
 		$columns[ static::COL_ACTIONS ] = '';
-
-		add_action(
-			'manage_' . static::TAXONOMY . '_custom_column',
-			[ __CLASS__, 'print_column' ],
-			10,
-			3
-		);
 
 		return $columns;
 	}

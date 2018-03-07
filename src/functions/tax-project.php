@@ -5,30 +5,6 @@ namespace Translationmanager\Functions;
 use Translationmanager\Taxonomy;
 
 /**
- * Register the Project Taxonomy
- *
- * @todo  Create a class for the taxonomy. See Project
- *
- * @since 1.0.0
- *
- * @return void
- */
-function register_projects_taxonomy() {
-
-	register_taxonomy(
-		'translationmanager_project',
-		'project_item',
-		[
-			'label'  => esc_html__( 'Projects', 'translationmanager' ),
-			'labels' => [
-				'add_new_item' => esc_html__( 'Create new project', 'translationmanager' ),
-			],
-			'public' => true,
-		]
-	);
-}
-
-/**
  * Hide Term Slug Wrap
  *
  * @todo  Create unique css for the entire plugin to register and load when request.
