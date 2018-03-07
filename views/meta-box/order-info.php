@@ -10,10 +10,6 @@
 			      class="translationmanager-order-or-update-projects"
 			      method="post"
 			      action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-				<input type="hidden" name="action" value="translationmanager_order_or_update_projects">
-				<input type="hidden"
-				       name="_translationmanager_project_id"
-				       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ); ?>">
 
 				<ul class="translationmanager-order-info">
 					<li class="translationmanager-order-info-item">
@@ -104,6 +100,10 @@
 						   value="<?php esc_attr_e( 'Place Order', 'translationmanager' ); ?>"/>
 				<?php endif; ?>
 
+				<input type="hidden" name="action" value="<?php echo esc_attr( $this->action() ) ?>">
+				<input type="hidden"
+				       name="_translationmanager_project_id"
+				       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ); ?>">
 				<input type="hidden"
 				       name="<?php echo esc_attr( $this->nonce()->action() ) ?>"
 				       value="<?php echo esc_attr( $this->nonce() ) ?>"/>

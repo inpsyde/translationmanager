@@ -70,7 +70,7 @@ class ImportProjectActionHandler implements ActionHandle {
 	 */
 	public function init() {
 
-		add_action( 'admin_post_translationmanager_order_or_update_projects', [ $this, 'handle' ] );
+		add_action( 'admin_post_translationmanager_import_project', [ $this, 'handle' ] );
 	}
 
 	/**

@@ -98,15 +98,15 @@ add_action( 'plugins_loaded', function () {
 	) )->init();
 	( new \Translationmanager\Action\OrderProjectActionHandler(
 		new \Translationmanager\Auth\AuthRequestValidator(),
-		new \Brain\Nonces\WpNonce( 'order_translation' )
+		new \Brain\Nonces\WpNonce( 'order_project' )
 	) )->init();
 	( new \Translationmanager\Action\UpdateProjectOrderStatusActionHandler(
 		new \Translationmanager\Auth\AuthRequestValidator(),
-		new \Brain\Nonces\WpNonce( 'order_translation' )
+		new \Brain\Nonces\WpNonce( 'update_project' )
 	) )->init();
 	( new \Translationmanager\Action\ImportProjectActionHandler(
 		new \Translationmanager\Auth\AuthRequestValidator(),
-		new \Brain\Nonces\WpNonce( 'order_translation' )
+		new \Brain\Nonces\WpNonce( 'import_project' )
 	) )->init();
 
 	// Register Activation.

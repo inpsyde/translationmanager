@@ -14,8 +14,9 @@ use Translationmanager\Utils\TimeZone;
 /**
  * Class OrderInfo
  *
- * @fixme This is an old implementation, please remove the class from MetaBox package, instead try to solve by creating a new package for this kind of things.
- *        see template_project_box_form_in_edit_page() function to know what this class is used for.
+ * @fixme   This is an old implementation, please remove the class from MetaBox package, instead try to solve by
+ *          creating a new package for this kind of things. see template_project_box_form_in_edit_page() function to
+ *          know what this class is used for.
  *
  * @since   1.0.0
  * @package Translationmanager\MetaBox
@@ -50,7 +51,7 @@ class OrderInfo implements Metabox {
 	 */
 	public function init() {
 
-//		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
+		//		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
 	}
 
 	/**
@@ -58,17 +59,17 @@ class OrderInfo implements Metabox {
 	 */
 	public function add_meta_box() {
 
-//		if ( ! current_user_can( 'manage_options' ) ) {
-//			return;
-//		}
-//
-//		add_meta_box(
-//			'translationmanager_order_info',
-//			esc_html__( 'Order information', 'translationmanager' ),
-//			[ $this, 'render_template' ],
-//			'tm_order',
-//			'side'
-//		);
+		//		if ( ! current_user_can( 'manage_options' ) ) {
+		//			return;
+		//		}
+		//
+		//		add_meta_box(
+		//			'translationmanager_order_info',
+		//			esc_html__( 'Order information', 'translationmanager' ),
+		//			[ $this, 'render_template' ],
+		//			'tm_order',
+		//			'side'
+		//		);
 	}
 
 	/**
@@ -90,7 +91,9 @@ class OrderInfo implements Metabox {
 	 */
 	public function nonce() {
 
-		return new \Brain\Nonces\WpNonce( 'order_translation' );
+		$action = str_replace( 'translationmanager_', '', $this->action() );
+
+		return new \Brain\Nonces\WpNonce( $action );
 	}
 
 	/**
@@ -213,5 +216,25 @@ class OrderInfo implements Metabox {
 		$posts = Functions\get_project_items( $this->projects_term_id );
 
 		return count( $posts );
+	}
+
+	/**
+	 * Action
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The action to perform.
+	 */
+	public function action() {
+
+		if ( $this->get_translated_at() instanceof \DateTime ) {
+			return 'translationmanager_import_project';
+		}
+
+		if ( $this->get_order_id() ) {
+			return 'translationmanager_update_project';
+		}
+
+		return 'translationmanager_order_project';
 	}
 }
