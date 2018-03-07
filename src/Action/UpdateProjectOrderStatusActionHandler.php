@@ -106,7 +106,7 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 			return;
 		}
 
-		redirect_admin_page_network( 'edit.php?', [
+		redirect_admin_page_network( 'admin.php', [
 			'translationmanager_project' => get_term_field( 'slug', $project ),
 			'post_type'                  => 'project_item',
 			'project_status'             => $status,

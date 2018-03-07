@@ -96,7 +96,7 @@ class OrderProjectActionHandler implements ActionHandle {
 			), 'error' );
 		}
 
-		redirect_admin_page_network( 'edit.php?', [
+		redirect_admin_page_network( 'admin.php', [
 			'translationmanager_project' => $data['_translationmanager_project_id'],
 			'post_type'                  => 'project_item',
 		] );
