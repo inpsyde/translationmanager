@@ -8,9 +8,14 @@
 
 	<div id="col-container" class="wp-clearfix">
 
-		<?php $bind->wp_list_table->views(); ?>
+		<?php
+		$bind->wp_list_table->prepare_items();
+		$bind->wp_list_table->views();
+		?>
 
-		<form id="posts-filter" method="get" action="<?php echo esc_url( admin_url( 'edit.php' ) ) ?>">
+		<form id="posts-filter"
+		      method="post"
+		      action="<?php echo esc_url( \Translationmanager\Functions\current_url() ) ?>">
 			<?php $bind->wp_list_table->display(); ?>
 		</form>
 

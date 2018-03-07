@@ -111,6 +111,150 @@ final class ProjectItem extends TableList {
 	/**
 	 * @inheritdoc
 	 */
+	public function prepare_items() {
+
+		add_action( 'pre_get_posts', function ( \WP_Query &$query ) {
+
+			// Filter By Language.
+			$lang_id = filter_input( INPUT_POST, 'translationmanager_target_language_filter', FILTER_SANITIZE_NUMBER_INT );
+			if ( $lang_id && 'all' !== $lang_id ) {
+				$query->set( 'meta_query', [
+					[
+						'key'     => '_translationmanager_target_id',
+						'value'   => intval( $lang_id ),
+						'compare' => '=',
+					],
+				] );
+			}
+
+			// Filter By User ID.
+			$user_id = filter_input( INPUT_POST, 'translationmanager_added_by_filter', FILTER_SANITIZE_NUMBER_INT );
+			if ( $user_id && 'all' !== $user_id ) {
+				$query->set( 'author', $user_id );
+			}
+		} );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function extra_tablenav( $which ) {
+
+		?>
+		<div class="alignleft actions">
+		<?php
+		if ( 'top' === $which && ! is_singular() ) {
+			ob_start();
+
+			do_action( 'restrict_manage_project', $this->screen->post_type, $which );
+
+			// Filters.
+			$this->target_language_filter_template();
+			$this->added_by_filter_template();
+
+			$output = ob_get_clean();
+
+			if ( ! empty( $output ) ) {
+				echo Functions\kses_post( $output ); // phpcs:ignore
+				submit_button(
+					esc_html__( 'Filter', 'translationmanager' ),
+					'',
+					'filter_action',
+					false,
+					array( 'id' => 'post-query-submit' )
+				);
+			}
+		}
+	}
+
+	/**
+	 * Set languages found in posts
+	 *
+	 * The function store all of the target languages found in the project items.
+	 * This list is then used to build the target language filter.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array A list of Languages instances
+	 */
+	private function languages() {
+
+		static $languages = null;
+
+		if ( null === $languages ) {
+			$all_languages = Functions\get_languages();
+
+			foreach ( $all_languages as $index => $language ) {
+				$languages[ $index ] = esc_html( $language->get_label() );
+			}
+		}
+
+		return $languages;
+	}
+
+	/**
+	 * Retrieve Users
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array An array of \WP_Users instances
+	 */
+	private function users() {
+
+		static $users = null;
+
+		if ( null === $users ) {
+			$users = get_users( [
+				'fields' => 'all',
+			] );
+		}
+
+		return $users;
+	}
+
+	/**
+	 * The Target Language Filter
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	private function target_language_filter_template() {
+
+		$bind = (object) [
+			'class_attribute' => 'target-language-filter',
+			'name_attribute'  => 'translationmanager_target_language_filter',
+			'options'         => [ 'all' => esc_html__( 'All Languages', 'translationmanager' ) ] + $this->languages(),
+			'current_value'   => intval( filter_input( INPUT_POST, 'translationmanager_target_language_filter', FILTER_SANITIZE_STRING ) ),
+		];
+
+		include Functions\get_template( '/views/type/select.php' );
+	}
+
+	/**
+	 * The User Filter
+	 */
+	private function added_by_filter_template() {
+
+		$users = [];
+		foreach ( $this->users() as $user ) {
+			$users[ $user->ID ] = Functions\username( $user );
+		}
+
+		$bind = (object) [
+			'class_attribute' => 'added-by-filter',
+			'name_attribute'  => 'translationmanager_added_by_filter',
+			'options'         => [ 'all' => esc_html__( 'All Users', 'translationmanager' ) ] + $users,
+			'current_value'   => intval( filter_input( INPUT_POST, 'translationmanager_added_by_filter', FILTER_SANITIZE_STRING ) ),
+		];
+		unset( $users );
+
+		include Functions\get_template( '/views/type/select.php' );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function get_bulk_actions() {
 
 		if ( current_user_can( 'manage_options' ) ) {
