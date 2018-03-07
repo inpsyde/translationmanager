@@ -271,6 +271,6 @@ function create_project_order( \WP_Term $project_term ) {
 	return set_unique_term_meta(
 		$project_term,
 		'_translationmanager_order_status',
-		esc_html__( 'Ready to order', 'translationmanager' )
+		esc_html__( 'In Transition', 'translationmanager' )
 	);
 }
