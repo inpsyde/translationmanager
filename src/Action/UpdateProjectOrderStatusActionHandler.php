@@ -106,9 +106,19 @@ class UpdateProjectOrderStatusActionHandler implements ActionHandle {
 				// Update the translated at meta.
 				$this->update_project_translated_at( $project );
 			}
+
+			$notice = [
+				'message'  => esc_html__( 'Project Updated.', 'translationmanager' ),
+				'severity' => 'success',
+			];
 		} catch ( \Exception $e ) {
-			TransientNoticeService::add_notice( $e->getMessage(), 'error' );
+			$notice = [
+				'message'  => $e->getMessage(),
+				'severity' => 'error',
+			];
 		}
+
+		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
 		redirect_admin_page_network( 'admin.php', [
 			'page'                       => 'translationmanager-project',

@@ -96,13 +96,23 @@ class OrderProjectActionHandler implements ActionHandle {
 
 		try {
 			create_project_order( $project );
+
+			$notice = [
+				'message'  => esc_html__( 'A new project request has been sent.', 'translationmanager' ),
+				'severity' => 'success',
+			];
 		} catch ( ApiException $e ) {
-			TransientNoticeService::add_notice( sprintf(
-				esc_html__( 'translatioinMANAGER: Server response with a %1$d : %2$s', 'translationmanager' ),
-				$e->getCode(),
-				( new Responses() )->response_by_id( $e->getCode() )
-			), 'error' );
+			$notice = [
+				'message'  => sprintf(
+					esc_html__( 'translatioinMANAGER: Server response with a %1$d : %2$s', 'translationmanager' ),
+					$e->getCode(),
+					( new Responses() )->response_by_id( $e->getCode() )
+				),
+				'severity' => 'error',
+			];
 		}
+
+		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
 		redirect_admin_page_network( 'admin.php', [
 			'page'                       => 'translationmanager-project',

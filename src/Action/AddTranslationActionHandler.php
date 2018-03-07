@@ -94,14 +94,28 @@ class AddTranslationActionHandler implements ActionHandle {
 				'translationmanager_project_id' => $data['translationmanager_project_id'],
 				'post_ID'                       => $data['post_ID'],
 			] );
+
+			if ( false === $project ) {
+				TransientNoticeService::add_notice(
+					esc_html__( 'Something went wrong during create a new translation item.', 'translationmanager' ),
+					'error'
+				);
+
+				return;
+			}
+
+			$notice = [
+				'message'  => esc_html__( 'New Translation added successfully.', 'translationmanager' ),
+				'severity' => 'success',
+			];
 		} catch ( \Exception $e ) {
-			TransientNoticeService::add_notice( $e->getMessage(), 'error' );
+			$notice = [
+				'message'  => $e->getMessage(),
+				'severity' => 'error',
+			];
 		}
 
-		if ( false === $project ) {
-			// Project has been invalidated so we don't redirect there.
-			return;
-		}
+		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
 		redirect_admin_page_network( 'admin.php', [
 			'page'                       => 'translationmanager-project',

@@ -100,13 +100,23 @@ class ImportProjectActionHandler implements ActionHandle {
 
 		try {
 			\Translationmanager\Functions\project_update( $project );
+
+			$notice = [
+				'message'  => esc_html__( 'Translation has been imported correctly.', 'translationmanager' ),
+				'severity' => 'success',
+			];
 		} catch ( ApiException $e ) {
-			TransientNoticeService::add_notice( sprintf(
-				esc_html__( 'translatioinMANAGER: Server response with a %1$d : %2$s', 'translationmanager' ),
-				$e->getCode(),
-				( new Responses() )->response_by_id( $e->getCode() )
-			), 'error' );
+			$notice = [
+				'message'  => sprintf(
+					esc_html__( 'translatioinMANAGER: Server response with a %1$d : %2$s', 'translationmanager' ),
+					$e->getCode(),
+					( new Responses() )->response_by_id( $e->getCode() )
+				),
+				'severity' => 'error',
+			];
 		}
+
+		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
 		\Translationmanager\Functions\redirect_admin_page_network( 'admin.php', [
 			'page'                       => 'translationmanager-project',
