@@ -243,3 +243,18 @@ function username( \WP_User $user ) {
 
 	return $username;
 }
+
+/**
+ * Get Current URL
+ *
+ * @since 1.0.0
+ *
+ * @return string The current url
+ */
+function current_url() {
+
+	$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); // phpcs:ignore
+	$current_url = remove_query_arg( 'paged', $current_url );
+
+	return $current_url;
+}
