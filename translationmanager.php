@@ -86,7 +86,7 @@ add_action( 'plugins_loaded', function () {
 	( new \Translationmanager\MetaBox\Translation() )->init();
 
 	// Restrict Manage Posts.
-	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
+//	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
 
 	// Assets.
 	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();
