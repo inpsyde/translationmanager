@@ -138,30 +138,6 @@ final class ProjectItem extends TableList {
 	}
 
 	/**
-	 * Set Pagination
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	private function set_pagination() {
-
-		global $wp_query;
-
-		if ( $wp_query->found_posts || $this->get_pagenum() === 1 ) {
-			$total_items = $wp_query->found_posts;
-		} else {
-			$total_items = (array) wp_count_posts( $this->screen->id, 'readable' );
-			$total_items = intval( $total_items['draft'] );
-		}
-
-		$this->set_pagination_args( [
-			'total_items' => $total_items,
-			'per_page'    => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
-		] );
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	protected function extra_tablenav( $which ) {
@@ -294,72 +270,6 @@ final class ProjectItem extends TableList {
 	}
 
 	/**
-	 * Fill the Items list with posts instances
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array A list of \WP_Post elements
-	 */
-	private function items() {
-
-		if ( ! $this->items ) {
-			$term = filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING );
-
-			if ( ! $term ) {
-				return [];
-			}
-
-			$term = get_term_by( 'slug', $term, 'translationmanager_project' );
-
-			if ( ! $term || is_wp_error( $term ) ) {
-				return [];
-			}
-
-			$this->items = Functions\get_project_items( $term->term_id, [
-				'posts_per_page' => $this->_pagination_args['per_page'],
-				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
-			] );
-		}
-
-		return $this->items;
-	}
-
-	/**
-	 * Filter Project Column
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array $columns The columns items to filter.
-	 *
-	 * @return array The filtered columns
-	 */
-	private function column_project( $columns ) {
-
-		$request = $_GET; // phpcs:ignore
-		foreach ( $request as $key => $val ) {
-			$request[ $key ] = sanitize_text_field( filter_input( INPUT_GET, $key, FILTER_SANITIZE_STRING ) );
-		}
-
-		$request = wp_parse_args( $request, [
-			'translationmanager_project' => null,
-		] );
-
-		if ( isset( $request['post_status'] ) && 'trash' === $request['post_status'] ) {
-			// This is trash so we show no project column.
-			return $columns;
-		}
-
-		if ( $request['translationmanager_project'] ) {
-			// Term/Project filter is active so this col is not needed.
-			return $columns;
-		}
-
-		$columns['translationmanager_project'] = esc_html__( 'Project', 'translationmanager' );
-
-		return $columns;
-	}
-
-	/**
 	 * Project Column
 	 *
 	 * @since 1.0.0
@@ -429,6 +339,72 @@ final class ProjectItem extends TableList {
 	}
 
 	/**
+	 * Fill the Items list with posts instances
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array A list of \WP_Post elements
+	 */
+	private function items() {
+
+		if ( ! $this->items ) {
+			$term = filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING );
+
+			if ( ! $term ) {
+				return [];
+			}
+
+			$term = get_term_by( 'slug', $term, 'translationmanager_project' );
+
+			if ( ! $term || is_wp_error( $term ) ) {
+				return [];
+			}
+
+			$this->items = Functions\get_project_items( $term->term_id, [
+				'posts_per_page' => $this->_pagination_args['per_page'],
+				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
+			] );
+		}
+
+		return $this->items;
+	}
+
+	/**
+	 * Filter Project Column
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $columns The columns items to filter.
+	 *
+	 * @return array The filtered columns
+	 */
+	private function column_project( $columns ) {
+
+		$request = $_GET; // phpcs:ignore
+		foreach ( $request as $key => $val ) {
+			$request[ $key ] = sanitize_text_field( filter_input( INPUT_GET, $key, FILTER_SANITIZE_STRING ) );
+		}
+
+		$request = wp_parse_args( $request, [
+			'translationmanager_project' => null,
+		] );
+
+		if ( isset( $request['post_status'] ) && 'trash' === $request['post_status'] ) {
+			// This is trash so we show no project column.
+			return $columns;
+		}
+
+		if ( $request['translationmanager_project'] ) {
+			// Term/Project filter is active so this col is not needed.
+			return $columns;
+		}
+
+		$columns['translationmanager_project'] = esc_html__( 'Project', 'translationmanager' );
+
+		return $columns;
+	}
+
+	/**
 	 * Filter Column Language
 	 *
 	 * @since 1.0.0
@@ -443,5 +419,29 @@ final class ProjectItem extends TableList {
 		$columns['translationmanager_target_language_column'] = esc_html__( 'Target language', 'translationmanager' );
 
 		return $columns;
+	}
+
+	/**
+	 * Set Pagination
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	private function set_pagination() {
+
+		global $wp_query;
+
+		if ( $wp_query->found_posts || $this->get_pagenum() === 1 ) {
+			$total_items = $wp_query->found_posts;
+		} else {
+			$total_items = (array) wp_count_posts( $this->screen->id, 'readable' );
+			$total_items = intval( $total_items['draft'] );
+		}
+
+		$this->set_pagination_args( [
+			'total_items' => $total_items,
+			'per_page'    => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
+		] );
 	}
 }
