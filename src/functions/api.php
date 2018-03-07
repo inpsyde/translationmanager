@@ -144,7 +144,7 @@ function project_items_statuses( \WP_Term $project_term ) {
 		return $statuses;
 	}
 
-	$translation_data = translationmanager_api()->project()->get( 9 );
+	$translation_data = translationmanager_api()->project()->get( $project_id );
 	if ( ! $translation_data ) {
 		return $statuses;
 	}
