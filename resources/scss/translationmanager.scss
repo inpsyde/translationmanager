@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+@import 'colors';
+
+//
+// Order Info
+//
+
+.translationmanager-order-or-update-projects {
+  input[type="submit"] {
+    clear:      both;
+    float:      right;
+    margin-top: .63em;
+  }
+
+  .no-projects-found {
+    color:      $color__red;
+    float:      right;
+    max-width:  200px;
+    text-align: right;
+  }
+}
+
+.translationmanager-order-info {
+  margin: 0;
+
+  .translationmanager-order-info-item {
+    line-height: 1.5;
+    margin:      .63em 0;
+
+    .dashicons {
+      color: $color__tuna;
+    }
+  }
+}
+
+//
+// Form Project Details Info
+//
+
+.translationmanager-project-details-form {
+  .actions {
+    padding-bottom: 20px;
+  }
+
+  .term-description-wrap {
+    margin-bottom: .63em;
+  }
+}
+
+//
+// Project Box
+//
+
+.translationmanager-postbox-container {
+  float:       right;
+  margin-left: 1em;
+
+  .inside {
+    margin:      0;
+    overflow:    hidden;
+    padding:     1em;
+    padding-top: 0;
+  }
+
+  .box-status-title {
+    margin-left:  1em;
+    margin-right: 1em;
+  }
+}
+
+//
+// Translation Box
+//
+
+.translationmanager-translation-box {
+  line-height: 2em;
+
+  .edit-fff-status {
+    display: inline;
+  }
+
+  .fff-status-select {
+    display: none;
+  }
+}
+
+//
+// Project Item Edit Page
+//
+
+// Hide Actions
+.edit-php.post-type-project_item ul.subsubsub,
+  // Hide the Search Box
+.post-type-project_item #posts-filter .search-box {
+  display: none;
+}

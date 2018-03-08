@@ -1,16 +1,6 @@
-$color__black: #000;
-$color__mine-shaft: #222;
-$color__tuna: #3c3d46;
-$color__white: #fff;
+@charset "UTF-8";
 
-$color__orange: #ffa500;
-
-// flat colors
-$color__clouds: #ecf0f1;
-
-// Inpsyde
-$color__inpsyde: #8fb900;
-$color__inpsyde--dark: darken($color__inpsyde, 20%);
+@import 'colors';
 
 .settings_page_translationmanager {
 
