@@ -80,13 +80,13 @@ class PageOptions implements Page {
 
 		add_action( 'admin_menu', [ $this, 'add_page' ] );
 		add_action( 'network_admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_init', [ $this->settings, 'register_setting' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_style' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_script' ] );
 		add_action( 'translations_page_translationmanager_settings', [
 			new SiteOptionsHandler( new AuthRequestValidator(), new WpNonce( 'translationmanager_siteoptions' ) ),
 			'handle',
 		] );
+		add_action( 'translations_page_translationmanager_settings', [ $this->settings, 'register_setting' ] );
 
 		add_filter( 'option_page_capability_' . Setting\PluginSettings::OPTION_GROUP, [
 			$this,
