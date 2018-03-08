@@ -9,6 +9,7 @@
 namespace Translationmanager\Setting;
 
 use Translationmanager\Functions;
+use Translationmanager\Pages\PageOptions;
 
 /**
  * Class PluginSettings
@@ -63,7 +64,9 @@ class PluginSettings {
 			self::OPTION_GROUP,
 			self::SECTION_CREDENTIALS,
 			[
-				'value' => ApiSettings::url(),
+				'value'       => ApiSettings::url(),
+				'placeholder' => esc_html__( 'Not set', 'translation' ),
+				'description' => '',
 			]
 		);
 
@@ -75,12 +78,37 @@ class PluginSettings {
 			self::OPTION_GROUP,
 			self::SECTION_CREDENTIALS,
 			[
-				'value' => ApiSettings::token(),
+				'value'       => ApiSettings::token(),
+				'description' => $this->token_field_description(),
+				'placeholder' => esc_html__( 'Not set', 'translation' ),
 			]
 		);
 
 		add_filter( 'sanitize_option_' . ApiSettings::TOKEN, 'trim' );
 		add_filter( 'sanitize_option_' . ApiSettings::URL, 'trim' );
+	}
+
+	/**
+	 * Token Field Description
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The field description
+	 */
+	private function token_field_description() {
+
+		$description = '';
+
+		if ( ApiSettings::token( false ) ) {
+			$url = '<a href="' . PageOptions::url() . '">' . esc_html__( 'network', 'translationmanager' ) . '</a>';
+
+			$description = sprintf( __(
+				'You already set a token in the %s. If you want to use other credentials as given in the network, please provide the token here.',
+				'translationmanager'
+			), current_user_can( 'manage_network_options' ) ? $url : esc_html_x( 'network', 'generic-term', 'translationmanager' ) );
+		}
+
+		return $description;
 	}
 
 	/**
@@ -92,11 +120,10 @@ class PluginSettings {
 	 */
 	public function dispatch_input_text( $field ) {
 
-		$bind = (object) $field;
+		( \Closure::bind( function () {
 
-		unset( $field );
-
-		require Functions\get_template( 'views/type/default.php' );
+			require Functions\get_template( 'views/type/default.php' );
+		}, (object) $field ) )();
 	}
 
 	/**

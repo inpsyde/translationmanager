@@ -53,6 +53,17 @@
     }
   }
 
+  // Fields
+  .default-field {
+
+    &__description {
+      color:      $color__description-field;
+      display:    block;
+      font-size:  .875rem;
+      margin-top: .63em;
+    }
+  }
+
   // About
   &--about {
     h3 {
