@@ -60,8 +60,8 @@ add_action( 'plugins_loaded', function () {
 
 	// Show Notice in case Token or URL isn't set.
 	if (
-		! \Translationmanager\Setting\ApiSettings::url()
-		|| ! \Translationmanager\Setting\ApiSettings::token()
+		! \Translationmanager\Setting\ApiSettings::url( false )
+		|| ! \Translationmanager\Setting\ApiSettings::token( false )
 	) {
 		add_action( $notice_hook, function () use ( $requirements ) {
 
