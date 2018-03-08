@@ -89,29 +89,6 @@ class PluginSettings {
 	}
 
 	/**
-	 * Token Field Description
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string The field description
-	 */
-	private function token_field_description() {
-
-		$description = '';
-
-		if ( ApiSettings::token( false ) ) {
-			$url = '<a href="' . PageOptions::url() . '">' . esc_html__( 'network', 'translationmanager' ) . '</a>';
-
-			$description = sprintf( __(
-				'You already set a token in the %s. If you want to use other credentials as given in the network, please provide the token here.',
-				'translationmanager'
-			), current_user_can( 'manage_network_options' ) ? $url : esc_html_x( 'network', 'generic-term', 'translationmanager' ) );
-		}
-
-		return $description;
-	}
-
-	/**
 	 * Create input field for option.
 	 *
 	 * @since 1.0.0
@@ -179,5 +156,28 @@ class PluginSettings {
 		register_setting( $page, $args['name'] );
 
 		add_settings_field( $id, $title, $callback, $page, $section, $args );
+	}
+
+	/**
+	 * Token Field Description
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The field description
+	 */
+	private function token_field_description() {
+
+		$description = '';
+
+		if ( ApiSettings::token( false ) && ! is_network_admin() ) {
+			$url = '<a href="' . PageOptions::url() . '">' . esc_html__( 'network', 'translationmanager' ) . '</a>';
+
+			$description = sprintf( __(
+				'You already set a token in the %s. If you want to use other credentials as given in the network, please provide the token here.',
+				'translationmanager'
+			), current_user_can( 'manage_network_options' ) ? $url : esc_html_x( 'network', 'generic-term', 'translationmanager' ) );
+		}
+
+		return $description;
 	}
 }
