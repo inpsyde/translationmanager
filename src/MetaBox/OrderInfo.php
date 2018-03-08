@@ -176,11 +176,9 @@ class OrderInfo implements Metabox {
 	 */
 	public function get_ordered_at() {
 
-		if ( ! get_post() ) {
-			return null;
-		}
+		$posts = Functions\get_project_items( $this->projects_term_id );
 
-		return new \DateTime( get_post()->post_date, ( new TimeZone() )->value() );
+		return new \DateTime( $posts[0]->post_date, ( new TimeZone() )->value() );
 	}
 
 	/**
