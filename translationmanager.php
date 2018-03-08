@@ -20,10 +20,19 @@ add_action( 'plugins_loaded', function () {
 	}
 
 	// Require composer autoloader if exists.
-	if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	if ( is_readable( __DIR__ . '/vendor/autoload.php' ) && ! class_exists(\Translationmanager\Plugin::class)) {
+		require_once __DIR__ . '/vendor/autoload.php';
+	}
+	if ( ! class_exists( \Translationmanager\Plugin::class ) ) {
+		add_action( 'admin_notices', function() {
+			translationmanager_admin_notice(
+				esc_html__( 'Translation Manager autoloading failed!', 'translationmanager' ),
+				'error'
+			);
+		} );
+
 		return;
 	}
-	require_once __DIR__ . '/vendor/autoload.php';
 
 	$requirements    = new Translationmanager\Requirements();
 	$plugin          = new \Translationmanager\Plugin();
