@@ -7,6 +7,9 @@
 
 namespace Translationmanager\Pages;
 
+use Brain\Nonces\WpNonce;
+use Translationmanager\Action\SiteOptionsHandler;
+use Translationmanager\Auth\AuthRequestValidator;
 use Translationmanager\Functions;
 use Translationmanager\Plugin;
 use Translationmanager\Setting;
@@ -76,9 +79,14 @@ class PageOptions implements Page {
 	public function init() {
 
 		add_action( 'admin_menu', [ $this, 'add_page' ] );
+		add_action( 'network_admin_menu', [ $this, 'add_page' ] );
 		add_action( 'admin_init', [ $this->settings, 'register_setting' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_style' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_script' ] );
+		add_action( 'translations_page_translationmanager_settings', [
+			new SiteOptionsHandler( new AuthRequestValidator(), new WpNonce( 'translationmanager_siteoptions' ) ),
+			'handle',
+		] );
 
 		add_filter( 'option_page_capability_' . Setting\PluginSettings::OPTION_GROUP, [
 			$this,
@@ -95,7 +103,7 @@ class PageOptions implements Page {
 			'translationmanager',
 			esc_html__( 'Settings', 'translationmanager' ),
 			esc_html__( 'Settings', 'translationmanager' ),
-			'manage_options',
+			$this->capability(),
 			self::SLUG,
 			[ $this, 'render_template' ]
 		);
@@ -104,9 +112,19 @@ class PageOptions implements Page {
 	/**
 	 * @inheritdoc
 	 */
+	public static function url() {
+
+		return is_multisite() ?
+			admin_url( '/network?page=' . self::SLUG ) :
+			menu_page_url( self::SLUG, false );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function render_template() {
 
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( $this->capability() ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'translatemanager' ) );
 		}
 
@@ -179,5 +197,47 @@ class PageOptions implements Page {
 			filemtime( ( new Plugin() )->dir( '/resources/js/options-page.js' ) ),
 			true
 		);
+	}
+
+	/**
+	 * Capability
+	 *
+	 * Retrieve the capability based on context. Network or not.
+	 *
+	 * @return string The capability to check against
+	 */
+	private function capability() {
+
+		return ( is_network_admin() ? 'manage_network_options' : 'manage_options' );
+	}
+
+	/**
+	 * Nonce
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return \Brain\Nonces\WpNonce The nonce instance
+	 */
+	private function nonce() {
+
+		return new \Brain\Nonces\WpNonce( 'translationmanager_siteoptions' );
+	}
+
+	/**
+	 * Form Action
+	 *
+	 * Retrieve the form action based on context. Network or not.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The url for the from action
+	 */
+	private function action() {
+
+		if ( is_network_admin() ) {
+			return Functions\current_url();
+		}
+
+		return admin_url( 'options.php' );
 	}
 }

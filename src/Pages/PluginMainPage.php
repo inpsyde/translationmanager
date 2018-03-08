@@ -59,6 +59,7 @@ class PluginMainPage implements Page {
 	public function init() {
 
 		add_action( 'admin_menu', [ $this, 'add_page' ] );
+		add_action( 'network_admin_menu', [ $this, 'add_page' ] );
 	}
 
 	/**
@@ -69,7 +70,7 @@ class PluginMainPage implements Page {
 		add_menu_page(
 			esc_html__( 'Translations', 'translationmanager' ),
 			esc_html__( 'Translations', 'translationmanager' ),
-			'manage_options',
+			$this->capability(),
 			self::SLUG,
 			'__return_false',
 			$this->plugin->url( '/resources/img/tm-icon-bw.png' ),
@@ -80,7 +81,29 @@ class PluginMainPage implements Page {
 	/**
 	 * @inheritdoc
 	 */
+	public static function url() {
+
+		return is_multisite() ?
+			admin_url( '/network?page=' . self::SLUG ) :
+			menu_page_url( self::SLUG, false );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function render_template() {
 		// Nothing here for now.
+	}
+
+	/**
+	 * Capability
+	 *
+	 * Retrieve the capability based on context. Network or not.
+	 *
+	 * @return string The capability to check against
+	 */
+	private function capability() {
+
+		return ( is_network_admin() ? 'manage_network_options' : 'manage_options' );
 	}
 }

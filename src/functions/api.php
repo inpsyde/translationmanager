@@ -4,7 +4,7 @@ namespace Translationmanager\Functions;
 
 use Translationmanager\Api;
 use Translationmanager\Plugin;
-use Translationmanager\Setting\PluginSettings;
+use Translationmanager\Setting\ApiSettings;
 
 /**
  * Retrieve API Instance
@@ -24,9 +24,9 @@ function translationmanager_api() {
 
 	if ( null === $api ) {
 		$api = new Api(
-			get_option( PluginSettings::REFRESH_TOKEN ),
+			ApiSettings::token(),
 			'b37270d25d5b3fccf137f7462774fe76',
-			get_option( PluginSettings::URL, 'http://api.eurotext.de/api/v1' )
+			ApiSettings::url( false, 'http://api.eurotext.de/api/v1' )
 		);
 	}
 

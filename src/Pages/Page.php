@@ -33,4 +33,13 @@ interface Page {
 	 * @return void
 	 */
 	public function render_template();
+
+	/**
+	 * Return the URL of the page
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The url of the page, may be the url for the current site or the network admin url page.
+	 */
+	public static function url();
 }

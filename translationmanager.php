@@ -28,10 +28,11 @@ add_action( 'plugins_loaded', function () {
 	$requirements    = new Translationmanager\Requirements();
 	$plugin          = new \Translationmanager\Plugin();
 	$plugin_settings = new \Translationmanager\Setting\PluginSettings();
+	$notice_hook     = is_network_admin() ? 'network_admin_notices' : 'admin_notices';
 
 	// Check the requirements and in case prevent code execution by returning.
 	if ( ! $requirements->is_php_version_ok() ) {
-		add_action( 'admin_notices', function () use ( $requirements ) {
+		add_action( $notice_hook, function () use ( $requirements ) {
 
 			translationmanager_admin_notice( sprintf( esc_html__( // phpcs:ignore
 				'Inpsyde Google Tag Manager requires PHP version %1$s or higher. You are running version %2$s.',
@@ -59,17 +60,17 @@ add_action( 'plugins_loaded', function () {
 
 	// Show Notice in case Token or URL isn't set.
 	if (
-		! get_option( \Translationmanager\Setting\PluginSettings::REFRESH_TOKEN )
-		|| ! get_option( \Translationmanager\Setting\PluginSettings::URL )
+		! \Translationmanager\Setting\ApiSettings::url()
+		|| ! \Translationmanager\Setting\ApiSettings::token()
 	) {
-		add_action( 'admin_notices', function () use ( $requirements ) {
+		add_action( $notice_hook, function () use ( $requirements ) {
 
 			translationmanager_admin_notice(
 				wp_kses( sprintf( __( // phpcs:ignore
 					'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
 					'translationmanager'
 				),
-					'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG, false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
+					'<strong><a href="' . esc_url( \Translationmanager\Pages\PageOptions::url() ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
 				),
 					[
 						'a'      => [ 'href' => true ],
@@ -85,7 +86,7 @@ add_action( 'plugins_loaded', function () {
 	( new \Translationmanager\MetaBox\Translation() )->init();
 
 	// Restrict Manage Posts.
-//	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
+	//	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
 
 	// Assets.
 	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();

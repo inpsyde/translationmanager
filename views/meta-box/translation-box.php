@@ -127,7 +127,5 @@
 		</button>
 	</p>
 
-	<input type="hidden"
-	       name="<?php echo esc_attr( $this->nonce()->action() ) ?>"
-	       value="<?php echo esc_attr( $this->nonce() ) ?>"/>
+	<?php include \Translationmanager\Functions\get_template( '/views/type/nonce.php' ) ?>
 <?php endif ?>

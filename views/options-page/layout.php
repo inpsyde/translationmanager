@@ -8,8 +8,10 @@
 		</small>
 	</h2>
 
-
-	<form method="post" action="options.php" class="inpsyde-form" id="inpsyde-form">
+	<form id="inpsyde-form"
+	      class="inpsyde-form"
+	      method="post"
+	      action="<?php echo esc_url( $this->action() ) ?>">
 
 		<div id="inpsyde-tabs" class="inpsyde-tabs">
 			<ul class="inpsyde-tab__navigation wp-clearfix">
@@ -51,6 +53,8 @@
 			</div>
 
 		</div>
+
+		<?php include \Translationmanager\Functions\get_template( '/views/type/nonce.php' ) ?>
 
 	</form>
 </div>

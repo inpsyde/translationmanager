@@ -37,26 +37,6 @@ class PluginSettings {
 	const SECTION_CREDENTIALS = 'translationmanager_api_credentials';
 
 	/**
-	 * The API url
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The api url setting value
-	 */
-	const URL = 'translationmanager_api_url';
-
-	/**
-	 * The refresh api token
-	 *
-	 * @todo  May be this should be called TOKEN since it's the option not the time for the refresh?.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The value for when the token must be refreshed
-	 */
-	const REFRESH_TOKEN = 'translationmanager_api_token';
-
-	/**
 	 * Register all settings.
 	 *
 	 * @since 1.0.0
@@ -72,43 +52,35 @@ class PluginSettings {
 			self::OPTION_GROUP
 		);
 
-		add_filter( 'sanitize_option_' . self::URL, 'trim' );
-		add_filter( 'sanitize_option_' . self::URL, 'esc_url_raw' );
+		add_filter( 'sanitize_option_' . ApiSettings::URL, 'trim' );
+		add_filter( 'sanitize_option_' . ApiSettings::URL, 'esc_url_raw' );
 
 		// Base URL of the API.
 		$this->add_settings_field(
-			self::URL,
+			ApiSettings::URL,
 			esc_html__( 'URL', 'translationmanager' ),
 			[ $this, 'dispatch_input_text' ],
 			self::OPTION_GROUP,
 			self::SECTION_CREDENTIALS,
 			[
-				'value' => get_option(
-					self::URL,
-					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					esc_html__( 'Not set', 'translationmanager' )
-				),
+				'value' => ApiSettings::url(),
 			]
 		);
 
 		// Token.
 		$this->add_settings_field(
-			self::REFRESH_TOKEN,
+			ApiSettings::TOKEN,
 			esc_html__( 'Token', 'translationmanager' ),
 			[ $this, 'dispatch_input_text' ],
 			self::OPTION_GROUP,
 			self::SECTION_CREDENTIALS,
 			[
-				'value' => get_option(
-					self::REFRESH_TOKEN,
-					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					esc_html__( 'Not set', 'translationmanager' )
-				),
+				'value' => ApiSettings::token(),
 			]
 		);
 
-		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, 'trim' );
-		add_filter( 'sanitize_option_' . self::URL, 'trim' );
+		add_filter( 'sanitize_option_' . ApiSettings::TOKEN, 'trim' );
+		add_filter( 'sanitize_option_' . ApiSettings::URL, 'trim' );
 	}
 
 	/**
@@ -136,7 +108,7 @@ class PluginSettings {
 	 */
 	public function has_refresh_token() {
 
-		return (bool) get_option( self::REFRESH_TOKEN, false );
+		return (bool) ApiSettings::token();
 	}
 
 	/**

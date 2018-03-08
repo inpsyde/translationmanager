@@ -131,6 +131,14 @@ class Project implements Page {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public static function url() {
+
+		return menu_page_url( self::SLUG, false );
+	}
+
+	/**
 	 * Requires Additional Stuffs
 	 *
 	 * @since 1.0.0

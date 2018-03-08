@@ -104,9 +104,7 @@
 				<input type="hidden"
 				       name="_translationmanager_project_id"
 				       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ); ?>">
-				<input type="hidden"
-				       name="<?php echo esc_attr( $this->nonce()->action() ) ?>"
-				       value="<?php echo esc_attr( $this->nonce() ) ?>"/>
+				<?php include \Translationmanager\Functions\get_template( '/views/type/nonce.php' ) ?>
 			</form>
 		</div>
 	</div>
