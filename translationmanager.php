@@ -26,7 +26,7 @@ add_action( 'plugins_loaded', function () {
 	if ( ! class_exists( \Translationmanager\Plugin::class ) ) {
 		add_action( 'admin_notices', function() {
 			translationmanager_admin_notice(
-				esc_html__( 'Translation Manager autoloading failed!', 'translationmanager' ),
+				esc_html__( 'TranslationMANAGER autoloading failed!', 'translationmanager' ),
 				'error'
 			);
 		} );
@@ -43,7 +43,7 @@ add_action( 'plugins_loaded', function () {
 		add_action( 'admin_notices', function () use ( $requirements ) {
 
 			translationmanager_admin_notice( sprintf( esc_html__( // phpcs:ignore
-				'Inpsyde Google Tag Manager requires PHP version %1$s or higher. You are running version %2$s.',
+				'Translation Manager requires PHP version %1$s or higher. You are running version %2$s.',
 				'translationmanager'
 			),
 				Translationmanager\Requirements::PHP_MIN_VERSION,
