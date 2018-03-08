@@ -41,6 +41,8 @@ class PageOptions implements Page {
 		'update_categories',
 	];
 
+	private $plugin;
+
 	/**
 	 * Plugin Settings
 	 *
@@ -55,10 +57,12 @@ class PageOptions implements Page {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param Plugin                 $plugin   The plugin instance.
 	 * @param Setting\PluginSettings $settings The plugin settings.
 	 */
-	public function __construct( Setting\PluginSettings $settings ) {
+	public function __construct( Plugin $plugin, Setting\PluginSettings $settings ) {
 
+		$this->plugin   = $plugin;
 		$this->settings = $settings;
 	}
 
@@ -152,9 +156,9 @@ class PageOptions implements Page {
 
 		wp_register_style(
 			'translationmanager-options-page',
-			( new Plugin() )->url( '/resources/css/style.css' ),
+			( new Plugin() )->url( '/assets/css/settings.css' ),
 			[],
-			filemtime( ( new Plugin() )->dir( '/resources/css/style.css' ) ),
+			filemtime( ( new Plugin() )->dir( '/assets/css/settings.css' ) ),
 			'screen'
 		);
 	}

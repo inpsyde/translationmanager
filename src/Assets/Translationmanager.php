@@ -62,9 +62,9 @@ class Translationmanager {
 
 		wp_register_style(
 			'translationmanager',
-			$this->plugin->url( '/resources/css/translationmanager.css' ),
+			$this->plugin->url( '/assets/css/translationmanager.css' ),
 			[],
-			filemtime( $this->plugin->dir( '/resources/css/translationmanager.css' ) ),
+			filemtime( $this->plugin->dir( '/assets/css/translationmanager.css' ) ),
 			'screen'
 		);
 

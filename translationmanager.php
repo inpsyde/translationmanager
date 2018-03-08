@@ -55,8 +55,7 @@ add_action( 'plugins_loaded', function () {
 	// Add Pages.
 	( new \Translationmanager\Pages\Project() )->init();
 	( new \Translationmanager\Pages\PluginMainPage( $plugin ) )->init();
-	( new \Translationmanager\Pages\PageOptions( $plugin_settings ) )->init();
-	( new \Translationmanager\Pages\PageAbout( $plugin ) )->init();
+	( new \Translationmanager\Pages\PageOptions( $plugin, $plugin_settings ) )->init();
 
 	// Show Notice in case Token or URL isn't set.
 	if (

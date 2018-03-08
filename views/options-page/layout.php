@@ -24,24 +24,30 @@
 				<li class="inpsyde-tab__navigation-item">
 					<a href="#tab--languages"><?php esc_html_e( 'Languages', 'translationmanager' ); ?></a>
 				</li>
+
+				<li class="inpsyde-tab__navigation-item">
+					<a href="#tab--about"><?php esc_html_e( 'About', 'translationmanager' ); ?></a>
+				</li>
 			</ul>
 
-			<div id="tab--connection" class="inpsyde-tab__content">
+			<div id="tab--connection" class="inpsyde-tab__content inpsyde-tabs--connection">
 				<h3 class="screen-reader-text"><?php esc_html_e( 'Credentials', 'translationmanager' ); ?></h3>
-				<?php
-				settings_fields( \Translationmanager\Setting\PluginSettings::OPTION_GROUP );
-				do_settings_sections( 'translationmanager_api' );
-				submit_button( esc_html__( 'Save changes', 'translationmanager' ), 'primary', 'save_action' );
-				?>
+				<?php include \Translationmanager\Functions\get_template( '/views/options-page/tabs/connection.php' ) ?>
 			</div>
 
-			<div id="tab--plugins" class="inpsyde-tab__content">
+			<div id="tab--plugins" class="inpsyde-tab__content inpsyde-tabs--plugins">
 				<h3 class="screen-reader-text"><?php esc_html_e( 'Plugins', 'translationmanager' ); ?></h3>
 				<em><?php esc_html_e( 'Enable or disable plugins here.', 'translationmanager' ); ?></em>
 			</div>
 
-			<div id="tab--languages" class="inpsyde-tab__content">
+			<div id="tab--languages" class="inpsyde-tab__content inpsyde-tabs--languages">
+				<h3 class="screen-reader-text"><?php esc_html_e( 'Languages', 'translationmanager' ); ?></h3>
 				<em><?php esc_html_e( 'Enable or disable languages here.', 'translationmanager' ); ?></em>
+			</div>
+
+			<div id="tab--about" class="inpsyde-tab__content inpsyde-tabs--about">
+				<h3 class="screen-reader-text"><?php esc_html_e( 'About', 'translationmanager' ); ?></h3>
+				<?php include \Translationmanager\Functions\get_template( '/views/options-page/tabs/about.php' ) ?>
 			</div>
 
 		</div>

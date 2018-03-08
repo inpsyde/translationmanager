@@ -53,8 +53,8 @@ add_filter( 'admin_footer_text', function ( $admin_footer_text ) {
 	$default_text = $admin_footer_text;
 	$page         = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
 
-	if ( false !== strstr( $page, 'inpsyde-translationmanager-about' ) ) {
-		$admin_footer_text = '<a href="http://inpsyde.com" class="inpsyde_logo_translationmanager" title="Inpsyde GmbH">Inpsyde GmbH</a></br>'
+	if ( false !== strstr( $page, \Translationmanager\Pages\PageOptions::SLUG ) ) {
+		$admin_footer_text = '<a href="http://inpsyde.com" class="inpsyde_logo_translationmanager" title="Inpsyde GmbH" class="screen-reader-text">Inpsyde GmbH</a></br>'
 		                     . $default_text;
 	}
 

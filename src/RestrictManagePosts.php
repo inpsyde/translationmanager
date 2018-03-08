@@ -63,9 +63,9 @@ class RestrictManagePosts {
 
 		wp_register_style(
 			'translationmanager-restrict-manage-posts',
-			$this->plugin->url( '/resources/css/restrict-manage-posts.css' ),
+			$this->plugin->url( '/assets/css/restrict-manage-posts.css' ),
 			[],
-			filemtime( $this->plugin->dir( '/resources/css/restrict-manage-posts.css' ) ),
+			filemtime( $this->plugin->dir( '/assets/css/restrict-manage-posts.css' ) ),
 			'screen'
 		);
 	}
