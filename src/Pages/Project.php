@@ -19,6 +19,15 @@ use Translationmanager\TableList\ProjectItem;
 class Project implements Page {
 
 	/**
+	 * Page Slug
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string The page slug
+	 */
+	const SLUG = 'translationmanager-project';
+
+	/**
 	 * The Page Title
 	 *
 	 * @since 1.0.0
@@ -82,7 +91,7 @@ class Project implements Page {
 			esc_html__( 'Project', 'translationmanager' ),
 			esc_html__( 'Project', 'translationmanager' ),
 			'manage_options',
-			'translationmanager-project',
+			self::SLUG,
 			[ $this, 'render_template' ]
 		);
 

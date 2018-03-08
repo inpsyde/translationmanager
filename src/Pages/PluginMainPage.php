@@ -20,6 +20,15 @@ use Translationmanager\Plugin;
 class PluginMainPage implements Page {
 
 	/**
+	 * Page Slug
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string The page slug
+	 */
+	const SLUG = 'translationmanager';
+
+	/**
 	 * Plugin
 	 *
 	 * @since 1.0.0
@@ -61,7 +70,7 @@ class PluginMainPage implements Page {
 			esc_html__( 'Translations', 'translationmanager' ),
 			esc_html__( 'Translations', 'translationmanager' ),
 			'manage_options',
-			'translationmanager',
+			self::SLUG,
 			'__return_false',
 			$this->plugin->url( '/resources/img/tm-icon-bw.png' ),
 			100
