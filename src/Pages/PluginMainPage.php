@@ -83,8 +83,8 @@ class PluginMainPage implements Page {
 	 */
 	public static function url() {
 
-		return is_multisite() ?
-			admin_url( '/network?page=' . self::SLUG ) :
+		return is_multisite() && current_user_can( 'manage_network_options' ) ?
+			network_admin_url( 'admin.php?page=' . self::SLUG ) :
 			menu_page_url( self::SLUG, false );
 	}
 
