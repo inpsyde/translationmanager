@@ -20,11 +20,12 @@ add_action( 'plugins_loaded', function () {
 	}
 
 	// Require composer autoloader if exists.
-	if ( is_readable( __DIR__ . '/vendor/autoload.php' ) && ! class_exists(\Translationmanager\Plugin::class)) {
+	if ( is_readable( __DIR__ . '/vendor/autoload.php' ) && ! class_exists( \Translationmanager\Plugin::class ) ) {
 		require_once __DIR__ . '/vendor/autoload.php';
 	}
 	if ( ! class_exists( \Translationmanager\Plugin::class ) ) {
-		add_action( 'admin_notices', function() {
+		add_action( 'admin_notices', function () {
+
 			translationmanager_admin_notice(
 				esc_html__( 'TranslationMANAGER autoloading failed!', 'translationmanager' ),
 				'error'
@@ -94,7 +95,7 @@ add_action( 'plugins_loaded', function () {
 	( new \Translationmanager\MetaBox\Translation() )->init();
 
 	// Restrict Manage Posts.
-//	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
+	//	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
 
 	// Assets.
 	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();

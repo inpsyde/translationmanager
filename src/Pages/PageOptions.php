@@ -156,7 +156,7 @@ class PageOptions implements Page {
 
 		wp_register_style(
 			'translationmanager-options-page',
-			( new Plugin() )->url( '/assets/css/settings.css' ),
+			$this->plugin->url( '/assets/css/settings.css' ),
 			[],
 			filemtime( ( new Plugin() )->dir( '/assets/css/settings.css' ) ),
 			'screen'
@@ -174,7 +174,7 @@ class PageOptions implements Page {
 
 		wp_enqueue_script(
 			'translationmanager-options-page',
-			( new Plugin() )->url( '/resources/js/options-page.js' ),
+			$this->plugin->url( '/resources/js/options-page.js' ),
 			[ 'jquery', 'jquery-ui-tabs' ],
 			filemtime( ( new Plugin() )->dir( '/resources/js/options-page.js' ) ),
 			true
