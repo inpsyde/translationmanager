@@ -24,7 +24,7 @@
 	</tr>
 	<tr>
 		<td class="lefttd">
-			<a href="https://eurotext-ecommerce.com/translationmanager-dokumentation-support/" class="eurotextsupport">
+			<a href="https://eurotext-ecommerce.com/translationmanager-dokumentation-support/" class="eurotext-support">
 				<?php esc_html_e( 'Documentation', 'translationmanager' ); ?>
 			</a>
 		</td>
