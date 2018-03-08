@@ -43,7 +43,7 @@ add_action( 'plugins_loaded', function () {
 		add_action( 'admin_notices', function () use ( $requirements ) {
 
 			translationmanager_admin_notice( sprintf( esc_html__( // phpcs:ignore
-				'Translation Manager requires PHP version %1$s or higher. You are running version %2$s.',
+				'TranslationMANAGER requires PHP version %1$s or higher. You are running version %2$s.',
 				'translationmanager'
 			),
 				Translationmanager\Requirements::PHP_MIN_VERSION,
