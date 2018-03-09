@@ -90,9 +90,9 @@ class Project {
 	public function update_status( $project_id, $status, Domain\Project $project ) {
 
 		$this->api->patch(
-			untrailingslashit( self::URL ) . '/' . $project_id,
+			'transition/' . self::URL . '/' . $project_id,
 			[],
-			array_merge( $project->to_header_array(), [ 'X-Status' => $status ] )
+			[ 'X-Item-Status' => $status ]
 		);
 	}
 
