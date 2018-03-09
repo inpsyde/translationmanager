@@ -23,10 +23,23 @@ function translationmanager_api() {
 	static $api = null;
 
 	if ( null === $api ) {
+
+		/**
+		 * Filter Api URL
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string The api url.
+		 */
+		$url = apply_filters(
+			'translationmanager_api_url',
+			get_option( PluginSettings::URL, 'http://api.eurotext.de/api/v1' )
+		);
+
 		$api = new Api(
 			get_option( PluginSettings::REFRESH_TOKEN ),
 			'b37270d25d5b3fccf137f7462774fe76',
-			get_option( PluginSettings::URL, 'http://api.eurotext.de/api/v1' )
+			$url
 		);
 	}
 
