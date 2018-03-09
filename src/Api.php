@@ -131,6 +131,20 @@ class Api {
 	}
 
 	/**
+	 * Patch
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $path    The path for the call.
+	 * @param array  $data    The body content.
+	 * @param array  $headers The headers for the server.
+	 */
+	public function patch( $path, $data = [], $headers ) {
+
+		$this->request( 'patch', $path, $data, $headers );
+	}
+
+	/**
 	 * @return Project
 	 */
 	public function project() {

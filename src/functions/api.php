@@ -184,15 +184,15 @@ function create_project_order( \WP_Term $project_term ) {
 
 	global $wp_version;
 
-	$project_id = translationmanager_api()->project()->create(
-		new \Translationmanager\Domain\Project(
-			'WordPress',
-			$wp_version,
-			'translationmanager',
-			Plugin::VERSION,
-			$project_term->name
-		)
+	$project = new \Translationmanager\Domain\Project(
+		'WordPress',
+		$wp_version,
+		'translationmanager',
+		Plugin::VERSION,
+		$project_term->name
 	);
+
+	$project_id = translationmanager_api()->project()->create( $project );
 
 	// Posts get collected by post type.
 	$post_types    = [];
@@ -240,6 +240,10 @@ function create_project_order( \WP_Term $project_term ) {
 				->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
 		}
 	}
+
+	translationmanager_api()
+		->project()
+		->update_status( $project_id, 'new', $project );
 
 	// Set the order ID.
 	if ( ! set_unique_term_meta( $project_term, '_translationmanager_order_id', $project_id ) ) {

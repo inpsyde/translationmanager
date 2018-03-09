@@ -10,6 +10,7 @@
 namespace Translationmanager\Api;
 
 use Translationmanager\Api;
+use Translationmanager\Domain;
 
 /**
  * Class Project
@@ -61,7 +62,7 @@ class Project {
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
 	 */
-	public function create( \Translationmanager\Domain\Project $project ) {
+	public function create( Domain\Project $project ) {
 
 		$body = $this->api->post( self::URL, [], $project->to_header_array() );
 
@@ -73,6 +74,26 @@ class Project {
 		}
 
 		return (int) $body['id'];
+	}
+
+	/**
+	 * Update Status
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int                                $project_id The ID of the project for which update the status.
+	 * @param string                             $status     The new status.
+	 * @param \Translationmanager\Domain\Project $project    The project data. Without the status.
+	 *
+	 * @return void
+	 */
+	public function update_status( $project_id, $status, Domain\Project $project ) {
+
+		$this->api->patch(
+			untrailingslashit( self::URL ) . '/' . $project_id,
+			[],
+			array_merge( $project->to_header_array(), [ 'X-Status' => $status ] )
+		);
 	}
 
 	/**
