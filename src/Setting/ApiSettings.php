@@ -8,6 +8,8 @@
 
 namespace Translationmanager\Setting;
 
+use Translationmanager\Functions;
+
 /**
  * Class ApiSettings
  *
@@ -80,10 +82,17 @@ class ApiSettings {
 	 */
 	private static function option( $name, $default = false, $context = true ) {
 
-		if ( ! $context && ! is_network_admin() ) {
-			return get_option( $name, false ) ?: get_site_option( $name, $default );
+		if ( ! $context ) {
+			$option = get_option( $name, false );
+
+			if ( ! $option && Functions\is_plugin_active_for_network() ) {
+				$option = get_site_option( $name, $default );
+			}
+
+			return $option;
 		}
 
+		// Only if the plugin is active in the network, otherwise use the current site option.
 		if ( is_network_admin() ) {
 			return get_site_option( $name, $default );
 		}

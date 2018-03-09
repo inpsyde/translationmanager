@@ -10,6 +10,7 @@
 namespace Translationmanager\Pages;
 
 use Translationmanager\Plugin;
+use Translationmanager\Functions;
 
 /**
  * Class PluginMainPage
@@ -83,9 +84,9 @@ class PluginMainPage implements Page {
 	 */
 	public static function url() {
 
-		return is_multisite() && current_user_can( 'manage_network_options' ) ?
-			network_admin_url( 'admin.php?page=' . self::SLUG ) :
-			menu_page_url( self::SLUG, false );
+		return is_multisite() && current_user_can( 'manage_network_options' ) && Functions\is_plugin_active_for_network()
+			? network_admin_url( 'admin.php?page=' . self::SLUG )
+			: menu_page_url( self::SLUG, false );
 	}
 
 	/**

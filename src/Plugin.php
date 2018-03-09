@@ -89,4 +89,21 @@ class Plugin {
 
 		return $this->file_path;
 	}
+
+	/**
+	 * Plugin File
+	 *
+	 * This function returns the dirname/filename to be used with WordPress functions that needs the plugin file in the
+	 * form of pluginDirName/pluginFileName.ext
+	 *
+	 * @return string The plugin file base path
+	 */
+	public function plugin_file() {
+
+		$basename = basename( $this->file_path );
+		$dirname  = explode( DIRECTORY_SEPARATOR, dirname( $this->file_path ) );
+		$dirname  = end( $dirname );
+
+		return untrailingslashit( $dirname ) . '/' . $basename;
+	}
 }

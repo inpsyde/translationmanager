@@ -258,3 +258,26 @@ function current_url() {
 
 	return $current_url;
 }
+
+/**
+ * Is the plugin active for network
+ *
+ * @since 1.0.0
+ *
+ * @return bool True if the plugin is active in the network, false otherwise.
+ */
+function is_plugin_active_for_network() {
+
+	static $plugin = null;
+
+	if ( null === $plugin ) {
+		$plugin = new Plugin();
+	}
+
+	// May be the function doesn't exists if called during the plugin bootstrap.
+	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	return \is_plugin_active_for_network( $plugin->plugin_file() );
+}
