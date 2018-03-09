@@ -47,41 +47,6 @@ function translationmanager_api() {
 }
 
 /**
- * Fetch the latest information about orders from the API.
- *
- * This asks the API about the status of pending orders.
- * Usually this is done twice daily via cron
- * or manually by the site admin.
- *
- * @api
- *
- * @since 1.0.0
- *
- * @return void
- */
-function translationmanager_api_fetch() {
-
-	$data            = [];
-	$response        = [];
-	$target_language = 'no-NE';
-
-	/**
-	 * Process incoming translation
-	 *
-	 * @see   wp_remote_request()
-	 *
-	 * @todo  C The tag "en-CA" is no ISO, keep using it as it is given in the XLIFF?
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array  $data            Current order data that need to be processed.
-	 * @param string $target_language Target language as language tag (like "en-CA").
-	 * @param array  $response        The response as of `wp_remote_request()`.
-	 */
-	do_action( 'translationmanager_api_process_order', $data, $target_language, $response );
-}
-
-/**
  * Update Project
  *
  * @api
