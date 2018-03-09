@@ -10,7 +10,7 @@ namespace Translationmanager\MetaBox;
 
 use Translationmanager\Functions;
 use Translationmanager\Domain\Language;
-use Translationmanager\Setting\PluginSettings;
+use Translationmanager\Setting\ApiSettings;
 
 /**
  * Class Translation
