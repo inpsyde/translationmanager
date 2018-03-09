@@ -72,25 +72,6 @@ class PluginSettings {
 			self::OPTION_GROUP
 		);
 
-		add_filter( 'sanitize_option_' . self::URL, 'trim' );
-		add_filter( 'sanitize_option_' . self::URL, 'esc_url_raw' );
-
-		// Base URL of the API.
-		$this->add_settings_field(
-			self::URL,
-			esc_html__( 'URL', 'translationmanager' ),
-			[ $this, 'dispatch_input_text' ],
-			self::OPTION_GROUP,
-			self::SECTION_CREDENTIALS,
-			[
-				'value' => get_option(
-					self::URL,
-					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					esc_html__( 'Not set', 'translationmanager' )
-				),
-			]
-		);
-
 		// Token.
 		$this->add_settings_field(
 			self::REFRESH_TOKEN,
@@ -108,7 +89,6 @@ class PluginSettings {
 		);
 
 		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, 'trim' );
-		add_filter( 'sanitize_option_' . self::URL, 'trim' );
 	}
 
 	/**

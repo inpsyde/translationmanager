@@ -68,10 +68,7 @@ add_action( 'plugins_loaded', function () {
 	( new \Translationmanager\Pages\PageOptions( $plugin, $plugin_settings ) )->init();
 
 	// Show Notice in case Token or URL isn't set.
-	if (
-		! get_option( \Translationmanager\Setting\PluginSettings::REFRESH_TOKEN )
-		|| ! get_option( \Translationmanager\Setting\PluginSettings::URL )
-	) {
+	if ( ! get_option( \Translationmanager\Setting\PluginSettings::REFRESH_TOKEN ) ) {
 		add_action( 'admin_notices', function () use ( $requirements ) {
 
 			translationmanager_admin_notice(
