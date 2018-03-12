@@ -71,9 +71,16 @@ class ProjectItem {
 			'public'        => true,
 			'capabilities'  => [
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
-				'create_posts' => 'do_not_allow',
+				'create_posts'       => 'do_not_allow',
+				'edit_post'          => 'manage_options',
+				'read_post'          => 'manage_options',
+				'delete_post'        => 'manage_options',
+				'edit_posts'         => 'manage_options',
+				'edit_others_posts'  => 'manage_options',
+				'publish_posts'      => 'manage_options',
+				'read_private_posts' => 'manage_options',
 			],
-			'map_meta_cap'  => true,
+			'map_meta_cap'  => false,
 			'menu_position' => 100,
 			'supports'      => [ 'title' ],
 			'menu_icon'     => ( $this->plugin )->url( '/resources/img/tm-icon-bw.png' ),
