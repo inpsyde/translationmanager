@@ -37,7 +37,7 @@ class Api {
 	public function __construct( $api_key, $plugin_key, $base_url = null ) {
 
 		if ( null === $base_url ) {
-			$base_url = 'http://api.eurotext.de/api';
+			$base_url = 'https://api.eurotext.de/api';
 		}
 		$this->api_key    = $api_key;
 		$this->plugin_key = $plugin_key;
