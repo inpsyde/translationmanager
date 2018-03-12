@@ -13,9 +13,16 @@
 			"homepage" : "https://inpsyde.com/en/"
 		}
 	],
+	"repositories" : [
+		{
+			"type" : "vcs",
+			"url" : "git@bitbucket.org:inpsyde/system-status.git"
+		}
+	],
 	"require" : {
 		"php" : ">=5.6",
-		"brain/nonces" : "1.0.*"
+		"brain/nonces" : "1.0.*",
+		"inpsyde/system-status" : "dev-master"
 	},
 	"require-dev" : {
 		"php" : ">=5.6",

@@ -67,6 +67,7 @@ add_action( 'plugins_loaded', function () {
 	( new \Translationmanager\Pages\PluginMainPage( $plugin ) )->init();
 	( new \Translationmanager\Pages\PageOptions( $plugin, $plugin_settings ) )->init();
 
+
 	// Show Notice in case Token or URL isn't set.
 	if ( ! get_option( \Translationmanager\Setting\PluginSettings::REFRESH_TOKEN ) ) {
 		add_action( 'admin_notices', function () use ( $requirements ) {
@@ -114,6 +115,9 @@ add_action( 'plugins_loaded', function () {
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'import_project' )
 	) )->init();
+
+	// System Status.
+	( new \Translationmanager\SystemStatus\Controller( $plugin ) )->init();
 
 	// Register Activation.
 	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );
