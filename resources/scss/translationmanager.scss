@@ -95,3 +95,14 @@
 .post-type-project_item #posts-filter .search-box {
   display: none;
 }
+
+//
+// WorkArounds
+//
+
+label[for="mlp_cpt_tm_order"],
+label[for="mlp_cpt_project_item"],
+label[for="mlp_cpt_tm_order|links"],
+label[for="mlp_cpt_project_item|links"] {
+  display: none;
+}
