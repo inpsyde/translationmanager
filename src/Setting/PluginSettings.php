@@ -75,16 +75,17 @@ class PluginSettings {
 		// Token.
 		$this->add_settings_field(
 			self::REFRESH_TOKEN,
-			esc_html__( 'Token', 'translationmanager' ),
+			esc_html__( 'Api Key', 'translationmanager' ),
 			[ $this, 'dispatch_input_text' ],
 			self::OPTION_GROUP,
 			self::SECTION_CREDENTIALS,
 			[
-				'value' => get_option(
+				'value'       => get_option(
 					self::REFRESH_TOKEN,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
-					esc_html__( 'Not set', 'translationmanager' )
+					''
 				),
+				'placeholder' => esc_html__( 'Not set', 'translationmanager' ),
 			]
 		);
 
