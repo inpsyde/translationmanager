@@ -53,6 +53,13 @@
     }
   }
 
+  // Connection
+  &--connection {
+    input[type="text"] {
+      width: 75%;
+    }
+  }
+
   // About
   &--about {
     h3 {
