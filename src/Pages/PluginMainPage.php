@@ -78,15 +78,6 @@ class PluginMainPage implements Page {
 			100
 		);
 
-		add_submenu_page(
-			'translationmanager',
-			esc_html__( 'Projects', 'translationmanager' ),
-			esc_html__( 'Projects', 'translationmanager' ),
-			'manage_options',
-			'translationmanager-project',
-			'__return_false'
-		);
-
 		// User may not allowed, so the index may not exists.
 		if ( isset( $submenu['translationmanager'] ) ) {
 			$submenu['translationmanager'][0][2] = admin_url( // phpcs:ignore

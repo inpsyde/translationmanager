@@ -92,6 +92,15 @@ class Project implements Page {
 			self::SLUG,
 			[ $this, 'render_template' ]
 		);
+
+		add_submenu_page(
+			'translationmanager',
+			esc_html__( 'Projects', 'translationmanager' ),
+			esc_html__( 'Projects', 'translationmanager' ),
+			'manage_options',
+			'translationmanager-project',
+			'__return_false'
+		);
 	}
 
 	/**
