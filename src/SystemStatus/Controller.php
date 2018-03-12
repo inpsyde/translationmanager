@@ -75,13 +75,6 @@ class Controller {
 	 */
 	public function init() {
 
-		( new \Inpsyde\SystemStatus\Page\SystemStatus(
-			esc_html__( 'Status', 'translationmanager' ),
-			'translationmanager',
-			'translationmanager',
-			[ $this, 'render' ]
-		) )->init();
-
 		( new \Inpsyde\SystemStatus\Assets\Styles( $this->plugin->url( '/vendor/inpsyde/' ), '' ) )->init();
 	}
 
