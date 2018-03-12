@@ -10,7 +10,6 @@
 
 		$( document ).ready( function managePostsCallback() {
 			$( '.tablenav .actions.bulkactions' ).on( 'click', '.button.action', function ( e ) {
-				debugger;
 				var selectVal = $( this ).prev( 'select' ).val();
 
 				if ( 'bulk_translate' === selectVal ) {
