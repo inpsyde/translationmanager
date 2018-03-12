@@ -66,6 +66,8 @@ class PluginMainPage implements Page {
 	 */
 	public function add_page() {
 
+		global $submenu;
+
 		add_menu_page(
 			esc_html__( 'Translations', 'translationmanager' ),
 			esc_html__( 'Translations', 'translationmanager' ),
@@ -75,6 +77,22 @@ class PluginMainPage implements Page {
 			$this->plugin->url( '/resources/img/tm-icon-bw.png' ),
 			100
 		);
+
+		add_submenu_page(
+			'translationmanager',
+			esc_html__( 'Projects', 'translationmanager' ),
+			esc_html__( 'Projects', 'translationmanager' ),
+			'manage_options',
+			'translationmanager-project',
+			'__return_false'
+		);
+
+		// User may not allowed, so the index may not exists.
+		if ( isset( $submenu['translationmanager'] ) ) {
+			$submenu['translationmanager'][0][2] = admin_url( // phpcs:ignore
+				'edit-tags.php?taxonomy=translationmanager_project&post_type=project_item'
+			);
+		}
 	}
 
 	/**
