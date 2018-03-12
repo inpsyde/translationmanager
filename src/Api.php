@@ -141,7 +141,7 @@ class Api {
 	 */
 	public function patch( $path, $data = [], $headers ) {
 
-		$this->request( 'patch', $path, $data, $headers );
+		$this->request( 'PATCH', $path, $data, $headers );
 	}
 
 	/**
