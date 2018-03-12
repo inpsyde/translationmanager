@@ -60,19 +60,3 @@ add_filter( 'admin_footer_text', function ( $admin_footer_text ) {
 
 	return $admin_footer_text;
 } );
-add_filter( 'bulk_actions-edit-post', function ( $actions ) {
-
-	if ( current_user_can( 'manage_options' ) ) {
-		$actions['bulk_translate'] = esc_html__( 'Bulk Translate', 'translationmanager' );
-	}
-
-	return $actions;
-} );
-add_filter( 'bulk_actions-edit-page', function ( $actions ) {
-
-	if ( current_user_can( 'manage_options' ) ) {
-		$actions['bulk_translate'] = esc_html__( 'Bulk Translate', 'translationmanager' );
-	}
-
-	return $actions;
-} );

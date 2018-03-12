@@ -26,6 +26,15 @@ class RestrictManagePosts {
 	private $plugin;
 
 	/**
+	 * Capability
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var string Capability needed by the user to perform actions and show elements
+	 */
+	private static $capability = 'manage_options';
+
+	/**
 	 * RestrictManagePosts constructor
 	 *
 	 * @since 1.0.0
@@ -50,6 +59,8 @@ class RestrictManagePosts {
 		add_action( 'admin_head', [ $this, 'enqueue_styles' ], 10 );
 		add_action( 'admin_head', [ $this, 'enqueue_scripts' ], 10 );
 		add_action( 'manage_posts_extra_tablenav', [ $this, 'restrict_manage_posts' ], 10 );
+		add_filter( 'bulk_actions-edit-post', [ $this, 'filter_bulk_action_list' ] );
+		add_filter( 'bulk_actions-edit-page', [ $this, 'filter_bulk_action_list' ] );
 	}
 
 	/**
@@ -82,10 +93,28 @@ class RestrictManagePosts {
 		wp_register_script(
 			'translationmanager-restrict-manage-posts',
 			$this->plugin->url( '/resources/js/restrict-manage-posts.js' ),
-			[],
+			[ 'jquery' ],
 			filemtime( $this->plugin->dir( '/resources/js/restrict-manage-posts.js' ) ),
 			true
 		);
+	}
+
+	/**
+	 * Filter Bulk Action List
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $actions The actions to filter.
+	 *
+	 * @return array The filtered actions
+	 */
+	public function filter_bulk_action_list( $actions ) {
+
+		if ( current_user_can( self::$capability ) ) {
+			$actions['bulk_translate'] = esc_html__( 'Bulk Translate', 'translationmanager' );
+		}
+
+		return $actions;
 	}
 
 	/**
@@ -98,6 +127,10 @@ class RestrictManagePosts {
 	 * @return void
 	 */
 	public function restrict_manage_posts( $which ) {
+
+		if ( ! current_user_can( self::$capability ) ) {
+			return;
+		}
 
 		if ( 'top' !== $which ) {
 			return;
