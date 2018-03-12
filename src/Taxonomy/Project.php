@@ -166,11 +166,17 @@ class Project {
 			'translationmanager_project',
 			'project_item',
 			[
-				'label'  => esc_html__( 'Projects', 'translationmanager' ),
-				'labels' => [
+				'label'        => esc_html__( 'Projects', 'translationmanager' ),
+				'labels'       => [
 					'add_new_item' => esc_html__( 'Create new project', 'translationmanager' ),
 				],
-				'public' => true,
+				'public'       => true,
+				'capabilities' => [
+					'manage_terms' => 'manage_options',
+					'edit_terms'   => 'manage_options',
+					'delete_terms' => 'manage_options',
+					'assign_terms' => 'manage_options',
+				],
 			]
 		);
 	}
