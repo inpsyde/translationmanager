@@ -93,7 +93,7 @@ class RestrictManagePosts {
 		wp_register_script(
 			'translationmanager-restrict-manage-posts',
 			$this->plugin->url( '/resources/js/restrict-manage-posts.js' ),
-			[ 'jquery' ],
+			[ 'underscore', 'jquery' ],
 			filemtime( $this->plugin->dir( '/resources/js/restrict-manage-posts.js' ) ),
 			true
 		);

@@ -1,4 +1,4 @@
-<div class="translationmanager-language-overlay">
+<div id="translationmanager_language_overlay" class="translationmanager-language-overlay">
 	<div class="translationmanager-lang-popup">
 		<a class="close" href="#">&times;</a>
 		<div class="content">
@@ -28,9 +28,9 @@
 			</div>
 
 			<?php
-			submit_button( 'Bulk Translate', 'primary', 'translationmanager-submit-bulk-translate', true, [
-				'id'       => 'translationmanager-submit-bulk-translate',
-				'disabled' => 'true',
+			submit_button( 'Bulk Translate', 'primary', 'translationmanager_submit_bulk_translate', true, [
+				'id'       => 'translationmanager_submit_bulk_translate',
+				'disabled' => true,
 			] );
 			?>
 		</div>

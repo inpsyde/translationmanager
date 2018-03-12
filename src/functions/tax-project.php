@@ -70,7 +70,8 @@ function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_
 		return $redirect_to;
 	}
 
-	if ( - 1 === $project ) {
+	// Isn't a number, don't try to convert to number -1.
+	if ( '-1' === $project ) {
 		$project = (int) $handler->create_project(
 			sprintf(
 				esc_html__( 'Project %s', 'translationmanager' ),
