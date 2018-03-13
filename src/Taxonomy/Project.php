@@ -47,6 +47,7 @@ class Project {
 		add_filter( 'translationmanager_project_row_actions', [ $this, 'modify_row_actions' ], 10, 2 );
 		add_filter( 'views_project_item', [ $this, 'order_project_box_form' ] );
 		add_filter( 'views_project_item', [ $this, 'project_form' ] );
+		add_filter( 'get_edit_term_link', [ $this, 'edit_term_link' ], 10, 3 );
 	}
 
 	/**
@@ -288,5 +289,25 @@ class Project {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Edit Term Link for Project Taxonomy
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $location The location link.
+	 * @param int    $term_id  The term id.
+	 * @param string $taxonomy The taxonomy name associated to the term.
+	 *
+	 * @return string The filtered location
+	 */
+	public function edit_term_link( $location, $term_id, $taxonomy ) {
+
+		if ( 'translationmanager_project' === $taxonomy ) {
+			$location = self::get_project_link( $term_id );
+		}
+
+		return $location;
 	}
 }

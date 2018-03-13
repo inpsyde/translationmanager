@@ -25,28 +25,6 @@ function project_hide_slug() {
 }
 
 /**
- * Edit Term Link for Project Taxonomy
- *
- * @todo  Move into the taxonomy class?
- *
- * @since 1.0.0
- *
- * @param string $location The location link.
- * @param int    $term_id  The term id.
- * @param string $taxonomy The taxonomy name associated to the term.
- *
- * @return string The filtered location
- */
-function edit_term_link_for_project_taxonomy( $location, $term_id, $taxonomy ) {
-
-	if ( 'translationmanager_project' === $taxonomy ) {
-		$location = Taxonomy\Project::get_project_link( $term_id );
-	}
-
-	return $location;
-}
-
-/**
  * Bulk translate project
  *
  * @throws \Exception If isn't possible to create a project.
