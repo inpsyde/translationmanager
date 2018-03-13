@@ -235,7 +235,7 @@
     // Support.
     &--support {
       .support-request-form {
-        label {
+        label:not([for="support_request_agreement"]) {
           display:        inline-block;
           vertical-align: top;
           width:          10%;

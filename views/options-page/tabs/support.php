@@ -55,44 +55,67 @@
 
 <section class="support-section">
 	<h3 class="support-section__title">
-		<?php esc_html_e( 'Request Support', 'translationmanager' ); ?>
+		<?php esc_html_e( 'Ask for Help', 'translationmanager' ); ?>
 	</h3>
+
+	<p class="support-section__description">
+		<?php esc_html_e( 'Please provide the specific url(s) where we can see each issue. e.g. the translation doesn\'t work on this page: domain.com/en/my-tanslated-page.', 'translationmanager' ); ?>
+		<br/>
+		<?php esc_html_e( 'Please let us know how we will recognize the issue or can reproduce the issue. What is supposed to happen, and what is actually happening instead?', 'translationmanager' ); ?>
+	</p>
 
 	<form class="support-request-form"
 	      name="support_request"
 	      id="support_request"
 	      method="post"
-	      enctype="multipart/form-data">
+	      enctype="multipart/form-data"
+	      action="<?php echo esc_url( \Translationmanager\Functions\current_url() ); ?>">
 
 		<p class="support-request-input-wrapper support-request-summary">
-			<label for="summary"><?php esc_html_e( 'Summary', 'translationmanager' ); ?></label>
-			<input type="text" maxlength="64" name="summary" id="summary"/>
+			<label for="support_request_summary"><?php esc_html_e( 'Summary', 'translationmanager' ); ?></label>
+			<input type="text"
+			       maxlength="64"
+			       name="support_request_summary"
+			       id="support_request_summary"
+			       required="required"
+			/>
 		</p>
 
 		<p class="support-request-input-wrapper support-request-description">
-			<label for="description"><?php esc_html_e( 'Description', 'translationmanager' ); ?></label>
-			<textarea name="description" id="summary" rows="10"></textarea>
+			<label for="support_request_description"><?php esc_html_e( 'Description', 'translationmanager' ); ?></label>
+			<textarea name="support_request_description"
+			          id="support_request_description"
+			          rows="10"
+			          required="required"></textarea>
 		</p>
 
 		<p class="support-request-input-wrapper support-request-upload">
-			<label for="upload"><?php esc_html_e( 'Upload', 'translationmanager' ); ?></label>
-			<input type="file" name="upload" id="upload"/>
+			<label for="support_request_upload"><?php esc_html_e( 'Upload', 'translationmanager' ); ?></label>
+			<?php for ( $count = 0; 2 > $count; $count ++ ) : ?>
+				<input type="file" name="support_request_upload[]" id="support_request_upload[]"/>
+			<?php endfor; ?>
 		</p>
 
 		<p class="support-request-input-wrapper support-request-agreement">
-			<input type="checkbox" name="aggreement" id="agreement"/>
-			<span>
+			<input type="checkbox" name="support_request_agreement" id="support_request_agreement"/>
+			<label for="support_request_agreement">
 				<?php printf(
 					wp_kses_post( __( 'I\'ve read the %s, and I agree to allow Eurotext to automatically collect information of my WordPress installation.', 'translationmanager' ) ),
 					'<a href="http://help.eurotext.de/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'documentation', 'translationmanager' ) . '</a>'
 				); ?>
-			</span>
+			</label>
 		</p>
 
 		<input type="submit"
 		       name="support_request"
 		       id="support_request"
 		       class="button button-primary"
-		       value="<?php esc_attr_e( 'Submit the ticket', 'translationmanager' ); ?>"/>
+		       value="<?php esc_attr_e( 'Submit the ticket', 'translationmanager' ); ?>"
+		       required="required"/>
+
+		<?php $nonce = new \Brain\Nonces\WpNonce( 'support_request' ) ?>
+		<input type="hidden"
+		       name="<?php echo esc_attr( $nonce->action() ) ?>"
+		       value="<?php echo esc_attr( $nonce ) ?>"/>
 	</form>
 </section>

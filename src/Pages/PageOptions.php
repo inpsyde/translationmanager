@@ -7,6 +7,9 @@
 
 namespace Translationmanager\Pages;
 
+use Brain\Nonces\WpNonce;
+use Translationmanager\Action\SupportRequestHandler;
+use Translationmanager\Auth\AuthRequestValidator;
 use Translationmanager\Functions;
 use Translationmanager\Plugin;
 use Translationmanager\Setting;
@@ -79,6 +82,7 @@ class PageOptions implements Page {
 		add_action( 'admin_init', [ $this->settings, 'register_setting' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_style' ] );
 		add_action( 'admin_head', [ $this, 'enqueue_script' ] );
+		add_action( 'admin_init', [ $this, 'handle_support_request_form' ] );
 
 		add_filter( 'option_page_capability_' . Setting\PluginSettings::OPTION_GROUP, [
 			$this,
@@ -179,5 +183,22 @@ class PageOptions implements Page {
 			filemtime( ( new Plugin() )->dir( '/resources/js/options-page.js' ) ),
 			true
 		);
+	}
+
+	/**
+	 * Handle Support Request
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public function handle_support_request_form() {
+
+		$handler = new SupportRequestHandler(
+			new AuthRequestValidator(),
+			new WpNonce( 'support_request' )
+		);
+
+		$handler->handle();
 	}
 }
