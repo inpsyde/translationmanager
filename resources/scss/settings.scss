@@ -110,8 +110,13 @@
 
       label,
       input[type="text"],
+      input[type="file"],
       textarea {
         width: 100%;
+      }
+
+      .support-request-files-wrapper {
+        display: inline-block;
       }
 
       .support-request-agreement {
@@ -235,14 +240,19 @@
     // Support.
     &--support {
       .support-request-form {
-        label:not([for="support_request_agreement"]) {
+        label {
           display:        inline-block;
           vertical-align: top;
           width:          10%;
         }
 
+        label[for="support_request_agreement"] {
+          width: 40%;
+        }
+
         input[type="text"],
-        textarea {
+        textarea,
+        .support-request-files-wrapper {
           width: 35%;
         }
 

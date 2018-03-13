@@ -91,12 +91,14 @@
 
 		<p class="support-request-input-wrapper support-request-upload">
 			<label for="support_request_upload"><?php esc_html_e( 'Upload', 'translationmanager' ); ?></label>
-			<?php for ( $count = 0; 2 > $count; $count ++ ) : ?>
-				<input type="file"
-				       name="support_request_upload[]"
-				       id="support_request_upload[]"
-				       accept=".png, .jpeg, .jpg, .gif"/>
-			<?php endfor; ?>
+			<span class="support-request-files-wrapper">
+				<?php for ( $count = 0; 3 > $count; $count ++ ) : ?>
+					<input type="file"
+					       name="support_request_upload[]"
+					       id="support_request_upload[]"
+					       accept=".png, .jpeg, .jpg, .gif"/>
+				<?php endfor; ?>
+			</span>
 		</p>
 
 		<p class="support-request-input-wrapper support-request-agreement">
