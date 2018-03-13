@@ -5,7 +5,7 @@
  */
 
 (
-	function managePosts( _, $ ) {
+	function managePosts( _, $, strings ) {
 		'use strict';
 
 		/**
@@ -79,7 +79,7 @@
 					this.toggleBulkTranslateSubmitBasedOnCheckboxesValues();
 
 					if ( ! checked ) {
-						alert( 'You must need to select at least one element for translate.' );
+						alert( strings.noElementsSelected );
 
 						return;
 					}
@@ -191,5 +191,5 @@
 				instance.init();
 			}
 		} );
-	}( window._, window.jQuery )
+	}( window._, window.jQuery, window.strings )
 );

@@ -97,6 +97,10 @@ class RestrictManagePosts {
 			filemtime( $this->plugin->dir( '/resources/js/restrict-manage-posts.js' ) ),
 			true
 		);
+
+		wp_localize_script( 'translationmanager-restrict-manage-posts', 'strings', [
+			'noElementsSelected' => esc_html__( 'You must need to select at least one element for translate.', 'translationmanager' ),
+		] );
 	}
 
 	/**
