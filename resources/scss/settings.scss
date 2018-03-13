@@ -64,7 +64,6 @@
 
   // Support
   &--support {
-
     .support-most-asked-questions-list {
       margin:        0;
       margin-bottom: 2em;
@@ -90,6 +89,24 @@
         &:hover {
           background-color: $color__inpsyde--dark;
         }
+      }
+    }
+
+    // Form.
+    .support-request-form {
+      label {
+        display:       block;
+        margin-bottom: .63em;
+      }
+
+      label,
+      input[type="text"],
+      textarea {
+        width: 100%;
+      }
+
+      .support-request-agreement {
+        margin-bottom: 2em;
       }
     }
   }
@@ -196,4 +213,36 @@
   margin-top:   .3125em;
   text-indent:  -9999em;
   width:        80px;
+}
+
+//
+// MEDIA QUERIES
+//
+
+@media only screen and (min-width: 64em) {
+
+  .inpsyde-tabs {
+
+    // Support.
+    &--support {
+      .support-request-form {
+        label {
+          display:        inline-block;
+          vertical-align: top;
+          width:          10%;
+        }
+
+        input[type="text"],
+        textarea {
+          width: 35%;
+        }
+
+        input[type="submit"],
+        .support-request-agreement {
+          margin-left: 10.4%;
+        }
+      }
+    }
+  }
+
 }
