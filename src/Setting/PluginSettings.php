@@ -87,7 +87,6 @@ class PluginSettings {
 					''
 				),
 				'placeholder' => esc_html__( 'Not set', 'translationmanager' ),
-				'maxlength'   => 255,
 				'pattern'     => '[a-zA-Z0-9]+',
 			]
 		);
@@ -98,6 +97,19 @@ class PluginSettings {
 			if ( ! ctype_alnum( $value ) ) {
 				TransientNoticeService::add_notice(
 					esc_html__( 'Invalid api key, only letters and numbers allowed.', 'translationmanager' ),
+					'error'
+				);
+
+				return '';
+			}
+
+			return $value;
+		} );
+		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, function ( $value ) {
+
+			if ( 255 < strlen( $value ) ) {
+				TransientNoticeService::add_notice(
+					esc_html__( 'Api key doesn\'t match. Please provide a valid api key.', 'translationmanager' ),
 					'error'
 				);
 
