@@ -20,6 +20,10 @@
 				<li class="inpsyde-tab__navigation-item">
 					<a href="#tab--about"><?php esc_html_e( 'About', 'translationmanager' ); ?></a>
 				</li>
+
+				<li class="inpsyde-tab__navigation-item">
+					<a href="#tab--system-status"><?php esc_html_e( 'System Status', 'translationmanager' ); ?></a>
+				</li>
 			</ul>
 
 			<div id="tab--connection" class="inpsyde-tab__content inpsyde-tabs--connection">
@@ -32,6 +36,10 @@
 				<?php include \Translationmanager\Functions\get_template( '/views/options-page/tabs/about.php' ) ?>
 			</div>
 
+			<div id="tab--system-status" class="inpsyde-tab__content inpsyde-tabs--status">
+				<h3 class="screen-reader-text"><?php esc_html_e( 'System Status', 'translationmanager' ); ?></h3>
+				<?php ( new \Translationmanager\SystemStatus\Controller( new \Translationmanager\Plugin() ) )->render() ?>
+			</div>
 		</div>
 
 	</form>
