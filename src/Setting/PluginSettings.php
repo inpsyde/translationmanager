@@ -86,6 +86,8 @@ class PluginSettings {
 					''
 				),
 				'placeholder' => esc_html__( 'Not set', 'translationmanager' ),
+				'maxlength'   => 255,
+				'pattern'     => '[a-zA-Z0-9]+',
 			]
 		);
 
