@@ -9,6 +9,7 @@
 namespace Translationmanager\Setting;
 
 use Translationmanager\Functions;
+use Translationmanager\Notice\TransientNoticeService;
 
 /**
  * Class PluginSettings
@@ -92,6 +93,19 @@ class PluginSettings {
 		);
 
 		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, 'trim' );
+		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, function ( $value ) {
+
+			if ( ! ctype_alnum( $value ) ) {
+				TransientNoticeService::add_notice(
+					esc_html__( 'Invalid api key, only letters and numbers allowed.', 'translationmanager' ),
+					'error'
+				);
+
+				return '';
+			}
+
+			return $value;
+		} );
 	}
 
 	/**
