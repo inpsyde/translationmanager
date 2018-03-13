@@ -64,6 +64,15 @@
 
   // Support
   &--support {
+
+    .support-section {
+      margin-bottom: 3.5em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
     .support-most-asked-questions-list {
       margin:        0;
       margin-bottom: 2em;
