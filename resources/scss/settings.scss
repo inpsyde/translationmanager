@@ -40,10 +40,11 @@
 
 // Tabs
 .inpsyde-tabs {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  background: $color__white;
-  margin:     1.562em 1.25em;
-  max-width:  1000px;
+  box-shadow:  0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  background:  $color__white;
+  margin:      1.562em 1.25em;
+  margin-left: 0;
+  max-width:   1000px;
 
   // the current tab navigation item.
   .ui-tabs-active {
@@ -58,6 +59,38 @@
   &--connection {
     input[type="text"] {
       width: 75%;
+    }
+  }
+
+  // Support
+  &--support {
+
+    .support-most-asked-questions-list {
+      margin:        0;
+      margin-bottom: 2em;
+    }
+
+    // Documentation link as button.
+    .support-documentation-link {
+      margin: 0;
+
+      a {
+        background-color: $color__inpsyde;
+        color:            $color__white;
+        display:          inline-block;
+        font-size:        .75rem;
+        padding:          .625rem 2rem;
+        text-decoration:  none;
+        text-shadow:      0 -1px 1px $color__inpsyde--dark,
+                          1px 0 1px $color__inpsyde--dark,
+                          0 1px 1px $color__inpsyde--dark,
+                          -1px 0 1px $color__inpsyde--dark;
+        transition:       background-color 100ms linear;
+
+        &:hover {
+          background-color: $color__inpsyde--dark;
+        }
+      }
     }
   }
 
@@ -81,6 +114,11 @@
       margin-right:    15px;
       padding:         .75em 3.125em;
       text-decoration: none;
+      transition:      background-color 100ms linear;
+
+      &:hover {
+        background-color: darken($color__orange, 10%);
+      }
     }
 
     .eurotext-logo-translationmanager {
