@@ -41,6 +41,8 @@ class Language {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @todo  Lang Code: Need a better validation
+	 *
 	 * @param string $lang_code The language iso code.
 	 * @param string $label     The language label.
 	 */
