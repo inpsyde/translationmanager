@@ -35,6 +35,12 @@ add_action( 'plugins_loaded', function () {
 		return;
 	}
 
+	// Require functions and basic files.
+	require_once __DIR__ . '/inc/hooks.php';
+	foreach ( glob( __DIR__ . '/inc/functions/*.php' ) as $file ) {
+		require_once $file;
+	}
+
 	$requirements    = new Translationmanager\Requirements();
 	$plugin          = new \Translationmanager\Plugin();
 	$plugin_settings = new \Translationmanager\Setting\PluginSettings();
