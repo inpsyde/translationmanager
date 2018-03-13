@@ -221,6 +221,10 @@ class SupportRequestHandler implements ActionHandle {
 				throw new FileUploadException( 'Invalid mime type for the uploaded file.' );
 			}
 
+			if ( ( 5 * MB_IN_BYTES ) < $_FILES['support_request_upload']['size'][ $count ] ) { // phpcs:ignore
+				throw new FileUploadException( 'The file you are trying to send exceed the 5MB. Please upload a smaller file.' );
+			}
+
 			// Move the file temporary.
 			move_uploaded_file( $file_path, $new_file_path );
 

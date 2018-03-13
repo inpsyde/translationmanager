@@ -98,6 +98,10 @@
 					       id="support_request_upload[]"
 					       accept=".png, .jpeg, .jpg, .gif"/>
 				<?php endfor; ?>
+
+				<small>
+					<?php esc_html_e( 'Max file size: 5MB. Only .png, .jpeg, .jpg, .gif.', 'translationmanager' ); ?>
+				</small>
 			</span>
 		</p>
 
