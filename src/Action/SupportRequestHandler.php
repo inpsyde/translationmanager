@@ -10,6 +10,7 @@ namespace Translationmanager\Action;
 
 use Brain\Nonces\NonceInterface;
 use Translationmanager\Auth\AuthRequest;
+use Translationmanager\Exception\FileUploadException;
 use Translationmanager\Notice\StandardNotice;
 
 /**
@@ -53,8 +54,21 @@ class SupportRequestHandler implements ActionHandle {
 	 *
 	 * @var string Destination for email
 	 */
-	// patrick.ullrich@eurotext.de
-	private static $destination = 'g.scialfa@inpsyde.com';
+	private static $destination = 'patrick.ullrich@eurotext.de';
+
+	/**
+	 * Accepted File Types
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array List of accepted mime types
+	 */
+	private static $accepted_file_types = [
+		'image/png',
+		'image/jpg',
+		'image/jpeg',
+		'image/gif',
+	];
 
 	/**
 	 * AddTranslationActionHandler constructor
@@ -79,45 +93,31 @@ class SupportRequestHandler implements ActionHandle {
 			return null;
 		}
 
-		$data = $this->request_data();
+		try {
+			$data = $this->request_data();
 
-		if ( ! $data['support_request_agreement'] ) {
+			// Send Email.
+			$response = call_user_func_array( 'wp_mail', $this->build_mail_data( $data ) );
+
+			if ( ! $response ) {
+				$this->response(
+					sprintf(
+						esc_html__( 'Sorry seems something went wrong sending your support request please, try again or contact us at %s', 'translationmanager' ),
+						self::$destination
+					),
+					'error'
+				);
+
+				return;
+			}
+
 			$this->response(
-				esc_html__( 'You must accept the terms by Eurotext before send a support request.' ),
-				'warning'
+				esc_html__( 'Your support request has been sent successfully.' ),
+				'success'
 			);
-
-			return;
+		} catch ( \Exception $e ) {
+			$this->response( $e->getMessage(), 'warning' );
 		}
-
-		if ( ! $data['support_request_summary'] || ! $data['support_request_description'] ) {
-			$this->response(
-				esc_html__( 'Ops! Seems you\'ve missed to type the summary or the description. Please provide those informations.' ),
-				'warning'
-			);
-
-			return;
-		}
-
-		// Send Email.
-		$response = call_user_func_array( 'wp_mail', $this->build_mail_data( $data ) );
-
-		if ( ! $response ) {
-			$this->response(
-				sprintf(
-					esc_html__( 'Sorry seems something went wrong sending your support request please, try again or contact us at %s', 'translationmanager' ),
-					self::$destination
-				),
-				'error'
-			);
-
-			return;
-		}
-
-		$this->response(
-			esc_html__( 'Your support request has been sent successfully.' ),
-			'success'
-		);
 	}
 
 	/**
@@ -143,6 +143,18 @@ class SupportRequestHandler implements ActionHandle {
 			'support_request_description' => FILTER_SANITIZE_STRING,
 			'support_request_agreement'   => FILTER_VALIDATE_BOOLEAN,
 		] );
+
+		if ( ! $inputs['support_request_agreement'] ) {
+			throw new \RuntimeException(
+				esc_html__( 'You must accept the terms by Eurotext before send a support request.' )
+			);
+		}
+
+		if ( ! $inputs['support_request_summary'] || ! $inputs['support_request_description'] ) {
+			throw new \RuntimeException(
+				esc_html__( 'Ops! Seems you\'ve missed to type the summary or the description. Please provide those informations.' )
+			);
+		}
 
 		$files = $this->validate_upload_files();
 
@@ -198,7 +210,11 @@ class SupportRequestHandler implements ActionHandle {
 			$new_file_path = $temp_dir . '/' . $file_name;
 
 			if ( ! is_uploaded_file( $file_path ) ) {
-				continue;
+				throw new FileUploadException( 'The file is not an uploaded one.' );
+			}
+
+			if ( ! in_array( mime_content_type( $file_path ), self::$accepted_file_types, true ) ) {
+				throw new FileUploadException( 'Invalid mime type for the uploaded file.' );
 			}
 
 			// Move the file temporary.
