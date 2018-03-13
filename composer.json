@@ -33,17 +33,6 @@
 		"wp-coding-standards/wpcs" : "dev-master"
 	},
 	"autoload" : {
-		"files" : [
-			"src/functions/commons.php",
-			"src/functions/actions.php",
-			"src/functions/cpt-project.php",
-			"src/functions/language.php",
-			"src/functions/modules.php",
-			"src/functions/api.php",
-			"src/functions/cpt-order.php",
-			"src/functions/tax-project.php",
-			"inc/hooks.php"
-		],
 		"psr-4" : {
 			"Translationmanager\\" : "src/"
 		}
