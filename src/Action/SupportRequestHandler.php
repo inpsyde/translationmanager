@@ -12,6 +12,7 @@ use Brain\Nonces\NonceInterface;
 use Translationmanager\Auth\AuthRequest;
 use Translationmanager\Exception\FileUploadException;
 use Translationmanager\Notice\StandardNotice;
+use Translationmanager\Functions;
 
 /**
  * Class SupportRequestHandler
@@ -172,12 +173,15 @@ class SupportRequestHandler implements ActionHandle {
 	 */
 	private function build_mail_data( array $data ) {
 
+		$user     = wp_get_current_user();
+		$userName = Functions\username( $user );
+
 		return [
 			'to'          => self::$destination,
 			'subject'     => sanitize_text_field( $data['support_request_summary'] ),
 			'message'     => wp_strip_all_tags( $data['support_request_description'] ),
 			'headers'     => [
-				'From: <' . ( get_option( 'admin_email' ) ?: get_option( 'new_admin_email' ) ) . '>',
+				"From: {$userName} <{$user->user_email}>",
 			],
 			'attachments' => $data['files'],
 		];
@@ -210,7 +214,7 @@ class SupportRequestHandler implements ActionHandle {
 			$new_file_path = $temp_dir . '/' . $file_name;
 
 			if ( ! is_uploaded_file( $file_path ) ) {
-				throw new FileUploadException( 'The file is not an uploaded one.' );
+				continue;
 			}
 
 			if ( ! in_array( mime_content_type( $file_path ), self::$accepted_file_types, true ) ) {
