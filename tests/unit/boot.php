@@ -21,6 +21,5 @@ error_reporting( E_ALL );
 
 require_once $vendor . '/antecedent/patchwork/Patchwork.php';
 require_once $vendor . 'autoload.php';
-require_once dirname( dirname( __DIR__ ) ) . '/bootstrap.php';
 
 unset( $vendor );

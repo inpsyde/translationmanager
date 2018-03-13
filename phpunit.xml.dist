@@ -9,16 +9,17 @@
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
-	processIsolation="false"
-	stopOnFailure="false">
+	processIsolation="true"
+	stopOnFailure="true">
 	<testsuites>
 		<testsuite name="Unit">
 			<directory suffix="Test.php">tests/unit/src</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">includes</directory>
+		<whitelist>
+			<directory suffix=".php">./src/</directory>
+			<file>./</file>
 		</whitelist>
 	</filter>
 	<logging>
