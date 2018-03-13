@@ -14,5 +14,7 @@
     <rule ref="WordPress">
         <!-- Discurage following VIP functions as long as this is not a VIP plugin. -->
         <exclude name="WordPress.VIP.RestrictedFunctions" />
+        <exclude name="WordPress.WhiteSpace.DisallowInlineTabs" />
+        <exclude name="WordPress.WhiteSpace.PrecisionAlignment" />
     </rule>
 </ruleset>
