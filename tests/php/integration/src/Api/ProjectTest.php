@@ -2,7 +2,6 @@
 //phpcs:disable
 namespace Translationmanager\Tests\Integration;
 
-use Mockery\Mock;
 use Translationmanager\Api;
 use Translationmanager\Api\Project;
 use Translationmanager\Tests\TestCase;
@@ -18,8 +17,9 @@ class ProjectTest extends TestCase {
 	 */
 	public function testThatCreateProjectSuccess() {
 
-		\Brain\Monkey\Functions\when( 'wp_remote_request' )
-			->alias( function ( $url, $array ) {
+		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
+			->once()
+			->andReturnUsing( function ( $url, $array ) {
 
 				if (
 					$url === 'https://sandbox.api.eurotext.de/api/v1/project.json'
@@ -34,7 +34,7 @@ class ProjectTest extends TestCase {
 						'X-Callback'       => null,
 						'Content-Type'     => 'application/json',
 						'plugin_key'       => 'b37270d25d5b3fccf137f7462774fe76',
-						'mykey'            => 'mykey',
+						'apikey'           => 'mykey',
 					] ) )
 					&& $array['body'] === '[]'
 				) {
@@ -67,6 +67,40 @@ class ProjectTest extends TestCase {
 		$id = $project->create( $domainProject );
 
 		$this->assertSame( 1, $id );
+	}
+
+	/**
+	 * Null means everything ok because the PATCH request doesn't have any body to returns.
+	 */
+	public function testThatUpdateStatusSuccess() {
+
+		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
+			->once()
+			->andReturnUsing( function ( $url, $data ) {
+
+				if ( 'https://sandbox.api.eurotext.de/api/v1/project/1.json' == $url
+				     && 'new' === $data['headers']['X-Item-Status']
+				) {
+					return [
+						'response' => [
+							'code' => 204,
+							'body' => '',
+						],
+					];
+				}
+			} );
+
+		$api = new Api(
+			'mykey',
+			'b37270d25d5b3fccf137f7462774fe76',
+			'https://sandbox.api.eurotext.de/api/v1'
+		);
+
+		$project = new Project( $api );
+
+		$response = $project->update_status( 1, 'new' );
+
+		$this->assertNull( $response );
 	}
 
 	protected function setUp() {

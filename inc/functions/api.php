@@ -240,7 +240,7 @@ function create_project_order( \WP_Term $project_term ) {
 
 	translationmanager_api()
 		->project()
-		->update_status( $project_id, 'new', $project );
+		->update_status( $project_id, 'new' );
 
 	// Set the order ID.
 	if ( ! set_unique_term_meta( $project_term, '_translationmanager_order_id', $project_id ) ) {

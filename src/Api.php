@@ -82,7 +82,7 @@ class Api {
 	 * @param array  $data    The data to send.
 	 * @param array  $headers The header for the request.
 	 *
-	 * @return string[] The response data
+	 * @return mixed Depending on the data response.
 	 */
 	public function post( $path, $data = array(), $headers = [] ) {
 
@@ -100,11 +100,63 @@ class Api {
 	 * @param array  $data    The data to send.
 	 * @param array  $headers The header for the request.
 	 *
-	 * @return string[] The response data
+	 * @return mixed Depending on the data response.
 	 */
 	public function get( $path, $data = [], $headers = [] ) {
 
 		return $this->request( 'GET', $path, $data, $headers );
+	}
+
+	/**
+	 * Patch
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $path    The path for the call.
+	 * @param array  $data    The body content.
+	 * @param array  $headers The headers for the server.
+	 *
+	 * @return mixed Depending on the data response.
+	 */
+	public function patch( $path, $data = [], $headers ) {
+
+		return $this->request( 'PATCH', $path, $data, $headers );
+	}
+
+	/**
+	 * Project
+	 *
+	 * This function always create the instance once.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return Project A new instance of a project class
+	 */
+	public function project() {
+
+		if ( null === $this->project ) {
+			$this->project = new Project( $this );
+		}
+
+		return $this->project;
+	}
+
+	/**
+	 * Project Item
+	 *
+	 * This function always create the instance once.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return ProjectItem A new instance of a projectItem class
+	 */
+	public function project_item() {
+
+		if ( null === $this->project_item ) {
+			$this->project_item = new ProjectItem( $this );
+		}
+
+		return $this->project_item;
 	}
 
 	/**
@@ -119,9 +171,9 @@ class Api {
 	 * @param array  $data    The data to send.
 	 * @param array  $headers The header for the request.
 	 *
-	 * @return string[] The response data
+	 * @return mixed Depending on the data response. NULL if json_decode fails.
 	 */
-	public function request( $method, $path, $data = [], $headers = [] ) {
+	private function request( $method, $path, $data = [], $headers = [] ) {
 
 		$url     = $this->get_url( $path );
 		$context = [
@@ -160,6 +212,7 @@ class Api {
 		}
 
 		$response_code = wp_remote_retrieve_response_code( $response );
+		$response_body = wp_remote_retrieve_body( $response );
 
 		if ( '' === $response_code || $response_code < 200 || $response_code >= 300 ) {
 			/**
@@ -173,62 +226,12 @@ class Api {
 				'message' => 'Request against API failed.',
 				'context' => array_merge( $context, [
 					'status' => $response_code,
-					'body'   => wp_remote_retrieve_body( $response ),
+					'body'   => $response_body,
 				] ),
 			] );
 		}
 
-		return json_decode( wp_remote_retrieve_body( $response ), true );
-	}
-
-	/**
-	 * Patch
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $path    The path for the call.
-	 * @param array  $data    The body content.
-	 * @param array  $headers The headers for the server.
-	 */
-	public function patch( $path, $data = [], $headers ) {
-
-		$this->request( 'PATCH', $path, $data, $headers );
-	}
-
-	/**
-	 * Project
-	 *
-	 * This function always create the instance once.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return Project A new instance of a project class
-	 */
-	public function project() {
-
-		if ( null === $this->project ) {
-			$this->project = new Project( $this );
-		}
-
-		return $this->project;
-	}
-
-	/**
-	 * Project Item
-	 *
-	 * This function always create the instance once.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return ProjectItem A new instance of a projectItem class
-	 */
-	public function project_item() {
-
-		if ( null === $this->project_item ) {
-			$this->project_item = new ProjectItem( $this );
-		}
-
-		return $this->project_item;
+		return json_decode( $response_body, true );
 	}
 
 	/**

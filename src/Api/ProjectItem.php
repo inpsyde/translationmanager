@@ -71,8 +71,7 @@ class ProjectItem {
 
 		if ( ! isset( $body['id'] ) ) {
 			throw new ApiException(
-				isset( $body['message'] ) ? $body['message'] : esc_html__( 'Unknown exception during Create the project item.' ),
-				isset( $body['code'] ) ? $body['code'] : 501
+				esc_html_x( 'The server response without any project item ID.', 'api-response', 'translationmanager' )
 			);
 		}
 

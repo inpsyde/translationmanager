@@ -4,7 +4,6 @@ namespace Translationmanager\Action;
 
 use Brain\Nonces\NonceInterface;
 use Translationmanager\Api\ApiException;
-use Translationmanager\Api\Responses;
 use Translationmanager\Auth\AuthRequest;
 use Translationmanager\Notice\TransientNoticeService;
 use function Translationmanager\Functions\create_project_order;
@@ -104,9 +103,8 @@ class OrderProjectActionHandler implements ActionHandle {
 		} catch ( ApiException $e ) {
 			$notice = [
 				'message'  => sprintf(
-					esc_html__( 'translatioinMANAGER: Server response with a %1$d : %2$s', 'translationmanager' ),
-					$e->getCode(),
-					( new Responses() )->response_by_id( $e->getCode() )
+					esc_html__( 'translatioinMANAGER: %s', 'translationmanager' ),
+					$e->getMessage()
 				),
 				'severity' => 'error',
 			];

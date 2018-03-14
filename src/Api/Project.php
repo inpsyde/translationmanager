@@ -64,16 +64,15 @@ class Project {
 	 */
 	public function create( Domain\Project $project ) {
 
-		$body = $this->api->post( self::URL, [], $project->to_header_array() );
+		$response = $this->api->post( self::URL, [], $project->to_header_array() );
 
-		if ( ! isset( $body['id'] ) ) {
+		if ( ! isset( $response['id'] ) ) {
 			throw new ApiException(
-				isset( $body['message'] ) ? $body['message'] : esc_html__( 'Unknown exception when create the project.' ),
-				isset( $body['code'] ) ? $body['code'] : 501
+				esc_html_x( 'The server response without any project ID.', 'api-response', 'translationmanager' )
 			);
 		}
 
-		return (int) $body['id'];
+		return (int) $response['id'];
 	}
 
 	/**
@@ -81,15 +80,16 @@ class Project {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int                                $project_id The ID of the project for which update the status.
-	 * @param string                             $status     The new status.
-	 * @param \Translationmanager\Domain\Project $project    The project data. Without the status.
+	 * @throws ApiException If the response code isn't a valid one.
 	 *
-	 * @return void
+	 * @param int    $project_id The ID of the project for which update the status.
+	 * @param string $status     The new status.
+	 *
+	 * @return mixed Depending on the request response.
 	 */
-	public function update_status( $project_id, $status, Domain\Project $project ) {
+	public function update_status( $project_id, $status ) {
 
-		$this->api->patch(
+		return $this->api->patch(
 			'transition/' . self::URL . '/' . $project_id,
 			[],
 			[ 'X-Item-Status' => $status ]
@@ -103,7 +103,7 @@ class Project {
 	 *
 	 * @param string $project_id The ID of the project to retrieve from the server.
 	 *
-	 * @return string[] The response data
+	 * @return mixed Depending on the request response.
 	 */
 	public function get( $project_id ) {
 
