@@ -39,7 +39,9 @@
 	},
 	"autoload-dev" : {
 		"psr-4" : {
-			"Translationmanager\\Tests\\" : "tests/unit/src"
+			"Translationmanager\\Tests\\" : "tests/php",
+			"Translationmanager\\Tests\\Unit\\" : "tests/unit/src",
+			"Translationmanager\\Tests\\Integration\\" : "tests/integration/src"
 		}
 	}
 }

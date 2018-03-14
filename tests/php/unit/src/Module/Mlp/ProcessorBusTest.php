@@ -1,6 +1,6 @@
 <?php # -*- coding: utf-8 -*-
-
-namespace Translationmanager\Tests\Module\Mlp;
+// phpcs:disable
+namespace Translationmanager\Tests\Unit\Module\Mlp;
 
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;

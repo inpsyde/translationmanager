@@ -1,8 +1,9 @@
 <?php # -*- coding: utf-8 -*-
-
-namespace Translationmanager\Tests;
+// phpcs:disable
+namespace Translationmanager\Tests\Unit;
 
 use Brain\Monkey\Functions;
+use Translationmanager\Tests\TestCase;
 use Translationmanager\TranslationData;
 
 class TranslationDataTest extends TestCase {
