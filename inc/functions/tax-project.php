@@ -2,6 +2,8 @@
 
 namespace Translationmanager\Functions;
 
+use Translationmanager\Notice\TransientNoticeService;
+use Translationmanager\ProjectHandler;
 use Translationmanager\Taxonomy;
 
 /**
@@ -38,8 +40,18 @@ function project_hide_slug() {
 function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_ids ) {
 
 	$languages = filter_input( INPUT_GET, 'translationmanager_bulk_languages', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
-	$project   = filter_input( INPUT_GET, 'translationmanager-projects', FILTER_SANITIZE_NUMBER_INT );
+	$project   = filter_input( INPUT_GET, 'translationmanager_projects_list', FILTER_SANITIZE_NUMBER_INT );
 	$handler   = new \Translationmanager\ProjectHandler();
+
+	// Do not perform anything if project hasn't been sent.
+	if ( ! $project ) {
+		TransientNoticeService::add_notice(
+			esc_html__( 'You must provide a project to be able to translate items.', 'translationmanager' ),
+			'warning'
+		);
+
+		return wp_get_referer();
+	}
 
 	// Be sure we have only valid elements.
 	$languages = array_filter( $languages );
@@ -50,12 +62,7 @@ function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_
 
 	// Isn't a number, don't try to convert to number -1.
 	if ( '-1' === $project ) {
-		$project = (int) $handler->create_project(
-			sprintf(
-				esc_html__( 'Project %s', 'translationmanager' ),
-				date( 'Y-m-d H:i:s' )
-			)
-		);
+		ProjectHandler::create_project_using_date();
 	}
 
 	// Iterate translations.

@@ -73,4 +73,20 @@ class ProjectHandler {
 
 		wp_set_post_terms( $translation_id, [ $project ], 'translationmanager_project' );
 	}
+
+	/**
+	 * Create new Project by Date
+	 *
+	 * @since 1.0.0
+	 *
+	 * @throws \Exception In case the project cannot be created.
+	 *
+	 * @return int The new project ID
+	 */
+	public static function create_project_using_date() {
+
+		return ( new self() )->create_project(
+			sprintf( esc_html__( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
+		);
+	}
 }

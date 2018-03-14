@@ -5,15 +5,7 @@
 
 			<div id="translationmanager-project-wrap-div">
 				<h2><?php esc_html_e( 'Select Projects:', 'translationmanager' ); ?></h2>
-
-				<select name="translationmanager-projects" id="translationmanager-">
-					<option value="-1"><?php esc_html_e( 'New project', 'translationmanager' ); ?></option>
-					<?php foreach ( \Translationmanager\Functions\projects() as $project_id => $project_label ) : ?>
-						<option value="<?php echo esc_attr( $project_id ); ?>">
-							<?php echo esc_html( $project_label ); ?>
-						</option>
-					<?php endforeach; ?>
-				</select>
+				<?php require_once \Translationmanager\Functions\get_template( '/views/type/select-projects.php' ); ?>
 			</div>
 
 			<div id="translationmanager-lang-wrap-div">

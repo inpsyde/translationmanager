@@ -9,7 +9,6 @@
 namespace Translationmanager\MetaBox;
 
 use Translationmanager\Functions;
-use Translationmanager\Domain\Language;
 use Translationmanager\Setting\PluginSettings;
 
 /**
@@ -84,7 +83,7 @@ class Translation implements Metabox {
 	 */
 	public function render_template() {
 
-		$template = Functions\get_template( 'views/meta-box/translation-box.php' );
+		$template = Functions\get_template( 'views/meta-box/translation/layout.php' );
 
 		if ( ! $template || ! file_exists( $template ) ) {
 			return;
@@ -110,33 +109,9 @@ class Translation implements Metabox {
 	 *
 	 * @return mixed Whatever the get_option() returns.
 	 */
-	public function get_customer_key() {
+	private function get_customer_key() {
 
 		return get_option( PluginSettings::API_KEY );
-	}
-
-	/**
-	 * Get Language
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return Language[] A list of allowed languages
-	 */
-	public function get_languages() {
-
-		return Functions\get_languages();
-	}
-
-	/**
-	 * Get Projects
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array A collection of project
-	 */
-	public function get_projects() {
-
-		return \Translationmanager\Functions\projects();
 	}
 
 	/**
@@ -146,7 +121,7 @@ class Translation implements Metabox {
 	 *
 	 * @return mixed Whatever the get_term_field returns
 	 */
-	public function get_recent_project_name() {
+	private function get_recent_project_name() {
 
 		if ( ! $this->get_recent_project_id() ) {
 			return esc_html__( 'New project', 'translationmanager' );
@@ -162,8 +137,26 @@ class Translation implements Metabox {
 	 *
 	 * @return mixed Whatever the get_user_meta returns
 	 */
-	public function get_recent_project_id() {
+	private function get_recent_project_id() {
 
 		return get_user_meta( get_current_user_id(), 'translationmanager_project_recent', true );
+	}
+
+	/**
+	 * Submit Button Label
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The button label string
+	 */
+	private function context_button_label() {
+
+		$label = esc_html__( 'Add to project', 'translationmanager' );
+
+		if ( ! Functions\projects() ) {
+			$label = esc_html__( 'Create new project', 'translationmanager' );
+		}
+
+		return $label;
 	}
 }

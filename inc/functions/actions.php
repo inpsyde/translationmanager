@@ -7,6 +7,8 @@
 
 namespace Translationmanager\Functions;
 
+use Translationmanager\ProjectHandler;
+
 /**
  * Add Project Translation
  *
@@ -24,15 +26,11 @@ function action_project_add_translation( $arguments ) {
 		'translationmanager_language'   => array_keys( get_languages() ),
 		'translationmanager_project_id' => null,
 	] );
-
+	$project = $request['translationmanager_project_id'];
 	$handler = new \Translationmanager\ProjectHandler();
 
-	$project = (int) $request['translationmanager_project_id'];
-
-	if ( ! $project ) {
-		$project = $handler->create_project(
-			sprintf( esc_html__( 'Project %s', 'translationmanager' ), date( 'Y-m-d H:i:s' ) )
-		);
+	if ( '-1' === $project ) {
+		ProjectHandler::create_project_using_date();
 	}
 
 	/**
