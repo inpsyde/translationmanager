@@ -106,7 +106,7 @@
 		</p>
 
 		<p class="support-request-input-wrapper support-request-agreement">
-			<input type="checkbox" name="support_request_agreement" id="support_request_agreement"/>
+			<input type="checkbox" name="support_request_agreement" id="support_request_agreement" required="required"/>
 			<label for="support_request_agreement">
 				<?php printf(
 					wp_kses_post( __( 'I\'ve read the %s, and I agree to allow Eurotext to automatically collect information of my WordPress installation.', 'translationmanager' ) ),
@@ -119,8 +119,7 @@
 		       name="support_request"
 		       id="support_request"
 		       class="button button-primary"
-		       value="<?php esc_attr_e( 'Submit the ticket', 'translationmanager' ); ?>"
-		       required="required"/>
+		       value="<?php esc_attr_e( 'Submit the ticket', 'translationmanager' ); ?>"/>
 
 		<?php $nonce = new \Brain\Nonces\WpNonce( 'support_request' ) ?>
 		<input type="hidden"
