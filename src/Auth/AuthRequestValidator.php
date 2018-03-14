@@ -1,4 +1,10 @@
 <?php
+/**
+ * Class ValidateAuthRequest
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Action
+ */
 
 namespace Translationmanager\Auth;
 
@@ -9,7 +15,6 @@ use Brain\Nonces\RequestGlobalsContext;
  *
  * @since   1.0.0
  * @package Translationmanager\Action
- * @author  Guido Scialfa <dev@guidoscialfa.com>
  */
 class AuthRequestValidator implements AuthRequest {
 
