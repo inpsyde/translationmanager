@@ -68,7 +68,7 @@ class Project {
 
 		if ( ! isset( $body['id'] ) ) {
 			throw new ApiException(
-				isset( $body['message'] ) ? $body['message'] : esc_html__( 'Unknown exception during Create the project.' ),
+				isset( $body['message'] ) ? $body['message'] : esc_html__( 'Unknown exception when create the project.' ),
 				isset( $body['code'] ) ? $body['code'] : 501
 			);
 		}
