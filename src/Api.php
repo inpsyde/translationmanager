@@ -61,11 +61,8 @@ class Api {
 	 * @param string      $plugin_key Key of the plugin.
 	 * @param null|string $base_url   URL to the API.
 	 */
-	public function __construct( $api_key, $plugin_key, $base_url = null ) {
+	public function __construct( $api_key, $plugin_key, $base_url ) {
 
-		if ( null === $base_url ) {
-			$base_url = 'https://api.eurotext.de/api';
-		}
 		$this->api_key    = $api_key;
 		$this->plugin_key = $plugin_key;
 		$this->base_url   = $base_url;
