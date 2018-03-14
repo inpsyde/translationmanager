@@ -2,6 +2,7 @@
 //phpcs:disable
 namespace Translationmanager\Tests\Integration;
 
+use Mockery\Mock;
 use Translationmanager\Api;
 use Translationmanager\Api\Project;
 use Translationmanager\Tests\TestCase;
@@ -17,19 +18,13 @@ class ProjectTest extends TestCase {
 	 */
 	public function testThatCreateProjectSuccess() {
 
-		\Brain\Monkey\Functions\when( 'is_wp_error' )
-			->justReturn( false );
-		\Brain\Monkey\Functions\when( 'wp_json_encode' )
-			->alias( function ( $item ) {
-
-				return json_encode( $item );
-			} );
 		\Brain\Monkey\Functions\when( 'wp_remote_request' )
 			->alias( function ( $url, $array ) {
 
-				return $url === 'https://sandbox.api.eurotext.de/api/v1/project.json'
-				       && $array['method'] === 'POST'
-				       && empty( array_diff( $array['headers'], [
+				if (
+					$url === 'https://sandbox.api.eurotext.de/api/v1/project.json'
+					&& $array['method'] === 'POST'
+					&& empty( array_diff( $array['headers'], [
 						'X-System'         => 'WordPress',
 						'X-System-Version' => '1.0.0',
 						'X-Plugin'         => 'translationmanager',
@@ -41,17 +36,17 @@ class ProjectTest extends TestCase {
 						'plugin_key'       => 'b37270d25d5b3fccf137f7462774fe76',
 						'mykey'            => 'mykey',
 					] ) )
-				       && $array['body'] === '[]';
-			} );
-		\Brain\Monkey\Functions\when( 'wp_remote_retrieve_response_code' )
-			->alias( function ( $response ) {
+					&& $array['body'] === '[]'
+				) {
+					return [
+						'response' => [
+							'code' => 200,
+							'body' => '{"id":"1"}',
+						],
+					];
+				}
 
-				return $response ? 200 : false;
-			} );
-		\Brain\Monkey\Functions\when( 'wp_remote_retrieve_body' )
-			->alias( function ( $response ) {
-
-				return $response ? '{"id":"1"}' : '{"id":"0"}';
+				return \Mockery::mock( '\WP_Error' );
 			} );
 
 		$api = new Api(
@@ -80,5 +75,33 @@ class ProjectTest extends TestCase {
 
 		\Brain\Monkey\Functions\when( 'esc_html__' )
 			->returnArg( 1 );
+		\Brain\Monkey\Functions\when( 'wp_json_encode' )
+			->alias( function ( $item ) {
+
+				return json_encode( $item );
+			} );
+		\Brain\Monkey\Functions\when( 'is_wp_error' )
+			->alias( function ( $response ) {
+
+				return is_a( $response, 'WP_Error' );
+			} );
+		\Brain\Monkey\Functions\when( 'wp_remote_retrieve_response_code' )
+			->alias( function ( $response ) {
+
+				if ( is_a( $response, 'WP_Error' ) || ! isset( $response['response']['code'] ) ) {
+					return '';
+				}
+
+				return $response['response']['code'];
+			} );
+		\Brain\Monkey\Functions\when( 'wp_remote_retrieve_body' )
+			->alias( function ( $response ) {
+
+				if ( is_a( $response, 'WP_Error' ) || ! isset( $response['response']['body'] ) ) {
+					return '';
+				}
+
+				return $response['response']['body'];
+			} );
 	}
 }

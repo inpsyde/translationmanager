@@ -161,7 +161,7 @@ class Api {
 
 		$response_code = wp_remote_retrieve_response_code( $response );
 
-		if ( $response_code < 200 || $response_code >= 300 ) {
+		if ( '' === $response_code || $response_code < 200 || $response_code >= 300 ) {
 			/**
 			 * Translation Log Filter
 			 *
