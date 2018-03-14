@@ -119,7 +119,6 @@ class Translation implements Metabox {
 	 * Get Language
 	 *
 	 * @since 1.0.0
-	 * @todo  Fetch real languages.
 	 *
 	 * @return Language[] A list of allowed languages
 	 */
