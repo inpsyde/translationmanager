@@ -1,6 +1,6 @@
 <?php
 /**
- * Class SupportRequestHandler
+ * Class SupportRequest
  *
  * @since   1.0.0
  * @package Translationmanager\Setting
@@ -15,12 +15,13 @@ use Translationmanager\Notice\StandardNotice;
 use Translationmanager\Functions;
 
 /**
- * Class SupportRequestHandler
+ * Class SupportRequest
  *
  * @since   1.0.0
  * @package Translationmanager\Setting
  */
-class SupportRequestHandler implements ActionHandle {
+class SupportRequest implements ActionHandle {
+
 	/**
 	 * Auth
 	 *
@@ -72,7 +73,7 @@ class SupportRequestHandler implements ActionHandle {
 	];
 
 	/**
-	 * AddTranslationActionHandler constructor
+	 * SupportRequest constructor
 	 *
 	 * @since 1.0.0
 	 *

@@ -8,7 +8,7 @@
 namespace Translationmanager\Pages;
 
 use Brain\Nonces\WpNonce;
-use Translationmanager\Action\SupportRequestHandler;
+use Translationmanager\Action\SupportRequest;
 use Translationmanager\Auth\AuthRequestValidator;
 use Translationmanager\Functions;
 use Translationmanager\Plugin;
@@ -194,7 +194,7 @@ class PageOptions implements Page {
 	 */
 	public function handle_support_request_form() {
 
-		$handler = new SupportRequestHandler(
+		$handler = new SupportRequest(
 			new AuthRequestValidator(),
 			new WpNonce( 'support_request' )
 		);

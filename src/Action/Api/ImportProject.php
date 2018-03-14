@@ -6,20 +6,21 @@
  * @package Translationmanager\Action
  */
 
-namespace Translationmanager\Action;
+namespace Translationmanager\Action\Api;
 
 use Brain\Nonces\NonceInterface;
+use Translationmanager\Action\ActionHandle;
 use Translationmanager\Api\ApiException;
 use Translationmanager\Auth\AuthRequest;
 use Translationmanager\Notice\TransientNoticeService;
 
 /**
- * Class ImportProjectActionHandler
+ * Class ImportProject
  *
  * @since   1.0.0
  * @package Translationmanager\Action
  */
-class ImportProjectActionHandler implements ActionHandle {
+class ImportProject implements ActionHandle {
 
 	/**
 	 * Auth
@@ -49,7 +50,7 @@ class ImportProjectActionHandler implements ActionHandle {
 	private static $capability = 'manage_options';
 
 	/**
-	 * AddTranslationActionHandler constructor
+	 * ImportProject constructor
 	 *
 	 * @since 1.0.0
 	 *

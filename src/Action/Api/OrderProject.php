@@ -1,8 +1,9 @@
 <?php
 
-namespace Translationmanager\Action;
+namespace Translationmanager\Action\Api;
 
 use Brain\Nonces\NonceInterface;
+use Translationmanager\Action\ActionHandle;
 use Translationmanager\Api\ApiException;
 use Translationmanager\Auth\AuthRequest;
 use Translationmanager\Notice\TransientNoticeService;
@@ -10,12 +11,12 @@ use function Translationmanager\Functions\create_project_order;
 use function Translationmanager\Functions\redirect_admin_page_network;
 
 /**
- * Class OrderProjectActionHandler
+ * Class OrderProject
  *
  * @since   1.0.0
  * @package Translationmanager\Action
  */
-class OrderProjectActionHandler implements ActionHandle {
+class OrderProject implements ActionHandle {
 
 	/**
 	 * Auth
@@ -45,7 +46,7 @@ class OrderProjectActionHandler implements ActionHandle {
 	private static $capability = 'manage_options';
 
 	/**
-	 * AddTranslationActionHandler constructor
+	 * OrderProject constructor
 	 *
 	 * @since 1.0.0
 	 *

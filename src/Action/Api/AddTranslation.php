@@ -1,20 +1,21 @@
 <?php
 
-namespace Translationmanager\Action;
+namespace Translationmanager\Action\Api;
 
 use Brain\Nonces\NonceInterface;
+use Translationmanager\Action\ActionHandle;
 use Translationmanager\Auth\AuthRequest;
 use function Translationmanager\Functions\action_project_add_translation;
 use function Translationmanager\Functions\redirect_admin_page_network;
 use Translationmanager\Notice\TransientNoticeService;
 
 /**
- * Class AddTranslationActionHandler
+ * Class AddTranslation
  *
  * @since   1.0.0
  * @package Translationmanager\Actions
  */
-class AddTranslationActionHandler implements ActionHandle {
+class AddTranslation implements ActionHandle {
 
 	/**
 	 * Auth
@@ -44,7 +45,7 @@ class AddTranslationActionHandler implements ActionHandle {
 	private static $capability = 'manage_options';
 
 	/**
-	 * AddTranslationActionHandler constructor
+	 * AddTranslation constructor
 	 *
 	 * @since 1.0.0
 	 *
