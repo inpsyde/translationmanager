@@ -5,7 +5,7 @@ if ( version_compare( PHP_VERSION, '5.6', '<' ) ) {
 }
 
 putenv( 'TESTS_PATH=' . __DIR__ );
-putenv( 'LIBRARY_PATH=' . dirname( __DIR__ ) );
+putenv( 'LIBRARY_PATH=' . dirname( dirname( __DIR__ ) ) );
 
 $vendor = dirname( dirname( __DIR__ ) ) . '/vendor/';
 

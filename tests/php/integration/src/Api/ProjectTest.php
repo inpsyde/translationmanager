@@ -39,14 +39,13 @@ class ProjectTest extends TestCase {
 					&& $array['body'] === '[]'
 				) {
 					return [
+						'body'     => '{"id":1}',
 						'response' => [
-							'code' => 200,
-							'body' => '{"id":"1"}',
+							'code'    => 200,
+							'message' => 'OK',
 						],
 					];
 				}
-
-				return \Mockery::mock( '\WP_Error' );
 			} );
 
 		$api = new Api(
@@ -82,9 +81,10 @@ class ProjectTest extends TestCase {
 				     && 'new' === $data['headers']['X-Item-Status']
 				) {
 					return [
+						'body'     => '',
 						'response' => [
-							'code' => 204,
-							'body' => '',
+							'code'    => 204,
+							'message' => '',
 						],
 					];
 				}
@@ -107,35 +107,10 @@ class ProjectTest extends TestCase {
 
 		parent::setUp();
 
+		require_once getenv( 'TESTS_PATH' ) . '/stubs/commonStubs.php';
+		require_once getenv( 'TESTS_PATH' ) . '/stubs/wpRemoteStubs.php';
+
 		\Brain\Monkey\Functions\when( 'esc_html__' )
 			->returnArg( 1 );
-		\Brain\Monkey\Functions\when( 'wp_json_encode' )
-			->alias( function ( $item ) {
-
-				return json_encode( $item );
-			} );
-		\Brain\Monkey\Functions\when( 'is_wp_error' )
-			->alias( function ( $response ) {
-
-				return is_a( $response, 'WP_Error' );
-			} );
-		\Brain\Monkey\Functions\when( 'wp_remote_retrieve_response_code' )
-			->alias( function ( $response ) {
-
-				if ( is_a( $response, 'WP_Error' ) || ! isset( $response['response']['code'] ) ) {
-					return '';
-				}
-
-				return $response['response']['code'];
-			} );
-		\Brain\Monkey\Functions\when( 'wp_remote_retrieve_body' )
-			->alias( function ( $response ) {
-
-				if ( is_a( $response, 'WP_Error' ) || ! isset( $response['response']['body'] ) ) {
-					return '';
-				}
-
-				return $response['response']['body'];
-			} );
 	}
 }
