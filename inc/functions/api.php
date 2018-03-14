@@ -107,6 +107,8 @@ function project_update( \WP_Term $project_term ) {
  *
  * @since 1.0.0
  *
+ * @throws \Translationmanager\Api\ApiException If something went wrong during retrieve the project data.
+ *
  * @param \WP_Term $project_term The term instance to retrieve the project data.
  *
  * @return array All posts statues
@@ -139,6 +141,8 @@ function project_items_statuses( \WP_Term $project_term ) {
  * @api
  *
  * @since 1.0.0
+ *
+ * @throws \Translationmanager\Api\ApiException If something went wrong during retrieve the project data.
  *
  * param \WP_Term $project_term The term instance to retrieve the project data.
  *
