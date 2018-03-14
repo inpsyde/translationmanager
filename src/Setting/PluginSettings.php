@@ -55,7 +55,7 @@ class PluginSettings {
 	 *
 	 * @var string The value for when the token must be refreshed
 	 */
-	const REFRESH_TOKEN = 'translationmanager_api_token';
+	const API_KEY = 'translationmanager_api_token';
 
 	/**
 	 * Register all settings.
@@ -75,14 +75,14 @@ class PluginSettings {
 
 		// Token.
 		$this->add_settings_field(
-			self::REFRESH_TOKEN,
+			self::API_KEY,
 			esc_html__( 'Api Key', 'translationmanager' ),
 			[ $this, 'dispatch_input_text' ],
 			self::OPTION_GROUP,
 			self::SECTION_CREDENTIALS,
 			[
 				'value'       => get_option(
-					self::REFRESH_TOKEN,
+					self::API_KEY,
 					// Context: User is in the backend, did not yet fetched a token and finds instructions below.
 					''
 				),
@@ -91,8 +91,8 @@ class PluginSettings {
 			]
 		);
 
-		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, 'trim' );
-		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, function ( $value ) {
+		add_filter( 'sanitize_option_' . self::API_KEY, 'trim' );
+		add_filter( 'sanitize_option_' . self::API_KEY, function ( $value ) {
 
 			if ( ! ctype_alnum( $value ) ) {
 				TransientNoticeService::add_notice(
@@ -105,7 +105,7 @@ class PluginSettings {
 
 			return $value;
 		} );
-		add_filter( 'sanitize_option_' . self::REFRESH_TOKEN, function ( $value ) {
+		add_filter( 'sanitize_option_' . self::API_KEY, function ( $value ) {
 
 			if ( 255 < strlen( $value ) ) {
 				TransientNoticeService::add_notice(
@@ -145,7 +145,7 @@ class PluginSettings {
 	 */
 	public function has_refresh_token() {
 
-		return (bool) get_option( self::REFRESH_TOKEN, false );
+		return (bool) get_option( self::API_KEY, false );
 	}
 
 	/**

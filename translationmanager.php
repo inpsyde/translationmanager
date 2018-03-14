@@ -75,7 +75,7 @@ add_action( 'plugins_loaded', function () {
 
 
 	// Show Notice in case Token or URL isn't set.
-	if ( ! get_option( \Translationmanager\Setting\PluginSettings::REFRESH_TOKEN ) ) {
+	if ( ! get_option( \Translationmanager\Setting\PluginSettings::API_KEY ) ) {
 		add_action( 'admin_notices', function () use ( $requirements ) {
 
 			translationmanager_admin_notice(

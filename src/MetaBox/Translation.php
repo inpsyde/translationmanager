@@ -112,7 +112,7 @@ class Translation implements Metabox {
 	 */
 	public function get_customer_key() {
 
-		return get_option( PluginSettings::REFRESH_TOKEN );
+		return get_option( PluginSettings::API_KEY );
 	}
 
 	/**

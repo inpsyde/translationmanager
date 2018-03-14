@@ -34,7 +34,7 @@ function translationmanager_api() {
 		$url = apply_filters( 'translationmanager_api_url', 'http://api.eurotext.de/api/v1' );
 
 		$api = new Api(
-			get_option( PluginSettings::REFRESH_TOKEN ),
+			get_option( PluginSettings::API_KEY ),
 			'b37270d25d5b3fccf137f7462774fe76',
 			$url
 		);
