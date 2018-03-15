@@ -17,7 +17,7 @@ use Translationmanager\Plugin;
  * @since   1.0.0
  * @package Translationmanager\Pages
  */
-class PluginMainPage implements Page {
+class PluginMainPage implements Pageable {
 
 	/**
 	 * Page Slug

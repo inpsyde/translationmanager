@@ -9,9 +9,9 @@
 namespace Translationmanager\Request;
 
 use Brain\Nonces\NonceInterface;
-use Translationmanager\Auth\AuthRequest;
+use Translationmanager\Auth\Authable;
 use Translationmanager\Exception\FileUploadException;
-use Translationmanager\Notice\StandardNotice;
+use Translationmanager\Notice\StandardNoticeable;
 use Translationmanager\Functions;
 
 /**
@@ -27,7 +27,7 @@ class SupportRequest implements RequestHandleable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var \Translationmanager\Auth\AuthRequest The instance to use to verify the request
+	 * @var \Translationmanager\Auth\Authable The instance to use to verify the request
 	 */
 	private $auth;
 
@@ -77,10 +77,10 @@ class SupportRequest implements RequestHandleable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \Translationmanager\Auth\AuthRequest $auth  The instance to use to verify the request.
-	 * @param \Brain\Nonces\NonceInterface         $nonce The instance to use to verify the request.
+	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
+	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
 	 */
-	public function __construct( AuthRequest $auth, NonceInterface $nonce ) {
+	public function __construct( Authable $auth, NonceInterface $nonce ) {
 
 		$this->auth  = $auth;
 		$this->nonce = $nonce;
@@ -240,7 +240,7 @@ class SupportRequest implements RequestHandleable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @see   StandardNotice
+	 * @see   StandardNoticeable
 	 *
 	 * @param string $message  The message string.
 	 * @param string $severity The severity.
@@ -249,6 +249,6 @@ class SupportRequest implements RequestHandleable {
 	 */
 	private function response( $message, $severity ) {
 
-		( new StandardNotice( 'translationMANAGER: ' . $message, $severity ) )->show();
+		( new StandardNoticeable( 'translationMANAGER: ' . $message, $severity ) )->show();
 	}
 }

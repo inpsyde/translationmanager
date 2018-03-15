@@ -3,12 +3,12 @@
 namespace Translationmanager\Auth;
 
 /**
- * Class AuthRequest
+ * Class Authable
  *
  * @since   1.0.0
  * @package Translationmanager\Auth
  */
-interface AuthRequest {
+interface Authable {
 
 	/**
 	 * Check Against User Capability

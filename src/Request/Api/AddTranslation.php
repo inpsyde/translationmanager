@@ -4,7 +4,7 @@ namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
 use Translationmanager\Request\RequestHandleable;
-use Translationmanager\Auth\AuthRequest;
+use Translationmanager\Auth\Authable;
 use function Translationmanager\Functions\action_project_add_translation;
 use function Translationmanager\Functions\redirect_admin_page_network;
 use Translationmanager\Notice\TransientNoticeService;
@@ -22,7 +22,7 @@ class AddTranslation implements RequestHandleable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var \Translationmanager\Auth\AuthRequest The instance to use to verify the request
+	 * @var \Translationmanager\Auth\Authable The instance to use to verify the request
 	 */
 	private $auth;
 
@@ -49,10 +49,10 @@ class AddTranslation implements RequestHandleable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \Translationmanager\Auth\AuthRequest $auth  The instance to use to verify the request.
-	 * @param \Brain\Nonces\NonceInterface         $nonce The instance to use to verify the request.
+	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
+	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
 	 */
-	public function __construct( AuthRequest $auth, NonceInterface $nonce ) {
+	public function __construct( Authable $auth, NonceInterface $nonce ) {
 
 		$this->auth  = $auth;
 		$this->nonce = $nonce;

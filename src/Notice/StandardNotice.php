@@ -14,7 +14,7 @@ namespace Translationmanager\Notice;
  * @since   1.0.0
  * @package Translationmanager\Notice
  */
-class StandardNotice implements Notice {
+class StandardNotice implements Noticeable {
 
 	/**
 	 * Severity

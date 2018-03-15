@@ -9,7 +9,7 @@ namespace Translationmanager\Pages;
 
 use Brain\Nonces\WpNonce;
 use Translationmanager\Request\SupportRequest;
-use Translationmanager\Auth\AuthRequestValidator;
+use Translationmanager\Auth;
 use Translationmanager\Functions;
 use Translationmanager\Plugin;
 use Translationmanager\Setting;
@@ -19,7 +19,7 @@ use Translationmanager\Setting;
  *
  * @package Translationmanager\Admin
  */
-class PageOptions implements Page {
+class PageOptions implements Pageable {
 
 	const USERNAME = 'translationmanager_api_username';
 	const PASSWORD = 'translationmanager_api_password';
@@ -195,7 +195,7 @@ class PageOptions implements Page {
 	public function handle_support_request_form() {
 
 		$handler = new SupportRequest(
-			new AuthRequestValidator(),
+			new Auth\Validator(),
 			new WpNonce( 'support_request' )
 		);
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Page Interface
+ * Pageable
  *
  * @since   1.0.0
  * @package Translationmanager\Pages
@@ -9,12 +9,12 @@
 namespace Translationmanager\Pages;
 
 /**
- * Class Page
+ * Interface Pageable
  *
  * @since   1.0.0
  * @package Translationmanager\Pages
  */
-interface Page {
+interface Pageable {
 
 	/**
 	 * Register Page

@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Notice
+ * Noticeable
  *
  * @since   1.0.0
  * @package Translationmanager\Notice
@@ -9,12 +9,12 @@
 namespace Translationmanager\Notice;
 
 /**
- * Class Notice
+ * Class Noticeable
  *
  * @since   1.0.0
  * @package Translationmanager\Notice
  */
-interface Notice {
+interface Noticeable {
 
 	/**
 	 * Show Messages

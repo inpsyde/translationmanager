@@ -106,19 +106,19 @@ add_action( 'plugins_loaded', function () {
 
 	// Requests.
 	( new \Translationmanager\Request\Api\AddTranslation(
-		new \Translationmanager\Auth\AuthRequestValidator(),
+		new \Translationmanager\Auth\Validator(),
 		new \Brain\Nonces\WpNonce( 'add_translation' )
 	) )->init();
 	( new \Translationmanager\Request\Api\OrderProject(
-		new \Translationmanager\Auth\AuthRequestValidator(),
+		new \Translationmanager\Auth\Validator(),
 		new \Brain\Nonces\WpNonce( 'order_project' )
 	) )->init();
 	( new \Translationmanager\Request\Api\UpdateProjectOrderStatus(
-		new \Translationmanager\Auth\AuthRequestValidator(),
+		new \Translationmanager\Auth\Validator(),
 		new \Brain\Nonces\WpNonce( 'update_project' )
 	) )->init();
 	( new \Translationmanager\Request\Api\ImportProject(
-		new \Translationmanager\Auth\AuthRequestValidator(),
+		new \Translationmanager\Auth\Validator(),
 		new \Brain\Nonces\WpNonce( 'import_project' )
 	) )->init();
 

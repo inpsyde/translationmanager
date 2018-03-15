@@ -8,7 +8,7 @@
 
 namespace Translationmanager\Request;
 
-use Translationmanager\Notice\StandardNotice;
+use Translationmanager\Notice\StandardNoticeable;
 
 /**
  * Class ProjectItemBulk
@@ -108,6 +108,6 @@ class ProjectItemBulk implements RequestHandleable {
 			];
 		}
 
-		( new StandardNotice( $notice['message'], $notice['severity'] ) )->show();
+		( new StandardNoticeable( $notice['message'], $notice['severity'] ) )->show();
 	}
 }

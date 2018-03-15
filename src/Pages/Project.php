@@ -16,7 +16,7 @@ use Translationmanager\TableList\ProjectItem;
  * @since   1.0.0
  * @package Translationmanager\Pages
  */
-class Project implements Page {
+class Project implements Pageable {
 
 	/**
 	 * Page Slug

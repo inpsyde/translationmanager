@@ -1,6 +1,6 @@
 <?php
 /**
- * Class ValidateAuthRequest
+ * Class Validator
  *
  * @since   1.0.0
  * @package Translationmanager\Request
@@ -11,12 +11,12 @@ namespace Translationmanager\Auth;
 use Brain\Nonces\RequestGlobalsContext;
 
 /**
- * Class ValidateAuthRequest
+ * Class Validator
  *
  * @since   1.0.0
  * @package Translationmanager\Request
  */
-class AuthRequestValidator implements AuthRequest {
+class Validator implements Authable {
 
 	/**
 	 * @inheritdoc
