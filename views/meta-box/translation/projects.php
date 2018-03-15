@@ -25,7 +25,9 @@
 			<?php esc_html_e( 'Set status', 'translationmanager' ); ?>
 		</label>
 
-		<?php require_once \Translationmanager\Functions\get_template( '/views/type/select-projects.php' ); ?>
+		<?php
+		$current = $this->get_recent_project_id();
+		require_once \Translationmanager\Functions\get_template( '/views/type/select-projects.php' ); ?>
 
 		<a href="#translationmanager_projects_list" class="save-fff-status hide-if-no-js button">
 			<?php esc_html_e( 'OK', 'translation manager' ); ?>
