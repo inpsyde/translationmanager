@@ -119,7 +119,7 @@ class Project implements Pageable {
 			'wp_list_table' => new ProjectItem( get_post_type_object( 'project_item' ) ),
 		];
 
-		require_once \Translationmanager\Functions\get_template( '/views/page-project.php' );
+		require_once \Translationmanager\Functions\get_template( '/views/project/page-layout.php' );
 
 		unset( $bind );
 	}
