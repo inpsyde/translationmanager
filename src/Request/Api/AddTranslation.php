@@ -4,7 +4,6 @@ namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
 use Translationmanager\ProjectHandler;
-use Translationmanager\Request\FilterInput;
 use Translationmanager\Request\RequestHandleable;
 use Translationmanager\Auth\Authable;
 use function Translationmanager\Functions\redirect_admin_page_network;
