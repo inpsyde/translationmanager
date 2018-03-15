@@ -42,11 +42,11 @@ class Project {
 		add_action( 'init', [ $this, 'register_taxonomy' ] );
 		add_action( 'manage_translationmanager_project_custom_column', [ $this, 'print_column' ], 10, 3 );
 		add_action( 'admin_post_translationmanager_project_info_save', [ $this, 'project_info_save' ] );
+		add_action( 'translationmanager_project_item_table_views', [ $this, 'project_form' ] );
+		add_action( 'translationmanager_project_item_table_views', [ $this, 'order_project_box_form' ] );
 
 		add_filter( 'manage_edit-translationmanager_project_columns', [ $this, 'modify_columns' ] );
 		add_filter( 'translationmanager_project_row_actions', [ $this, 'modify_row_actions' ], 10, 2 );
-		add_filter( 'views_project_item', [ $this, 'order_project_box_form' ] );
-		add_filter( 'views_project_item', [ $this, 'project_form' ] );
 		add_filter( 'get_edit_term_link', [ $this, 'edit_term_link' ], 10, 3 );
 	}
 
@@ -142,7 +142,7 @@ class Project {
 			wp_die( 'Cheating Uh?' );
 		}
 
-		$project_id = sanitize_title( filter_input( INPUT_POST, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT ) );
+		$project_id = (int) filter_input( INPUT_POST, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
 		$project    = get_term( $project_id, 'translationmanager_project' );
 
 		if ( $project instanceof \WP_Term ) {

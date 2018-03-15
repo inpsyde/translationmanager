@@ -143,6 +143,23 @@ final class ProjectItem extends TableList {
 	/**
 	 * @inheritdoc
 	 */
+	public function views() {
+
+		/**
+		 * Action Project Item Table Views
+		 *
+		 * Fired before the table list.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param \Translationmanager\TableList\ProjectItem $this Instance of this class.
+		 */
+		do_action( 'translationmanager_project_item_table_views', $this );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	protected function extra_tablenav( $which ) {
 
 		?>
