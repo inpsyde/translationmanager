@@ -197,25 +197,6 @@ final class ProjectItem extends TableList {
 	protected function column_default( $item, $column_name ) {
 
 		switch ( $column_name ) {
-			case 'translationmanager_project':
-				$terms = get_the_terms( $item->ID, 'translationmanager_project' );
-
-				if ( ! $terms ) {
-					break;
-				}
-
-				foreach ( $terms as $term ) {
-					printf(
-						'<a href="%s">%s</a>',
-						esc_url( add_query_arg( [
-							'translationmanager_project' => $term->slug,
-							'post_type'                  => 'project_item',
-						], 'edit.php' ) ),
-						esc_html( $term->name )
-					);
-				}
-				break;
-
 			case 'translationmanager_source_language_column':
 				$languages = Functions\current_language();
 
@@ -351,19 +332,19 @@ final class ProjectItem extends TableList {
 	private function items() {
 
 		if ( ! $this->items ) {
-			$term = filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING );
+			$project = filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
 
-			if ( ! $term ) {
+			if ( ! $project ) {
 				return [];
 			}
 
-			$term = get_term_by( 'slug', $term, 'translationmanager_project' );
-
-			if ( ! $term || is_wp_error( $term ) ) {
+			// Just to be sure the term exists.
+			$project = get_term( $project, 'translationmanager_project' );
+			if ( ! $project instanceof \WP_Term ) {
 				return [];
 			}
 
-			$this->items = Functions\get_project_items( $term->term_id, [
+			$this->items = Functions\get_project_items( $project->term_id, [
 				'posts_per_page' => $this->_pagination_args['per_page'],
 				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
 			] );
@@ -383,21 +364,25 @@ final class ProjectItem extends TableList {
 	 */
 	private function column_project( $columns ) {
 
-		$request = $_GET; // phpcs:ignore
-		foreach ( $request as $key => $val ) {
-			$request[ $key ] = sanitize_text_field( filter_input( INPUT_GET, $key, FILTER_SANITIZE_STRING ) );
-		}
+		static $request = null;
 
-		$request = wp_parse_args( $request, [
-			'translationmanager_project' => null,
-		] );
+		if ( null === $request ) {
+			$request = $_GET; // phpcs:ignore
+			foreach ( $request as $key => $val ) {
+				$request[ $key ] = sanitize_text_field( filter_input( INPUT_GET, $key, FILTER_SANITIZE_STRING ) );
+			}
+
+			$request = wp_parse_args( $request, [
+				'translationmanager_project_id' => '-1',
+			] );
+		}
 
 		if ( isset( $request['post_status'] ) && 'trash' === $request['post_status'] ) {
 			// This is trash so we show no project column.
 			return $columns;
 		}
 
-		if ( $request['translationmanager_project'] ) {
+		if ( $request['translationmanager_project_id'] ) {
 			// Term/Project filter is active so this col is not needed.
 			return $columns;
 		}

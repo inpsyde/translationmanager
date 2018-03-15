@@ -96,7 +96,7 @@ class AddTranslation implements RequestHandleable {
 				'post_ID'                       => $data['post_ID'],
 			] );
 
-			if ( false === $project ) {
+			if ( ! $project ) {
 				TransientNoticeService::add_notice(
 					esc_html__( 'Something went wrong during create a new translation item.', 'translationmanager' ),
 					'error'
@@ -119,10 +119,10 @@ class AddTranslation implements RequestHandleable {
 		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
 		redirect_admin_page_network( 'admin.php', [
-			'page'                       => 'translationmanager-project',
-			'translationmanager_project' => get_term_field( 'slug', $project ),
-			'post_type'                  => 'project_item',
-			'updated'                    => - 1,
+			'page'                          => 'translationmanager-project',
+			'translationmanager_project_id' => $project,
+			'post_type'                     => 'project_item',
+			'updated'                       => - 1,
 		] );
 	}
 

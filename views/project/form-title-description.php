@@ -3,8 +3,8 @@
       class="translationmanager-project-details-form">
 	<input type="hidden" name="action" value="translationmanager_project_info_save">
 	<input type="hidden"
-	       name="_translationmanager_project_id"
-	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) ?>">
+	       name="translationmanager_project_id"
+	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT ) ?>">
 	<div class="alignleft actions">
 		<div class="form-field form-required term-name-wrap">
 			<label for="tag-name">

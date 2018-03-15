@@ -90,8 +90,7 @@ class ImportProject implements RequestHandleable {
 			return;
 		}
 
-		$project = get_term_by( 'slug', $data['_translationmanager_project_id'], 'translationmanager_project' );
-
+		$project = get_term( $data['translationmanager_project_id'], 'translationmanager_project' );
 		if ( ! $project instanceof \WP_Term ) {
 			TransientNoticeService::add_notice( esc_html__( 'Invalid Project Name.' ), 'error' );
 
@@ -118,9 +117,9 @@ class ImportProject implements RequestHandleable {
 		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
 		\Translationmanager\Functions\redirect_admin_page_network( 'admin.php', [
-			'page'                       => 'translationmanager-project',
-			'translationmanager_project' => $data['_translationmanager_project_id'],
-			'post_type'                  => 'project_item',
+			'page'                          => 'translationmanager-project',
+			'translationmanager_project_id' => $data['translationmanager_project_id'],
+			'post_type'                     => 'project_item',
 		] );
 	}
 
@@ -143,7 +142,7 @@ class ImportProject implements RequestHandleable {
 	public function request_data() {
 
 		return filter_input_array( INPUT_POST, [
-			'_translationmanager_project_id' => FILTER_SANITIZE_STRING,
+			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
 		] );
 	}
 }

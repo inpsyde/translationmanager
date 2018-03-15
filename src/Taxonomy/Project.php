@@ -53,6 +53,9 @@ class Project {
 	/**
 	 * Project Title and Description Form in edit page.
 	 *
+	 * @todo  This is hooked in a filter, may create confusion about the value passed in.
+	 *       Is there a way to move into an action?
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param string $value The views link. Untouched.
@@ -61,19 +64,24 @@ class Project {
 	 */
 	public function project_form( $value ) {
 
-		$slug = sanitize_title( filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) );
+		$project = filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
 
-		if ( $slug ) {
-			$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
-
-			require Functions\get_template( '/views/project/form-title-description.php' );
+		$project = get_term( $project, 'translationmanager_project' );
+		if ( ! $project instanceof \WP_Term ) {
+			return $value;
 		}
+
+		// @todo Make it a View.
+		require Functions\get_template( '/views/project/form-title-description.php' );
 
 		return $value;
 	}
 
 	/**
 	 * Project Box in Edit Page
+	 *
+	 * @todo  This is hooked in a filter, may create confusion about the value passed in.
+	 *       Is there a way to move into an action?
 	 *
 	 * @since 1.0.0
 	 *
@@ -83,13 +91,14 @@ class Project {
 	 */
 	public function order_project_box_form( $value ) {
 
-		$slug = sanitize_title( filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ) );
+		$project = filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
 
-		if ( $slug ) {
-			$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
-
-			( new \Translationmanager\View\Project\OrderInfo( $term->term_id ) )->render();
+		$project = get_term( $project, 'translationmanager_project' );
+		if ( ! $project instanceof \WP_Term ) {
+			return $value;
 		}
+
+		( new \Translationmanager\View\Project\OrderInfo( $project->term_id ) )->render();
 
 		return $value;
 	}
@@ -125,29 +134,31 @@ class Project {
 			wp_die( 'Cheating Uh?' );
 		}
 
-		$project_id = sanitize_title( filter_input( INPUT_POST, '_translationmanager_project_id', FILTER_SANITIZE_STRING ) );
-		$project    = get_term_by( 'slug', $project_id, 'translationmanager_project' );
+		$project_id = sanitize_title( filter_input( INPUT_POST, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT ) );
+		$project    = get_term( $project_id, 'translationmanager_project' );
+
+		if ( $project instanceof \WP_Term ) {
+			$update = wp_update_term( $project->term_id, 'translationmanager_project', [
+				'name'        => sanitize_text_field( filter_input( INPUT_POST, 'tag-name', FILTER_SANITIZE_STRING ) ),
+				'description' => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING ),
+			] );
+
+			if ( is_wp_error( $update ) ) {
+				TransientNoticeService::add_notice( esc_html__(
+					'Something went wrong. Please go back and try again.', 'translationmanager'
+				), 'warning' );
+			} else {
+				TransientNoticeService::add_notice( sprintf( esc_html__(
+					'Project %s updated.', 'translationmanager'
+				), '<strong>' . $project_id . '</strong>' ), 'success' );
+			}
+		}
 
 		if ( ! $project instanceof \WP_Term ) {
 			TransientNoticeService::add_notice( esc_html__(
 				'Invalid project ID, impossible to update the info.', 'translationmanager'
 			), 'warning' );
 		}
-
-		$update = wp_update_term( $project->term_id, 'translationmanager_project', [
-			'name'        => sanitize_text_field( filter_input( INPUT_POST, 'tag-name', FILTER_SANITIZE_STRING ) ),
-			'description' => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING ),
-		] );
-
-		if ( is_wp_error( $update ) ) {
-			TransientNoticeService::add_notice( esc_html__(
-				'Something went wrong. Please go back and try again.', 'translationmanager'
-			), 'warning' );
-		}
-
-		TransientNoticeService::add_notice( sprintf( esc_html__(
-			'Project %s updated.', 'translationmanager'
-		), '<strong>' . $project_id . '</strong>' ), 'success' );
 
 		wp_safe_redirect( wp_get_referer() );
 
@@ -219,18 +230,18 @@ class Project {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $term_id The term id from which retrieve the project name.
+	 * @param int $project The project from which retrieve the term indetifier.
 	 *
 	 * @return string
 	 */
-	public static function get_project_link( $term_id ) {
+	public static function get_project_link( $project ) {
 
 		return get_admin_url(
 			null,
 			add_query_arg( [
-				'page'                       => 'translationmanager-project',
-				'translationmanager_project' => get_term_field( 'slug', $term_id ),
-				'post_type'                  => 'project_item',
+				'page'                          => 'translationmanager-project',
+				'translationmanager_project_id' => $project,
+				'post_type'                     => 'project_item',
 			], 'admin.php' )
 		);
 	}

@@ -24,7 +24,7 @@ class ProjectHandler {
 	 *
 	 * @throws \Exception In case the project cannot be created.
 	 *
-	 * @return int
+	 * @return int The newly term ID
 	 */
 	public function create_project( $title ) {
 
@@ -48,9 +48,9 @@ class ProjectHandler {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $project The project name item.
-	 * @param int    $post_id The post associated to this project item.
-	 * @param int    $lang_id The language id of the project item.
+	 * @param int $project The project ID.
+	 * @param int $post_id The post associated to this project item.
+	 * @param int $lang_id The language id of the project item.
 	 */
 	public function add_translation( $project, $post_id, $lang_id ) {
 
@@ -70,6 +70,9 @@ class ProjectHandler {
 				],
 			]
 		);
+
+		// Retrieve the slug of the term because we are dealing with non hierarchical terms.
+		$project = get_term_field( 'slug', $project, 'translationmanager_project' );
 
 		wp_set_post_terms( $translation_id, [ $project ], 'translationmanager_project' );
 	}

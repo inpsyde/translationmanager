@@ -52,13 +52,13 @@ function translationmanager_api() {
  *
  * @throws \Exception In case the project ID cannot be retrieved.
  *
- * @param \WP_Term $project_term The project term to use to retrieve the info to update the post.
+ * @param \WP_Term $project The project term to use to retrieve the info to update the post.
  *
  * @return void
  */
-function project_update( \WP_Term $project_term ) {
+function project_update( \WP_Term $project ) {
 
-	$project_id = get_term_meta( $project_term->term_id, '_translationmanager_order_id', true );
+	$project_id = get_term_meta( $project->term_id, '_translationmanager_order_id', true );
 
 	if ( ! $project_id ) {
 		throw new \Exception(

@@ -7,6 +7,7 @@
 
 namespace Translationmanager\Functions;
 
+use Translationmanager\Notice\TransientNoticeService;
 use Translationmanager\ProjectHandler;
 
 /**
@@ -18,19 +19,26 @@ use Translationmanager\ProjectHandler;
  *
  * @param array $arguments Arguments to add languages.
  *
- * @return bool|int
+ * @return int The project ID or 0 on failure.
  */
 function action_project_add_translation( $arguments ) {
 
 	$request = wp_parse_args( $arguments, [
 		'translationmanager_language'   => array_keys( get_languages() ),
-		'translationmanager_project_id' => null,
+		'translationmanager_project_id' => '-1',
 	] );
 	$project = $request['translationmanager_project_id'];
 	$handler = new \Translationmanager\ProjectHandler();
 
-	if ( '-1' === $project ) {
-		ProjectHandler::create_project_using_date();
+	try {
+		// Isn't a number, don't try to convert to number -1.
+		if ( '-1' === $project ) {
+			$project = ProjectHandler::create_project_using_date();
+		}
+	} catch ( \Exception $e ) {
+		TransientNoticeService::add_notice( $e->getMessage(), 'warning' );
+
+		return 0;
 	}
 
 	/**
@@ -60,7 +68,7 @@ function action_project_add_translation( $arguments ) {
 	);
 
 	if ( true !== $valid ) {
-		return false;
+		return 0;
 	}
 
 	// Remember the last manipulated project.

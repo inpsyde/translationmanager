@@ -102,8 +102,8 @@
 
 				<input type="hidden" name="action" value="<?php echo esc_attr( $this->action() ) ?>">
 				<input type="hidden"
-				       name="_translationmanager_project_id"
-				       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project', FILTER_SANITIZE_STRING ); ?>">
+				       name="translationmanager_project_id"
+				       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT ); ?>">
 				<input type="hidden"
 				       name="<?php echo esc_attr( $this->nonce()->action() ) ?>"
 				       value="<?php echo esc_attr( $this->nonce() ) ?>"/>
