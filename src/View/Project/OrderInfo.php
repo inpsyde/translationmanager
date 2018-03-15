@@ -6,22 +6,19 @@
  * @package Translationmanager\MetaBox
  */
 
-namespace Translationmanager\MetaBox;
+namespace Translationmanager\View\Project;
 
 use Translationmanager\Functions;
 use Translationmanager\Utils\TimeZone;
+use Translationmanager\View\Viewable;
 
 /**
  * Class OrderInfo
  *
- * @fixme   This is an old implementation, please remove the class from MetaBox package, instead try to solve by
- *          creating a new package for this kind of things. see template_project_box_form_in_edit_page() function to
- *          know what this class is used for.
- *
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
-class OrderInfo implements Metabox {
+class OrderInfo implements Viewable {
 
 	/**
 	 * Projects Term ID
@@ -43,39 +40,9 @@ class OrderInfo implements Metabox {
 	}
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		//		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
-	}
-
-	/**
 	 * @inheritdoc
 	 */
-	public function add_meta_box() {
-
-		//		if ( ! current_user_can( 'manage_options' ) ) {
-		//			return;
-		//		}
-		//
-		//		add_meta_box(
-		//			'translationmanager_order_info',
-		//			esc_html__( 'Order information', 'translationmanager' ),
-		//			[ $this, 'render_template' ],
-		//			'tm_order',
-		//			'side'
-		//		);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function render_template() {
+	public function render() {
 
 		$template = Functions\get_template( 'views/meta-box/order-info.php' );
 
@@ -87,9 +54,13 @@ class OrderInfo implements Metabox {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Nonce
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return \Brain\Nonces\WpNonce The instance of the nonce
 	 */
-	public function nonce() {
+	private function nonce() {
 
 		$action = str_replace( 'translationmanager_', '', $this->action() );
 
@@ -107,7 +78,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return string The status for the current order.
 	 */
-	public function get_status_label() {
+	private function get_status_label() {
 
 		$order_status = $this->get_order_status();
 
@@ -125,7 +96,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return string The status of the project translation order
 	 */
-	public function get_order_status() {
+	private function get_order_status() {
 
 		return get_term_meta( $this->projects_term_id, '_translationmanager_order_status', true );
 	}
@@ -137,7 +108,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return \DateTime|null Null if the value doesn't exists. DateTime instance otherwise.
 	 */
-	public function get_latest_update_request_date() {
+	private function get_latest_update_request_date() {
 
 		$timestamp = get_term_meta( $this->projects_term_id, '_translationmanager_order_status_last_update_request', true );
 
@@ -162,7 +133,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return string The meta value
 	 */
-	public function get_order_id() {
+	private function get_order_id() {
 
 		return get_term_meta( $this->projects_term_id, '_translationmanager_order_id', true );
 	}
@@ -174,7 +145,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return \DateTime
 	 */
-	public function get_ordered_at() {
+	private function get_ordered_at() {
 
 		$posts = Functions\get_project_items( $this->projects_term_id );
 
@@ -188,7 +159,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return \DateTime
 	 */
-	public function get_translated_at() {
+	private function get_translated_at() {
 
 		$timestamp = get_term_meta( $this->projects_term_id, '_translationmanager_order_translated_at', true );
 
@@ -209,7 +180,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return int The number of projects within the current order
 	 */
-	public function has_projects() {
+	private function has_projects() {
 
 		$posts = Functions\get_project_items( $this->projects_term_id );
 
@@ -223,7 +194,7 @@ class OrderInfo implements Metabox {
 	 *
 	 * @return string The action to perform.
 	 */
-	public function action() {
+	private function action() {
 
 		if ( $this->get_translated_at() instanceof \DateTime ) {
 			return 'translationmanager_import_project';

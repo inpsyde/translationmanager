@@ -87,8 +87,8 @@ class Project {
 
 		if ( $slug ) {
 			$term = get_term_by( 'slug', $slug, 'translationmanager_project' );
-			// This is used inside the view.
-			( new \Translationmanager\MetaBox\OrderInfo( $term->term_id ) )->render_template();
+
+			( new \Translationmanager\View\Project\OrderInfo( $term->term_id ) )->render();
 		}
 
 		return $value;
