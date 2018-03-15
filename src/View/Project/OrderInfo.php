@@ -44,7 +44,7 @@ class OrderInfo implements Viewable {
 	 */
 	public function render() {
 
-		$template = Functions\get_template( 'views/meta-box/order-info.php' );
+		$template = Functions\get_template( 'views/project/order-info.php' );
 
 		if ( ! $template || ! file_exists( $template ) ) {
 			return;
