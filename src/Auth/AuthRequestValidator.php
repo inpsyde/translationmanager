@@ -3,7 +3,7 @@
  * Class ValidateAuthRequest
  *
  * @since   1.0.0
- * @package Translationmanager\Action
+ * @package Translationmanager\Request
  */
 
 namespace Translationmanager\Auth;
@@ -14,7 +14,7 @@ use Brain\Nonces\RequestGlobalsContext;
  * Class ValidateAuthRequest
  *
  * @since   1.0.0
- * @package Translationmanager\Action
+ * @package Translationmanager\Request
  */
 class AuthRequestValidator implements AuthRequest {
 

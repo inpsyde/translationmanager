@@ -1,9 +1,9 @@
 <?php
 
-namespace Translationmanager\Action\Api;
+namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
-use Translationmanager\Action\ActionHandle;
+use Translationmanager\Request\RequestHandleable;
 use Translationmanager\Auth\AuthRequest;
 use function Translationmanager\Functions\project_global_status;
 use function Translationmanager\Functions\redirect_admin_page_network;
@@ -15,9 +15,9 @@ use Translationmanager\Utils\TimeZone;
  * Class UpdateProjectOrderStatus
  *
  * @since   1.0.0
- * @package Translationmanager\Action
+ * @package Translationmanager\Request
  */
-class UpdateProjectOrderStatus implements ActionHandle {
+class UpdateProjectOrderStatus implements RequestHandleable {
 
 	/**
 	 * Auth

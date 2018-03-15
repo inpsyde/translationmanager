@@ -1,25 +1,22 @@
 <?php
 /**
- * Class ProjectItemBulkActionsHandler
+ * Class ProjectItemBulk
  *
  * @since   1.0.0
- * @package Translationmanager\TableList
+ * @package Translationmanager\Request
  */
 
-namespace Translationmanager\TableList;
+namespace Translationmanager\Request;
 
-use Translationmanager\Action\ActionHandle;
-use Translationmanager\Auth\AuthRequest;
 use Translationmanager\Notice\StandardNotice;
-use Translationmanager\Notice\TransientNoticeService;
 
 /**
- * Class ProjectItemBulkActionsHandler
+ * Class ProjectItemBulk
  *
  * @since   1.0.0
- * @package Translationmanager\TableList
+ * @package Translationmanager\Request
  */
-class ProjectItemBulkActionsHandler implements ActionHandle {
+class ProjectItemBulk implements RequestHandleable {
 
 	/**
 	 * User Capability

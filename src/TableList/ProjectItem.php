@@ -9,6 +9,7 @@
 namespace Translationmanager\TableList;
 
 use Translationmanager\Functions;
+use Translationmanager\Request;
 
 /**
  * Class ProjectItem
@@ -134,7 +135,7 @@ final class ProjectItem extends TableList {
 			}
 		} );
 
-		( new ProjectItemBulkActionsHandler() )->handle();
+		( new Request\ProjectItemBulk() )->handle();
 
 		$this->set_pagination();
 	}

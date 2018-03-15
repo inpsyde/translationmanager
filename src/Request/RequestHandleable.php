@@ -1,17 +1,17 @@
 <?php
 
-namespace Translationmanager\Action;
+namespace Translationmanager\Request;
 
 /**
- * Class ActionHandle
+ * Class RequestHandleable
  *
  * @since   1.0.0
- * @package Translationmanager\Action
+ * @package Translationmanager\Request
  */
-interface ActionHandle {
+interface RequestHandleable {
 
 	/**
-	 * Handle Action Request
+	 * Handle Request Request
 	 *
 	 * @since 1.0.0
 	 *

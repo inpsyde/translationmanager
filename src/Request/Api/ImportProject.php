@@ -1,22 +1,26 @@
 <?php
+/**
+ * Import Project Action Handler
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Request
+ */
 
-namespace Translationmanager\Action\Api;
+namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
-use Translationmanager\Action\ActionHandle;
+use Translationmanager\Request\RequestHandleable;
 use Translationmanager\Api\ApiException;
 use Translationmanager\Auth\AuthRequest;
 use Translationmanager\Notice\TransientNoticeService;
-use function Translationmanager\Functions\create_project_order;
-use function Translationmanager\Functions\redirect_admin_page_network;
 
 /**
- * Class OrderProject
+ * Class ImportProject
  *
  * @since   1.0.0
- * @package Translationmanager\Action
+ * @package Translationmanager\Request
  */
-class OrderProject implements ActionHandle {
+class ImportProject implements RequestHandleable {
 
 	/**
 	 * Auth
@@ -46,7 +50,7 @@ class OrderProject implements ActionHandle {
 	private static $capability = 'manage_options';
 
 	/**
-	 * OrderProject constructor
+	 * ImportProject constructor
 	 *
 	 * @since 1.0.0
 	 *
@@ -66,7 +70,7 @@ class OrderProject implements ActionHandle {
 	 */
 	public function init() {
 
-		add_action( 'admin_post_translationmanager_order_project', [ $this, 'handle' ] );
+		add_action( 'admin_post_translationmanager_import_project', [ $this, 'handle' ] );
 	}
 
 	/**
@@ -95,10 +99,10 @@ class OrderProject implements ActionHandle {
 		}
 
 		try {
-			create_project_order( $project );
+			\Translationmanager\Functions\project_update( $project );
 
 			$notice = [
-				'message'  => esc_html__( 'A new project request has been sent.', 'translationmanager' ),
+				'message'  => esc_html__( 'Translation has been imported correctly.', 'translationmanager' ),
 				'severity' => 'success',
 			];
 		} catch ( ApiException $e ) {
@@ -113,7 +117,7 @@ class OrderProject implements ActionHandle {
 
 		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
-		redirect_admin_page_network( 'admin.php', [
+		\Translationmanager\Functions\redirect_admin_page_network( 'admin.php', [
 			'page'                       => 'translationmanager-project',
 			'translationmanager_project' => $data['_translationmanager_project_id'],
 			'post_type'                  => 'project_item',
@@ -125,7 +129,7 @@ class OrderProject implements ActionHandle {
 	 */
 	public function is_valid_request() {
 
-		if ( ! isset( $_POST['translationmanager_action_project_order'] ) ) { // phpcs:ignore
+		if ( ! isset( $_POST['translationmanager_import_project_translation'] ) ) { // phpcs:ignore
 			return false;
 		}
 

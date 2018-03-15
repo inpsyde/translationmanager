@@ -6,7 +6,7 @@
  * @package Translationmanager\Setting
  */
 
-namespace Translationmanager\Action;
+namespace Translationmanager\Request;
 
 use Brain\Nonces\NonceInterface;
 use Translationmanager\Auth\AuthRequest;
@@ -20,7 +20,7 @@ use Translationmanager\Functions;
  * @since   1.0.0
  * @package Translationmanager\Setting
  */
-class SupportRequest implements ActionHandle {
+class SupportRequest implements RequestHandleable {
 
 	/**
 	 * Auth

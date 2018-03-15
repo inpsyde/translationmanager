@@ -1,21 +1,22 @@
 <?php
 
-namespace Translationmanager\Action\Api;
+namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
-use Translationmanager\Action\ActionHandle;
+use Translationmanager\Request\RequestHandleable;
+use Translationmanager\Api\ApiException;
 use Translationmanager\Auth\AuthRequest;
-use function Translationmanager\Functions\action_project_add_translation;
-use function Translationmanager\Functions\redirect_admin_page_network;
 use Translationmanager\Notice\TransientNoticeService;
+use function Translationmanager\Functions\create_project_order;
+use function Translationmanager\Functions\redirect_admin_page_network;
 
 /**
- * Class AddTranslation
+ * Class OrderProject
  *
  * @since   1.0.0
- * @package Translationmanager\Actions
+ * @package Translationmanager\Request
  */
-class AddTranslation implements ActionHandle {
+class OrderProject implements RequestHandleable {
 
 	/**
 	 * Auth
@@ -45,7 +46,7 @@ class AddTranslation implements ActionHandle {
 	private static $capability = 'manage_options';
 
 	/**
-	 * AddTranslation constructor
+	 * OrderProject constructor
 	 *
 	 * @since 1.0.0
 	 *
@@ -65,8 +66,7 @@ class AddTranslation implements ActionHandle {
 	 */
 	public function init() {
 
-		add_action( 'load-edit.php', [ $this, 'handle' ] );
-		add_action( 'load-post.php', [ $this, 'handle' ] );
+		add_action( 'admin_post_translationmanager_order_project', [ $this, 'handle' ] );
 	}
 
 	/**
@@ -86,32 +86,27 @@ class AddTranslation implements ActionHandle {
 			return;
 		}
 
-		$updater = new \Translationmanager\ProjectUpdater();
-		$updater->init();
+		$project = get_term_by( 'slug', $data['_translationmanager_project_id'], 'translationmanager_project' );
+
+		if ( ! $project instanceof \WP_Term ) {
+			TransientNoticeService::add_notice( esc_html__( 'Invalid Project Name.' ), 'error' );
+
+			return;
+		}
 
 		try {
-			$project = action_project_add_translation( [
-				'translationmanager_language'   => $data['translationmanager_language'],
-				'translationmanager_project_id' => $data['translationmanager_project_id'],
-				'post_ID'                       => $data['post_ID'],
-			] );
-
-			if ( false === $project ) {
-				TransientNoticeService::add_notice(
-					esc_html__( 'Something went wrong during create a new translation item.', 'translationmanager' ),
-					'error'
-				);
-
-				return;
-			}
+			create_project_order( $project );
 
 			$notice = [
-				'message'  => esc_html__( 'New Translation added successfully.', 'translationmanager' ),
+				'message'  => esc_html__( 'A new project request has been sent.', 'translationmanager' ),
 				'severity' => 'success',
 			];
-		} catch ( \Exception $e ) {
+		} catch ( ApiException $e ) {
 			$notice = [
-				'message'  => $e->getMessage(),
+				'message'  => sprintf(
+					esc_html__( 'translatioinMANAGER: %s', 'translationmanager' ),
+					$e->getMessage()
+				),
 				'severity' => 'error',
 			];
 		}
@@ -120,9 +115,8 @@ class AddTranslation implements ActionHandle {
 
 		redirect_admin_page_network( 'admin.php', [
 			'page'                       => 'translationmanager-project',
-			'translationmanager_project' => get_term_field( 'slug', $project ),
+			'translationmanager_project' => $data['_translationmanager_project_id'],
 			'post_type'                  => 'project_item',
-			'updated'                    => - 1,
 		] );
 	}
 
@@ -131,7 +125,7 @@ class AddTranslation implements ActionHandle {
 	 */
 	public function is_valid_request() {
 
-		if ( ! isset( $_POST['translationmanager_action_project_add_translation'] ) ) { // phpcs:ignore
+		if ( ! isset( $_POST['translationmanager_action_project_order'] ) ) { // phpcs:ignore
 			return false;
 		}
 
@@ -145,12 +139,7 @@ class AddTranslation implements ActionHandle {
 	public function request_data() {
 
 		return filter_input_array( INPUT_POST, [
-			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
-			'post_ID'                       => FILTER_SANITIZE_NUMBER_INT,
-			'translationmanager_language'   => [
-				'filter' => FILTER_SANITIZE_STRING,
-				'flags'  => FILTER_FORCE_ARRAY,
-			],
+			'_translationmanager_project_id' => FILTER_SANITIZE_STRING,
 		] );
 	}
 }

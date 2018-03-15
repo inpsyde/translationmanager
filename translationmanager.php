@@ -104,20 +104,20 @@ add_action( 'plugins_loaded', function () {
 	// Assets.
 	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();
 
-	// Actions.
-	( new \Translationmanager\Action\Api\AddTranslation(
+	// Requests.
+	( new \Translationmanager\Request\Api\AddTranslation(
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'add_translation' )
 	) )->init();
-	( new \Translationmanager\Action\Api\OrderProject(
+	( new \Translationmanager\Request\Api\OrderProject(
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'order_project' )
 	) )->init();
-	( new \Translationmanager\Action\Api\UpdateProjectOrderStatus(
+	( new \Translationmanager\Request\Api\UpdateProjectOrderStatus(
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'update_project' )
 	) )->init();
-	( new \Translationmanager\Action\Api\ImportProject(
+	( new \Translationmanager\Request\Api\ImportProject(
 		new \Translationmanager\Auth\AuthRequestValidator(),
 		new \Brain\Nonces\WpNonce( 'import_project' )
 	) )->init();

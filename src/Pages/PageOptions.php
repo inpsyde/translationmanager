@@ -8,7 +8,7 @@
 namespace Translationmanager\Pages;
 
 use Brain\Nonces\WpNonce;
-use Translationmanager\Action\SupportRequest;
+use Translationmanager\Request\SupportRequest;
 use Translationmanager\Auth\AuthRequestValidator;
 use Translationmanager\Functions;
 use Translationmanager\Plugin;
