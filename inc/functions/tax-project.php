@@ -61,8 +61,14 @@ function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_
 	}
 
 	// Isn't a number, don't try to convert to number -1.
-	if ( '-1' === $project ) {
-		ProjectHandler::create_project_using_date();
+	try {
+		if ( '-1' === $project ) {
+			$project = ProjectHandler::create_project_using_date();
+		}
+	} catch ( \Exception $e ) {
+		TransientNoticeService::add_notice( $e->getMessage(), 'warning' );
+
+		return wp_get_referer();
 	}
 
 	// Iterate translations.
