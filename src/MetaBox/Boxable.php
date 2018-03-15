@@ -14,7 +14,7 @@ namespace Translationmanager\MetaBox;
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
-interface Metabox {
+interface Boxable {
 
 	/**
 	 * Add Metabox

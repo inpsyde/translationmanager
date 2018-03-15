@@ -17,7 +17,7 @@ use Translationmanager\Setting\PluginSettings;
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
-class Translation implements Metabox {
+class Translation implements Boxable {
 
 	/**
 	 * Set Hooks
