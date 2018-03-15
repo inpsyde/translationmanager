@@ -40,7 +40,7 @@ function project_hide_slug() {
 function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_ids ) {
 
 	$languages = filter_input( INPUT_GET, 'translationmanager_bulk_languages', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
-	$project   = filter_input( INPUT_GET, 'translationmanager_projects_list', FILTER_SANITIZE_NUMBER_INT );
+	$project   = (int) filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
 	$handler   = new \Translationmanager\ProjectHandler();
 
 	// Do not perform anything if project hasn't been sent.

@@ -1,4 +1,4 @@
-<select name="translationmanager_projects_list" id="translationmanager_projects_list">
+<select name="translationmanager_project_id" id="translationmanager_project_id">
 	<option value="-1">
 		<?php esc_html_e( 'New project', 'translationmanager' ); ?>
 	</option>

@@ -27,7 +27,7 @@ function action_project_add_translation( $arguments ) {
 		'translationmanager_language'   => array_keys( get_languages() ),
 		'translationmanager_project_id' => '-1',
 	] );
-	$project = $request['translationmanager_project_id'];
+	$project = (int) $request['translationmanager_project_id'];
 	$handler = new \Translationmanager\ProjectHandler();
 
 	try {
