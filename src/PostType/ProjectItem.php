@@ -46,7 +46,6 @@ class ProjectItem {
 	public function init() {
 
 		add_action( 'init', [ $this, 'register_post_type' ] );
-		add_action( 'pre_get_posts', [ $this, 'filter_order_by' ] );
 
 		add_filter( 'translationmanager_project_item_row_actions', [ $this, 'filter_row_actions' ], 10, 2 );
 	}
@@ -85,40 +84,6 @@ class ProjectItem {
 			'supports'      => [ 'title' ],
 			'menu_icon'     => ( $this->plugin )->url( '/resources/img/tm-icon-bw.png' ),
 		] );
-	}
-
-	/**
-	 * Filter filter order by
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param \WP_Query $query The current query to filter.
-	 *
-	 * @return void
-	 */
-	public function filter_order_by( \WP_Query $query ) {
-
-		if ( $this->is_project_item_cpt() ) {
-			$orderby = $query->get( 'orderby' );
-
-			switch ( $orderby ) {
-				case 'translationmanager_added_by':
-					$query->set( 'orderby', 'author' );
-					break;
-
-				case 'translationmanager_added_at':
-					$query->set( 'orderby', 'date' );
-					break;
-
-				case 'translationmanager_target_language_column':
-					$query->set( 'meta_key', '_translationmanager_target_id' );
-					$query->set( 'orderby', 'meta_value' );
-					break;
-			}
-		}
-
-		// Remove after done.
-		remove_action( 'pre_get_posts', [ $this, 'filter_order_by' ] );
 	}
 
 	/**
