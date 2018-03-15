@@ -189,7 +189,7 @@ function post_type_name_by_request() {
 		return $current_screen->post_type;
 	}
 
-	$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+	$post_type = \filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
 
 	return ( $post_type ?: '' );
 }
