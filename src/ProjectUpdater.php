@@ -31,7 +31,7 @@ class ProjectUpdater {
 	 */
 	public function init() {
 
-		add_filter( 'translationmanager_action_project_add_translation', [
+		add_action( 'translationmanager_action_project_add_translation', [
 			$this,
 			'force_ancestors_in_project',
 		], 10, 4 );

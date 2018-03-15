@@ -107,7 +107,8 @@ add_action( 'plugins_loaded', function () {
 	// Requests.
 	( new \Translationmanager\Request\Api\AddTranslation(
 		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'add_translation' )
+		new \Brain\Nonces\WpNonce( 'add_translation' ),
+		new \Translationmanager\ProjectHandler()
 	) )->init();
 	( new \Translationmanager\Request\Api\OrderProject(
 		new \Translationmanager\Auth\Validator(),
