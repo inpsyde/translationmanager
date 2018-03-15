@@ -258,3 +258,27 @@ function current_url() {
 
 	return $current_url;
 }
+
+/**
+ * Filter Input
+ *
+ * @since 1.0.0
+ *
+ * A wrapper for `filter_input_array`, primary used for testing purpose.
+ *
+ * @param array $request The data we want to filter.
+ * @param int   $method  The method to use, can be INPUT_POST or INPUT_GET.
+ *
+ * @return mixed An array containing the values of the requested variables on success, or FALSE on failure.
+ *               An array value will be FALSE if the filter fails, or NULL if the variable is not set.
+ *               Or if the flag FILTER_NULL_ON_FAILURE is used, it returns FALSE if the variable is not set
+ *               and NULL if the filter
+ */
+function filter_input( array $request, $method ) {
+
+	if ( ! is_int( $method ) ) {
+		throw new \DomainException( 'Method to filter input must be an integer.' );
+	}
+
+	return filter_input_array( $method, $request );
+}

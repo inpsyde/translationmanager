@@ -4,6 +4,7 @@ namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
 use Translationmanager\ProjectHandler;
+use Translationmanager\Request\FilterInput;
 use Translationmanager\Request\RequestHandleable;
 use Translationmanager\Auth\Authable;
 use function Translationmanager\Functions\redirect_admin_page_network;
@@ -88,13 +89,13 @@ class AddTranslation implements RequestHandleable {
 			return;
 		}
 
-		$data = (object) $this->request_data();
-
+		$data = $this->request_data();
 		if ( ! $data ) {
-			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
-
 			return;
 		}
+
+		// Better use object than array.
+		$data = (object) $data;
 
 		// @todo What about using `ProjectUpdater` directly instead of via hook?
 		$updater = new \Translationmanager\ProjectUpdater();
@@ -205,13 +206,13 @@ class AddTranslation implements RequestHandleable {
 	 */
 	public function request_data() {
 
-		return array_filter( filter_input_array( INPUT_POST, [
+		return \Translationmanager\Functions\filter_input( [
 			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
 			'post_ID'                       => FILTER_SANITIZE_NUMBER_INT,
 			'translationmanager_language'   => [
 				'filter' => FILTER_SANITIZE_STRING,
 				'flags'  => FILTER_FORCE_ARRAY,
 			],
-		] ) );
+		], INPUT_POST );
 	}
 }
