@@ -4,7 +4,7 @@
 	<input type="hidden" name="action" value="translationmanager_project_info_save">
 	<input type="hidden"
 	       name="translationmanager_project_id"
-	       value="<?php echo filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT ) ?>">
+	       value="<?php echo intval( $this->project->term_id ) ?>">
 	<div class="alignleft actions">
 		<div class="form-field form-required term-name-wrap">
 			<label for="tag-name">
@@ -13,7 +13,7 @@
 			<input name="tag-name"
 			       id="tag-name"
 			       type="text"
-			       value="<?php echo( is_object( $term ) ? $term->name : '' ); ?>"
+			       value="<?php echo esc_attr( $this->project->name ); ?>"
 			       size="40"
 			       aria-required="true"/>
 		</div>
@@ -24,7 +24,7 @@
 				name="description"
 				id="description"
 				rows="5"
-				cols="40"><?php echo ( is_object( $term ) ) ? $term->description : ''; ?></textarea>
+				cols="40"><?php echo esc_attr( $this->project->description ) ?></textarea>
 			<p>
 				<i>
 					<?php esc_html_e( 'Note: Only plain text allowed. No markup', 'translationmanager' ); ?>
@@ -33,8 +33,8 @@
 		</div>
 
 		<input type="hidden"
-		       name="<?php echo esc_attr( $this->nonce()->action() ) ?>"
-		       value="<?php echo esc_attr( $this->nonce() ) ?>"/>
+		       name="<?php echo esc_attr( $this->nonce->action() ) ?>"
+		       value="<?php echo esc_attr( $this->nonce ) ?>"/>
 
 		<input type="submit"
 		       name="translationmanager_project_info_save"

@@ -71,8 +71,16 @@ class Project {
 			return $value;
 		}
 
-		// @todo Make it a View.
-		require Functions\get_template( '/views/project/form-title-description.php' );
+		$bind = (object) [
+			'project' => $project,
+			'nonce'   => $this->nonce(),
+		];
+
+		\Closure::bind( function () {
+
+			// @todo Make it a View.
+			require Functions\get_template( '/views/project/form-title-description.php' );
+		}, $bind )();
 
 		return $value;
 	}
@@ -150,7 +158,7 @@ class Project {
 			} else {
 				TransientNoticeService::add_notice( sprintf( esc_html__(
 					'Project %s updated.', 'translationmanager'
-				), '<strong>' . $project_id . '</strong>' ), 'success' );
+				), '<strong>' . get_term_field( 'name', $project_id, 'translationmanager_project' ) . '</strong>' ), 'success' );
 			}
 		}
 
