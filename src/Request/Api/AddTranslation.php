@@ -90,11 +90,7 @@ class AddTranslation implements RequestHandleable {
 		$updater->init();
 
 		try {
-			$project = action_project_add_translation( [
-				'translationmanager_language'   => $data['translationmanager_language'],
-				'translationmanager_project_id' => $data['translationmanager_project_id'],
-				'post_ID'                       => $data['post_ID'],
-			] );
+			$project = action_project_add_translation( $data );
 
 			if ( ! $project ) {
 				TransientNoticeService::add_notice(
@@ -144,13 +140,13 @@ class AddTranslation implements RequestHandleable {
 	 */
 	public function request_data() {
 
-		return filter_input_array( INPUT_POST, [
+		return array_filter( filter_input_array( INPUT_POST, [
 			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
 			'post_ID'                       => FILTER_SANITIZE_NUMBER_INT,
 			'translationmanager_language'   => [
 				'filter' => FILTER_SANITIZE_STRING,
 				'flags'  => FILTER_FORCE_ARRAY,
 			],
-		] );
+		] ) );
 	}
 }
