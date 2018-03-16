@@ -167,6 +167,45 @@ function kses_post( $data, array $extra_attrs = [] ) {
 }
 
 /**
+ * Sanitize Html Class
+ *
+ * A wrapper function that enable to pass an array or a string of classes separated by spaces.
+ *
+ * @since 1.0.0
+ *
+ * @uses  sanitize_html_class() To sanitize the html class string
+ *
+ * @param mixed  $class    The classes as string or array.
+ * @param string $fallback The value to return if the sanitization ends up as an empty string. Optional.
+ * @param string $glue     The glue to use to explode the string list of classes. Optional default to space.
+ *
+ * @return string The sanitize class or classes list
+ */
+function sanitize_html_class( $class, $fallback = '', $glue = '' ) {
+
+	// Default to space.
+	$glue = $glue ?: ' ';
+
+	// If is a list and is represented as a string.
+	if ( is_string( $class ) && false !== strpos( $class, $glue ) ) {
+		$class = explode( $glue, $class );
+	}
+
+	if ( is_array( $class ) ) {
+		$new_class = $class;
+		$class     = '';
+
+		foreach ( $new_class as $c ) {
+			$class .= ' ' . sanitize_html_class( $c, $fallback );
+		}
+	} else {
+		$class = \sanitize_html_class( $class, $fallback );
+	}
+
+	return trim( $class, ' ' );
+}
+
+/**
  * Get Post type by Request
  *
  * @since 1.0.0

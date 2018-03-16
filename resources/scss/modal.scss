@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+@import 'colors';
+
+.modal {
+  background:     $color__white;
+  box-shadow:     0 5px 15px darken($color__black--transparent, .2);
+  padding:        1.85em;
+  text-transform: uppercase;
+
+  &__title {
+    border-bottom: 1px solid $color__gray--light;
+    color:         $color__tuna;
+    font-size:     1rem;
+    margin:        0;
+    padding:       0 0 .95em;
+  }
+
+  .dashicons {
+    color:        darken($color__gray, 15%);
+    margin-right: .33em;
+  }
+
+  &__content {
+    padding: 1.85em 0 0;
+  }
+}
+
+.modal-overlay {
+  align-content:   center;
+  align-items:     center;
+  background:      $color__black--transparent;
+  bottom:          0;
+  display:         flex;
+  justify-content: center;
+  left:            0;
+  position:        fixed;
+  right:           0;
+  top:             0;
+  z-index:         9991; // Above the admin menu.
+}
+

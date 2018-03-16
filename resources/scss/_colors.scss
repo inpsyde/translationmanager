@@ -1,10 +1,15 @@
 $color__black: #000;
 $color__mine-shaft: #222;
 $color__tuna: #3c3d46;
+$color__gray: #a0a0a0;
+$color__gray--light: lighten($color__gray, 20%);
 $color__white: #fff;
 
 $color__orange: #ffa500;
 $color__red: #ff544b;
+
+// Translarent colors
+$color__black--transparent: hsla(0, 0%, 0%, .88);
 
 // flat colors
 $color__clouds: #ecf0f1;
