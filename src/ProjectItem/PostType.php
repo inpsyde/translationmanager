@@ -1,10 +1,10 @@
 <?php
 
-namespace Translationmanager\PostType;
+namespace Translationmanager\ProjectItem;
 
 use Translationmanager\Plugin;
 
-class ProjectItem {
+class PostType {
 
 	/**
 	 * Trash Status

@@ -3,22 +3,22 @@
  * Project
  *
  * @since   1.0.0
- * @package Translationmanager\Taxonomy
+ * @package Translationmanager\Project
  */
 
-namespace Translationmanager\Taxonomy;
+namespace Translationmanager\Project;
 
 use Translationmanager\Functions;
 
 use Translationmanager\Notice\TransientNoticeService;
 
 /**
- * Class Project
+ * Class Taxonomy
  *
  * @since   1.0.0
- * @package Translationmanager\Taxonomy
+ * @package Translationmanager\Project
  */
-class Project {
+class Taxonomy {
 
 	/**
 	 * @since 1.0.0

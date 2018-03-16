@@ -65,8 +65,8 @@ add_action( 'plugins_loaded', function () {
 	Translationmanager\Functions\include_modules();
 
 	// Register Post Types & Taxonomies.
-	( new \Translationmanager\PostType\ProjectItem( $plugin ) )->init();
-	( new \Translationmanager\Taxonomy\Project() )->init();
+	( new \Translationmanager\ProjectItem\PostType( $plugin ) )->init();
+	( new \Translationmanager\Project\Taxonomy() )->init();
 
 	// Add Pages.
 	( new \Translationmanager\Pages\Project() )->init();

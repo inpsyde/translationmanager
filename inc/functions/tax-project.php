@@ -4,7 +4,7 @@ namespace Translationmanager\Functions;
 
 use Translationmanager\Notice\TransientNoticeService;
 use Translationmanager\ProjectHandler;
-use Translationmanager\Taxonomy;
+use Translationmanager\Project;
 
 /**
  * Hide Term Slug Wrap
@@ -78,7 +78,7 @@ function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_
 		}
 	}
 
-	$redirect_to = Taxonomy\Project::get_project_link( $project );
+	$redirect_to = Project\Project::get_project_link( $project );
 
 	return $redirect_to;
 }
