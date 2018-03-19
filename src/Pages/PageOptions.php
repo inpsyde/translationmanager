@@ -47,47 +47,15 @@ class PageOptions implements Pageable {
 	private $plugin;
 
 	/**
-	 * Plugin Settings
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var Setting\PluginSettings The instance of the class
-	 */
-	private $settings;
-
-	/**
 	 * PageOptions constructor
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param Plugin                 $plugin   The plugin instance.
-	 * @param Setting\PluginSettings $settings The plugin settings.
+	 * @param Plugin $plugin The plugin instance.
 	 */
-	public function __construct( Plugin $plugin, Setting\PluginSettings $settings ) {
+	public function __construct( Plugin $plugin ) {
 
-		$this->plugin   = $plugin;
-		$this->settings = $settings;
-	}
-
-	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_init', [ $this->settings, 'register_setting' ] );
-		add_action( 'admin_head', [ $this, 'enqueue_style' ] );
-		add_action( 'admin_head', [ $this, 'enqueue_script' ] );
-		add_action( 'admin_init', [ $this, 'handle_support_request_form' ] );
-
-		add_filter( 'option_page_capability_' . Setting\PluginSettings::OPTION_GROUP, [
-			$this,
-			'filter_capabilities',
-		] );
+		$this->plugin = $plugin;
 	}
 
 	/**

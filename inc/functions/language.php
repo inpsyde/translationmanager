@@ -35,6 +35,11 @@ function get_languages() {
  */
 function get_languages_by_site_id( $site_id ) {
 
+	// @FIXME Create something to check if a module is active or not.
+	if ( ! class_exists( 'Mlp_Site_Relations' ) ) {
+		return [];
+	}
+
 	global $wpdb;
 	$languages      = [];
 	$site_relations = new \Mlp_Site_Relations( $wpdb, 'mlp_site_relations' );

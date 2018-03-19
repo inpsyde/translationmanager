@@ -41,93 +41,36 @@ add_action( 'plugins_loaded', function () {
 		require_once $file;
 	}
 
-	$requirements    = new Translationmanager\Requirements();
-	$plugin          = new \Translationmanager\Plugin();
-	$plugin_settings = new \Translationmanager\Setting\PluginSettings();
-
-	// Check the requirements and in case prevent code execution by returning.
-	if ( ! $requirements->is_php_version_ok() ) {
-		add_action( 'admin_notices', function () use ( $requirements ) {
-
-			translationmanager_admin_notice( sprintf( esc_html__( // phpcs:ignore
-				'TranslationMANAGER requires PHP version %1$s or higher. You are running version %2$s.',
-				'translationmanager'
-			),
-				Translationmanager\Requirements::PHP_MIN_VERSION,
-				Translationmanager\Requirements::PHP_CURR_VERSION
-			), 'error' );
-		} );
-
+	if ( ! translationmanager_plugin_tests_pass() ) {
 		return;
 	}
+
+	$container = new Pimple\Container();
 
 	// Include modules.
 	Translationmanager\Functions\include_modules();
 
-	// Register Post Types & Taxonomies.
-	( new \Translationmanager\ProjectItem\PostType( $plugin ) )->init();
-	( new \Translationmanager\Project\Taxonomy() )->init();
+	$container['translationmanager.plugin'] = function () {
 
-	// Add Pages.
-	( new \Translationmanager\Pages\Project() )->init();
-	( new \Translationmanager\Pages\PluginMainPage( $plugin ) )->init();
-	( new \Translationmanager\Pages\PageOptions( $plugin, $plugin_settings ) )->init();
+		return new \Translationmanager\Plugin();
+	};
 
+	$bootstrapper = new \Translationmanager\Service\Bootstrapper( $container );
+	$bootstrapper
+		->register( new Translationmanager\ProjectItem\ServiceProvider() )
+		->register( new Translationmanager\Project\ServiceProvider() )
+		->register( new Translationmanager\Pages\ServiceProvider() )
+		->register( new Translationmanager\Setting\ServiceProvider() )
+		->register( new Translationmanager\Metabox\ServiceProvider() )
+		->register( new Translationmanager\TableList\ServiceProvider() )
+		->register( new Translationmanager\Assets\ServiceProvider() )
+		->register( new Translationmanager\Request\ServiceProvider() )
+		->register( new Translationmanager\SystemStatus\ServiceProvider() );
 
-	// Show Notice in case Token or URL isn't set.
-	if ( ! get_option( \Translationmanager\Setting\PluginSettings::API_KEY ) ) {
-		add_action( 'admin_notices', function () use ( $requirements ) {
-
-			translationmanager_admin_notice(
-				wp_kses( sprintf( __( // phpcs:ignore
-					'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
-					'translationmanager'
-				),
-					'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG, false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
-				),
-					[
-						'a'      => [ 'href' => true ],
-						'strong' => [],
-					]
-				),
-				'error'
-			);
-		} );
-	}
-
-	// Meta Boxes.
-	( new \Translationmanager\MetaBox\Translation() )->init();
-
-	// Restrict Manage Posts.
-	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
-
-	// Assets.
-	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();
-
-	// Requests.
-	( new \Translationmanager\Request\Api\AddTranslation(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'add_translation' ),
-		new \Translationmanager\ProjectHandler()
-	) )->init();
-	( new \Translationmanager\Request\Api\OrderProject(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'order_project' )
-	) )->init();
-	( new \Translationmanager\Request\Api\UpdateProjectOrderStatus(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'update_project' )
-	) )->init();
-	( new \Translationmanager\Request\Api\ImportProject(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'import_project' )
-	) )->init();
-
-	// System Status.
-	( new \Translationmanager\SystemStatus\Controller( $plugin ) )->init();
+	$bootstrapper->bootstrap();
 
 	// Register Activation.
-	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );
+	register_activation_hook( $container['translationmanager.plugin']->file_path(), 'translationmanager_activate' );
 }, - 1 );
 
 /**
@@ -166,4 +109,55 @@ function translationmanager_admin_notice( $message, $severity ) {
 function translationmanager_activate() {
 
 	( new \Translationmanager\PluginActivate() )->store_version();
+}
+
+/**
+ * Test Plugin Stuffs
+ *
+ * @since 1.0.0
+ *
+ * @return bool True when ok, false otherwise.
+ */
+function translationmanager_plugin_tests_pass() {
+
+	$requirements = new Translationmanager\Requirements();
+
+	// Check the requirements and in case prevent code execution by returning.
+	if ( ! $requirements->is_php_version_ok() ) {
+		add_action( 'admin_notices', function () use ( $requirements ) {
+
+			translationmanager_admin_notice( sprintf( esc_html__( // phpcs:ignore
+				'TranslationMANAGER requires PHP version %1$s or higher. You are running version %2$s.',
+				'translationmanager'
+			),
+				Translationmanager\Requirements::PHP_MIN_VERSION,
+				Translationmanager\Requirements::PHP_CURR_VERSION
+			), 'error' );
+		} );
+
+		return false;
+	}
+
+	// Show Notice in case Token or URL isn't set.
+	if ( ! get_option( \Translationmanager\Setting\PluginSettings::API_KEY ) ) {
+		add_action( 'admin_notices', function () use ( $requirements ) {
+
+			translationmanager_admin_notice(
+				wp_kses( sprintf( __( // phpcs:ignore
+					'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
+					'translationmanager'
+				),
+					'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG, false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
+				),
+					[
+						'a'      => [ 'href' => true ],
+						'strong' => [],
+					]
+				),
+				'error'
+			);
+		} );
+	}
+
+	return true;
 }

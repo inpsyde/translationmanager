@@ -266,9 +266,9 @@ final class ProjectItem extends TableList {
 	 */
 	private function languages() {
 
-		static $languages = null;
+		static $languages = [];
 
-		if ( null === $languages ) {
+		if ( empty( $languages ) ) {
 			$all_languages = Functions\get_languages();
 
 			foreach ( $all_languages as $index => $language ) {

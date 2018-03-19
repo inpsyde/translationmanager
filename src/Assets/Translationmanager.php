@@ -40,18 +40,6 @@ class Translationmanager {
 	}
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'admin_head', [ $this, 'register_style' ] );
-	}
-
-	/**
 	 * Register Style
 	 *
 	 * @since 1.0.0
@@ -60,14 +48,12 @@ class Translationmanager {
 	 */
 	public function register_style() {
 
-		wp_register_style(
+		wp_enqueue_style(
 			'translationmanager',
 			$this->plugin->url( '/assets/css/translationmanager.css' ),
 			[],
 			filemtime( $this->plugin->dir( '/assets/css/translationmanager.css' ) ),
 			'screen'
 		);
-
-		wp_enqueue_style( 'translationmanager' );
 	}
 }

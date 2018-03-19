@@ -31,26 +31,6 @@ class Taxonomy {
 	const COL_ACTIONS = 'translationmanager_order_action';
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'init', [ $this, 'register_taxonomy' ] );
-		add_action( 'manage_translationmanager_project_custom_column', [ $this, 'print_column' ], 10, 3 );
-		add_action( 'admin_post_translationmanager_project_info_save', [ $this, 'project_info_save' ] );
-		add_action( 'translationmanager_project_item_table_views', [ $this, 'project_form' ] );
-		add_action( 'translationmanager_project_item_table_views', [ $this, 'order_project_box_form' ] );
-
-		add_filter( 'manage_edit-translationmanager_project_columns', [ $this, 'modify_columns' ] );
-		add_filter( 'translationmanager_project_row_actions', [ $this, 'modify_row_actions' ], 10, 2 );
-		add_filter( 'get_edit_term_link', [ $this, 'edit_term_link' ], 10, 3 );
-	}
-
-	/**
 	 * Project Title and Description Form in edit page.
 	 *
 	 * @todo  This is hooked in a filter, may create confusion about the value passed in.

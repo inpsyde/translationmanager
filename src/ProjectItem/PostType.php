@@ -37,20 +37,6 @@ class PostType {
 	}
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'init', [ $this, 'register_post_type' ] );
-
-		add_filter( 'translationmanager_project_item_row_actions', [ $this, 'filter_row_actions' ], 10, 2 );
-	}
-
-	/**
 	 * Register The post type
 	 *
 	 * @since 1.0.0

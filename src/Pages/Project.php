@@ -47,19 +47,6 @@ class Project implements Pageable {
 	}
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_title', [ $this, 'reintroduce_page_title_in_header' ] );
-	}
-
-	/**
 	 * Reintroduce Page Title in Header
 	 *
 	 * Since we are adding an hidden page the `<title>` tag will miss the page title.
