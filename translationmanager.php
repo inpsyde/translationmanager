@@ -146,8 +146,6 @@ function bootstrap() {
 	$providers
 		->bootstrap()
 		->integrate();
-
-	unset( $container );
 }
 
 /**
