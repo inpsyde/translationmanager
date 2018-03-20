@@ -5,7 +5,7 @@
  * Build for Yoast 4.7.1
  */
 
-$wordpress_seo = new \Translationmanager\Module\WordPressSeo();
+$wordpress_seo = new \Translationmanager\Module\YoastSeo\WordPressSeo();
 
 add_action( 'translationmanager_outgoing_data', array( $wordpress_seo, 'prepare_outgoing' ) );
 add_action( 'translationmanager_updated_post', array( $wordpress_seo, 'update_translation' ), 10, 2 );
