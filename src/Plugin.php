@@ -35,6 +35,15 @@ class Plugin {
 	private $file_path;
 
 	/**
+	 * Plugin Header Data
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var array The plugin header data
+	 */
+	private $header_data;
+
+	/**
 	 * Plugin constructor
 	 *
 	 * @since 1.0.0
@@ -42,6 +51,10 @@ class Plugin {
 	public function __construct() {
 
 		$this->file_path = untrailingslashit( plugin_dir_path( __DIR__ ) ) . '/translationmanager.php';
+
+		$this->header_data = get_file_data( $this->file_path, [
+			'version' => 'Version',
+		] );
 	}
 
 	/**
@@ -88,5 +101,17 @@ class Plugin {
 	public function file_path() {
 
 		return $this->file_path;
+	}
+
+	/**
+	 * Version
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The current plugin version
+	 */
+	public function version() {
+
+		return isset( $this->header_data['version'] ) ? $this->header_data['version'] : '0.0.0';
 	}
 }

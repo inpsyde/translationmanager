@@ -189,7 +189,7 @@ function create_project_order( \WP_Term $project_term ) {
 		'WordPress',
 		$wp_version,
 		'translationmanager',
-		Plugin::VERSION,
+		( new \Translationmanager\Plugin() )->version(),
 		$project_term->name
 	);
 

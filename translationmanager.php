@@ -13,66 +13,6 @@
  * Domain Path: /languages
  */
 
-add_action( 'plugins_loaded', function () {
-
-	if ( ! is_admin() ) {
-		return;
-	}
-
-	// Require composer autoloader if exists.
-	if ( is_readable( __DIR__ . '/vendor/autoload.php' ) && ! class_exists( \Translationmanager\Plugin::class ) ) {
-		require_once __DIR__ . '/vendor/autoload.php';
-	}
-	if ( ! class_exists( \Translationmanager\Plugin::class ) ) {
-		add_action( 'admin_notices', function () {
-
-			translationmanager_admin_notice(
-				esc_html__( 'TranslationMANAGER autoloading failed!', 'translationmanager' ),
-				'error'
-			);
-		} );
-
-		return;
-	}
-
-	// Require functions and basic files.
-	require_once __DIR__ . '/inc/hooks.php';
-	foreach ( glob( __DIR__ . '/inc/functions/*.php' ) as $file ) {
-		require_once $file;
-	}
-
-	if ( ! translationmanager_plugin_tests_pass() ) {
-		return;
-	}
-
-	$container = new Pimple\Container();
-
-	// Include modules.
-	Translationmanager\Functions\include_modules();
-
-	$container['translationmanager.plugin'] = function () {
-
-		return new \Translationmanager\Plugin();
-	};
-
-	$bootstrapper = new \Translationmanager\Service\Bootstrapper( $container );
-	$bootstrapper
-		->register( new Translationmanager\ProjectItem\ServiceProvider() )
-		->register( new Translationmanager\Project\ServiceProvider() )
-		->register( new Translationmanager\Pages\ServiceProvider() )
-		->register( new Translationmanager\Setting\ServiceProvider() )
-		->register( new Translationmanager\Metabox\ServiceProvider() )
-		->register( new Translationmanager\TableList\ServiceProvider() )
-		->register( new Translationmanager\Assets\ServiceProvider() )
-		->register( new Translationmanager\Request\ServiceProvider() )
-		->register( new Translationmanager\SystemStatus\ServiceProvider() );
-
-	$bootstrapper->bootstrap();
-
-	// Register Activation.
-	register_activation_hook( $container['translationmanager.plugin']->file_path(), 'translationmanager_activate' );
-}, - 1 );
-
 /**
  * Admin Notice
  *
@@ -90,25 +30,6 @@ function translationmanager_admin_notice( $message, $severity ) {
 		sanitize_html_class( sanitize_key( $severity ) ),
 		wp_kses_post( $message )
 	);
-}
-
-/**
- * Activation function.
- *
- * Proxy to the plugin activation.
- * This is a function so that it can be unregistered by other plugins
- * as objects can not be unregistered
- * and static methods are considered as bad coding style / hard to test.
- *
- * @since 1.0.0
- *
- * @throws \Exception In case of plugin contain invalid data.
- *
- * @return void
- */
-function translationmanager_activate() {
-
-	( new \Translationmanager\PluginActivate() )->store_version();
 }
 
 /**
@@ -161,3 +82,91 @@ function translationmanager_plugin_tests_pass() {
 
 	return true;
 }
+
+/**
+ * BootStrap
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function bootstrap() {
+
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	// Require composer autoloader if exists.
+	if ( is_readable( __DIR__ . '/vendor/autoload.php' ) && ! class_exists( \Translationmanager\Plugin::class ) ) {
+		require_once __DIR__ . '/vendor/autoload.php';
+	}
+	if ( ! class_exists( \Translationmanager\Plugin::class ) ) {
+		add_action( 'admin_notices', function () {
+
+			translationmanager_admin_notice(
+				esc_html__( 'TranslationMANAGER autoloading failed!', 'translationmanager' ),
+				'error'
+			);
+		} );
+
+		return;
+	}
+
+	// Require functions and basic files.
+	require_once __DIR__ . '/inc/hooks.php';
+	foreach ( glob( __DIR__ . '/inc/functions/*.php' ) as $file ) {
+		require_once $file;
+	}
+
+	if ( ! translationmanager_plugin_tests_pass() ) {
+		return;
+	}
+
+	$container = new Pimple\Container();
+
+	// Include modules.
+	Translationmanager\Functions\include_modules();
+
+	$container['translationmanager.plugin'] = function () {
+
+		return new \Translationmanager\Plugin();
+	};
+
+	$providers = new \Translationmanager\Service\ServiceProviders( $container );
+	$providers
+		->register( new Translationmanager\ProjectItem\ServiceProvider() )
+		->register( new Translationmanager\Project\ServiceProvider() )
+		->register( new Translationmanager\Pages\ServiceProvider() )
+		->register( new Translationmanager\Setting\ServiceProvider() )
+		->register( new Translationmanager\Metabox\ServiceProvider() )
+		->register( new Translationmanager\TableList\ServiceProvider() )
+		->register( new Translationmanager\Assets\ServiceProvider() )
+		->register( new Translationmanager\Request\ServiceProvider() )
+		->register( new Translationmanager\SystemStatus\ServiceProvider() )
+		->register( new Translationmanager\Activation\ServiceProvider() );
+
+	$providers
+		->bootstrap()
+		->integrate();
+}
+
+/**
+ * Activate Plugin
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function activate() {
+
+	add_action( 'activated_plugin', function ( $plugin ) {
+
+		if ( plugin_basename( __FILE__ ) === $plugin ) {
+			bootstrap();
+		}
+	}, 0 );
+}
+
+add_action( 'plugins_loaded', 'bootstrap', - 1 );
+
+register_activation_hook( __FILE__, 'activate' );

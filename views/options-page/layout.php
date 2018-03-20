@@ -2,9 +2,9 @@
 
 	<h1 class="settings__headline">
 		<?php esc_html_e( 'translationMANAGER', 'translationamanager' ); ?>
-
+		s
 		<small class="settings__version">
-			<sup><?php echo esc_html( \Translationmanager\Plugin::VERSION ); ?></sup>
+			<sup><?php echo esc_html( ( new \Translationmanager\Plugin() )->version() ); ?></sup>
 		</small>
 	</h1>
 
