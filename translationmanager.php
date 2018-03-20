@@ -124,9 +124,6 @@ function bootstrap() {
 
 	$container = new Pimple\Container();
 
-	// Include modules.
-	Translationmanager\Functions\include_modules();
-
 	$container['translationmanager.plugin'] = function () {
 
 		return new \Translationmanager\Plugin();
@@ -143,7 +140,8 @@ function bootstrap() {
 		->register( new Translationmanager\Assets\ServiceProvider() )
 		->register( new Translationmanager\Request\ServiceProvider() )
 		->register( new Translationmanager\SystemStatus\ServiceProvider() )
-		->register( new Translationmanager\Activation\ServiceProvider() );
+		->register( new Translationmanager\Activation\ServiceProvider() )
+		->register( new Translationmanager\Module\ServiceProvider() );
 
 	$providers
 		->bootstrap()
