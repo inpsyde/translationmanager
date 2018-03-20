@@ -38,21 +38,21 @@ class ServiceProvider implements BootstrappableServiceProvider {
 		};
 		$container['Request.OrderProject']             = function () {
 
-			new Api\OrderProject(
+			return new Api\OrderProject(
 				new Auth\Validator(),
 				new Nonces\WpNonce( 'order_project' )
 			);
 		};
 		$container['Request.UpdateProjectOrderStatus'] = function () {
 
-			new Api\UpdateProjectOrderStatus(
+			return new Api\UpdateProjectOrderStatus(
 				new Auth\Validator(),
 				new Nonces\WpNonce( 'update_project' )
 			);
 		};
 		$container['Request.ImportProject']            = function () {
 
-			new Api\ImportProject(
+			return new Api\ImportProject(
 				new Auth\Validator(),
 				new Nonces\WpNonce( 'import_project' )
 			);
@@ -75,7 +75,10 @@ class ServiceProvider implements BootstrappableServiceProvider {
 		);
 
 		// Order Project.
-		add_action( 'admin_post_translationmanager_order_project', [ $container['Request.OrderProject'], 'handle' ] );
+		add_action( 'admin_post_translationmanager_order_project', [
+			$container['Request.OrderProject'],
+			'handle',
+		] );
 
 		// Update Project Order Status.
 		add_action(

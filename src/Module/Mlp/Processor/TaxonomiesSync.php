@@ -2,23 +2,25 @@
 
 namespace Translationmanager\Module\Mlp\Processor;
 
+use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\TranslationData;
 
+/**
+ * Class TaxonomiesSync
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Module\Mlp\Processor
+ */
 class TaxonomiesSync implements IncomingProcessor {
 
 	/**
-	 * @param TranslationData       $data
-	 * @param \Mlp_Site_Relations    $site_relations
-	 * @param \Mlp_Content_Relations $content_relations
+	 * @param TranslationData $data
+	 * @param Adapter         $adapter
 	 *
 	 * @return void
 	 */
-	public function process_incoming(
-		TranslationData $data,
-		\Mlp_Site_Relations $site_relations,
-		\Mlp_Content_Relations $content_relations
-	) {
+	public function process_incoming( TranslationData $data, Adapter $adapter ) {
 
 		$target_post = $this->check_incoming_data( $data );
 
@@ -31,7 +33,7 @@ class TaxonomiesSync implements IncomingProcessor {
 		list ( $target_post_term_tt_ids, $target_post_new_terms ) = $this->query_linked_terms(
 			$data,
 			$this->query_source_term_taxonomy_ids( $data ),
-			$content_relations
+			$adapter
 		);
 
 		restore_current_blog();
@@ -89,8 +91,8 @@ class TaxonomiesSync implements IncomingProcessor {
 	}
 
 	/**
-	 * Runs in the context of source site to extract the term taxonomy ids of terms from all public taxonomies
-	 * of source post.
+	 * Runs in the context of source site to extract the term taxonomy ids of terms from all public
+	 * taxonomies of source post.
 	 *
 	 * Taxonomies to target can be filtered.
 	 * Run in the context of source post site.
@@ -136,7 +138,7 @@ class TaxonomiesSync implements IncomingProcessor {
 				'taxonomy'   => $taxonomies_to_sync,
 				'object_ids' => [ $source_post->ID ],
 				'hide_empty' => false,
-				'fields'     => 'tt_ids'
+				'fields'     => 'tt_ids',
 			]
 		);
 
@@ -149,33 +151,36 @@ class TaxonomiesSync implements IncomingProcessor {
 	 * If no existing relation is found, allow filters to create a target term "on the flight".
 	 * Run in the context of source post site.
 	 *
-	 * @param TranslationData       $data
-	 * @param array                  $source_term_taxonomy_ids Source post terms term taxonomy ids,
-	 *                                                         from query_source_term_taxonomy_ids
-	 * @param \Mlp_Content_Relations $content_relations
+	 * @param TranslationData $data
+	 * @param array           $source_term_taxonomy_ids Source post terms term taxonomy ids,
+	 *                                                  from query_source_term_taxonomy_ids
+	 * @param Adapter         $adapter
 	 *
 	 * @return array    Two items array.
-	 *                  First item is an array of term taxonomy id for existing terms in target site
-	 *                  which are related to terms assigned to source post and so should be assigned to target post.
-	 *                  Second element is an array of term objects which are generated "on the fly" and should be
-	 *                  assigned to target post. Maybe its' necessary to store in the DB first.
+	 *                  First item is an array of term taxonomy id for existing terms in target
+	 *                  site
+	 *                  which are related to terms assigned to source post and so should be
+	 *                  assigned to target post. Second element is an array of term objects which
+	 *                  are generated "on the fly" and should be assigned to target post. Maybe
+	 *                  its' necessary to store in the DB first.
 	 */
 	private function query_linked_terms(
 		TranslationData $data,
 		$source_term_taxonomy_ids,
-		\Mlp_Content_Relations $content_relations
+		Adapter $adapter
 	) {
 
-		$source_site_id = $data->source_site_id();
-		$target_site_id = $data->target_site_id();
-		$target_post_term_tt_ids  = $target_post_new_terms = [];
+		$source_site_id          = $data->source_site_id();
+		$target_site_id          = $data->target_site_id();
+		$target_post_term_tt_ids = [];
+		$target_post_new_terms   = [];
 
-		// Loop through source term ids to find a related term on target site
+		// Loop through source term ids to find a related term on target site.
 		foreach ( $source_term_taxonomy_ids as $source_tt_id ) {
 
-			$linked_term_tt_ids = $content_relations->get_relations( $source_site_id, $source_tt_id, 'term' );
+			$linked_term_tt_ids = $adapter->relations( $source_site_id, $source_tt_id, 'term' );
 
-			// If a linked term is found, store its id and continue looping
+			// If a linked term is found, store its id and continue looping.
 			if ( ! empty( $linked_term_tt_ids[ $target_site_id ] ) ) {
 				$linked_tt_id = $linked_term_tt_ids[ $target_site_id ];
 				is_numeric( $linked_tt_id ) and $target_post_term_tt_ids[] = (int) $linked_tt_id;
@@ -183,13 +188,13 @@ class TaxonomiesSync implements IncomingProcessor {
 				continue;
 			}
 
-			// Linked term is not found, let's see if source term is valid
+			// Linked term is not found, let's see if source term is valid.
 			$source_term = get_term_by( 'term_taxonomy_id', $source_tt_id );
 			if ( ! $source_term instanceof \WP_Term ) {
 				continue;
 			}
 
-			// If source term is valid, let's see if 3rd parties can provide "on the fly" a term to use
+			// If source term is valid, let's see if 3rd parties can provide "on the fly" a term to use.
 			$new_term = apply_filters( 'translationmanager_mlp_module_sync_taxonomies_create_terms', null, $source_term, $data );
 			if ( $new_term instanceof \WP_Term && taxonomy_exists( $new_term->taxonomy ) ) {
 				$target_post_new_terms[ $source_term->term_taxonomy_id ] = $new_term;
@@ -200,22 +205,22 @@ class TaxonomiesSync implements IncomingProcessor {
 	}
 
 	/**
-	 * Receive an array where keys are term taxonomy ids of post in source site and values are term objects, in the context
-	 * of target site, that need to be related to terms in keys.
-	 * Term object might not be saved yet, in that case need to be saved before setting relation.
+	 * Receive an array where keys are term taxonomy ids of post in source site and values are term
+	 * objects, in the context of target site, that need to be related to terms in keys. Term
+	 * object might not be saved yet, in that case need to be saved before setting relation.
 	 *
 	 * Run in the context of target post site.
 	 *
-	 * @param \WP_Term[]             $terms_to_relate
-	 * @param TranslationData       $data
-	 * @param \Mlp_Content_Relations $content_relations
+	 * @param \WP_Term[]      $terms_to_relate
+	 * @param TranslationData $data
+	 * @param Adapter         $adapter
 	 *
 	 * @return int[] Term ids of terms that need to be associated to target post
 	 */
 	private function relate_new_terms(
 		array $terms_to_relate,
 		TranslationData $data,
-		\Mlp_Content_Relations $content_relations
+		Adapter $adapter
 	) {
 
 		$source_site_id = $data->source_site_id();
@@ -228,10 +233,10 @@ class TaxonomiesSync implements IncomingProcessor {
 				$target_terms[ $term_to_relate->taxonomy ] = [];
 			}
 
-			// We got an existing term, just set relation and store its id in target terms to be returned
+			// We got an existing term, just set relation and store its id in target terms to be returned.
 			if ( $term_to_relate->term_id && $term_to_relate->term_taxonomy_id ) {
 
-				$content_relations->set_relation(
+				$adapter->set_relation(
 					$source_site_id,
 					$target_site_id,
 					$source_term_tt_id,
@@ -243,11 +248,11 @@ class TaxonomiesSync implements IncomingProcessor {
 				continue;
 			}
 
-			// Let's check if slug we got exists, if so, set relation and store its id in target terms to be returned
+			// Let's check if slug we got exists, if so, set relation and store its id in target terms to be returned.
 			if ( $term_to_relate->slug ) {
 				$term_exist = get_term_by( 'slug', $term_to_relate->slug, $term_to_relate->taxonomy );
 				if ( $term_exist instanceof \WP_Term ) {
-					$content_relations->set_relation(
+					$adapter->set_relation(
 						$source_site_id,
 						$target_site_id,
 						$source_term_tt_id,
@@ -270,15 +275,15 @@ class TaxonomiesSync implements IncomingProcessor {
 				]
 			);
 			// ... and if saved correctly, set relation, then store its id in target terms to be returned
-			if ( is_array( $insert ) && ! empty( $insert[ 'term_id' ] ) && ! empty( $insert[ 'term_taxonomy_id' ] ) ) {
-				$content_relations->set_relation(
+			if ( is_array( $insert ) && ! empty( $insert['term_id'] ) && ! empty( $insert['term_taxonomy_id'] ) ) {
+				$adapter->set_relation(
 					$source_site_id,
 					$target_site_id,
 					$source_term_tt_id,
 					$term_to_relate->term_taxonomy_id,
 					'term'
 				);
-				$target_terms[ $term_to_relate->taxonomy ][] = (int) $insert[ 'term_id' ];
+				$target_terms[ $term_to_relate->taxonomy ][] = (int) $insert['term_id'];
 			}
 		}
 
@@ -286,16 +291,16 @@ class TaxonomiesSync implements IncomingProcessor {
 	}
 
 	/**
-	 * Receive two array with terms in the target site that are related to term in source site associated to source post,
-	 * and so need to be synced to target post.
+	 * Receive two array with terms in the target site that are related to term in source site
+	 * associated to source post, and so need to be synced to target post.
 	 *
 	 * The first array contains term taxonomy ids, so we need to get the term id first.
-	 * The second array contains already term ids, grouped by taxonomy, whose names are used as array keys.
-	 * Run in the context of target post site.
+	 * The second array contains already term ids, grouped by taxonomy, whose names are used as
+	 * array keys. Run in the context of target post site.
 	 *
-	 * @param int[]            $linked_tt_ids
-	 * @param int[][]          $target_term_ids
-	 * @param \WP_Post         $target_post
+	 * @param int[]    $linked_tt_ids
+	 * @param int[][]  $target_term_ids
+	 * @param \WP_Post $target_post
 	 */
 	private function sync_target_terms(
 		array $linked_tt_ids,
@@ -303,13 +308,12 @@ class TaxonomiesSync implements IncomingProcessor {
 		\WP_Post $target_post
 	) {
 
-		// When no linked terms, nor target terms, nothing else is left to do
+		// When no linked terms, nor target terms, nothing else is left to do.
 		if ( ! $linked_tt_ids && ! $target_term_ids ) {
 			return;
 		}
 
-		// If linked terms where found, let's switch to target site and obtain term objects to store and later return
-
+		// If linked terms where found, let's switch to target site and obtain term objects to store and later return.
 		$linked_tt_ids and $linked_tt_ids = array_unique( $linked_tt_ids );
 
 		foreach ( $linked_tt_ids as $linked_tt_id ) {

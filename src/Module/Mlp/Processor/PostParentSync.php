@@ -2,23 +2,19 @@
 
 namespace Translationmanager\Module\Mlp\Processor;
 
+use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\TranslationData;
 
 class PostParentSync implements IncomingProcessor {
 
 	/**
-	 * @param TranslationData       $data
-	 * @param \Mlp_Site_Relations    $site_relations
-	 * @param \Mlp_Content_Relations $content_relations
+	 * @param TranslationData $data
+	 * @param Adapter         $adapter
 	 *
 	 * @return void
 	 */
-	public function process_incoming(
-		TranslationData $data,
-		\Mlp_Site_Relations $site_relations,
-		\Mlp_Content_Relations $content_relations
-	) {
+	public function process_incoming( TranslationData $data, Adapter $adapter ) {
 
 		$source_post = $data->source_post();
 
@@ -38,7 +34,7 @@ class PostParentSync implements IncomingProcessor {
 		$target_site_id = $data->target_site_id();
 		$source_site_id = $data->source_site_id();
 
-		$related_parents = $content_relations->get_relations( $source_site_id, $source_post->post_parent, 'post' );
+		$related_parents = $adapter->relations( $source_site_id, $source_post->post_parent, 'post' );
 
 		$parent = array_key_exists( $target_site_id, $related_parents )
 			? $related_parents[ $target_site_id ]

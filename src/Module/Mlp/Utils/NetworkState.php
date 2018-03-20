@@ -4,7 +4,6 @@ namespace Translationmanager\Module\Mlp\Utils;
 
 /**
  * Storage for the (switched) state of the network.
- *
  */
 class NetworkState {
 
@@ -28,7 +27,7 @@ class NetworkState {
 		$state = new static();
 
 		$state->site_id = (int) get_current_blog_id();
-		$state->stack   = isset( $GLOBALS[ '_wp_switched_stack' ] ) ? (array) $GLOBALS[ '_wp_switched_stack' ] : [];
+		$state->stack   = isset( $GLOBALS['_wp_switched_stack'] ) ? (array) $GLOBALS['_wp_switched_stack'] : [];
 
 		return $state;
 	}
@@ -41,7 +40,7 @@ class NetworkState {
 	public function switch_to( $site ) {
 
 		if ( ! is_numeric( $site ) || (int) $site === get_current_blog_id() ) {
-			return FALSE;
+			return false;
 		}
 
 		return switch_to_blog( $site );
@@ -55,7 +54,9 @@ class NetworkState {
 	public function restore() {
 
 		$current = (int) get_current_blog_id();
-		$stack   = isset( $GLOBALS[ '_wp_switched_stack' ] ) ? (array) $GLOBALS[ '_wp_switched_stack' ] : [];
+		$stack   = isset( $GLOBALS['_wp_switched_stack'] )
+			? (array) $GLOBALS['_wp_switched_stack']
+			: [];
 
 		if ( $current === $this->site_id && $stack === $this->stack ) {
 
@@ -64,8 +65,8 @@ class NetworkState {
 
 		switch_to_blog( $this->site_id );
 
-		$GLOBALS[ '_wp_switched_stack' ] = $this->stack;
-		$GLOBALS[ 'switched' ]           = ! empty( $this->stack );
+		$GLOBALS['_wp_switched_stack'] = $this->stack;
+		$GLOBALS['switched']           = ! empty( $this->stack );
 
 		return $current;
 	}

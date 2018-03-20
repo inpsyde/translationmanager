@@ -84,17 +84,19 @@ class Loader {
 
 		$this->installed_plugins_as_assoc_list();
 
+		$available_modules = $this->available_modules();
+
 		// Are there modules installed?
-		if ( ! $this->has_modules() ) {
+		if ( ! $available_modules ) {
 			return $this;
 		}
 
-		foreach ( self::$modules as $module => $class ) {
-			if ( ! class_exists( $class ) ) {
+		foreach ( $available_modules as $module ) {
+			if ( ! class_exists( self::$modules[ $module ] ) ) {
 				continue;
 			}
 
-			$this->integrations[] = new $class(
+			$this->integrations[] = new self::$modules[ $module ](
 				$this->installed_plugins[ $module ]
 			);
 		}
@@ -145,7 +147,7 @@ class Loader {
 	 *
 	 * @return array The existings modules installed or empty array if no modules are available
 	 */
-	private function has_modules() {
+	private function available_modules() {
 
 		return array_intersect( array_keys( $this->installed_plugins ), array_keys( self::$modules ) );
 	}

@@ -65,12 +65,15 @@ class Integrate implements Integrable {
 	 */
 	private function mlp2() {
 
+		$plugin_file = $this->plugin_file;
+
 		add_action(
 			'inpsyde_mlp_loaded',
-			function ( \Inpsyde_Property_List_Interface $data ) {
+			function ( \Inpsyde_Property_List_Interface $data ) use ( $plugin_file ) {
 
 				self::action(
-					new Mlp\Connector(
+					new Adapter(
+						$plugin_file,
 						$data->get( 'site_relations' ),
 						$data->get( 'content_relations' )
 					)
@@ -104,19 +107,19 @@ class Integrate implements Integrable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \Translationmanager\Module\Mlp\Connector $connector The connector instance.
+	 * @param \Translationmanager\Module\Mlp\Adapter $adapter The instance of the adapter.
 	 */
-	public static function action( Connector $connector ) {
+	public static function action( Adapter $adapter ) {
+
+		$connector = new Connector( $adapter );
 
 		// TM interface hooks to let it know about the environment.
-		add_filter( 'translationmanager_current_language', array(
-			$connector,
-			'current_language',
-		) );
-		add_filter( 'translationmanager_languages', array( $connector, 'related_sites' ), 10, 2 );
+		add_filter( 'translationmanager_current_language', [ $connector, 'current_language' ] );
+		add_filter( 'translationmanager_languages', [ $connector, 'related_sites' ], 10, 2 );
+		add_filter( 'translation_manager_languages_by_site_id', [ $connector, 'related_sites' ], 10, 2 );
 
 		// Setup the translation workflow.
-		add_action( 'translationmanager_outgoing_data', array( $connector, 'prepare_outgoing' ) );
-		add_filter( 'translationmanager_post_updater', array( $connector, 'prepare_updater' ) );
+		add_action( 'translationmanager_outgoing_data', [ $connector, 'prepare_outgoing' ] );
+		add_filter( 'translationmanager_post_updater', [ $connector, 'prepare_updater' ] );
 	}
 }

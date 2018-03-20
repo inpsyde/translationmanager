@@ -8,6 +8,7 @@
 
 namespace Translationmanager\Module\Mlp;
 
+use Inpsyde\MultilingualPress\Framework\PluginProperties;
 use Inpsyde\MultilingualPress\Framework\Service\BootstrappableServiceProvider;
 use Inpsyde\MultilingualPress\Framework\Service\Container;
 
@@ -23,9 +24,10 @@ class ServiceProvider implements BootstrappableServiceProvider {
 	 */
 	public function register( Container $container ) {
 
-		$container[ Connector::class ] = function ( Container $container ) {
+		$container[ Adapter::class ] = function ( Container $container ) {
 
-			return new Connector(
+			return new Adapter(
+				$container[ PluginProperties::class ]['filePath'],
 				$container['Inpsyde\\MultilingualPress\\Framework\\Api\\SiteRelations'],
 				$container['Inpsyde\\MultilingualPress\\Framework\\Api\\ContentRelations']
 			);
@@ -37,10 +39,10 @@ class ServiceProvider implements BootstrappableServiceProvider {
 	 */
 	public function bootstrap( Container $container ) {
 
-		$connector = $container[ Connector::class ];
-		add_action( 'multilingualpress.bootstrapped', function () use ( $connector ) {
+		$adapter = $container[ Adapter::class ];
+		add_action( 'multilingualpress.bootstrapped', function () use ( $adapter ) {
 
-			Integrate::action( $connector );
+			Integrate::action( $adapter );
 		} );
 	}
 }

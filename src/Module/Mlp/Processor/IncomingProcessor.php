@@ -2,6 +2,7 @@
 
 namespace Translationmanager\Module\Mlp\Processor;
 
+use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\TranslationData;
 
 interface IncomingProcessor extends Processor {
@@ -11,16 +12,10 @@ interface IncomingProcessor extends Processor {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param TranslationData       $data
-	 * @param \Mlp_Site_Relations    $site_relations
-	 * @param \Mlp_Content_Relations $content_relations
+	 * @param TranslationData                        $data
+	 * @param \Translationmanager\Module\Mlp\Adapter $adapter
 	 *
 	 * @return void
 	 */
-	public function process_incoming(
-		TranslationData $data,
-		\Mlp_Site_Relations $site_relations,
-		\Mlp_Content_Relations $content_relations
-	);
-
+	public function process_incoming( TranslationData $data, Adapter $adapter );
 }

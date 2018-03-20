@@ -2,19 +2,27 @@
 
 namespace Translationmanager\Module\Mlp\Utils;
 
+use Translationmanager\Module\Mlp\Adapter;
+
+/**
+ * Class ImageCopier
+ *
+ * @since   1.0.0
+ * @package Translationmanager\Module\Mlp\Utils
+ */
 class ImageCopier {
 
 	/**
-	 * @var \Mlp_Content_Relations
+	 * @var \Translationmanager\Module\Mlp\Adapter
 	 */
-	private $content_relations;
+	private $adapter;
 
 	/**
 	 * @param \Mlp_Content_Relations $content_relations
 	 */
-	public function __construct( \Mlp_Content_Relations $content_relations ) {
+	public function __construct( Adapter $adapter ) {
 
-		$this->content_relations = $content_relations;
+		$this->adapter = $adapter;
 	}
 
 	/**
@@ -24,7 +32,11 @@ class ImageCopier {
 	 *
 	 * @return int
 	 */
-	public function copy_image( $source_attachment_id, $source_site_id = null, $target_site_id = null ) {
+	public function copy_image(
+		$source_attachment_id,
+		$source_site_id = null,
+		$target_site_id = null
+	) {
 
 		if ( ! is_numeric( $source_attachment_id ) || ! (int) $source_attachment_id ) {
 			return 0;
@@ -46,11 +58,11 @@ class ImageCopier {
 		$switched = $target_site_id && $target_site_id !== get_current_blog_id();
 		$switched and switch_to_blog( $target_site_id );
 
-		$linked_file = $linked = null;
-		$linked_attachments = $this->content_relations->get_relations( $source_site_id, $source_attachment_id );
-		if ( ! empty( $linked_attachments[$target_site_id] ) ) {
-			$linked = $linked_attachments[$target_site_id];
-			$linked_file = get_attached_file( $linked_attachments[$target_site_id] );
+		$linked_file        = $linked = null;
+		$linked_attachments = $this->adapter->relations( $source_site_id, $source_attachment_id );
+		if ( ! empty( $linked_attachments[ $target_site_id ] ) ) {
+			$linked      = $linked_attachments[ $target_site_id ];
+			$linked_file = get_attached_file( $linked_attachments[ $target_site_id ] );
 		}
 
 		if ( $linked && basename( $linked_file ) === basename( $source_file ) ) {
@@ -64,7 +76,7 @@ class ImageCopier {
 		$insert_id = $filepath ? $this->insert_attachment( $attachment, $filepath ) : 0;
 
 		if ( $insert_id ) {
-			$this->content_relations->set_relation(
+			$this->adapter->set_relation(
 				$source_site_id,
 				$target_site_id,
 				$source_attachment_id,
@@ -117,11 +129,11 @@ class ImageCopier {
 
 		$uploads = wp_upload_dir();
 
-		if ( ! empty( $uploads[ 'error' ] ) || empty( $uploads[ 'path' ] ) || empty( $uploads[ 'url' ] ) ) {
+		if ( ! empty( $uploads['error'] ) || empty( $uploads['path'] ) || empty( $uploads['url'] ) ) {
 			return '';
 		}
 
-		$filepath = trailingslashit( $uploads[ 'path' ] ) . basename( $source_file );
+		$filepath = trailingslashit( $uploads['path'] ) . basename( $source_file );
 
 		return copy( $source_file, $filepath ) ? $filepath : '';
 	}

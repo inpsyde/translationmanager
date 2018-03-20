@@ -2,23 +2,19 @@
 
 namespace Translationmanager\Module\Mlp\Processor;
 
+use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\TranslationData;
 
 class PostThumbSync implements IncomingProcessor {
 
 	/**
-	 * @param TranslationData       $data
-	 * @param \Mlp_Site_Relations    $site_relations
-	 * @param \Mlp_Content_Relations $content_relations
+	 * @param TranslationData $data
+	 * @param Adapter         $adapter
 	 *
 	 * @return void
 	 */
-	public function process_incoming(
-		TranslationData $data,
-		\Mlp_Site_Relations $site_relations,
-		\Mlp_Content_Relations $content_relations
-	) {
+	public function process_incoming( TranslationData $data, Adapter $adapter ) {
 
 		$saved_post = $data->get_meta( PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE );
 
@@ -44,7 +40,7 @@ class PostThumbSync implements IncomingProcessor {
 		$target_thumb_id = 0;
 
 		if ( $source_thumb_id ) {
-			$image_sync      = Connector::utils()->image_sync( $content_relations  );
+			$image_sync      = Connector::utils()->image_sync( $adapter );
 			$target_thumb_id = $image_sync->copy_image( $source_thumb_id, $source_site_id, $data->target_site_id() );
 		}
 
