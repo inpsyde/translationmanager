@@ -42,7 +42,7 @@ class TaxonomiesSync implements IncomingProcessor {
 
 		$this->sync_target_terms(
 			$target_post_term_tt_ids,
-			$this->relate_new_terms( $target_post_new_terms, $data, $content_relations ),
+			$this->relate_new_terms( $target_post_new_terms, $data, $adapter ),
 			$target_post
 		);
 

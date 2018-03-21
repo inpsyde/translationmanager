@@ -18,7 +18,10 @@ class Registry {
 	 */
 	public function image_sync( Adapter $adapter ) {
 
-		$this->services[ __FUNCTION__ ] or $this->services[ __FUNCTION__ ] = [];
+		if ( ! isset( $this->services[ __FUNCTION__ ] ) ) {
+			$this->services[ __FUNCTION__ ] = [];
+		}
+
 		$id = spl_object_hash( $adapter );
 
 		if ( ! array_key_exists( $id, $this->services[ __FUNCTION__ ] ) ) {

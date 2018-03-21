@@ -60,10 +60,16 @@ class Adapter {
 	 * @var array List of methods mapped for version 2 and 3 of Mlp
 	 */
 	private static $methods_mapper = [
-		'site_relations' => [
+		'site_relations'    => [
 			'related_sites' => [
 				2 => 'get_related_sites',
 				3 => 'relatedSiteIds',
+			],
+		],
+		'content_relations' => [
+			'relations' => [
+				2 => 'get_relations',
+				3 => 'relations',
 			],
 		],
 	];
@@ -203,15 +209,61 @@ class Adapter {
 	 *
 	 * @return array The relations of the object type
 	 */
-	public function relations( $site_id, $object_id, $type ) {
+	public function relations( $site_id, $object_id, $type = 'post' ) {
 
-		$cb = [ $this->site_relations, self::$methods_mapper[ __FUNCTION__ ][ $this->version ] ];
+		$cb = [
+			$this->content_relations,
+			self::$methods_mapper['content_relations'][ __FUNCTION__ ][ $this->version ],
+		];
 
 		return $cb( $site_id, $object_id, $type );
 	}
 
-	public function set_relation() {
+	/**
+	 * Set Relationship for objects
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int    $source_site_id    Source blog ID.
+	 * @param int    $target_site_id    Target blog ID.
+	 * @param int    $source_content_id Source post ID or term taxonomy ID.
+	 * @param int    $target_content_id Target post ID or term taxonomy ID.
+	 * @param string $type              Content type.
+	 *
+	 * @return void
+	 */
+	public function set_relation(
+		$source_site_id,
+		$target_site_id,
+		$source_content_id,
+		$target_content_id,
+		$type = ''
+	) {
 
-		$c = func_get_args();
+		if ( 3 === $this->version ) {
+			$relationship_id = $this->content_relations->relationshipId(
+				[
+					$target_site_id => $target_content_id,
+				],
+				$type
+			);
+
+			$this->content_relations->saveRelation(
+				$relationship_id,
+				$target_site_id,
+				$target_content_id
+			);
+
+			return;
+		}
+
+		// MLP version 2.
+		$this->content_relations->set_relation(
+			$source_site_id,
+			$target_site_id,
+			$source_content_id,
+			$target_content_id,
+			$type
+		);
 	}
 }

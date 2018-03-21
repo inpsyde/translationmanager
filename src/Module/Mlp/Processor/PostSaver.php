@@ -74,7 +74,8 @@ class PostSaver implements IncomingProcessor {
 				$data->source_site_id(),
 				$data->target_site_id(),
 				$data->source_post_id(),
-				$target_post->ID
+				$target_post->ID,
+				'post'
 			);
 		}
 

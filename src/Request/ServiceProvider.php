@@ -71,7 +71,7 @@ class ServiceProvider implements BootstrappableServiceProvider {
 		// Import Translation.
 		add_action(
 			'admin_post_translationmanager_import_project',
-			[ $container['Request.AddTranslation'], 'handle' ]
+			[ $container['Request.ImportProject'], 'handle' ]
 		);
 
 		// Order Project.
