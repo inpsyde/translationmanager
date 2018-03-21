@@ -42,14 +42,21 @@ class TranslationDataTest extends TestCase {
 
 	public function testForOutgoingConstructor() {
 
-		$this->markTestSkipped( 'NEED TO CLARIFY WHY THE get_current_blog_id() isn\'t mocked' );
-
 		/** @var \WP_Post $post */
 		$post               = \Mockery::mock( 'WP_Post' );
 		$post->ID           = 123;
 		$post->post_title   = 'Title';
 		$post->post_content = '<b>Content</b>';
 		$post->post_excerpt = 'Excerpt';
+
+		Functions\when( 'get_current_blog_id' )
+			->justReturn( 1 );
+
+		Functions\when( 'switch_to_blog' )
+			->justReturn( false );
+
+		Functions\when( 'get_post' )
+			->justReturn( $post );
 
 		$outgoing = TranslationData::for_outgoing( $post, 1, 2, 'de', [] );
 
