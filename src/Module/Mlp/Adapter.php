@@ -8,6 +8,8 @@
 
 namespace Translationmanager\Module\Mlp;
 
+use Translationmanager\Functions;
+
 /**
  * Class Adapter
  *
@@ -110,7 +112,7 @@ class Adapter {
 			'version' => 'Version',
 		] );
 
-		$this->version = ( - 1 === version_compare( '2.0.0', $this->plugin['version'] ) )
+		$this->version = Functions\version_compare( '3.0.0', $this->plugin['version'], '<=' )
 			? 3
 			: 2;
 	}
@@ -136,7 +138,7 @@ class Adapter {
 	 *
 	 * @return string The iso code language of the site
 	 */
-	public function blog_language( $site_id ) {
+	public function blog_language( $site_id, $short = false ) {
 
 		$function = self::$functions_mapper[ __FUNCTION__ ][ $this->version ];
 
@@ -147,7 +149,7 @@ class Adapter {
 			) );
 		}
 
-		return call_user_func( $function, $site_id );
+		return call_user_func( $function, $site_id, $short );
 	}
 
 	/**

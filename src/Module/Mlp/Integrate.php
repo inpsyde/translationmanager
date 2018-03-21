@@ -8,9 +8,9 @@
 
 namespace Translationmanager\Module\Mlp;
 
+use Translationmanager\Functions;
 use Inpsyde\MultilingualPress\Framework\Service\ServiceProvidersCollection;
 use Translationmanager\Module\Integrable;
-use Translationmanager\Module\Mlp;
 
 /**
  * Class Integrate
@@ -51,7 +51,7 @@ class Integrate implements Integrable {
 			'version' => 'Version',
 		] );
 
-		( - 1 === version_compare( '2.0.0', $plugin_data['version'] ) )
+		( Functions\version_compare( '3.0.0', $plugin_data['version'], '<=' ) )
 			? $this->mlp3()
 			: $this->mlp2();
 	}
@@ -116,7 +116,10 @@ class Integrate implements Integrable {
 		// TM interface hooks to let it know about the environment.
 		add_filter( 'translationmanager_current_language', [ $connector, 'current_language' ] );
 		add_filter( 'translationmanager_languages', [ $connector, 'related_sites' ], 10, 2 );
-		add_filter( 'translation_manager_languages_by_site_id', [ $connector, 'related_sites' ], 10, 2 );
+		add_filter( 'translation_manager_languages_by_site_id', [
+			$connector,
+			'related_sites',
+		], 10, 2 );
 
 		// Setup the translation workflow.
 		add_action( 'translationmanager_outgoing_data', [ $connector, 'prepare_outgoing' ] );
