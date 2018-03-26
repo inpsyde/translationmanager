@@ -32,6 +32,8 @@ final class ProjectItem extends TableList {
 			'ajax'     => false,
 			'screen'   => 'project_item',
 		] );
+
+		$this->items = [];
 	}
 
 	/**
@@ -142,6 +144,36 @@ final class ProjectItem extends TableList {
 		 * @param \Translationmanager\TableList\ProjectItem $this Instance of this class.
 		 */
 		do_action( 'translationmanager_project_item_table_views', $this );
+	}
+
+
+	/**
+	 * Fill the Items list with posts instances
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array A list of \WP_Post elements
+	 */
+	public function items() {
+
+		if ( ! $this->items ) {
+			try {
+				$project = $this->project_id_by_request();
+
+				if ( ! $project ) {
+					return [];
+				}
+			} catch ( \Exception $e ) {
+				return [];
+			}
+
+			$this->items = Functions\get_project_items( $project->term_id, [
+				'posts_per_page' => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
+				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
+			] );
+		}
+
+		return $this->items;
 	}
 
 	/**
@@ -324,35 +356,6 @@ final class ProjectItem extends TableList {
 		unset( $users );
 
 		include Functions\get_template( '/views/type/select.php' );
-	}
-
-	/**
-	 * Fill the Items list with posts instances
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array A list of \WP_Post elements
-	 */
-	private function items() {
-
-		try {
-			$project_id = $this->project_id_by_request()->term_id;
-		} catch ( \Exception $e ) {
-			return [];
-		}
-
-		if ( ! $project_id ) {
-			return [];
-		}
-
-		if ( ! $this->items ) {
-			$this->items = Functions\get_project_items( $project_id, [
-				'posts_per_page' => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
-				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
-			] );
-		}
-
-		return $this->items;
 	}
 
 	/**
