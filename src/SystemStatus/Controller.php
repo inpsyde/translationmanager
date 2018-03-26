@@ -8,8 +8,6 @@
 
 namespace Translationmanager\SystemStatus;
 
-use Translationmanager\Plugin;
-
 /**
  * Class Controller
  *
@@ -17,15 +15,6 @@ use Translationmanager\Plugin;
  * @package Translationmanager
  */
 class Controller {
-
-	/**
-	 * Plugin
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Translationmanager\Plugin The plugin instance
-	 */
-	private $plugin;
 
 	/**
 	 * Information Class Names
@@ -43,18 +32,6 @@ class Controller {
 	];
 
 	/**
-	 * Controller constructor
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param \Translationmanager\Plugin $plugin The plugin instance.
-	 */
-	public function __construct( Plugin $plugin ) {
-
-		$this->plugin = $plugin;
-	}
-
-	/**
 	 * Create the System Status instance with information
 	 *
 	 * @since 1.0.0
@@ -64,18 +41,6 @@ class Controller {
 	public function system_status() {
 
 		return new \Inpsyde\SystemStatus\Builder( self::$informations, 'table' );
-	}
-
-	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		( new \Inpsyde\SystemStatus\Assets\Styles( $this->plugin->url( '/vendor/inpsyde/' ), '' ) )->init();
 	}
 
 	/**

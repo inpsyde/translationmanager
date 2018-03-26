@@ -10,8 +10,8 @@ use Translationmanager\Plugin;
 /**
  * Resolve path to template.
  *
- * @todo  Implements a function that can require the template instead of returing only the path. Alternatively rename
- *        it to `get_template_path`.
+ * @todo  Implements a function that can require the template instead of returing only the path.
+ *        Alternatively rename it to `get_template_path`.
  *
  * Makes it possible for themes or other plugins to overwrite a template.
  *
@@ -176,8 +176,10 @@ function kses_post( $data, array $extra_attrs = [] ) {
  * @uses  sanitize_html_class() To sanitize the html class string
  *
  * @param mixed  $class    The classes as string or array.
- * @param string $fallback The value to return if the sanitization ends up as an empty string. Optional.
- * @param string $glue     The glue to use to explode the string list of classes. Optional default to space.
+ * @param string $fallback The value to return if the sanitization ends up as an empty string.
+ *                         Optional.
+ * @param string $glue     The glue to use to explode the string list of classes. Optional default
+ *                         to space.
  *
  * @return string The sanitize class or classes list
  */
@@ -308,10 +310,10 @@ function current_url() {
  * @param array $request The data we want to filter.
  * @param int   $method  The method to use, can be INPUT_POST or INPUT_GET.
  *
- * @return mixed An array containing the values of the requested variables on success, or FALSE on failure.
- *               An array value will be FALSE if the filter fails, or NULL if the variable is not set.
- *               Or if the flag FILTER_NULL_ON_FAILURE is used, it returns FALSE if the variable is not set
- *               and NULL if the filter
+ * @return mixed An array containing the values of the requested variables on success, or FALSE on
+ *               failure. An array value will be FALSE if the filter fails, or NULL if the variable
+ *               is not set. Or if the flag FILTER_NULL_ON_FAILURE is used, it returns FALSE if the
+ *               variable is not set and NULL if the filter
  */
 function filter_input( array $request, $method ) {
 
@@ -320,4 +322,28 @@ function filter_input( array $request, $method ) {
 	}
 
 	return filter_input_array( $method, $request );
+}
+
+/**
+ * Compare Versions
+ *
+ * Wrapper for \version_compare() but clean the version string before making the comparison.
+ *
+ * @since 1.0.0
+ *
+ * @see   http://php.net/manual/en/function.version-compare.php
+ * @uses  version_compare() To compare the versions
+ *
+ * @param string $ver1       The main version to compare.
+ * @param string $ver2       The version to compare against.
+ * @param string $constraint The constraint. See the version_compare doc for more info.
+ *
+ * @return mixed
+ */
+function version_compare( $ver1, $ver2, $constraint ) {
+
+	$ver1 = (string) preg_replace( '/[^0-9\.]+/', '', $ver1 );
+	$ver2 = (string) preg_replace( '/[^0-9\.]+/', '', $ver2 );
+
+	return \version_compare( $ver1, $ver2, $constraint );
 }

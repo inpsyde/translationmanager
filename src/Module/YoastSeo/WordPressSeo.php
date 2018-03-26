@@ -1,6 +1,6 @@
 <?php
 
-namespace Translationmanager\Module;
+namespace Translationmanager\Module\YoastSeo;
 
 use Translationmanager\TranslationData;
 

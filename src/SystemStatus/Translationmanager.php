@@ -80,7 +80,7 @@ class Translationmanager implements Information {
 
 		$this->collection['plugin_version'] = new Item(
 			esc_html__( 'Plugin Version', 'systemstatus' ),
-			Plugin::VERSION
+			( new \Translationmanager\Plugin() )->version()
 		);
 	}
 

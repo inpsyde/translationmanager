@@ -61,16 +61,6 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 	}
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 */
-	public function init() {
-
-		add_action( 'admin_post_translationmanager_update_project', [ $this, 'handle' ] );
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function handle() {

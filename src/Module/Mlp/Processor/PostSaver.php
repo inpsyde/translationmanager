@@ -2,6 +2,7 @@
 
 namespace Translationmanager\Module\Mlp\Processor;
 
+use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\TranslationData;
 
@@ -10,17 +11,12 @@ class PostSaver implements IncomingProcessor {
 	const SAVED_POST_KEY = 'saved_post';
 
 	/**
-	 * @param TranslationData       $data
-	 * @param \Mlp_Site_Relations    $site_relations
-	 * @param \Mlp_Content_Relations $content_relations
+	 * @param TranslationData $data
+	 * @param Adapter         $adapter
 	 *
 	 * @return void
 	 */
-	public function process_incoming(
-		TranslationData $data,
-		\Mlp_Site_Relations $site_relations,
-		\Mlp_Content_Relations $content_relations
-	) {
+	public function process_incoming( TranslationData $data, Adapter $adapter ) {
 
 		$post_vars = get_object_vars( new \WP_Post( new \stdClass() ) );
 		$post_data = [];
@@ -33,9 +29,9 @@ class PostSaver implements IncomingProcessor {
 
 		switch_to_blog( $data->target_site_id() );
 
-		$existing_id = array_key_exists( 'ID', $post_data ) ? $post_data[ 'ID' ] : 0;
+		$existing_id = array_key_exists( 'ID', $post_data ) ? $post_data['ID'] : 0;
 
-		// Save post with all the data
+		// Save post with all the data.
 		$target_post_id = wp_insert_post( $post_data, true );
 
 		do_action(
@@ -43,15 +39,15 @@ class PostSaver implements IncomingProcessor {
 			[
 				'message' => 'Incoming post data from API processed.',
 				'context' => [
-					'Post data ID' => $existing_id . ' (should equal "Source post ID")',
-					'Source post ID'   => $data->source_post_id() . ' (should equal "Post data ID")',
-					'Result'           => is_wp_error( $target_post_id )
+					'Post data ID'   => $existing_id . ' (should equal "Source post ID")',
+					'Source post ID' => $data->source_post_id() . ' (should equal "Post data ID")',
+					'Result'         => is_wp_error( $target_post_id )
 						? $target_post_id->get_error_message()
 						: "Post ID {$target_post_id} saved correctly.",
-					'Target lang'      => $data->target_language(),
-					'Target site'      => $data->target_site_id(),
-					'Source site'      => $data->source_site_id(),
-				]
+					'Target lang'    => $data->target_language(),
+					'Target site'    => $data->target_site_id(),
+					'Source site'    => $data->source_site_id(),
+				],
 			]
 		);
 
@@ -72,13 +68,14 @@ class PostSaver implements IncomingProcessor {
 			$sync_on_update = apply_filters( 'translationmanager_mlp_module_sync_post_relation_on_update', true, $data );
 		}
 
-		// If it is a new post creation, link created post with source post
+		// If it is a new post creation, link created post with source post.
 		if ( $sync_on_update ) {
-			$content_relations->set_relation(
+			$adapter->set_relation(
 				$data->source_site_id(),
 				$data->target_site_id(),
 				$data->source_post_id(),
-				$target_post->ID
+				$target_post->ID,
+				'post'
 			);
 		}
 

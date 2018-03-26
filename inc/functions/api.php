@@ -3,7 +3,6 @@
 namespace Translationmanager\Functions;
 
 use Translationmanager\Api;
-use Translationmanager\Plugin;
 use Translationmanager\Setting\PluginSettings;
 
 /**
@@ -189,7 +188,7 @@ function create_project_order( \WP_Term $project_term ) {
 		'WordPress',
 		$wp_version,
 		'translationmanager',
-		Plugin::VERSION,
+		( new \Translationmanager\Plugin() )->version(),
 		$project_term->name
 	);
 

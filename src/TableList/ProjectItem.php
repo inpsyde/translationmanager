@@ -20,30 +20,17 @@ use Translationmanager\Request;
 final class ProjectItem extends TableList {
 
 	/**
-	 * Post Type
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \WP_Post_Type The post type to handle
-	 */
-	private $post_type;
-
-	/**
 	 * ProjectItem constructor
 	 *
 	 * @since 1.0.0
-	 *
-	 * @param \WP_Post_Type $post_type The post type to handle.
 	 */
-	public function __construct( \WP_Post_Type $post_type ) {
-
-		$this->post_type = $post_type;
+	public function __construct() {
 
 		parent::__construct( [
 			'plural'   => 'posts',
 			'singular' => 'post',
 			'ajax'     => false,
-			'screen'   => $this->post_type->name,
+			'screen'   => 'project_item',
 		] );
 	}
 
@@ -168,7 +155,7 @@ final class ProjectItem extends TableList {
 			if ( 'top' === $which && ! is_singular() ) {
 				ob_start();
 
-				do_action( 'restrict_manage_project', $this->screen->post_type, $which );
+				do_action( 'restrict_manage_project', $this->screen->id, $which );
 
 				// Filters.
 				$this->target_language_filter_template();
@@ -266,9 +253,9 @@ final class ProjectItem extends TableList {
 	 */
 	private function languages() {
 
-		static $languages = null;
+		static $languages = [];
 
-		if ( null === $languages ) {
+		if ( empty( $languages ) ) {
 			$all_languages = Functions\get_languages();
 
 			foreach ( $all_languages as $index => $language ) {
@@ -348,21 +335,19 @@ final class ProjectItem extends TableList {
 	 */
 	private function items() {
 
+		try {
+			$project_id = $this->project_id_by_request()->term_id;
+		} catch ( \Exception $e ) {
+			return [];
+		}
+
+		if ( ! $project_id ) {
+			return [];
+		}
+
 		if ( ! $this->items ) {
-			$project = filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
-
-			if ( ! $project ) {
-				return [];
-			}
-
-			// Just to be sure the term exists.
-			$project = get_term( $project, 'translationmanager_project' );
-			if ( ! $project instanceof \WP_Term ) {
-				return [];
-			}
-
-			$this->items = Functions\get_project_items( $project->term_id, [
-				'posts_per_page' => $this->_pagination_args['per_page'],
+			$this->items = Functions\get_project_items( $project_id, [
+				'posts_per_page' => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
 				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
 			] );
 		}
@@ -435,18 +420,50 @@ final class ProjectItem extends TableList {
 	 */
 	private function set_pagination() {
 
-		global $wp_query;
-
-		if ( $wp_query->found_posts || $this->get_pagenum() === 1 ) {
-			$total_items = $wp_query->found_posts;
-		} else {
-			$total_items = (array) wp_count_posts( $this->screen->id, 'readable' );
-			$total_items = intval( $total_items['draft'] );
+		try {
+			$project_id = $this->project_id_by_request()->term_id;
+		} catch ( \Exception $e ) {
+			return;
 		}
 
+		if ( ! $project_id ) {
+			return;
+		}
+
+		$count = count( Functions\get_project_items( $project_id ) );
+
 		$this->set_pagination_args( [
-			'total_items' => $total_items,
+			'total_items' => $count,
 			'per_page'    => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
 		] );
+	}
+
+	/**
+	 * Retrieve Project ID By GET request
+	 *
+	 * @since 1.0.0
+	 *
+	 * @throw \RuntimeException In case the wp term cannot be retrieved
+	 *
+	 * @return \WP_Term The term retrieved by the request.
+	 */
+	private function project_id_by_request() {
+
+		$project = Functions\filter_input(
+			[ 'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT ],
+			INPUT_GET
+		)['translationmanager_project_id'];
+
+		if ( ! $project ) {
+			return null;
+		}
+
+		$project = get_term( $project, 'translationmanager_project' );
+
+		if ( ! $project instanceof \WP_Term ) {
+			throw new \RuntimeException( $project->get_error_message() );
+		}
+
+		return $project;
 	}
 }

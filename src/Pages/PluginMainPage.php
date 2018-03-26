@@ -50,18 +50,6 @@ class PluginMainPage implements Pageable {
 	}
 
 	/**
-	 * Set hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function add_page() {

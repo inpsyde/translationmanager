@@ -13,7 +13,84 @@
  * Domain Path: /languages
  */
 
-add_action( 'plugins_loaded', function () {
+/**
+ * Admin Notice
+ *
+ * @since 1.0.0
+ *
+ * @param string $message  The message to show in the notice.
+ * @param string $severity The severity of the notice. Can be one of `success`, `warning`, `error`.
+ *
+ * @return void
+ */
+function translationmanager_admin_notice( $message, $severity ) {
+
+	printf(
+		'<div class="notice notice-%1$s"><p>%2$s</p></div>',
+		sanitize_html_class( sanitize_key( $severity ) ),
+		wp_kses_post( $message )
+	);
+}
+
+/**
+ * Test Plugin Stuffs
+ *
+ * @since 1.0.0
+ *
+ * @return bool True when ok, false otherwise.
+ */
+function translationmanager_plugin_tests_pass() {
+
+	$requirements = new Translationmanager\Requirements();
+
+	// Check the requirements and in case prevent code execution by returning.
+	if ( ! $requirements->is_php_version_ok() ) {
+		add_action( 'admin_notices', function () use ( $requirements ) {
+
+			translationmanager_admin_notice( sprintf( esc_html__( // phpcs:ignore
+				'TranslationMANAGER requires PHP version %1$s or higher. You are running version %2$s.',
+				'translationmanager'
+			),
+				Translationmanager\Requirements::PHP_MIN_VERSION,
+				Translationmanager\Requirements::PHP_CURR_VERSION
+			), 'error' );
+		} );
+
+		return false;
+	}
+
+	// Show Notice in case Token or URL isn't set.
+	if ( ! get_option( \Translationmanager\Setting\PluginSettings::API_KEY ) ) {
+		add_action( 'admin_notices', function () use ( $requirements ) {
+
+			translationmanager_admin_notice(
+				wp_kses( sprintf( __( // phpcs:ignore
+					'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
+					'translationmanager'
+				),
+					'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG, false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
+				),
+					[
+						'a'      => [ 'href' => true ],
+						'strong' => [],
+					]
+				),
+				'error'
+			);
+		} );
+	}
+
+	return true;
+}
+
+/**
+ * BootStrap
+ *
+ * @since 1.0.0
+ *
+ * @return void
+ */
+function bootstrap() {
 
 	if ( ! is_admin() ) {
 		return;
@@ -41,129 +118,55 @@ add_action( 'plugins_loaded', function () {
 		require_once $file;
 	}
 
-	$requirements    = new Translationmanager\Requirements();
-	$plugin          = new \Translationmanager\Plugin();
-	$plugin_settings = new \Translationmanager\Setting\PluginSettings();
-
-	// Check the requirements and in case prevent code execution by returning.
-	if ( ! $requirements->is_php_version_ok() ) {
-		add_action( 'admin_notices', function () use ( $requirements ) {
-
-			translationmanager_admin_notice( sprintf( esc_html__( // phpcs:ignore
-				'TranslationMANAGER requires PHP version %1$s or higher. You are running version %2$s.',
-				'translationmanager'
-			),
-				Translationmanager\Requirements::PHP_MIN_VERSION,
-				Translationmanager\Requirements::PHP_CURR_VERSION
-			), 'error' );
-		} );
-
+	if ( ! translationmanager_plugin_tests_pass() ) {
 		return;
 	}
 
-	// Include modules.
-	Translationmanager\Functions\include_modules();
+	$container = new Pimple\Container();
 
-	// Register Post Types & Taxonomies.
-	( new \Translationmanager\ProjectItem\PostType( $plugin ) )->init();
-	( new \Translationmanager\Project\Taxonomy() )->init();
+	$container['translationmanager.plugin'] = function () {
 
-	// Add Pages.
-	( new \Translationmanager\Pages\Project() )->init();
-	( new \Translationmanager\Pages\PluginMainPage( $plugin ) )->init();
-	( new \Translationmanager\Pages\PageOptions( $plugin, $plugin_settings ) )->init();
+		return new \Translationmanager\Plugin();
+	};
 
+	$providers = new \Translationmanager\Service\ServiceProviders( $container );
+	$providers
+		->register( new Translationmanager\ProjectItem\ServiceProvider() )
+		->register( new Translationmanager\Project\ServiceProvider() )
+		->register( new Translationmanager\Pages\ServiceProvider() )
+		->register( new Translationmanager\Setting\ServiceProvider() )
+		->register( new Translationmanager\MetaBox\ServiceProvider() )
+		->register( new Translationmanager\TableList\ServiceProvider() )
+		->register( new Translationmanager\Assets\ServiceProvider() )
+		->register( new Translationmanager\Request\ServiceProvider() )
+		->register( new Translationmanager\SystemStatus\ServiceProvider() )
+		->register( new Translationmanager\Activation\ServiceProvider() )
+		->register( new Translationmanager\Module\ServiceProvider() );
 
-	// Show Notice in case Token or URL isn't set.
-	if ( ! get_option( \Translationmanager\Setting\PluginSettings::API_KEY ) ) {
-		add_action( 'admin_notices', function () use ( $requirements ) {
+	$providers
+		->bootstrap()
+		->integrate();
 
-			translationmanager_admin_notice(
-				wp_kses( sprintf( __( // phpcs:ignore
-					'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
-					'translationmanager'
-				),
-					'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG, false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
-				),
-					[
-						'a'      => [ 'href' => true ],
-						'strong' => [],
-					]
-				),
-				'error'
-			);
-		} );
-	}
-
-	// Meta Boxes.
-	( new \Translationmanager\MetaBox\Translation() )->init();
-
-	// Restrict Manage Posts.
-	( new \Translationmanager\RestrictManagePosts( $plugin ) )->init();
-
-	// Assets.
-	( new \Translationmanager\Assets\Translationmanager( $plugin ) )->init();
-
-	// Requests.
-	( new \Translationmanager\Request\Api\AddTranslation(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'add_translation' ),
-		new \Translationmanager\ProjectHandler()
-	) )->init();
-	( new \Translationmanager\Request\Api\OrderProject(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'order_project' )
-	) )->init();
-	( new \Translationmanager\Request\Api\UpdateProjectOrderStatus(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'update_project' )
-	) )->init();
-	( new \Translationmanager\Request\Api\ImportProject(
-		new \Translationmanager\Auth\Validator(),
-		new \Brain\Nonces\WpNonce( 'import_project' )
-	) )->init();
-
-	// System Status.
-	( new \Translationmanager\SystemStatus\Controller( $plugin ) )->init();
-
-	// Register Activation.
-	register_activation_hook( $plugin->file_path(), 'translationmanager_activate' );
-}, - 1 );
-
-/**
- * Admin Notice
- *
- * @since 1.0.0
- *
- * @param string $message  The message to show in the notice.
- * @param string $severity The severity of the notice. Can be one of `success`, `warning`, `error`.
- *
- * @return void
- */
-function translationmanager_admin_notice( $message, $severity ) {
-
-	printf(
-		'<div class="notice notice-%1$s"><p>%2$s</p></div>',
-		sanitize_html_class( sanitize_key( $severity ) ),
-		wp_kses_post( $message )
-	);
+	unset( $container );
 }
 
 /**
- * Activation function.
- *
- * Proxy to the plugin activation.
- * This is a function so that it can be unregistered by other plugins
- * as objects can not be unregistered
- * and static methods are considered as bad coding style / hard to test.
+ * Activate Plugin
  *
  * @since 1.0.0
  *
- * @throws \Exception In case of plugin contain invalid data.
- *
  * @return void
  */
-function translationmanager_activate() {
+function activate() {
 
-	( new \Translationmanager\PluginActivate() )->store_version();
+	add_action( 'activated_plugin', function ( $plugin ) {
+
+		if ( plugin_basename( __FILE__ ) === $plugin ) {
+			bootstrap();
+		}
+	}, 0 );
 }
+
+add_action( 'plugins_loaded', 'bootstrap', - 1 );
+
+register_activation_hook( __FILE__, 'activate' );

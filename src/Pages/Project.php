@@ -47,19 +47,6 @@ class Project implements Pageable {
 	}
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'admin_menu', [ $this, 'add_page' ] );
-		add_action( 'admin_title', [ $this, 'reintroduce_page_title_in_header' ] );
-	}
-
-	/**
 	 * Reintroduce Page Title in Header
 	 *
 	 * Since we are adding an hidden page the `<title>` tag will miss the page title.
@@ -116,7 +103,7 @@ class Project implements Pageable {
 
 		$bind = (object) [
 			'page_title'    => $this->page_title,
-			'wp_list_table' => new ProjectItem( get_post_type_object( 'project_item' ) ),
+			'wp_list_table' => new ProjectItem(),
 		];
 
 		require_once \Translationmanager\Functions\get_template( '/views/project/page-layout.php' );

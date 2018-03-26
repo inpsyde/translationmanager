@@ -20,18 +20,6 @@ use Translationmanager\Setting\PluginSettings;
 class Translation implements Boxable {
 
 	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function add_meta_box() {

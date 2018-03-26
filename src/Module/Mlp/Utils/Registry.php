@@ -2,6 +2,8 @@
 
 namespace Translationmanager\Module\Mlp\Utils;
 
+use Translationmanager\Module\Mlp\Adapter;
+
 class Registry {
 
 	/**
@@ -14,13 +16,16 @@ class Registry {
 	 *
 	 * @return ImageCopier
 	 */
-	public function image_sync( \Mlp_Content_Relations $content_relations ) {
+	public function image_sync( Adapter $adapter ) {
 
-		$this->services[ __FUNCTION__ ] or $this->services[ __FUNCTION__ ] = [];
-		$id = spl_object_hash( $content_relations );
+		if ( ! isset( $this->services[ __FUNCTION__ ] ) ) {
+			$this->services[ __FUNCTION__ ] = [];
+		}
+
+		$id = spl_object_hash( $adapter );
 
 		if ( ! array_key_exists( $id, $this->services[ __FUNCTION__ ] ) ) {
-			$this->services[ __FUNCTION__ ][ $id ] = new ImageCopier( $content_relations );
+			$this->services[ __FUNCTION__ ][ $id ] = new ImageCopier( $adapter );
 		}
 
 		return $this->services[ __FUNCTION__ ][ $id ];
@@ -30,7 +35,7 @@ class Registry {
 	 * @return NetworkState
 	 */
 	public function network_state() {
-		
+
 		return NetworkState::create();
 	}
 }

@@ -2,8 +2,6 @@
 
 namespace Translationmanager\Functions;
 
-use Translationmanager\Domain\Language;
-
 /**
  * Interface for modules to serve languages.
  *
@@ -35,19 +33,15 @@ function get_languages() {
  */
 function get_languages_by_site_id( $site_id ) {
 
-	global $wpdb;
-	$languages      = [];
-	$site_relations = new \Mlp_Site_Relations( $wpdb, 'mlp_site_relations' );
-
-	$sites = $site_relations->get_related_sites( $site_id );
-
-	foreach ( $sites as $site ) {
-		$lang_iso = mlp_get_blog_language( $site, false );
-
-		$languages[ $site ] = new Language( $lang_iso, mlp_get_lang_by_iso( $lang_iso ) );
-	}
-
-	return $languages;
+	/**
+	 * Languages By Site ID Filter
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $languages The languages list.
+	 * @param int   $site_id   The id for which site retrieve the languages.
+	 */
+	return apply_filters( 'translation_manager_languages_by_site_id', [], $site_id );
 }
 
 /**

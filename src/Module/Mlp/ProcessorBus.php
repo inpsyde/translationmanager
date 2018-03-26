@@ -24,11 +24,7 @@ class ProcessorBus {
 		return $this;
 	}
 
-	public function process(
-		TranslationData $data,
-		\Mlp_Site_Relations $site_relations,
-		\Mlp_Content_Relations $content_relations
-	) {
+	public function process( TranslationData $data, Adapter $adapter ) {
 
 		$is_incoming = $data->is_incoming();
 
@@ -77,7 +73,7 @@ class ProcessorBus {
 
 				/** @var callable $cb */
 				$cb = [ $processor, $method ];
-				$cb( $data, $site_relations, $content_relations );
+				$cb( $data, $adapter );
 			}
 		}
 

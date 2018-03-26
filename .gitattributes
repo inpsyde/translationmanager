@@ -8,3 +8,5 @@
 /.gitignore export-ignore
 /phpunit.xml.dist export-ignore
 /phpcs.xml export-ignore
+/node_modules export-ignore
+/coverage.xml export-ignore

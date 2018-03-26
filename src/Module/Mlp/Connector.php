@@ -1,4 +1,5 @@
 <?php # -*- coding: utf-8 -*-
+
 /**
  * Bridge between the translation data and the MLP API
  */
@@ -18,19 +19,14 @@ class Connector {
 	private static $utils;
 
 	/**
-	 * @var \Mlp_Site_Relations
-	 */
-	private $site_relations;
-
-	/**
-	 * @var \Mlp_Content_Relations
-	 */
-	private $content_relations;
-
-	/**
 	 * @var ProcessorBus
 	 */
 	private $processors;
+
+	/**
+	 * @var \Translationmanager\Module\Mlp\Adapter
+	 */
+	private $adapter;
 
 	/**
 	 * @return Utils\Registry
@@ -43,13 +39,13 @@ class Connector {
 	}
 
 	/**
-	 * @param \Mlp_Site_Relations    $site_relations
-	 * @param \Mlp_Content_Relations $content_relations
+	 * Connector constructor
+	 *
+	 * @param \Translationmanager\Module\Mlp\Adapter $adapter
 	 */
-	public function __construct( \Mlp_Site_Relations $site_relations, \Mlp_Content_Relations $content_relations ) {
+	public function __construct( Adapter $adapter ) {
 
-		$this->site_relations    = $site_relations;
-		$this->content_relations = $content_relations;
+		$this->adapter = $adapter;
 	}
 
 	/**
@@ -60,7 +56,7 @@ class Connector {
 	public function prepare_outgoing( TranslationData $data ) {
 
 		$this->init_processors();
-		$this->processors->process( $data, $this->site_relations, $this->content_relations );
+		$this->processors->process( $data, $this->adapter );
 	}
 
 	/**
@@ -85,7 +81,7 @@ class Connector {
 		}
 
 		$this->init_processors();
-		$this->processors->process( $data, $this->site_relations, $this->content_relations );
+		$this->processors->process( $data, $this->adapter );
 
 		$saved_post = $data->get_meta( Processor\PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE );
 
@@ -102,8 +98,8 @@ class Connector {
 	public function current_language() {
 
 		$site_id   = get_current_blog_id();
-		$lang_iso  = mlp_get_blog_language( $site_id, false );
-		$lang_name = mlp_get_lang_by_iso( $lang_iso );
+		$lang_iso  = $this->adapter->blog_language( $site_id, false );
+		$lang_name = $this->adapter->lang_by_iso( $lang_iso );
 
 		return new Language( $lang_iso, $lang_name );
 	}
@@ -118,12 +114,12 @@ class Connector {
 	 */
 	public function related_sites( $languages, $site_id ) {
 
-		$sites = $this->site_relations->get_related_sites( $site_id );
+		$sites = $this->adapter->related_sites( $site_id );
 
 		foreach ( $sites as $site ) {
-			$lang_iso = mlp_get_blog_language( $site, false );
+			$lang_iso = $this->adapter->blog_language( $site, false );
 
-			$languages[ $site ] = new Language( $lang_iso, mlp_get_lang_by_iso( $lang_iso ) );
+			$languages[ $site ] = new Language( $lang_iso, $this->adapter->lang_by_iso( $lang_iso ) );
 		}
 
 		return $languages;

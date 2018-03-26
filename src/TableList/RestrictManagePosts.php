@@ -6,7 +6,9 @@
  * @package   Translationmanager
  */
 
-namespace Translationmanager;
+namespace Translationmanager\TableList;
+
+use Translationmanager\Plugin;
 
 /**
  * Class RestrictManagePosts
@@ -44,23 +46,6 @@ class RestrictManagePosts {
 	public function __construct( Plugin $plugin ) {
 
 		$this->plugin = $plugin;
-	}
-
-	/**
-	 * Set Hooks
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		add_action( 'manage_posts_extra_tablenav', [ $this, 'restrict_manage_posts' ], 10 );
-		add_action( 'admin_head', [ $this, 'enqueue_styles' ], 10 );
-		add_action( 'admin_head', [ $this, 'enqueue_scripts' ], 10 );
-		add_action( 'manage_posts_extra_tablenav', [ $this, 'restrict_manage_posts' ], 10 );
-		add_filter( 'bulk_actions-edit-post', [ $this, 'filter_bulk_action_list' ] );
-		add_filter( 'bulk_actions-edit-page', [ $this, 'filter_bulk_action_list' ] );
 	}
 
 	/**

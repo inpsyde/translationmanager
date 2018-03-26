@@ -2,6 +2,7 @@
 
 namespace Translationmanager\Module\Mlp\Processor;
 
+use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\TranslationData;
 
@@ -20,18 +21,7 @@ class PostDataBuilder implements IncomingProcessor {
 		'filter'            => '',
 	];
 
-	/**
-	 * @param TranslationData       $data
-	 * @param \Mlp_Site_Relations    $site_relations
-	 * @param \Mlp_Content_Relations $content_relations
-	 *
-	 * @return void
-	 */
-	public function process_incoming(
-		TranslationData $data,
-		\Mlp_Site_Relations $site_relations,
-		\Mlp_Content_Relations $content_relations
-	) {
+	public function process_incoming( TranslationData $data, Adapter $adapter ) {
 
 		$source_post = $data->source_post();
 
@@ -40,7 +30,7 @@ class PostDataBuilder implements IncomingProcessor {
 		}
 
 		/** @var array $linked_posts Array with site ID as keys and content ID as values. */
-		$linked_posts = $content_relations->get_relations( $data->source_site_id(), $source_post->ID, 'post' );
+		$linked_posts = $adapter->relations( $data->source_site_id(), $source_post->ID, 'post' );
 
 		$target_site_id = $data->target_site_id();
 
@@ -65,16 +55,16 @@ class PostDataBuilder implements IncomingProcessor {
 		}
 
 		$source_post_data = $source_post->to_array();
-		unset( $source_post_data[ 'post_parent' ] );
+		unset( $source_post_data['post_parent'] );
 
 		// Merge all data we know...
 		$post_data = array_merge( $source_post_data, $linked_post_data, $translated_data );
 		// ... but remove problematic properties...
 		$post_data = array_diff_key( $post_data, self::$unwanted_data );
 		// ... and force ID to be existing linked post if exists.
-		$linked_post and $post_data[ 'ID' ] = $linked_post->ID;
+		$linked_post and $post_data['ID'] = $linked_post->ID;
 		// Set back all post data in root namespace
-		foreach( $post_data as $key => $value ) {
+		foreach ( $post_data as $key => $value ) {
 			$data->set_value( $key, $value );
 		}
 
