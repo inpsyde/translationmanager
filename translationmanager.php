@@ -135,7 +135,7 @@ function bootstrap() {
 		->register( new Translationmanager\Project\ServiceProvider() )
 		->register( new Translationmanager\Pages\ServiceProvider() )
 		->register( new Translationmanager\Setting\ServiceProvider() )
-		->register( new Translationmanager\Metabox\ServiceProvider() )
+		->register( new Translationmanager\MetaBox\ServiceProvider() )
 		->register( new Translationmanager\TableList\ServiceProvider() )
 		->register( new Translationmanager\Assets\ServiceProvider() )
 		->register( new Translationmanager\Request\ServiceProvider() )
