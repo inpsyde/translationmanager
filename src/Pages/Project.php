@@ -103,7 +103,7 @@ class Project implements Pageable {
 
 		$bind = (object) [
 			'page_title'    => $this->page_title,
-			'wp_list_table' => new ProjectItem( get_post_type_object( 'project_item' ) ),
+			'wp_list_table' => new ProjectItem(),
 		];
 
 		require_once \Translationmanager\Functions\get_template( '/views/project/page-layout.php' );
