@@ -53,7 +53,7 @@ class PostType {
 			],
 			'show_in_menu'  => false,
 			'description'   => esc_html__( 'What you are about to order.', 'translationmanager' ),
-			'public'        => true,
+			'public'        => false,
 			'capabilities'  => [
 				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
 				'create_posts'       => 'do_not_allow',
