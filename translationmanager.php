@@ -97,7 +97,9 @@ function bootstrap() {
 	}
 
 	// Require composer autoloader if exists.
-	if ( is_readable( __DIR__ . '/vendor/autoload.php' ) && ! class_exists( \Translationmanager\Plugin::class ) ) {
+	if ( is_readable( __DIR__ . '/vendor/autoload.php' )
+	     && ! class_exists( \Translationmanager\Plugin::class )
+	) {
 		require_once __DIR__ . '/vendor/autoload.php';
 	}
 	if ( ! class_exists( \Translationmanager\Plugin::class ) ) {
