@@ -68,8 +68,6 @@ class PluginMainPage implements Pageable {
 			$this->plugin->url( '/resources/img/tm-icon-bw.png' ),
 			self::MENU_POSITION
 		);
-
-		$this->make_menu_items_coherent();
 	}
 
 	/**
