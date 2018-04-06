@@ -11,7 +11,7 @@ namespace Translationmanager\Request;
 use Brain\Nonces\NonceInterface;
 use Translationmanager\Auth\Authable;
 use Translationmanager\Exception\FileUploadException;
-use Translationmanager\Notice\StandardNoticeable;
+use Translationmanager\Notice\StandardNotice;
 use Translationmanager\Functions;
 
 /**
@@ -56,7 +56,7 @@ class SupportRequest implements RequestHandleable {
 	 *
 	 * @var string Destination for email
 	 */
-	private static $destination = 'patrick.ullrich@eurotext.de';
+	private static $destination = 'help@eurotext.de';
 
 	/**
 	 * Accepted File Types
@@ -104,7 +104,11 @@ class SupportRequest implements RequestHandleable {
 			if ( ! $response ) {
 				$this->response(
 					sprintf(
-						esc_html__( 'Sorry seems something went wrong sending your support request please, try again or contact us at %s', 'translationmanager' ),
+					// translators: s is the destination email address.
+						esc_html__(
+							'Sorry seems something went wrong sending your support request please, try again or contact us at %s',
+							'translationmanager'
+						),
 						self::$destination
 					),
 					'error'
@@ -240,7 +244,7 @@ class SupportRequest implements RequestHandleable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @see   StandardNoticeable
+	 * @see   StorableNotice
 	 *
 	 * @param string $message  The message string.
 	 * @param string $severity The severity.
@@ -249,6 +253,6 @@ class SupportRequest implements RequestHandleable {
 	 */
 	private function response( $message, $severity ) {
 
-		( new StandardNoticeable( 'translationMANAGER: ' . $message, $severity ) )->show();
+		( new StandardNotice( 'translationMANAGER: ' . $message, $severity ) )->show();
 	}
 }
