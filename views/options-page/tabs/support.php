@@ -47,7 +47,7 @@
 	</ul>
 
 	<p class="support-documentation-link">
-		<a href="http://help.eurotext.de" target="_blank" rel="noopener noreferrer">
+		<a href="https://eurotext-ecommerce.com/dokumentation/" target="_blank" rel="noopener noreferrer">
 			<?php esc_html_e( 'Open the complete documentation' ); ?>
 		</a>
 	</p>
@@ -113,7 +113,7 @@
 			<label for="support_request_agreement">
 				<?php printf(
 					wp_kses_post( __( 'I\'ve read the %s, and I agree to allow Eurotext to automatically collect information of my WordPress installation.', 'translationmanager' ) ),
-					'<a href="http://help.eurotext.de/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'documentation', 'translationmanager' ) . '</a>'
+					'<a href="https://eurotext-ecommerce.com/dokumentation/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'documentation', 'translationmanager' ) . '</a>'
 				); ?>
 			</label>
 		</p>
