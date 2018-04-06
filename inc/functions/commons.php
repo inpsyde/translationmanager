@@ -290,12 +290,18 @@ function username( \WP_User $user ) {
  *
  * @since 1.0.0
  *
+ * @param array $args The arguments to append to the url.
+ *
  * @return string The current url
  */
-function current_url() {
+function current_url( array $args = [] ) {
 
 	$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); // phpcs:ignore
 	$current_url = remove_query_arg( 'paged', $current_url );
+
+	if ( $args ) {
+		$current_url = add_query_arg( $args, $current_url );
+	}
 
 	return $current_url;
 }
