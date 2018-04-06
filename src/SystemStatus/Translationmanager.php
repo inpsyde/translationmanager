@@ -46,7 +46,7 @@ class Translationmanager implements Information {
 	 */
 	public function __construct() {
 
-		$this->title = esc_html__( 'TranslationMANAGER', 'systemstatus' );
+		$this->title = esc_html__( 'translationMANAGER', 'systemstatus' );
 	}
 
 	/**
@@ -105,13 +105,14 @@ class Translationmanager implements Information {
 		$status = $status
 			? esc_html__( 'Ok', 'translationmanager' )
 			: sprintf(
+			// translators: 1 is the error code. 2 is the message.
 				esc_html__( 'Connection failed with response %1$s:%2$s', 'translationmanager' ),
 				'<strong>' . intval( $test['code'] ) . '</strong>',
 				'<strong>' . esc_html( sanitize_text_field( $test['message'] ) ) . '</strong>'
 			);
 
 		$this->collection['api_connection'] = new Item(
-			esc_html__( 'Api Connection', 'systemstatus' ),
+			esc_html__( 'API Connection', 'systemstatus' ),
 			$status
 		);
 	}
