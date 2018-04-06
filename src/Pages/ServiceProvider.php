@@ -52,12 +52,19 @@ class ServiceProvider implements BootstrappableServiceProvider {
 
 		// Main Page.
 		add_action( 'admin_menu', [ $container['Page.PluginMainPage'], 'add_page' ] );
+		add_action( 'admin_menu', [
+			$container['Page.PluginMainPage'],
+			'make_menu_items_coherent',
+		] );
 
 		// Page Options.
 		add_action( 'admin_menu', [ $container['Page.PageOptions'], 'add_page' ] );
 		add_action( 'admin_head', [ $container['Page.PageOptions'], 'enqueue_style' ] );
 		add_action( 'admin_head', [ $container['Page.PageOptions'], 'enqueue_script' ] );
-		add_action( 'admin_init', [ $container['Page.PageOptions'], 'handle_support_request_form' ] );
+		add_action( 'admin_init', [
+			$container['Page.PageOptions'],
+			'handle_support_request_form',
+		] );
 
 		add_filter( 'option_page_capability_' . PluginSettings::OPTION_GROUP, [
 			$container['Page.PageOptions'],
