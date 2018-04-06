@@ -49,7 +49,8 @@ class PluginSettings {
 	/**
 	 * The refresh api token
 	 *
-	 * @todo  May be this should be called TOKEN since it's the option not the time for the refresh?.
+	 * @todo  May be this should be called TOKEN since it's the option not the time for the
+	 *        refresh?.
 	 *
 	 * @since 1.0.0
 	 *
@@ -88,6 +89,13 @@ class PluginSettings {
 				),
 				'placeholder' => esc_html__( 'Not set', 'translationmanager' ),
 				'pattern'     => '[a-zA-Z0-9]+',
+				'description' => sprintf(
+					__(
+						'If you do not have an API Key, please contact us: %s',
+						'translationmanager'
+					),
+					'<a href="https://eurotext.de/en/request-api-key/">https://eurotext.de/en/request-api-key/</a>'
+				),
 			]
 		);
 
@@ -153,7 +161,8 @@ class PluginSettings {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string   $id        Slug-name to identify the field. Used in the 'id' attribute of tags.
+	 * @param string   $id        Slug-name to identify the field. Used in the 'id' attribute of
+	 *                            tags.
 	 * @param string   $title     Formatted title of the field. Shown as the label for the field
 	 *                            during output.
 	 * @param callable $callback  Function that fills the field with the desired form inputs. The
