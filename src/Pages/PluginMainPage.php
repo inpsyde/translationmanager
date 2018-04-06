@@ -122,8 +122,6 @@ class PluginMainPage implements Pageable {
 		} );
 		add_filter( 'submenu_file', function ( $submenu_file ) {
 
-			global $submenu;
-
 			$screen = get_current_screen();
 
 			if ( 'edit-translationmanager_project' === $screen->id ) {
