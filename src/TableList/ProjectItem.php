@@ -146,7 +146,6 @@ final class ProjectItem extends TableList {
 		do_action( 'translationmanager_project_item_table_views', $this );
 	}
 
-
 	/**
 	 * Fill the Items list with posts instances
 	 *
@@ -313,7 +312,35 @@ final class ProjectItem extends TableList {
 			$users = get_users( [
 				'fields' => 'all',
 			] );
+
+			$users = $this->filter_users_by_items( $users );
 		}
+
+		return $users;
+	}
+
+	/**
+	 * Filter users that are also post authors for the items in the list
+	 *
+	 * @param \WP_User[] $users The users list to filter.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return array The filtered users
+	 */
+	private function filter_users_by_items( $users ) {
+
+		// Retrieve all of the users that has an item.
+		$userItems = array_map( function ( $item ) {
+
+			return (int) $item->post_author;
+		}, $this->items );
+
+		// Filter the user that has an item associated.
+		$users = array_filter( $users, function ( $user ) use ( $userItems ) {
+
+			return in_array( $user->ID, $userItems, true );
+		} );
 
 		return $users;
 	}
@@ -339,6 +366,10 @@ final class ProjectItem extends TableList {
 
 	/**
 	 * The User Filter
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
 	 */
 	private function added_by_filter_template() {
 
