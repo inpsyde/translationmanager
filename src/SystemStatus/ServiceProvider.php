@@ -35,7 +35,7 @@ class ServiceProvider implements BootstrappableServiceProvider {
 	public function boot( Container $container ) {
 
 		( new \Inpsyde\SystemStatus\Assets\Styles(
-			$container['translationmanager.plugin']->url( '/vendor/inpsyde/' ), '' )
+			$container['translationmanager.plugin']->url( '/assets/css/' ), '' )
 		)->init();
 	}
 }

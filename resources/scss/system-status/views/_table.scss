@@ -1,0 +1,60 @@
+@import '../settings';
+
+.systemstatus--table {
+  margin-bottom: 1em;
+
+  h2 {
+    font-size: .9rem;
+    margin:    0;
+  }
+
+  tr:nth-child( 2n ) {
+    th,
+    td {
+      background: darken($color__white, 2%);
+    }
+  }
+
+  th {
+    padding: 9px;
+  }
+
+  td, th {
+    font-size:   .9rem;
+    font-weight: normal;
+
+    &:first-child {
+      width: 33%;
+    }
+
+    mark {
+      background: transparent none;
+    }
+
+    mark.yes {
+      color: $color__inpsyde;
+    }
+
+    mark.no {
+      color: $color__gray;
+    }
+
+    mark.error, .red {
+      color: $color__red;
+    }
+
+    ul {
+      margin: 0;
+    }
+  }
+
+  .systemstatus {
+
+    // Item
+    &__item-short-description {
+      color:     $color__gray;
+      display:   block;
+      font-size: .75rem;
+    }
+  }
+}

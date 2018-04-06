@@ -1,0 +1,13 @@
+//
+// Colors
+//
+$color__black: #000;
+$color__gray: lighten($color__black, 50%);
+$color__white: #fff;
+
+$color__orange: #ffa500;
+$color__red: #ff544b;
+
+// Inpsyde
+$color__inpsyde: #8fb900;
+$color__inpsyde--dark: darken($color__inpsyde, 20%);
