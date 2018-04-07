@@ -119,7 +119,7 @@ class PluginMainPage implements Pageable {
 			}
 
 			return $parent_file;
-		} );
+		}, PHP_INT_MAX );
 		add_filter( 'submenu_file', function ( $submenu_file ) {
 
 			$screen = get_current_screen();
