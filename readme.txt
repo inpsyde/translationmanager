@@ -34,5 +34,8 @@ Just send an email to info@eurotext.de and request one.
 3. project view
 
 == Changelog ==
+= 1.1.0 =
+* Improved settings tab
+
 = 1.0 =
 * Releasing the first version of TranslationMANAGER with basic functions.
