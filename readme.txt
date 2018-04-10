@@ -2,7 +2,7 @@
 Contributors: Inpsyde, Eurotext, paddyullrich
 Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
-Requires at least: 3.9
+Requires at least: 4.6
 Tested up to: 4.7.0
 Stable tag: 4.3
 License: GPLv2 or later
