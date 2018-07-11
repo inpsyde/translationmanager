@@ -23,6 +23,7 @@
 		"php": ">=5.6",
 		"brain/nonces": "1.0.*",
 		"inpsyde/system-status": "dev-master",
+		"inpsyde/inpsyde-networksites-menu": "2.0.*",
 		"pimple/pimple": "^3.2"
 	},
 	"require-dev" : {
