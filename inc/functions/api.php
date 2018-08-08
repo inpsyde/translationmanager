@@ -67,9 +67,15 @@ function project_update( \WP_Term $project ) {
 
 	$translation_data = translationmanager_api()->project()->get( $project_id );
 
-	foreach ( $translation_data['items'] as $items ) {
-		foreach ( $items as $item ) {
-			$translation = \Translationmanager\TranslationData::for_incoming( (array) $item );
+	foreach ( $translation_data['items'] as $item_id => $items ) {
+		foreach ( $items as &$item ) {
+			$item = translationmanager_api()->project_item()->get( $project_id, $item_id );
+
+			if ( ! $item || ! isset( $item['data'] ) ) {
+				continue;
+			}
+
+			$translation = \Translationmanager\TranslationData::for_incoming( (array) $item['data'][0] );
 
 			/**
 			 * Fires for each item or translation received from the API.
