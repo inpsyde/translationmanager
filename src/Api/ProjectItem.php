@@ -13,13 +13,22 @@ use Translationmanager\Api;
 class ProjectItem {
 
 	/**
-	 * URL
+	 * Post URL
 	 *
 	 * @since 1.0.0
 	 *
 	 * @var string The endpoint for the project item.
 	 */
 	const URL = 'project/%d/item';
+
+	/**
+	 * Get URL
+	 *
+	 * @since 1.1.1
+	 *
+	 * @var string Endpoint to fetch information about a project item.
+	 */
+	const URL_GET = 'project/%d/item/%d';
 
 	/**
 	 * API
@@ -76,6 +85,19 @@ class ProjectItem {
 		}
 
 		return (int) $body['id'];
+	}
+
+	/**
+	 * @since 1.1.1
+	 *
+	 * @param int $project_id Project ID.
+	 * @param int $item_id    Item ID within the Project.
+	 *
+	 * @return mixed
+	 */
+	public function get( $project_id, $item_id ) {
+
+		return $this->api->get( sprintf( self::URL_GET, $project_id, $item_id ) );
 	}
 
 	/**
