@@ -34,6 +34,12 @@ Just send an email to info@eurotext.de and request one.
 3. project view
 
 == Changelog ==
+= 1.2.1 =
+* Fixing the bug where not all translations could be received
+
+= 1.2.0 =
+* Adapt to the recent API interface (when receiving translations)
+
 = 1.1.0 =
 * Improved settings tab
 
