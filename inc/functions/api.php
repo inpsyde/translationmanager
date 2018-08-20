@@ -67,33 +67,41 @@ function project_update( \WP_Term $project ) {
 
 	$translation_data = translationmanager_api()->project()->get( $project_id );
 
-	foreach ( $translation_data['items'] as $items ) {
-		foreach ( $items as $item ) {
-			$translation = \Translationmanager\TranslationData::for_incoming( (array) $item );
+	foreach ( $translation_data['items'] as $item_id => $items ) {
+		foreach ( $items as &$item ) {
+			$item = translationmanager_api()->project_item()->get( $project_id, $item_id );
 
-			/**
-			 * Fires for each item or translation received from the API.
-			 *
-			 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
-			 */
-			do_action( 'translationmanager_incoming_data', $translation );
+			if ( ! $item || ! isset( $item['data'] ) || ! is_array( $item['data'] ) ) {
+				continue;
+			}
 
-			/**
-			 * Filters the updater that executed have to return the updated post
-			 */
-			$updater = apply_filters( 'translationmanager_post_updater', null, $translation );
-
-			$post = is_callable( $updater ) ? $updater( $translation ) : null;
-
-			if ( $post instanceof \WP_Post ) {
+			foreach ( $item['data'] as $incomingTranslation ) {
+				$translation = \Translationmanager\TranslationData::for_incoming( (array) $incomingTranslation );
 
 				/**
-				 * Fires after the updater has updated the post.
+				 * Fires for each item or translation received from the API.
 				 *
-				 * @param \WP_Post                            $post        Just updated post
 				 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
 				 */
-				do_action( 'translationmanager_updated_post', $post, $translation );
+				do_action('translationmanager_incoming_data', $translation );
+
+				/**
+				 * Filters the updater that executed have to return the updated post
+				 */
+				$updater = apply_filters( 'translationmanager_post_updater', null, $translation );
+
+				$post = is_callable( $updater ) ? $updater( $translation ) : null;
+
+				if ( $post instanceof \WP_Post ) {
+
+					/**
+					 * Fires after the updater has updated the post.
+					 *
+					 * @param \WP_Post                            $post        Just updated post
+					 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
+					 */
+					do_action( 'translationmanager_updated_post', $post, $translation );
+				}
 			}
 		}
 	}

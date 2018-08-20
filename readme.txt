@@ -2,7 +2,7 @@
 Contributors: Inpsyde, Eurotext, paddyullrich
 Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
-Requires at least: 3.9
+Requires at least: 4.6
 Tested up to: 4.7.0
 Stable tag: 4.3
 License: GPLv2 or later
@@ -34,5 +34,14 @@ Just send an email to info@eurotext.de and request one.
 3. project view
 
 == Changelog ==
+= 1.2.1 =
+* Fixing the bug where not all translations could be received
+
+= 1.2.0 =
+* Adapt to the recent API interface (when receiving translations)
+
+= 1.1.0 =
+* Improved settings tab
+
 = 1.0 =
 * Releasing the first version of TranslationMANAGER with basic functions.

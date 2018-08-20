@@ -112,9 +112,7 @@ class PluginMainPage implements Pageable {
 
 			$screen = get_current_screen();
 
-			if ( 'edit-translationmanager_project' === $screen->id
-			     && 'translationmanager' === $menu[ self::MENU_POSITION ][2]
-			) {
+			if ( 'edit-translationmanager_project' === $screen->id ) {
 				$parent_file = 'translationmanager';
 			}
 
