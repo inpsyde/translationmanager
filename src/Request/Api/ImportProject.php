@@ -97,7 +97,7 @@ class ImportProject implements RequestHandleable {
 		} catch ( ApiException $e ) {
 			$notice = [
 				'message'  => sprintf(
-					esc_html__( 'translatioinMANAGER: %s', 'translationmanager' ),
+					esc_html__( 'translationMANAGER: %s', 'translationmanager' ),
 					$e->getMessage()
 				),
 				'severity' => 'error',

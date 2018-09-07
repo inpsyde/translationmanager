@@ -34,6 +34,9 @@ Just send an email to info@eurotext.de and request one.
 3. project view
 
 == Changelog ==
+= X.X.X =
+* Fix brand typo
+
 = 1.2.1 =
 * Fixing the bug where not all translations could be received
 
