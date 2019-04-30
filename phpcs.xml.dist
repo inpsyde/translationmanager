@@ -7,6 +7,7 @@
     <description>Coding standards for the Eurotext WordPress Plugins.</description>
 
     <file>./src</file>
+    <file>./inc</file>
     <file>./translationmanager.php</file>
 
     <config name="text_domain" value="translationmanager"/>
