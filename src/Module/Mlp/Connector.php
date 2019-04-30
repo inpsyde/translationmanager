@@ -1,4 +1,4 @@
-<?php # -*- coding: utf-8 -*-
+<?php // -*- coding: utf-8 -*-
 
 /**
  * Bridge between the translation data and the MLP API
@@ -83,7 +83,7 @@ class Connector {
 		$this->init_processors();
 		$this->processors->process( $data, $this->adapter );
 
-		$saved_post = $data->get_meta( Processor\PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE );
+		$saved_post = $data->get_meta( Processor\PostSaver::SAVED_POST_KEY, self::DATA_NAMESPACE );
 
 		return ( $saved_post instanceof \WP_Post && $saved_post->ID )
 			? $saved_post

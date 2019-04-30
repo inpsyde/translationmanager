@@ -9,6 +9,7 @@
 namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
+use function Translationmanager\Functions\redirect_admin_page_network;
 use Translationmanager\Request\RequestHandleable;
 use Translationmanager\Api\ApiException;
 use Translationmanager\Auth\Authable;
@@ -106,11 +107,14 @@ class ImportProject implements RequestHandleable {
 
 		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
-		\Translationmanager\Functions\redirect_admin_page_network( 'admin.php', [
-			'page'                          => 'translationmanager-project',
-			'translationmanager_project_id' => $data['translationmanager_project_id'],
-			'post_type'                     => 'project_item',
-		] );
+		redirect_admin_page_network(
+			'admin.php',
+			[
+				'page'                          => 'translationmanager-project',
+				'translationmanager_project_id' => $data['translationmanager_project_id'],
+				'post_type'                     => 'project_item',
+			]
+		);
 	}
 
 	/**
@@ -123,7 +127,7 @@ class ImportProject implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-		       && $this->auth->request_is_valid( $this->nonce );
+			   && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**
@@ -131,8 +135,11 @@ class ImportProject implements RequestHandleable {
 	 */
 	public function request_data() {
 
-		return filter_input_array( INPUT_POST, [
-			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
-		] );
+		return filter_input_array(
+			INPUT_POST,
+			[
+				'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
+			]
+		);
 	}
 }

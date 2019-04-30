@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Plugin Name: translationMANAGER
  * Plugin URI:  https://eurotext.de/en
  * Description: Translate your contents in a WordPress Multisite and MultilingualPress.
@@ -11,18 +11,22 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires PHP: 5.6
  * Domain Path: /languages
+ *
+ * @package TranslationManager
  */
 
-$bootstrap = \Closure::bind(function(){
+// phpcs:disable
+
+$bootstrap = \Closure::bind( function () {
+
 	/**
 	 * Admin Notice
-	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $message  The message to show in the notice.
 	 * @param string $severity The severity of the notice. Can be one of `success`, `warning`, `error`.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	function translationmanager_admin_notice( $message, $severity ) {
 
@@ -36,9 +40,8 @@ $bootstrap = \Closure::bind(function(){
 	/**
 	 * Test Plugin Stuffs
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool True when ok, false otherwise.
+	 * @since 1.0.0
 	 */
 	function translationmanager_plugin_tests_pass() {
 
@@ -69,7 +72,8 @@ $bootstrap = \Closure::bind(function(){
 						'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
 						'translationmanager'
 					),
-						'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG, false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
+						'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG,
+							false ) ) . '">' . esc_html__( 'here', 'translationmanager' ) . '</a></strong>'
 					),
 						[
 							'a'      => [ 'href' => true ],
@@ -87,9 +91,8 @@ $bootstrap = \Closure::bind(function(){
 	/**
 	 * BootStrap
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	function bootstrap() {
 
@@ -156,9 +159,8 @@ $bootstrap = \Closure::bind(function(){
 	/**
 	 * Activate Plugin
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	function activate() {
 
@@ -173,6 +175,6 @@ $bootstrap = \Closure::bind(function(){
 	add_action( 'plugins_loaded', 'bootstrap', - 1 );
 
 	register_activation_hook( __FILE__, 'activate' );
-}, null);
+}, null );
 
 $bootstrap();

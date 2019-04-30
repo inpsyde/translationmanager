@@ -40,9 +40,12 @@ class ServiceProvider implements BootstrappableServiceProvider {
 	public function bootstrap( Container $container ) {
 
 		$adapter = $container[ Adapter::class ];
-		add_action( 'multilingualpress.bootstrapped', function () use ( $adapter ) {
+		add_action(
+			'multilingualpress.bootstrapped',
+			function () use ( $adapter ) {
 
-			Integrate::action( $adapter );
-		} );
+				Integrate::action( $adapter );
+			}
+		);
 	}
 }

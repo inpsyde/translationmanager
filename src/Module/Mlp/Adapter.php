@@ -108,9 +108,12 @@ class Adapter {
 		$this->site_relations    = $site_relations;
 		$this->content_relations = $content_relations;
 
-		$this->plugin = get_file_data( $plugin_file, [
-			'version' => 'Version',
-		] );
+		$this->plugin = get_file_data(
+			$plugin_file,
+			[
+				'version' => 'Version',
+			]
+		);
 
 		$this->version = Functions\version_compare( '3.0.0', $this->plugin['version'], '<=' )
 			? 3
@@ -143,10 +146,12 @@ class Adapter {
 		$function = self::$functions_mapper[ __FUNCTION__ ][ $this->version ];
 
 		if ( ! function_exists( $function ) ) {
-			throw new \BadFunctionCallException( sprintf(
-				'Function %s doesn\'t exists.',
-				__FUNCTION__
-			) );
+			throw new \BadFunctionCallException(
+				sprintf(
+					'Function %s doesn\'t exists.',
+					__FUNCTION__
+				)
+			);
 		}
 
 		return call_user_func( $function, $site_id, $short );
@@ -166,10 +171,12 @@ class Adapter {
 		$function = self::$functions_mapper[ __FUNCTION__ ][ $this->version ];
 
 		if ( ! function_exists( $function ) ) {
-			throw new \BadFunctionCallException( sprintf(
-				'Function %s doesn\'t exists.',
-				__FUNCTION__
-			) );
+			throw new \BadFunctionCallException(
+				sprintf(
+					'Function %s doesn\'t exists.',
+					__FUNCTION__
+				)
+			);
 		}
 
 		$response = call_user_func( $function, $lang_iso );

@@ -57,12 +57,13 @@ class Modal implements Viewable {
 	/**
 	 * Modal constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string                     $title    The modal title.
 	 * @param string                     $icon     The icon class name to use.
 	 * @param callable                   $callback The callback to call to fill the modal content.
 	 * @param \Translationmanager\Plugin $plugin   Instance of the plugin.
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	public function __construct( $title, $icon, callable $callback, Plugin $plugin ) {
 
@@ -96,10 +97,13 @@ class Modal implements Viewable {
 		];
 
 		$path = $this->plugin->dir( '/views/modal.php' );
-		\Closure::bind( function () use ( $path ) {
+		\Closure::bind(
+			function () use ( $path ) {
 
-			include $path;
-		}, $bind )();
+				include $path;
+			},
+			$bind
+		)();
 
 		wp_enqueue_style(
 			'translationmanager-modal',
@@ -120,9 +124,10 @@ class Modal implements Viewable {
 	/**
 	 * Print the Modal trigger element
 	 *
+	 * @param string $label The label to show to the user.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $label The label to show to the user.
 	 */
 	public function modal_trigger( $label ) {
 

@@ -1,4 +1,4 @@
-<?php # -*- coding: utf-8 -*-
+<?php // -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\Mlp\Processor;
 
@@ -78,7 +78,10 @@ class TaxonomiesSync implements IncomingProcessor {
 			'translationmanager_mlp_module_sync_taxonomies_post_types',
 			array_merge(
 				[ 'post', 'page' ],
-				get_post_types( [ 'public' => true, '_builtin' => false ] )
+				get_post_types( [
+					'public'   => true,
+					'_builtin' => false,
+				] )
 			),
 			$data
 		);
@@ -195,7 +198,8 @@ class TaxonomiesSync implements IncomingProcessor {
 			}
 
 			// If source term is valid, let's see if 3rd parties can provide "on the fly" a term to use.
-			$new_term = apply_filters( 'translationmanager_mlp_module_sync_taxonomies_create_terms', null, $source_term, $data );
+			$new_term = apply_filters( 'translationmanager_mlp_module_sync_taxonomies_create_terms', null, $source_term,
+				$data );
 			if ( $new_term instanceof \WP_Term && taxonomy_exists( $new_term->taxonomy ) ) {
 				$target_post_new_terms[ $source_term->term_taxonomy_id ] = $new_term;
 			}

@@ -45,31 +45,34 @@ class PostType {
 	 */
 	public function register_post_type() {
 
-		register_post_type( 'project_item', [
-			'label'         => esc_html__( 'Project', 'translationmanager' ),
-			'labels'        => [
-				'name'      => esc_html__( 'Project', 'translationmanager' ),
-				'menu_name' => esc_html__( 'Translation', 'translationmanager' ),
-			],
-			'show_in_menu'  => false,
-			'description'   => esc_html__( 'What you are about to order.', 'translationmanager' ),
-			'public'        => false,
-			'capabilities'  => [
-				// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
-				'create_posts'       => 'do_not_allow',
-				'edit_post'          => 'manage_options',
-				'read_post'          => 'manage_options',
-				'delete_post'        => 'manage_options',
-				'edit_posts'         => 'manage_options',
-				'edit_others_posts'  => 'manage_options',
-				'publish_posts'      => 'manage_options',
-				'read_private_posts' => 'manage_options',
-			],
-			'map_meta_cap'  => false,
-			'menu_position' => 100,
-			'supports'      => [ 'title' ],
-			'menu_icon'     => $this->plugin->url( '/resources/img/tm-icon-bw.png' ),
-		] );
+		register_post_type(
+			'project_item',
+			[
+				'label'         => esc_html__( 'Project', 'translationmanager' ),
+				'labels'        => [
+					'name'      => esc_html__( 'Project', 'translationmanager' ),
+					'menu_name' => esc_html__( 'Translation', 'translationmanager' ),
+				],
+				'show_in_menu'  => false,
+				'description'   => esc_html__( 'What you are about to order.', 'translationmanager' ),
+				'public'        => false,
+				'capabilities'  => [
+					// Removes support for the "Add New" function ( use 'do_not_allow' / false for multisite set ups ).
+					'create_posts'       => 'do_not_allow',
+					'edit_post'          => 'manage_options',
+					'read_post'          => 'manage_options',
+					'delete_post'        => 'manage_options',
+					'edit_posts'         => 'manage_options',
+					'edit_others_posts'  => 'manage_options',
+					'publish_posts'      => 'manage_options',
+					'read_private_posts' => 'manage_options',
+				],
+				'map_meta_cap'  => false,
+				'menu_position' => 100,
+				'supports'      => [ 'title' ],
+				'menu_icon'     => $this->plugin->url( '/resources/img/tm-icon-bw.png' ),
+			]
+		);
 	}
 
 	/**
@@ -157,13 +160,13 @@ class PostType {
 			),
 		];
 
-		//	$bulk_messages['project_item'] = array(
-		//		'updated'   => _n( '%s translation updated.', '%s translations updated.', $bulk_counts['updated'] ),
-		//		'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
-		//		'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
-		//		'trashed'   => _n( '%s translation removed from the project.', '%s translations removed from the project.', $bulk_counts['trashed'] ),
-		//		'untrashed' => _n( '%s translation restored at the project.', '%s translations restored at the project.', $bulk_counts['untrashed'] ),
-		//	);
+		// $bulk_messages['project_item'] = array(
+		// 'updated'   => _n( '%s translation updated.', '%s translations updated.', $bulk_counts['updated'] ),
+		// 'locked'    => _n( '%s translation not updated, somebody is editing it.', '%s translations not updated, somebody is editing them.', $bulk_counts['locked'] ),
+		// 'deleted'   => _n( '%s translation permanently deleted.', '%s translations permanently deleted.', $bulk_counts['deleted'] ),
+		// 'trashed'   => _n( '%s translation removed from the project.', '%s translations removed from the project.', $bulk_counts['trashed'] ),
+		// 'untrashed' => _n( '%s translation restored at the project.', '%s translations restored at the project.', $bulk_counts['untrashed'] ),
+		// );
 
 		$updated = filter_input( INPUT_GET, 'updated', FILTER_SANITIZE_NUMBER_INT );
 		if ( - 1 === $updated ) {

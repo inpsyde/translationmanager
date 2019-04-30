@@ -83,9 +83,13 @@ class RestrictManagePosts {
 			true
 		);
 
-		wp_localize_script( 'translationmanager-restrict-manage-posts', 'strings', [
-			'noElementsSelected' => esc_html__( 'You must need to select at least one element for translate.', 'translationmanager' ),
-		] );
+		wp_localize_script(
+			'translationmanager-restrict-manage-posts',
+			'strings',
+			[
+				'noElementsSelected' => esc_html__( 'You must need to select at least one element for translate.', 'translationmanager' ),
+			]
+		);
 	}
 
 	/**

@@ -9,38 +9,38 @@ namespace Translationmanager;
 
 final class TranslationData implements \ArrayAccess, \JsonSerializable {
 
-	const META_KEY = '__meta';
-	const VALUES_KEY = '__values';
+	const META_KEY           = '__meta';
+	const VALUES_KEY         = '__values';
 	const SOURCE_POST_ID_KEY = 'source_post_id';
-	const SOURCE_POST_KEY = 'source_post_obj';
-	const SOURCE_SITE_KEY = 'source_site_id';
-	const TARGET_POST_KEY = 'target_post_id';
-	const TARGET_SITE_KEY = 'target_site_id';
-	const TARGET_LANG_KEY = 'target_language';
-	const INCOMING = 'incoming';
-	const OUTGOING = 'outgoing';
+	const SOURCE_POST_KEY    = 'source_post_obj';
+	const SOURCE_SITE_KEY    = 'source_site_id';
+	const TARGET_POST_KEY    = 'target_post_id';
+	const TARGET_SITE_KEY    = 'target_site_id';
+	const TARGET_LANG_KEY    = 'target_language';
+	const INCOMING           = 'incoming';
+	const OUTGOING           = 'outgoing';
 
-	private static $protected_meta = array(
+	private static $protected_meta = [
 		self::SOURCE_POST_ID_KEY,
 		self::SOURCE_POST_KEY,
 		self::SOURCE_SITE_KEY,
 		self::TARGET_POST_KEY,
 		self::TARGET_SITE_KEY,
 		self::TARGET_LANG_KEY,
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	private $storage = array(
-		self::META_KEY   => array(
+	private $storage = [
+		self::META_KEY   => [
 			self::SOURCE_POST_ID_KEY => 0,
 			self::SOURCE_SITE_KEY    => 0,
 			self::TARGET_SITE_KEY    => 0,
 			self::TARGET_LANG_KEY    => '',
-		),
-		self::VALUES_KEY => array(),
-	);
+		],
+		self::VALUES_KEY => [],
+	];
 
 	/**
 	 * @var string
@@ -69,27 +69,30 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 		$source_site_id,
 		$target_site_id,
 		$target_language,
-		array $outgoing_data = array()
+		array $outgoing_data = []
 	) {
 
 		$embedded_meta = array_key_exists( self::META_KEY, $outgoing_data )
 			? (array) $outgoing_data[ self::META_KEY ]
-			: array();
+			: [];
 
-		$meta = array(
+		$meta = [
 			self::SOURCE_POST_ID_KEY => (int) $source_post->ID,
 			self::SOURCE_SITE_KEY    => (int) $source_site_id,
 			self::TARGET_SITE_KEY    => (int) $target_site_id,
 			self::TARGET_LANG_KEY    => (string) $target_language,
-		);
+		];
 
 		unset( $outgoing_data[ self::META_KEY ] );
 
-		$outgoing_data = array_merge( $outgoing_data, array(
-			'post_title'   => $source_post->post_title,
-			'post_content' => $source_post->post_content,
-			'post_excerpt' => $source_post->post_excerpt,
-		) );
+		$outgoing_data = array_merge(
+			$outgoing_data,
+			[
+				'post_title'   => $source_post->post_title,
+				'post_content' => $source_post->post_content,
+				'post_excerpt' => $source_post->post_excerpt,
+			]
+		);
 
 		$instance            = new static();
 		$instance->direction = self::OUTGOING;
@@ -112,12 +115,12 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 			? (array) $incoming_data[ self::META_KEY ]
 			: array();
 
-		$empty_meta = array(
+		$empty_meta = [
 			self::SOURCE_POST_ID_KEY => 0,
 			self::SOURCE_SITE_KEY    => 0,
 			self::TARGET_SITE_KEY    => 0,
 			self::TARGET_LANG_KEY    => '',
-		);
+		];
 
 		$meta = array_merge( $empty_meta, $embedded_meta );
 
@@ -130,7 +133,10 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 
 		$instance            = new static();
 		$instance->direction = self::INCOMING;
-		$instance->storage   = array( self::META_KEY => $meta, self::VALUES_KEY => $incoming_data );
+		$instance->storage   = [
+			self::META_KEY   => $meta,
+			self::VALUES_KEY => $incoming_data,
+		];
 
 		return $instance;
 
@@ -157,11 +163,10 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 	 */
 	public function is_valid() {
 
-		return
-			$this->source_post_id()
-			&& $this->source_site_id()
-			&& $this->target_site_id()
-			&& $this->target_language();
+		return $this->source_post_id()
+		       && $this->source_site_id()
+		       && $this->target_site_id()
+		       && $this->target_language();
 	}
 
 	/**
@@ -273,7 +278,7 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 		$storage = &$this->storage[ self::VALUES_KEY ];
 
 		if ( $namespace ) {
-			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = array();
+			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = [];
 			$storage = &$storage[ $namespace ];
 		}
 
@@ -289,7 +294,7 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 		$storage = &$this->storage[ self::VALUES_KEY ];
 
 		if ( $namespace ) {
-			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = array();
+			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = [];
 			$storage = &$storage[ $namespace ];
 		}
 
@@ -351,7 +356,7 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 		$storage = &$this->storage[ self::META_KEY ];
 
 		if ( $namespace ) {
-			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = array();
+			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = [];
 			$storage = &$storage[ $namespace ];
 		}
 
@@ -373,7 +378,7 @@ final class TranslationData implements \ArrayAccess, \JsonSerializable {
 		$storage = &$this->storage[ self::META_KEY ];
 
 		if ( $namespace ) {
-			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = array();
+			isset( $storage[ $namespace ] ) or $storage[ $namespace ] = [];
 			$storage = &$storage[ $namespace ];
 		}
 

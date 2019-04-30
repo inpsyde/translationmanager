@@ -45,30 +45,36 @@ class ServiceProvider implements BootstrappableServiceProvider {
 
 		// Page Project.
 		add_action( 'admin_menu', [ $container['Page.Project'], 'add_page' ] );
-		add_action( 'admin_title', [
-			$container['Page.Project'],
-			'reintroduce_page_title_in_header',
-		] );
+		add_action(
+			'admin_title',
+			[
+				$container['Page.Project'],
+				'reintroduce_page_title_in_header',
+			]
+		);
 
 		// Main Page.
 		add_action( 'admin_menu', [ $container['Page.PluginMainPage'], 'add_page' ] );
-		add_action( 'admin_menu', [
-			$container['Page.PluginMainPage'],
-			'make_menu_items_coherent',
-		] );
+		add_action(
+			'admin_menu',
+			[ $container['Page.PluginMainPage'], 'make_menu_items_coherent' ]
+		);
 
 		// Page Options.
 		add_action( 'admin_menu', [ $container['Page.PageOptions'], 'add_page' ] );
 		add_action( 'admin_head', [ $container['Page.PageOptions'], 'enqueue_style' ] );
 		add_action( 'admin_head', [ $container['Page.PageOptions'], 'enqueue_script' ] );
-		add_action( 'admin_init', [
-			$container['Page.PageOptions'],
-			'handle_support_request_form',
-		] );
+		add_action(
+			'admin_init',
+			[
+				$container['Page.PageOptions'],
+				'handle_support_request_form',
+			]
+		);
 
-		add_filter( 'option_page_capability_' . PluginSettings::OPTION_GROUP, [
-			$container['Page.PageOptions'],
-			'filter_capabilities',
-		] );
+		add_filter(
+			'option_page_capability_' . PluginSettings::OPTION_GROUP,
+			[ $container['Page.PageOptions'], 'filter_capabilities' ]
+		);
 	}
 }

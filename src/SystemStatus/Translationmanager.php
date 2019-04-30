@@ -52,9 +52,9 @@ class Translationmanager implements Information {
 	/**
 	 * System Information Title
 	 *
+	 * @return string
 	 * @since 1.0.0
 	 *
-	 * @return string
 	 */
 	public function title() {
 
@@ -87,11 +87,11 @@ class Translationmanager implements Information {
 	/**
 	 * Api Connection Test
 	 *
-	 * @todo  Seems the api `info/whoami` returns null in case of success. Need fix.
-	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
+	 * @todo  Seems the api `info/whoami` returns null in case of success. Need fix.
+	 *
 	 */
 	public function apiConnectionTest() {
 
@@ -120,9 +120,9 @@ class Translationmanager implements Information {
 	/**
 	 * Activated Languages
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	public function activatedLanguages() {
 

@@ -100,32 +100,38 @@ class PluginSettings {
 		);
 
 		add_filter( 'sanitize_option_' . self::API_KEY, 'trim' );
-		add_filter( 'sanitize_option_' . self::API_KEY, function ( $value ) {
+		add_filter(
+			'sanitize_option_' . self::API_KEY,
+			function ( $value ) {
 
-			if ( ! ctype_alnum( $value ) ) {
-				TransientNoticeService::add_notice(
-					esc_html__( 'Invalid api key, only letters and numbers allowed.', 'translationmanager' ),
-					'error'
-				);
+				if ( ! ctype_alnum( $value ) ) {
+					TransientNoticeService::add_notice(
+						esc_html__( 'Invalid api key, only letters and numbers allowed.', 'translationmanager' ),
+						'error'
+					);
 
-				return '';
+					return '';
+				}
+
+				return $value;
 			}
+		);
+		add_filter(
+			'sanitize_option_' . self::API_KEY,
+			function ( $value ) {
 
-			return $value;
-		} );
-		add_filter( 'sanitize_option_' . self::API_KEY, function ( $value ) {
+				if ( 255 < strlen( $value ) ) {
+					TransientNoticeService::add_notice(
+						esc_html__( 'Api key doesn\'t match. Please provide a valid api key.', 'translationmanager' ),
+						'error'
+					);
 
-			if ( 255 < strlen( $value ) ) {
-				TransientNoticeService::add_notice(
-					esc_html__( 'Api key doesn\'t match. Please provide a valid api key.', 'translationmanager' ),
-					'error'
-				);
+					return '';
+				}
 
-				return '';
+				return $value;
 			}
-
-			return $value;
-		} );
+		);
 	}
 
 	/**

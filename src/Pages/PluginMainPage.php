@@ -106,28 +106,35 @@ class PluginMainPage implements Pageable {
 	 */
 	private function apply_current_menu_classes() {
 
-		add_filter( 'parent_file', function ( $parent_file ) {
+		add_filter(
+			'parent_file',
+			function ( $parent_file ) {
 
-			global $menu;
+				global $menu;
 
-			$screen = get_current_screen();
+				$screen = get_current_screen();
 
-			if ( 'edit-translationmanager_project' === $screen->id ) {
-				$parent_file = 'translationmanager';
+				if ( 'edit-translationmanager_project' === $screen->id ) {
+					$parent_file = 'translationmanager';
+				}
+
+				return $parent_file;
+			},
+			PHP_INT_MAX
+		);
+		add_filter(
+			'submenu_file',
+			function ( $submenu_file ) {
+
+				$screen = get_current_screen();
+
+				if ( 'edit-translationmanager_project' === $screen->id ) {
+					$submenu_file = $this->edit_project_items_url();
+				}
+
+				return $submenu_file;
 			}
-
-			return $parent_file;
-		}, PHP_INT_MAX );
-		add_filter( 'submenu_file', function ( $submenu_file ) {
-
-			$screen = get_current_screen();
-
-			if ( 'edit-translationmanager_project' === $screen->id ) {
-				$submenu_file = $this->edit_project_items_url();
-			}
-
-			return $submenu_file;
-		} );
+		);
 	}
 
 	/**
@@ -135,9 +142,12 @@ class PluginMainPage implements Pageable {
 	 */
 	private function edit_project_items_url() {
 
-		return add_query_arg( [
-			'taxonomy'  => 'translationmanager_project',
-			'post_type' => 'project_item',
-		], admin_url( '/edit-tags.php' ) );
+		return add_query_arg(
+			[
+				'taxonomy'  => 'translationmanager_project',
+				'post_type' => 'project_item',
+			],
+			admin_url( '/edit-tags.php' )
+		);
 	}
 }

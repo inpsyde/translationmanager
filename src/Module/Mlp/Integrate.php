@@ -32,9 +32,10 @@ class Integrate implements Integrable {
 	/**
 	 * Integrate constructor
 	 *
+	 * @param string $plugin_file The plugin file path.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $plugin_file The plugin file path.
 	 */
 	public function __construct( $plugin_file ) {
 
@@ -47,9 +48,12 @@ class Integrate implements Integrable {
 	public function integrate() {
 
 		// Check for version.
-		$plugin_data = get_file_data( $this->plugin_file, [
-			'version' => 'Version',
-		] );
+		$plugin_data = get_file_data(
+			$this->plugin_file,
+			[
+				'version' => 'Version',
+			]
+		);
 
 		( Functions\version_compare( '3.0.0', $plugin_data['version'], '<=' ) )
 			? $this->mlp3()
@@ -59,9 +63,9 @@ class Integrate implements Integrable {
 	/**
 	 * Mlp 2 Integration
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	private function mlp2() {
 
@@ -85,9 +89,9 @@ class Integrate implements Integrable {
 	/**
 	 * Mlp 3 Integration
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	private function mlp3() {
 
@@ -105,9 +109,10 @@ class Integrate implements Integrable {
 	 *
 	 * Actually the implementation for the Module.
 	 *
+	 * @param \Translationmanager\Module\Mlp\Adapter $adapter The instance of the adapter.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param \Translationmanager\Module\Mlp\Adapter $adapter The instance of the adapter.
 	 */
 	public static function action( Adapter $adapter ) {
 
@@ -116,10 +121,12 @@ class Integrate implements Integrable {
 		// TM interface hooks to let it know about the environment.
 		add_filter( 'translationmanager_current_language', [ $connector, 'current_language' ] );
 		add_filter( 'translationmanager_languages', [ $connector, 'related_sites' ], 10, 2 );
-		add_filter( 'translation_manager_languages_by_site_id', [
-			$connector,
-			'related_sites',
-		], 10, 2 );
+		add_filter(
+			'translation_manager_languages_by_site_id',
+			[ $connector, 'related_sites', ],
+			10,
+			2
+		);
 
 		// Setup the translation workflow.
 		add_action( 'translationmanager_outgoing_data', [ $connector, 'prepare_outgoing' ] );

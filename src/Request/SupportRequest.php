@@ -104,7 +104,7 @@ class SupportRequest implements RequestHandleable {
 			if ( ! $response ) {
 				$this->response(
 					sprintf(
-					// translators: s is the destination email address.
+						// translators: s is the destination email address.
 						esc_html__(
 							'Sorry seems something went wrong sending your support request please, try again or contact us at %s',
 							'translationmanager'
@@ -136,7 +136,7 @@ class SupportRequest implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-		       && $this->auth->request_is_valid( $this->nonce );
+			   && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**
@@ -144,11 +144,14 @@ class SupportRequest implements RequestHandleable {
 	 */
 	public function request_data() {
 
-		$inputs = filter_input_array( INPUT_POST, [
-			'support_request_summary'     => FILTER_SANITIZE_STRING,
-			'support_request_description' => FILTER_SANITIZE_STRING,
-			'support_request_agreement'   => FILTER_VALIDATE_BOOLEAN,
-		] );
+		$inputs = filter_input_array(
+			INPUT_POST,
+			[
+				'support_request_summary'     => FILTER_SANITIZE_STRING,
+				'support_request_description' => FILTER_SANITIZE_STRING,
+				'support_request_agreement'   => FILTER_VALIDATE_BOOLEAN,
+			]
+		);
 
 		if ( ! $inputs['support_request_agreement'] ) {
 			throw new \RuntimeException(

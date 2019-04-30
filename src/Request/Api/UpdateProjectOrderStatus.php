@@ -110,12 +110,15 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 
 		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
-		redirect_admin_page_network( 'admin.php', [
-			'page'                          => 'translationmanager-project',
-			'translationmanager_project_id' => $project->term_id,
-			'post_type'                     => 'project_item',
-			'project_status'                => $status,
-		] );
+		redirect_admin_page_network(
+			'admin.php',
+			[
+				'page'                          => 'translationmanager-project',
+				'translationmanager_project_id' => $project->term_id,
+				'post_type'                     => 'project_item',
+				'project_status'                => $status,
+			]
+		);
 	}
 
 	/**
@@ -128,7 +131,7 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-		       && $this->auth->request_is_valid( $this->nonce );
+			   && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**
@@ -136,9 +139,12 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 	 */
 	public function request_data() {
 
-		return filter_input_array( INPUT_POST, [
-			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
-		] );
+		return filter_input_array(
+			INPUT_POST,
+			[
+				'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
+			]
+		);
 	}
 
 	/**

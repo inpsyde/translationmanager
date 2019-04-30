@@ -168,12 +168,15 @@ class AddTranslation implements RequestHandleable {
 
 		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
 
-		redirect_admin_page_network( 'admin.php', [
-			'page'                          => 'translationmanager-project',
-			'translationmanager_project_id' => $project,
-			'post_type'                     => 'project_item',
-			'updated'                       => - 1,
-		] );
+		redirect_admin_page_network(
+			'admin.php',
+			[
+				'page'                          => 'translationmanager-project',
+				'translationmanager_project_id' => $project,
+				'post_type'                     => 'project_item',
+				'updated'                       => - 1,
+			]
+		);
 	}
 
 	/**
@@ -186,7 +189,7 @@ class AddTranslation implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-		       && $this->auth->request_is_valid( $this->nonce );
+			   && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**
@@ -194,13 +197,16 @@ class AddTranslation implements RequestHandleable {
 	 */
 	public function request_data() {
 
-		return \Translationmanager\Functions\filter_input( [
-			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
-			'post_ID'                       => FILTER_SANITIZE_NUMBER_INT,
-			'translationmanager_language'   => [
-				'filter' => FILTER_SANITIZE_STRING,
-				'flags'  => FILTER_FORCE_ARRAY,
+		return \Translationmanager\Functions\filter_input(
+			[
+				'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
+				'post_ID'                       => FILTER_SANITIZE_NUMBER_INT,
+				'translationmanager_language'   => [
+					'filter' => FILTER_SANITIZE_STRING,
+					'flags'  => FILTER_FORCE_ARRAY,
+				],
 			],
-		], INPUT_POST );
+			INPUT_POST
+		);
 	}
 }

@@ -46,16 +46,19 @@ class Translation implements Boxable {
 		 * By default it will be shown on 'post' and 'page'.
 		 * The value goes right in the `add_meta_box` screen argument.
 		 *
-		 * @see add_meta_box()
-		 *
+		 * @return array The post types list
 		 * @var array Screens for `add_meta_box()`.
 		 *
-		 * @return array The post types list
+		 * @see add_meta_box()
+		 *
 		 */
-		$box_screen = apply_filters( 'translationmanager_translation_box_screen', get_post_types( [
-			'show_ui'  => true,
-			'_builtin' => true,
-		] ) );
+		$box_screen = apply_filters(
+			'translationmanager_translation_box_screen',
+			get_post_types( [
+				'show_ui'  => true,
+				'_builtin' => true,
+			] )
+		);
 
 		add_meta_box(
 			'translationmanager_translation_box',
@@ -91,11 +94,11 @@ class Translation implements Boxable {
 	/**
 	 * Customer Key
 	 *
+	 * @return mixed Whatever the get_option() returns.
 	 * @since 1.0.0
 	 *
 	 * Actually used within the translation-box.php only, don't remove it.
 	 *
-	 * @return mixed Whatever the get_option() returns.
 	 */
 	private function get_customer_key() {
 
@@ -105,9 +108,9 @@ class Translation implements Boxable {
 	/**
 	 * Get Recent Project Name
 	 *
+	 * @return mixed Whatever the get_term_field returns
 	 * @since 1.0.0
 	 *
-	 * @return mixed Whatever the get_term_field returns
 	 */
 	private function get_recent_project_name() {
 
@@ -121,9 +124,9 @@ class Translation implements Boxable {
 	/**
 	 * Get Recent Project ID
 	 *
+	 * @return mixed Whatever the get_user_meta returns
 	 * @since 1.0.0
 	 *
-	 * @return mixed Whatever the get_user_meta returns
 	 */
 	private function get_recent_project_id() {
 
@@ -133,9 +136,9 @@ class Translation implements Boxable {
 	/**
 	 * Submit Button Label
 	 *
+	 * @return string The button label string
 	 * @since 1.0.0
 	 *
-	 * @return string The button label string
 	 */
 	private function context_button_label() {
 

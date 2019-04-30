@@ -31,10 +31,12 @@ class ProjectUpdater {
 	 */
 	public function init() {
 
-		add_action( 'translationmanager_action_project_add_translation', [
-			$this,
-			'force_ancestors_in_project',
-		], 10, 4 );
+		add_action(
+			'translationmanager_action_project_add_translation',
+			[ $this, 'force_ancestors_in_project' ],
+			10,
+			4
+		);
 	}
 
 	/**
@@ -44,13 +46,13 @@ class ProjectUpdater {
 	 *
 	 * @wp-hook translationmanager_action_project_add_translation
 	 *
-	 * @since   1.0.0
-	 *
 	 * @param int                                   $project   The project ID.
 	 * @param int                                   $post_id   The post ID.
 	 * @param \Translationmanager\Domain\Language[] $languages A list of languages.
 	 *
 	 * @return int The project ID
+	 * @since   1.0.0
+	 *
 	 */
 	public function force_ancestors_in_project( $project, $post_id, $languages ) {
 
@@ -122,11 +124,11 @@ class ProjectUpdater {
 	 * Filter the cart item post data being added, appending to title an hint that post was added automatically because
 	 * ancestor of another post.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array $data Data to update.
 	 *
 	 * @return array data updated
+	 * @since 1.0.0
+	 *
 	 */
 	public function update_project_item_title( array $data ) {
 

@@ -62,14 +62,17 @@ class ProjectItemBulk implements RequestHandleable {
 	 */
 	public function request_data() {
 
-		return filter_input_array( INPUT_POST, [
-			'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
-			'post_ID'                       => FILTER_SANITIZE_NUMBER_INT,
-			'translationmanager_language'   => [
-				'filter' => FILTER_SANITIZE_STRING,
-				'flags'  => FILTER_FORCE_ARRAY,
-			],
-		] );
+		return filter_input_array(
+			INPUT_POST,
+			[
+				'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
+				'post_ID'                       => FILTER_SANITIZE_NUMBER_INT,
+				'translationmanager_language'   => [
+					'filter' => FILTER_SANITIZE_STRING,
+					'flags'  => FILTER_FORCE_ARRAY,
+				],
+			]
+		);
 	}
 
 	/**
@@ -88,7 +91,7 @@ class ProjectItemBulk implements RequestHandleable {
 
 		$response = [];
 		foreach ( $posts as $post ) {
-			$response[] = ( bool ) wp_trash_post( $post );
+			$response[] = (bool) wp_trash_post( $post );
 		}
 
 		$success = array_filter( $response );

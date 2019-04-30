@@ -54,14 +54,14 @@ final class ProjectItem extends TableList {
 		}
 		?>
 
-		<label class="screen-reader-text" for="cb-select-<?php echo intval( $post->ID ) ?>">
+		<label class="screen-reader-text" for="cb-select-<?php echo intval( $post->ID ); ?>">
 			<?php printf( esc_html__( 'Select %s', 'translationmanager' ), $post->post_title ); ?>
 		</label>
 
-		<input id="cb-select-<?php echo intval( $post->ID ) ?>"
+		<input id="cb-select-<?php echo intval( $post->ID ); ?>"
 		       type="checkbox"
 		       name="post[]"
-		       value="<?php echo intval( $post->ID ) ?>"/>
+		       value="<?php echo intval( $post->ID ); ?>"/>
 
 		<?php
 	}
@@ -85,9 +85,9 @@ final class ProjectItem extends TableList {
 	/**
 	 * Filter Sortable Columns
 	 *
+	 * @return array The filtered sortable columns
 	 * @since 1.0.0
 	 *
-	 * @return array The filtered sortable columns
 	 */
 	public function get_sortable_columns() {
 
@@ -103,26 +103,33 @@ final class ProjectItem extends TableList {
 	 */
 	public function prepare_items() {
 
-		add_action( 'pre_get_posts', function ( \WP_Query &$query ) {
+		add_action(
+			'pre_get_posts',
+			function ( \WP_Query &$query ) {
 
-			// Filter By Language.
-			$lang_id = filter_input( INPUT_POST, 'translationmanager_target_language_filter', FILTER_SANITIZE_NUMBER_INT );
-			if ( $lang_id && 'all' !== $lang_id ) {
-				$query->set( 'meta_query', [
-					[
-						'key'     => '_translationmanager_target_id',
-						'value'   => intval( $lang_id ),
-						'compare' => '=',
-					],
-				] );
-			}
+				// Filter By Language.
+				$lang_id = filter_input( INPUT_POST, 'translationmanager_target_language_filter',
+					FILTER_SANITIZE_NUMBER_INT );
+				if ( $lang_id && 'all' !== $lang_id ) {
+					$query->set(
+						'meta_query',
+						[
+							[
+								'key'     => '_translationmanager_target_id',
+								'value'   => intval( $lang_id ),
+								'compare' => '=',
+							],
+						]
+					);
+				}
 
-			// Filter By User ID.
-			$user_id = filter_input( INPUT_POST, 'translationmanager_added_by_filter', FILTER_SANITIZE_NUMBER_INT );
-			if ( $user_id && 'all' !== $user_id ) {
-				$query->set( 'author', $user_id );
+				// Filter By User ID.
+				$user_id = filter_input( INPUT_POST, 'translationmanager_added_by_filter', FILTER_SANITIZE_NUMBER_INT );
+				if ( $user_id && 'all' !== $user_id ) {
+					$query->set( 'author', $user_id );
+				}
 			}
-		} );
+		);
 
 		( new Request\ProjectItemBulk() )->handle();
 
@@ -139,9 +146,10 @@ final class ProjectItem extends TableList {
 		 *
 		 * Fired before the table list.
 		 *
+		 * @param \Translationmanager\TableList\ProjectItem $this Instance of this class.
+		 *
 		 * @since 1.0.0
 		 *
-		 * @param \Translationmanager\TableList\ProjectItem $this Instance of this class.
 		 */
 		do_action( 'translationmanager_project_item_table_views', $this );
 	}
@@ -149,9 +157,9 @@ final class ProjectItem extends TableList {
 	/**
 	 * Fill the Items list with posts instances
 	 *
+	 * @return array A list of \WP_Post elements
 	 * @since 1.0.0
 	 *
-	 * @return array A list of \WP_Post elements
 	 */
 	public function items() {
 
@@ -166,10 +174,13 @@ final class ProjectItem extends TableList {
 				return [];
 			}
 
-			$this->items = Functions\get_project_items( $project->term_id, [
-				'posts_per_page' => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
-				'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
-			] );
+			$this->items = Functions\get_project_items(
+				$project->term_id,
+				[
+					'posts_per_page' => $this->get_items_per_page( "edit_{$this->screen->id}_per_page" ),
+					'paged'          => filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT ),
+				]
+			);
 		}
 
 		return $this->items;
@@ -201,7 +212,7 @@ final class ProjectItem extends TableList {
 						'',
 						'filter_action',
 						false,
-						array( 'id' => 'post-query-submit' )
+						[ 'id' => 'post-query-submit' ]
 					);
 				}
 			}
@@ -225,9 +236,10 @@ final class ProjectItem extends TableList {
 	/**
 	 * Project Column
 	 *
+	 * @param \WP_Post $item The post instance.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param \WP_Post $item The post instance.
 	 */
 	protected function column_default( $item, $column_name ) {
 
@@ -267,7 +279,12 @@ final class ProjectItem extends TableList {
 				break;
 
 			case 'translationmanager_added_at':
-				echo esc_html( get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $item->ID ) );
+				echo esc_html(
+					get_the_date(
+						get_option( 'date_format' ) . ' ' . get_option( 'time_format' ),
+						$item->ID
+					)
+				);
 				break;
 		}
 	}
@@ -278,9 +295,9 @@ final class ProjectItem extends TableList {
 	 * The function store all of the target languages found in the project items.
 	 * This list is then used to build the target language filter.
 	 *
+	 * @return array A list of Languages instances
 	 * @since 1.0.0
 	 *
-	 * @return array A list of Languages instances
 	 */
 	private function languages() {
 
@@ -300,9 +317,9 @@ final class ProjectItem extends TableList {
 	/**
 	 * Retrieve Users
 	 *
+	 * @return array An array of \WP_Users instances
 	 * @since 1.0.0
 	 *
-	 * @return array An array of \WP_Users instances
 	 */
 	private function users() {
 
@@ -324,23 +341,29 @@ final class ProjectItem extends TableList {
 	 *
 	 * @param \WP_User[] $users The users list to filter.
 	 *
+	 * @return array The filtered users
 	 * @since 1.0.0
 	 *
-	 * @return array The filtered users
 	 */
 	private function filter_users_by_items( $users ) {
 
 		// Retrieve all of the users that has an item.
-		$userItems = array_map( function ( $item ) {
+		$userItems = array_map(
+			function ( $item ) {
 
-			return (int) $item->post_author;
-		}, $this->items );
+				return (int) $item->post_author;
+			},
+			$this->items
+		);
 
 		// Filter the user that has an item associated.
-		$users = array_filter( $users, function ( $user ) use ( $userItems ) {
+		$users = array_filter(
+			$users,
+			function ( $user ) use ( $userItems ) {
 
-			return in_array( $user->ID, $userItems, true );
-		} );
+				return in_array( $user->ID, $userItems, true );
+			}
+		);
 
 		return $users;
 	}
@@ -348,9 +371,9 @@ final class ProjectItem extends TableList {
 	/**
 	 * The Target Language Filter
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	private function target_language_filter_template() {
 
@@ -358,7 +381,8 @@ final class ProjectItem extends TableList {
 			'class_attribute' => 'target-language-filter',
 			'name_attribute'  => 'translationmanager_target_language_filter',
 			'options'         => [ 'all' => esc_html__( 'All Languages', 'translationmanager' ) ] + $this->languages(),
-			'current_value'   => intval( filter_input( INPUT_POST, 'translationmanager_target_language_filter', FILTER_SANITIZE_STRING ) ),
+			'current_value'   => intval( filter_input( INPUT_POST, 'translationmanager_target_language_filter',
+				FILTER_SANITIZE_STRING ) ),
 		];
 
 		include Functions\get_template( '/views/type/select.php' );
@@ -367,9 +391,9 @@ final class ProjectItem extends TableList {
 	/**
 	 * The User Filter
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	private function added_by_filter_template() {
 
@@ -382,7 +406,8 @@ final class ProjectItem extends TableList {
 			'class_attribute' => 'added-by-filter',
 			'name_attribute'  => 'translationmanager_added_by_filter',
 			'options'         => [ 'all' => esc_html__( 'All Users', 'translationmanager' ) ] + $users,
-			'current_value'   => intval( filter_input( INPUT_POST, 'translationmanager_added_by_filter', FILTER_SANITIZE_STRING ) ),
+			'current_value'   => intval( filter_input( INPUT_POST, 'translationmanager_added_by_filter',
+				FILTER_SANITIZE_STRING ) ),
 		];
 		unset( $users );
 
@@ -392,11 +417,11 @@ final class ProjectItem extends TableList {
 	/**
 	 * Filter Project Column
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array $columns The columns items to filter.
 	 *
 	 * @return array The filtered columns
+	 * @since 1.0.0
+	 *
 	 */
 	private function column_project( $columns ) {
 
@@ -408,9 +433,12 @@ final class ProjectItem extends TableList {
 				$request[ $key ] = sanitize_text_field( filter_input( INPUT_GET, $key, FILTER_SANITIZE_STRING ) );
 			}
 
-			$request = wp_parse_args( $request, [
-				'translationmanager_project_id' => '-1',
-			] );
+			$request = wp_parse_args(
+				$request,
+				[
+					'translationmanager_project_id' => '-1',
+				]
+			);
 		}
 
 		if ( isset( $request['post_status'] ) && 'trash' === $request['post_status'] ) {
@@ -431,11 +459,11 @@ final class ProjectItem extends TableList {
 	/**
 	 * Filter Column Language
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array $columns The columns items to filter.
 	 *
 	 * @return array The filtered columns
+	 * @since 1.0.0
+	 *
 	 */
 	private function column_languages( $columns ) {
 
@@ -448,9 +476,9 @@ final class ProjectItem extends TableList {
 	/**
 	 * Set Pagination
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	private function set_pagination() {
 
@@ -475,11 +503,11 @@ final class ProjectItem extends TableList {
 	/**
 	 * Retrieve Project ID By GET request
 	 *
+	 * @return \WP_Term The term retrieved by the request.
 	 * @since 1.0.0
 	 *
 	 * @throw \RuntimeException In case the wp term cannot be retrieved
 	 *
-	 * @return \WP_Term The term retrieved by the request.
 	 */
 	private function project_id_by_request() {
 

@@ -193,16 +193,22 @@ class Api {
 		 *
 		 * @params array Containing a message (method and url) and a context.
 		 */
-		do_action( 'translationmanager_log', [
-			'message' => sprintf( '%s: %s', $method, $url ),
-			'context' => $context,
-		] );
+		do_action(
+			'translationmanager_log',
+			[
+				'message' => sprintf( '%s: %s', $method, $url ),
+				'context' => $context,
+			]
+		);
 
-		$response = wp_remote_request( $url, [
-			'method'  => $method,
-			'headers' => $headers,
-			'body'    => $data,
-		] );
+		$response = wp_remote_request(
+			$url,
+			[
+				'method'  => $method,
+				'headers' => $headers,
+				'body'    => $data,
+			]
+		);
 
 		if ( is_wp_error( $response ) ) {
 			throw new ApiException( $response->get_error_message(), $response->get_error_code() );
@@ -219,13 +225,19 @@ class Api {
 			 *
 			 * @params array Containing a message (method and url) and a context.
 			 */
-			do_action( 'translationmanager_log', [
-				'message' => 'Request against API failed.',
-				'context' => array_merge( $context, [
-					'status' => $response_code,
-					'body'   => $response_body,
-				] ),
-			] );
+			do_action(
+				'translationmanager_log',
+				[
+					'message' => 'Request against API failed.',
+					'context' => array_merge(
+						$context,
+						[
+							'status' => $response_code,
+							'body'   => $response_body,
+						]
+					),
+				]
+			);
 		}
 
 		return json_decode( $response_body, true );

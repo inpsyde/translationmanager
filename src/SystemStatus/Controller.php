@@ -53,7 +53,7 @@ class Controller {
 	public function render() {
 
 		$this->system_status()
-		     ->build()
-		     ->render();
+			 ->build()
+			 ->render();
 	}
 }

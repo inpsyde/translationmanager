@@ -33,14 +33,14 @@ class Taxonomy {
 	/**
 	 * Project Title and Description Form in edit page.
 	 *
-	 * @todo  This is hooked in a filter, may create confusion about the value passed in.
-	 *       Is there a way to move into an action?
-	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $value The views link. Untouched.
 	 *
 	 * @return string The untouched parameter
+	 * @todo  This is hooked in a filter, may create confusion about the value passed in.
+	 *        Is there a way to move into an action?
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	public function project_form( $value ) {
 
@@ -56,11 +56,14 @@ class Taxonomy {
 			'nonce'   => $this->nonce(),
 		];
 
-		$closure = \Closure::bind( function () {
+		$closure = \Closure::bind(
+			function () {
 
-			// @todo Make it a View.
-			require Functions\get_template( '/views/project/form-title-description.php' );
-		}, $bind );
+				// @todo Make it a View.
+				require Functions\get_template( '/views/project/form-title-description.php' );
+			},
+			$bind
+		);
 
 		$closure();
 
@@ -70,14 +73,14 @@ class Taxonomy {
 	/**
 	 * Project Box in Edit Page
 	 *
-	 * @todo  This is hooked in a filter, may create confusion about the value passed in.
-	 *       Is there a way to move into an action?
-	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $value The views link. Untouched.
 	 *
 	 * @return string The untouched parameter
+	 * @todo  This is hooked in a filter, may create confusion about the value passed in.
+	 *        Is there a way to move into an action?
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	public function order_project_box_form( $value ) {
 
@@ -96,9 +99,9 @@ class Taxonomy {
 	/**
 	 * Nonce
 	 *
+	 * @return \Brain\Nonces\WpNonce The nonce instance
 	 * @since 1.0.0
 	 *
-	 * @return \Brain\Nonces\WpNonce The nonce instance
 	 */
 	public function nonce() {
 
@@ -108,9 +111,9 @@ class Taxonomy {
 	/**
 	 * Save Project Info based on request
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	public function project_info_save() {
 
@@ -128,26 +131,46 @@ class Taxonomy {
 		$project    = get_term( $project_id, 'translationmanager_project' );
 
 		if ( $project instanceof \WP_Term ) {
-			$update = wp_update_term( $project->term_id, 'translationmanager_project', [
-				'name'        => sanitize_text_field( filter_input( INPUT_POST, 'tag-name', FILTER_SANITIZE_STRING ) ),
-				'description' => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING ),
-			] );
+			$update = wp_update_term(
+				$project->term_id,
+				'translationmanager_project',
+				[
+					'name'        => sanitize_text_field( filter_input( INPUT_POST, 'tag-name',
+						FILTER_SANITIZE_STRING ) ),
+					'description' => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING ),
+				]
+			);
 
 			if ( is_wp_error( $update ) ) {
-				TransientNoticeService::add_notice( esc_html__(
-					'Something went wrong. Please go back and try again.', 'translationmanager'
-				), 'warning' );
+				TransientNoticeService::add_notice(
+					esc_html__(
+						'Something went wrong. Please go back and try again.',
+						'translationmanager'
+					),
+					'warning'
+				);
 			} else {
-				TransientNoticeService::add_notice( sprintf( esc_html__(
-					'Project %s updated.', 'translationmanager'
-				), '<strong>' . get_term_field( 'name', $project_id, 'translationmanager_project' ) . '</strong>' ), 'success' );
+				TransientNoticeService::add_notice(
+					sprintf(
+						esc_html__(
+							'Project %s updated.',
+							'translationmanager'
+						),
+						'<strong>' . get_term_field( 'name', $project_id, 'translationmanager_project' ) . '</strong>'
+					),
+					'success'
+				);
 			}
 		}
 
 		if ( ! $project instanceof \WP_Term ) {
-			TransientNoticeService::add_notice( esc_html__(
-				'Invalid project ID, impossible to update the info.', 'translationmanager'
-			), 'warning' );
+			TransientNoticeService::add_notice(
+				esc_html__(
+					'Invalid project ID, impossible to update the info.',
+					'translationmanager'
+				),
+				'warning'
+			);
 		}
 
 		wp_safe_redirect( wp_get_referer() );
@@ -158,9 +181,9 @@ class Taxonomy {
 	/**
 	 * Register Taxonomy
 	 *
+	 * @return void
 	 * @since 1.0.0
 	 *
-	 * @return void
 	 */
 	public function register_taxonomy() {
 
@@ -194,12 +217,12 @@ class Taxonomy {
 	/**
 	 * Edit Row Actions
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string[] $columns The columns contain the values for the row.
 	 * @param \WP_Term $term    The term instance related to the columns.
 	 *
 	 * @return array The columns content
+	 * @since 1.0.0
+	 *
 	 */
 	public static function modify_row_actions( $columns, $term ) {
 
@@ -218,30 +241,33 @@ class Taxonomy {
 	/**
 	 * Project Link
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param int $project The project from which retrieve the term indetifier.
 	 *
 	 * @return string
+	 * @since 1.0.0
+	 *
 	 */
 	public static function get_project_link( $project ) {
 
 		return get_admin_url(
 			null,
-			add_query_arg( [
-				'page'                          => 'translationmanager-project',
-				'translationmanager_project_id' => $project,
-				'post_type'                     => 'project_item',
-			], 'admin.php' )
+			add_query_arg(
+				[
+					'page'                          => 'translationmanager-project',
+					'translationmanager_project_id' => $project,
+					'post_type'                     => 'project_item',
+				],
+				'admin.php'
+			)
 		);
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @param $columns
 	 *
 	 * @return array
+	 * @since 1.0.0
+	 *
 	 */
 	public static function modify_columns( $columns ) {
 
@@ -260,13 +286,13 @@ class Taxonomy {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @param $value
 	 * @param $column_name
 	 * @param $term_id
 	 *
 	 * @return string
+	 * @since 1.0.0
+	 *
 	 */
 	public static function print_column( $value, $column_name, $term_id ) {
 
@@ -295,13 +321,13 @@ class Taxonomy {
 	/**
 	 * Edit Term Link for Project Taxonomy
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $location The location link.
 	 * @param int    $term_id  The term id.
 	 * @param string $taxonomy The taxonomy name associated to the term.
 	 *
 	 * @return string The filtered location
+	 * @since 1.0.0
+	 *
 	 */
 	public function edit_term_link( $location, $term_id, $taxonomy ) {
 

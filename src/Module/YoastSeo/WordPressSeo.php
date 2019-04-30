@@ -52,7 +52,7 @@ class WordPressSeo {
 	 *
 	 * @wp-hook translationmanager_updated_post
 	 *
-	 * @param \WP_Post         $translated_post
+	 * @param \WP_Post        $translated_post
 	 * @param TranslationData $data
 	 */
 	public function update_translation( \WP_Post $translated_post, TranslationData $data ) {

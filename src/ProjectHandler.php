@@ -60,7 +60,7 @@ class ProjectHandler {
 			[
 				'post_type'  => 'project_item',
 				'post_title' => sprintf(
-					__( '%s: "%s"', 'translationmanager' ),
+					__( '%1$s: "%2$s"', 'translationmanager' ),
 					esc_html( $labels->singular_name ),
 					get_the_title( $post_id )
 				),

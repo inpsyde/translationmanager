@@ -43,9 +43,12 @@ class Plugin {
 
 		$this->file_path = untrailingslashit( plugin_dir_path( __DIR__ ) ) . '/translationmanager.php';
 
-		$this->header_data = get_file_data( $this->file_path, [
-			'version' => 'Version',
-		] );
+		$this->header_data = get_file_data(
+			$this->file_path,
+			[
+				'version' => 'Version',
+			]
+		);
 	}
 
 	/**

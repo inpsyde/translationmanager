@@ -30,9 +30,10 @@ class Integrate implements Integrable {
 	/**
 	 * Integrate constructor
 	 *
+	 * @param string $plugin_file The plugin file path.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $plugin_file The plugin file path.
 	 */
 	public function __construct( $plugin_file ) {
 
@@ -46,13 +47,15 @@ class Integrate implements Integrable {
 
 		$wordpress_seo = new \Translationmanager\Module\YoastSeo\WordPressSeo();
 
-		add_action( 'translationmanager_outgoing_data', array(
+		add_action( 'translationmanager_outgoing_data', [
 			$wordpress_seo,
 			'prepare_outgoing',
-		) );
-		add_action( 'translationmanager_updated_post', array(
-			$wordpress_seo,
-			'update_translation',
-		), 10, 2 );
+		] );
+		add_action(
+			'translationmanager_updated_post',
+			[ $wordpress_seo, 'update_translation', ],
+			10,
+			2
+		);
 	}
 }

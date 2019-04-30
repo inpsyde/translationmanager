@@ -75,10 +75,13 @@ class ServiceProvider implements BootstrappableServiceProvider {
 		);
 
 		// Order Project.
-		add_action( 'admin_post_translationmanager_order_project', [
-			$container['Request.OrderProject'],
-			'handle',
-		] );
+		add_action(
+			'admin_post_translationmanager_order_project',
+			[
+				$container['Request.OrderProject'],
+				'handle',
+			]
+		);
 
 		// Update Project Order Status.
 		add_action(
