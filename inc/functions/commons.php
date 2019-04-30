@@ -152,6 +152,11 @@ function kses_post( $data, array $extra_attrs = [] ) {
 		}
 	}
 
+	// WordPress 5.x removed the form.
+	if ( ! isset( $tags_input_included['form'] ) ) {
+		$tags_input_included['form'] = [];
+	}
+
 	// Form attributes.
 	$tags_input_included['form'] = array_merge( $tags_input_included['form'], [ 'novalidate' => true ] );
 	// Fieldset attributes.
