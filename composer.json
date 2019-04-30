@@ -13,10 +13,10 @@
 			"homepage" : "https://inpsyde.com/en/"
 		}
 	],
-	"repositories" : [
+	"repositories": [
 		{
-			"type" : "vcs",
-			"url" : "git@bitbucket.org:inpsyde/system-status.git"
+			"type": "composer",
+			"url": "https://repo.packagist.com/inpsyde/"
 		}
 	],
 	"require" : {
