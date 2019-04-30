@@ -68,7 +68,7 @@ class PostType {
 			'map_meta_cap'  => false,
 			'menu_position' => 100,
 			'supports'      => [ 'title' ],
-			'menu_icon'     => ( $this->plugin )->url( '/resources/img/tm-icon-bw.png' ),
+			'menu_icon'     => $this->plugin->url( '/resources/img/tm-icon-bw.png' ),
 		] );
 	}
 

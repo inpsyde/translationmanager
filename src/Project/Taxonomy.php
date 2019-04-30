@@ -56,11 +56,13 @@ class Taxonomy {
 			'nonce'   => $this->nonce(),
 		];
 
-		\Closure::bind( function () {
+		$closure = \Closure::bind( function () {
 
 			// @todo Make it a View.
 			require Functions\get_template( '/views/project/form-title-description.php' );
-		}, $bind )();
+		}, $bind );
+
+		$closure();
 
 		return $value;
 	}
