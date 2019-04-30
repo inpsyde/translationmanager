@@ -20,19 +20,21 @@
 		}
 	],
 	"require" : {
-		"php": ">=5.6",
-		"brain/nonces": "1.0.*",
-		"inpsyde/system-status": "dev-master",
-		"inpsyde/inpsyde-networksites-menu": "2.0.*",
-		"pimple/pimple": "^3.2"
+		"php" : ">=5.6",
+		"brain/nonces" : "1.0.*",
+		"inpsyde/system-status" : "dev-master",
+		"pimple/pimple" : "^3.2"
 	},
 	"require-dev" : {
-		"php" : ">=5.6",
 		"phpunit/phpunit" : "~5",
 		"brain/monkey" : "2.*",
-		"squizlabs/php_codesniffer" : "~2.7",
-		"wimg/php-compatibility" : "^7.0",
-		"wp-coding-standards/wpcs" : "dev-master"
+		"squizlabs/php_codesniffer" : "~3",
+		"phpcompatibility/php-compatibility" : "~9",
+		"wp-coding-standards/wpcs" : "~2"
+	},
+	"scripts": {
+		"post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility,vendor/wp-coding-standards/wpcs",
+		"post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility,vendor/wp-coding-standards/wpcs"
 	},
 	"autoload" : {
 		"psr-4" : {
@@ -44,6 +46,11 @@
 			"Translationmanager\\Tests\\" : "tests/php",
 			"Translationmanager\\Tests\\Unit\\" : "tests/unit/src",
 			"Translationmanager\\Tests\\Integration\\" : "tests/integration/src"
+		}
+	},
+	"config" : {
+		"platform" : {
+			"php" : "5.6"
 		}
 	}
 }
