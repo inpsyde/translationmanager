@@ -3,13 +3,22 @@
 
 namespace Translationmanager\Tests\Unit\Inc\Functions;
 
+use \Brain\Monkey\Functions;
 use Translationmanager\Tests\TestCase;
 
-class Test extends TestCase {
+/**
+ * Class FunctionsTest
+ *
+ * @package Translationmanager\Tests\Unit\Inc\Functions
+ */
+class SanitizeStringTest extends TestCase {
 
+	/**
+	 * Test Sanitization of String
+	 */
 	function testThatStringIsCorrectlySanitized() {
 
-		\Brain\Monkey\Functions\when( '\\sanitize_html_class' )
+		Functions\when( '\\sanitize_html_class' )
 			->returnArg( 1 );
 
 		$response = \Translationmanager\Functions\sanitize_html_class( 'testing-class' );
@@ -17,9 +26,12 @@ class Test extends TestCase {
 		$this->assertSame( 'testing-class', $response );
 	}
 
+	/**
+	 * Test Multiple Classes Space Separated are Correctly Sanitized
+	 */
 	function testThatMultipleClassesAsStringAreCorrectlySanitized() {
 
-		\Brain\Monkey\Functions\when( '\\sanitize_html_class' )
+		Functions\when( '\\sanitize_html_class' )
 			->returnArg( 1 );
 
 		$response = \Translationmanager\Functions\sanitize_html_class( 'testing-class-one testing-class-two' );
@@ -27,9 +39,12 @@ class Test extends TestCase {
 		$this->assertSame( 'testing-class-one testing-class-two', $response );
 	}
 
+	/**
+	 * Test an Array of Classes are Correctly Sanitized
+	 */
 	function testThatArrayClassesMakeCorrectString() {
 
-		\Brain\Monkey\Functions\when( '\\sanitize_html_class' )
+		Functions\when( '\\sanitize_html_class' )
 			->returnArg( 1 );
 
 		$response = \Translationmanager\Functions\sanitize_html_class( [
@@ -41,6 +56,9 @@ class Test extends TestCase {
 		$this->assertSame( 'testing-class-one testing-class-two testing-class-three', $response );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function setUp() {
 
 		parent::setUp();

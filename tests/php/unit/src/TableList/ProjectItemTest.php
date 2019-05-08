@@ -1,5 +1,4 @@
 <?php # -*- coding: utf-8 -*-
-// phpcs:disable
 
 namespace Translationmanager\Tests\TableList;
 
@@ -7,8 +6,16 @@ use Brain\Monkey\Functions;
 use Translationmanager\TableList\ProjectItem;
 use \Translationmanager\Tests\TestCase;
 
+/**
+ * Class ProjectItemTest
+ *
+ * @package Translationmanager\Tests\TableList
+ */
 class ProjectItemTest extends TestCase {
 
+	/**
+	 * Test Instance
+	 */
 	public function testInstance() {
 
 		\Mockery::mock( 'overload:\WP_List_Table' );
@@ -18,6 +25,9 @@ class ProjectItemTest extends TestCase {
 		$this->assertInstanceOf( 'Translationmanager\\TableList\\ProjectItem', $sut );
 	}
 
+	/**
+	 * Test Project ID By Request Is Valid
+	 */
 	public function testProjectIDByRequestIsValid() {
 
 		\Mockery::mock( 'overload:\Translationmanager\\TableList\\TableList', [
@@ -53,16 +63,14 @@ class ProjectItemTest extends TestCase {
 	}
 
 	/**
-	 * @expectException \RuntimeException
+	 * Test Project by ID Request Throw an Exception if get Term returns a WP_Error
 	 */
 	public function testProjectIDRequestThrowExceptionIfWpError() {
 
 		\Mockery::mock( 'overload:\Translationmanager\\TableList\\TableList' );
 
 		Functions\when( 'Translationmanager\\Functions\\filter_input' )
-			->justReturn( [
-				'translationmanager_project_id' => 10,
-			] );
+			->justReturn( [ 'translationmanager_project_id' => 10 ] );
 
 		Functions\expect( 'get_term' )
 			->once()
@@ -76,6 +84,9 @@ class ProjectItemTest extends TestCase {
 		$this->assertTrue( true );
 	}
 
+	/**
+	 * Test Items Return Empty if No Project Id Can be Retrieved
+	 */
 	public function testItemsReturnEmptyIfNoProjectIDCanBeRetrievedByRequest() {
 
 		\Mockery::mock( 'overload:\Translationmanager\\TableList\\TableList' );

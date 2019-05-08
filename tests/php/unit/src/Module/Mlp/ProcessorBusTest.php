@@ -13,7 +13,10 @@ use Translationmanager\Module\Mlp\ProcessorBus;
 
 class ProcessorBusTest extends TestCase {
 
-	public function test_process_fires_hooks() {
+	/**
+	 * Test Process Actually Fires Hooks
+	 */
+	public function testProcessFiresHooks() {
 
 		$bus = new ProcessorBus();
 
@@ -50,7 +53,10 @@ class ProcessorBusTest extends TestCase {
 		$bus->process( $data, $adapter );
 	}
 
-	public function test_process_incoming_data_not_executes_outgoing_processors() {
+	/**
+	 * Test Process Process Incoming Does not Execute Outgoing Processors
+	 */
+	public function testProcessIncomingDataDoesNotExecuteOutgoingProcessors() {
 
 		/** @var OutgoingProcessor|\Mockery\MockInterface $processor */
 		$processor = \Mockery::mock( OutgoingProcessor::class );
@@ -72,7 +78,10 @@ class ProcessorBusTest extends TestCase {
 		$bus->process( $data, $adapter );
 	}
 
-	public function test_processor_can_be_skipped_via_filter() {
+	/**
+	 * Test Process Can be Skipped Via Filter
+	 */
+	public function testProcessorCanBeSkippedViaFilter() {
 
 		/** @var OutgoingProcessor|\Mockery\MockInterface $processor_a */
 		$processor_a = \Mockery::mock( IncomingProcessor::class );

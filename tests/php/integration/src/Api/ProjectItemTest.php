@@ -1,22 +1,34 @@
 <?php # -*- coding: utf-8 -*-
-// phpcs:disable
 
 namespace Translationmanager\Tests\Integration\Api;
 
+use Brain\Monkey\Functions;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Translationmanager\Api;
 use Translationmanager\Api\ProjectItem;
 use Translationmanager\Tests\TestCase;
 
+/**
+ * Class ProjectItemTest
+ *
+ * @package Translationmanager\Tests\Integration\Api
+ */
 class ProjectItemTest extends TestCase {
 
-	public function testThatCreateGoesWell() {
+	use MockeryPHPUnitIntegration;
 
-		\Brain\Monkey\Functions\when( 'apply_filters' )
+	/**
+	 * Test Project Item is Created Correctly
+	 */
+	public function testProjectItemCreatedCorrectly() {
+
+		Functions\when( 'apply_filters' )
 			->returnArg( 2 );
-		\Brain\Monkey\Functions\when( 'do_action' )
+
+		Functions\when( 'do_action' )
 			->justReturn( true );
 
-		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
+		Functions\expect( 'wp_remote_request' )
 			->once()
 			->andReturnUsing( function ( $url, $data ) {
 
@@ -77,10 +89,10 @@ class ProjectItemTest extends TestCase {
 	 */
 	public function testThatInvalidResponseCallLogAction() {
 
-		\Brain\Monkey\Functions\when( 'apply_filters' )
+		Functions\when( 'apply_filters' )
 			->returnArg( 2 );
 
-		\Brain\Monkey\Functions\expect( 'do_action' )
+		Functions\expect( 'do_action' )
 			->once()
 			->with( 'translationmanager_log', [
 				'message' => 'Request against API failed.',
@@ -96,7 +108,7 @@ class ProjectItemTest extends TestCase {
 				],
 			] );
 
-		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
+		Functions\expect( 'wp_remote_request' )
 			->once()
 			->andReturnUsing( function ( $url, $data ) {
 
@@ -133,17 +145,18 @@ class ProjectItemTest extends TestCase {
 
 		$project = new ProjectItem( $api );
 
-		$response = $project->create( 1, 'post', 'fr_FR', [
+		$project->create( 1, 'post', 'fr_FR', [
 			[
 				'post_title'   => 'post_title',
 				'post_content' => 'post_content',
 				'post_excerpt' => '',
 			],
 		] );
-
-		$this->assertTrue( true );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	protected function setUp() {
 
 		parent::setUp();
@@ -151,11 +164,13 @@ class ProjectItemTest extends TestCase {
 		require_once getenv( 'TESTS_PATH' ) . '/stubs/commonStubs.php';
 		require_once getenv( 'TESTS_PATH' ) . '/stubs/wpRemoteStubs.php';
 
-		\Brain\Monkey\Functions\when( 'esc_html__' )
+		Functions\when( 'esc_html__' )
 			->returnArg( 1 );
-		\Brain\Monkey\Functions\when( 'esc_html_x' )
+
+		Functions\when( 'esc_html_x' )
 			->returnArg( 1 );
-		\Brain\Monkey\Functions\when( 'Translationmanager\Functions\current_lang_code' )
+
+		Functions\when( 'Translationmanager\Functions\current_lang_code' )
 			->justReturn( 'en_US' );
 	}
 }

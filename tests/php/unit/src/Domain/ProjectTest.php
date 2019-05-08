@@ -1,12 +1,20 @@
 <?php # -*- coding: utf-8 -*-
-// phpcs:disable
+
 namespace Translationmanager\Tests\Unit\Domain;
 
 use Translationmanager\Domain\Project;
 use Translationmanager\Tests\TestCase;
 
+/**
+ * Class ProjectTest
+ *
+ * @package Translationmanager\Tests\Unit\Domain
+ */
 class ProjectTest extends TestCase {
 
+	/**
+	 * Test Instance Creation
+	 */
 	public function testInstance() {
 
 		$testee = new Project(
@@ -20,7 +28,10 @@ class ProjectTest extends TestCase {
 		$this->assertInstanceOf( 'TranslationManager\\Domain\\Project', $testee );
 	}
 
-	public function testTo_header_array() {
+	/**
+	 * Test To Header Data
+	 */
+	public function testToHeader() {
 
 		$testee = new Project(
 			'WordPress',

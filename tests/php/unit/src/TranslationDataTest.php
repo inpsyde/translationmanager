@@ -1,13 +1,21 @@
 <?php # -*- coding: utf-8 -*-
-// phpcs:disable
+
 namespace Translationmanager\Tests\Unit;
 
 use Brain\Monkey\Functions;
 use Translationmanager\Tests\TestCase;
 use Translationmanager\TranslationData;
 
+/**
+ * Class TranslationDataTest
+ *
+ * @package Translationmanager\Tests\Unit
+ */
 class TranslationDataTest extends TestCase {
 
+	/**
+	 * Test Incoming Constructor
+	 */
 	public function testForIncomingConstructor() {
 
 		/** @var \WP_Post $post */
@@ -40,6 +48,9 @@ class TranslationDataTest extends TestCase {
 		static::assertSame( $post, $incoming->source_post() );
 	}
 
+	/**
+	 * Test Outgoing Constructor
+	 */
 	public function testForOutgoingConstructor() {
 
 		/** @var \WP_Post $post */
@@ -69,6 +80,9 @@ class TranslationDataTest extends TestCase {
 		static::assertSame( $post, $outgoing->source_post() );
 	}
 
+	/**
+	 * Test Has, Get and Set Value
+	 */
 	public function testHasGetSetValue() {
 
 		$incoming = TranslationData::for_incoming( [] );
@@ -89,6 +103,9 @@ class TranslationDataTest extends TestCase {
 		static::assertNull( $incoming->get_value( 'bar' ) );
 	}
 
+	/**
+	 * Test Has, Get, Set Meta
+	 */
 	public function testHasGetSetMeta() {
 
 		$incoming = TranslationData::for_incoming( [] );
@@ -112,6 +129,9 @@ class TranslationDataTest extends TestCase {
 		static::assertNull( $incoming->get_meta( 'bar' ) );
 	}
 
+	/**
+	 * Test Remove Value
+	 */
 	public function testRemoveValue() {
 
 		$incoming = TranslationData::for_incoming( [] );
@@ -136,6 +156,9 @@ class TranslationDataTest extends TestCase {
 		static::assertFalse( $incoming->has_value( 'baz', '_ns' ) );
 	}
 
+	/**
+	 * Test Remove Meta
+	 */
 	public function testRemoveMeta() {
 
 		$incoming = TranslationData::for_incoming( [] );
@@ -160,6 +183,9 @@ class TranslationDataTest extends TestCase {
 		static::assertFalse( $incoming->has_meta( 'baz', '_ns' ) );
 	}
 
+	/**
+	 * Test to Array
+	 */
 	public function testToArray() {
 
 		$incoming = TranslationData::for_incoming(
@@ -216,6 +242,5 @@ class TranslationDataTest extends TestCase {
 		];
 
 		static::assertEquals( $expected, $incoming->to_array() );
-
 	}
 }

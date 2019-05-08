@@ -1,11 +1,17 @@
 <?php # -*- coding: utf-8 -*-
-//phpcs:disable
+
 namespace Translationmanager\Tests\Integration;
 
+use Brain\Monkey\Functions;
 use Translationmanager\Api;
 use Translationmanager\Api\Project;
 use Translationmanager\Tests\TestCase;
 
+/**
+ * Class ProjectTest
+ *
+ * @package Translationmanager\Tests\Integration
+ */
 class ProjectTest extends TestCase {
 
 	/**
@@ -17,7 +23,7 @@ class ProjectTest extends TestCase {
 	 */
 	public function testThatCreateProjectSuccess() {
 
-		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
+		Functions\expect( 'wp_remote_request' )
 			->once()
 			->andReturnUsing( function ( $url, $array ) {
 
@@ -73,7 +79,7 @@ class ProjectTest extends TestCase {
 	 */
 	public function testThatUpdateStatusSuccess() {
 
-		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
+		Functions\expect( 'wp_remote_request' )
 			->once()
 			->andReturnUsing( function ( $url, $data ) {
 
@@ -103,6 +109,9 @@ class ProjectTest extends TestCase {
 		$this->assertNull( $response );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	protected function setUp() {
 
 		parent::setUp();
@@ -110,7 +119,7 @@ class ProjectTest extends TestCase {
 		require_once getenv( 'TESTS_PATH' ) . '/stubs/commonStubs.php';
 		require_once getenv( 'TESTS_PATH' ) . '/stubs/wpRemoteStubs.php';
 
-		\Brain\Monkey\Functions\when( 'esc_html__' )
+		Functions\when( 'esc_html__' )
 			->returnArg( 1 );
 	}
 }

@@ -5,10 +5,16 @@ namespace Translationmanager\Tests\Unit\Inc\Functions;
 
 use \Translationmanager\Tests\TestCase;
 
-// phpcs:disable
+/**
+ * Class VersionCompareTest
+ *
+ * @package Translationmanager\Tests\Unit\Inc\Functions
+ */
 class VersionCompareTest extends TestCase {
 
 	/**
+	 * Test Version Compare
+	 *
 	 * @dataProvider versionsProvider
 	 */
 	public function testVersionCompare( $ver1, $ver2, $constraint, $expected ) {
@@ -22,6 +28,11 @@ class VersionCompareTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Data Provider for Versions
+	 *
+	 * @return array
+	 */
 	public function versionsProvider() {
 
 		return [
@@ -38,6 +49,9 @@ class VersionCompareTest extends TestCase {
 		];
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	protected function setUp() {
 
 		require_once getenv( 'LIBRARY_PATH' ) . '/inc/functions/commons.php';
