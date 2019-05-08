@@ -30,9 +30,9 @@ class Activator {
 	/**
 	 * Activate constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Plugin $plugin The plugin instance.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Plugin $plugin ) {
 
@@ -42,9 +42,8 @@ class Activator {
 	/**
 	 * Activate plugin
 	 *
-	 * @since 1.0.0
-	 *
 	 * @throws \Exception In case the plugin version isn't set.
+	 * @since 1.0.0
 	 */
 	public function store_version() {
 

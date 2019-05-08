@@ -52,7 +52,6 @@ class ProjectUpdater {
 	 *
 	 * @return int The project ID
 	 * @since   1.0.0
-	 *
 	 */
 	public function force_ancestors_in_project( $project, $post_id, $languages ) {
 
@@ -128,7 +127,6 @@ class ProjectUpdater {
 	 *
 	 * @return array data updated
 	 * @since 1.0.0
-	 *
 	 */
 	public function update_project_item_title( array $data ) {
 

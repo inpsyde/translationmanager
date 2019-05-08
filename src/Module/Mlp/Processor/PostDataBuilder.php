@@ -10,6 +10,9 @@ class PostDataBuilder implements IncomingProcessor {
 
 	const IS_UPDATE_KEY = 'is-update';
 
+	/**
+	 * @var array
+	 */
 	private static $unwanted_data = [
 		'ID'                => '',
 		'guid'              => '',
@@ -21,6 +24,10 @@ class PostDataBuilder implements IncomingProcessor {
 		'filter'            => '',
 	];
 
+	/**
+	 * @param \Translationmanager\TranslationData    $data
+	 * @param \Translationmanager\Module\Mlp\Adapter $adapter
+	 */
 	public function process_incoming( TranslationData $data, Adapter $adapter ) {
 
 		$source_post = $data->source_post();

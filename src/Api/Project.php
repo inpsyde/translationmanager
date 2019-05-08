@@ -42,9 +42,9 @@ class Project {
 	/**
 	 * Project constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Api $api he instance of the api.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Api $api ) {
 
@@ -54,13 +54,12 @@ class Project {
 	/**
 	 * Create a new project.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @throws ApiException In case the project cannot be created.
-	 *
 	 * @param \Translationmanager\Domain\Project $project The project info needed to create the project in the server.
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
+	 * @throws ApiException In case the project cannot be created.
+	 *
+	 * @since 1.0.0
 	 */
 	public function create( Domain\Project $project ) {
 
@@ -78,14 +77,13 @@ class Project {
 	/**
 	 * Update Status
 	 *
-	 * @since 1.0.0
-	 *
-	 * @throws ApiException If the response code isn't a valid one.
-	 *
 	 * @param int    $project_id The ID of the project for which update the status.
 	 * @param string $status     The new status.
 	 *
 	 * @return mixed Depending on the request response.
+	 * @throws ApiException If the response code isn't a valid one.
+	 *
+	 * @since 1.0.0
 	 */
 	public function update_status( $project_id, $status ) {
 
@@ -99,11 +97,10 @@ class Project {
 	/**
 	 * Get Project
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $project_id The ID of the project to retrieve from the server.
 	 *
 	 * @return mixed Depending on the request response.
+	 * @since 1.0.0
 	 */
 	public function get( $project_id ) {
 

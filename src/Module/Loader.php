@@ -61,11 +61,11 @@ class Loader {
 	/**
 	 * Loader constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Plugin $plugin            Instance of the plugin class.
 	 * @param array                      $installed_plugins The list of the installed and active
 	 *                                                      plugins.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Plugin $plugin, array $installed_plugins ) {
 
@@ -76,9 +76,8 @@ class Loader {
 	/**
 	 * Register the integrations instances
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return $this For concatenation
+	 * @since 1.0.0
 	 */
 	public function register_integrations() {
 
@@ -107,9 +106,8 @@ class Loader {
 	/**
 	 * Integrate every module
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return $this For concatenation
+	 * @since 1.0.0
 	 */
 	public function integrate() {
 
@@ -123,9 +121,8 @@ class Loader {
 	/**
 	 * From index to assoc installed plugins list
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	private function installed_plugins_as_assoc_list() {
 
@@ -143,12 +140,13 @@ class Loader {
 	/**
 	 * Has Modules
 	 *
+	 * @return array The existing modules installed or empty array if no modules are available
 	 * @since 1.0.0
-	 *
-	 * @return array The existings modules installed or empty array if no modules are available
 	 */
 	private function available_modules() {
 
 		return array_intersect( array_keys( $this->installed_plugins ), array_keys( self::$modules ) );
+
+		// TODO Add a filter in order to allow third party devs to inject their modules
 	}
 }

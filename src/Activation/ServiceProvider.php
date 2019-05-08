@@ -18,6 +18,7 @@ use Translationmanager\Service\IntegrableServiceProvider;
  * @package Translationmanager\Installation
  */
 class ServiceProvider implements IntegrableServiceProvider {
+
 	/**
 	 * @inheritdoc
 	 */

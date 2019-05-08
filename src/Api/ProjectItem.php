@@ -42,9 +42,9 @@ class ProjectItem {
 	/**
 	 * ProjectItem constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Api $api The Api instance.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Api $api ) {
 
@@ -54,16 +54,15 @@ class ProjectItem {
 	/**
 	 * Create a new project.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @throws \Translationmanager\Api\ApiException In case the project item cannot be created.
-	 *
 	 * @param int    $project_id
 	 * @param string $post_type_name
 	 * @param string $target_language
 	 * @param array  $data
 	 *
 	 * @return int|null ID of the new project or NULL on failure.
+	 * @throws \Translationmanager\Api\ApiException In case the project item cannot be created.
+	 *
+	 * @since 1.0.0
 	 */
 	public function create( $project_id, $post_type_name, $target_language, $data = [] ) {
 
@@ -88,12 +87,11 @@ class ProjectItem {
 	}
 
 	/**
-	 * @since 1.1.1
-	 *
 	 * @param int $project_id Project ID.
 	 * @param int $item_id    Item ID within the Project.
 	 *
 	 * @return mixed
+	 * @since 1.1.1
 	 */
 	public function get( $project_id, $item_id ) {
 
@@ -101,11 +99,10 @@ class ProjectItem {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @param string $project_id Project ID.
 	 *
 	 * @return string The url for the request
+	 * @since 1.0.0
 	 */
 	private function get_url( $project_id ) {
 
@@ -115,11 +112,10 @@ class ProjectItem {
 	/**
 	 * Get the Text-Type based on the Post-Type
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $post_type_name The post type name.
 	 *
 	 * @return string text-type name for REST-API
+	 * @since 1.0.0
 	 */
 	private function get_text_type( $post_type_name ) {
 
@@ -137,11 +133,10 @@ class ProjectItem {
 	/**
 	 * Normalize language code for translation manager api request
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $lang_code The language code to normalize.
 	 *
 	 * @return string The normalize language code
+	 * @since 1.0.0
 	 */
 	private function normalize_language_code( $lang_code ) {
 

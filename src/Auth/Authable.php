@@ -13,23 +13,21 @@ interface Authable {
 	/**
 	 * Check Against User Capability
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \WP_User $user       The user to check against.
 	 * @param string   $capability The capability to check against.
 	 *
 	 * @return mixed
+	 * @since 1.0.0
 	 */
 	public function can( \WP_User $user, $capability );
 
 	/**
 	 * Check if Request is a valid one
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Brain\Nonces\NonceInterface $nonce The nonce instance to use to check against the request.
 	 *
 	 * @return bool true if valid request, false otherwise
+	 * @since 1.0.0
 	 */
 	public function request_is_valid( \Brain\Nonces\NonceInterface $nonce );
 }

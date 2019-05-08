@@ -50,9 +50,9 @@ final class ServiceProviders {
 	/**
 	 * ServiceProviders constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Pimple\Container $container The instance of the container.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Container $container ) {
 
@@ -62,11 +62,10 @@ final class ServiceProviders {
 	/**
 	 * Register
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Pimple\ServiceProviderInterface $provider The provider to register.
 	 *
 	 * @return $this For concatenation
+	 * @since 1.0.0
 	 */
 	public function register( ServiceProviderInterface $provider ) {
 
@@ -79,9 +78,8 @@ final class ServiceProviders {
 	/**
 	 * Bootstrap Providers
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return $this For concatenation
+	 * @since 1.0.0
 	 */
 	public function bootstrap() {
 
@@ -103,9 +101,8 @@ final class ServiceProviders {
 	/**
 	 * Integrate Providers
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return $this For concatenation
+	 * @since 1.0.0
 	 */
 	public function integrate() {
 

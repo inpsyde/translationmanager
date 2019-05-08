@@ -54,11 +54,10 @@ class Plugin {
 	/**
 	 * Plugin Dir
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $dir The additional path to append to the plugin dir.
 	 *
 	 * @return string The requested directory
+	 * @since 1.0.0
 	 */
 	public function dir( $dir = '' ) {
 
@@ -74,11 +73,10 @@ class Plugin {
 	/**
 	 * Plugin Url
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $url The additional url to append to the plugin url.
 	 *
 	 * @return string The requested url
+	 * @since 1.0.0
 	 */
 	public function url( $url ) {
 
@@ -88,9 +86,8 @@ class Plugin {
 	/**
 	 * Path to the main plugin file
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return string The main plugin file path
+	 * @since 1.0.0
 	 */
 	public function file_path() {
 
@@ -100,9 +97,8 @@ class Plugin {
 	/**
 	 * Version
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return string The current plugin version
+	 * @since 1.0.0
 	 */
 	public function version() {
 

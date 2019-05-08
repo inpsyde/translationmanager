@@ -39,12 +39,12 @@ class Language {
 	/**
 	 * Language constructor
 	 *
+	 * @param string $lang_code The language iso code.
+	 * @param string $label     The language label.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @todo  Lang Code: Need a better validation
-	 *
-	 * @param string $lang_code The language iso code.
-	 * @param string $label     The language label.
 	 */
 	public function __construct( $lang_code, $label ) {
 
@@ -55,9 +55,8 @@ class Language {
 	/**
 	 * Get Label
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return string The language label
+	 * @since 1.0.0
 	 */
 	public function get_label() {
 
@@ -67,9 +66,8 @@ class Language {
 	/**
 	 * Get Lang Code
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return string The language code
+	 * @since 1.0.0
 	 */
 	public function get_lang_code() {
 

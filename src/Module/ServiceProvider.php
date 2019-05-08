@@ -23,7 +23,7 @@ class ServiceProvider implements IntegrableServiceProvider {
 	 */
 	public function register( Container $container ) {
 
-		$container[Loader::class] = function ( Container $container ) {
+		$container[ Loader::class ] = function ( Container $container ) {
 
 			$plugins = get_option( 'active_plugins', [] );
 
@@ -40,7 +40,7 @@ class ServiceProvider implements IntegrableServiceProvider {
 	 */
 	public function integrate( Container $container ) {
 
-		$container[Loader::class]
+		$container[ Loader::class ]
 			->register_integrations()
 			->integrate();
 	}

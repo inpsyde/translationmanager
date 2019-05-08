@@ -30,9 +30,9 @@ class OrderInfo implements Viewable {
 	/**
 	 * OrderInfo constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param int $projects_term_id The order ID that include project items.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( $projects_term_id ) {
 
@@ -56,9 +56,8 @@ class OrderInfo implements Viewable {
 	/**
 	 * Nonce
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return \Brain\Nonces\WpNonce The instance of the nonce
+	 * @since 1.0.0
 	 */
 	private function nonce() {
 
@@ -74,9 +73,8 @@ class OrderInfo implements Viewable {
 	 * - In Arbeit ( In Progress )
 	 * - Geliefert ( Supplied )
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return string The status for the current order.
+	 * @since 1.0.0
 	 */
 	private function get_status_label() {
 
@@ -92,9 +90,9 @@ class OrderInfo implements Viewable {
 	/**
 	 * Get Order Status
 	 *
+	 * @return string The status of the project translation order
 	 * @since 1.0.0
 	 *
-	 * @return string The status of the project translation order
 	 */
 	private function get_order_status() {
 
@@ -104,13 +102,13 @@ class OrderInfo implements Viewable {
 	/**
 	 * Retrieve the latest request order status Date
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return \DateTime|null Null if the value doesn't exists. DateTime instance otherwise.
+	 * @since 1.0.0
 	 */
 	private function get_latest_update_request_date() {
 
-		$timestamp = get_term_meta( $this->projects_term_id, '_translationmanager_order_status_last_update_request', true );
+		$timestamp = get_term_meta( $this->projects_term_id, '_translationmanager_order_status_last_update_request',
+			true );
 
 		if ( ! $timestamp ) {
 			return null;
@@ -127,11 +125,10 @@ class OrderInfo implements Viewable {
 	 *
 	 * Returns rest ID and as soon as given the plunet ID.
 	 *
+	 * @return string The meta value
 	 * @since 1.0.0
 	 *
 	 * TODO return correct number.
-	 *
-	 * @return string The meta value
 	 */
 	private function get_order_id() {
 
@@ -141,9 +138,8 @@ class OrderInfo implements Viewable {
 	/**
 	 * Get ordered date
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return \DateTime
+	 * @since 1.0.0
 	 */
 	private function get_ordered_at() {
 
@@ -155,9 +151,8 @@ class OrderInfo implements Viewable {
 	/**
 	 * Get translated date
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return \DateTime
+	 * @since 1.0.0
 	 */
 	private function get_translated_at() {
 
@@ -176,9 +171,8 @@ class OrderInfo implements Viewable {
 	/**
 	 * Has Projects
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return int The number of projects within the current order
+	 * @since 1.0.0
 	 */
 	private function has_projects() {
 
@@ -190,9 +184,8 @@ class OrderInfo implements Viewable {
 	/**
 	 * Action
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return string The action to perform.
+	 * @since 1.0.0
 	 */
 	private function action() {
 

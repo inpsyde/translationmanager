@@ -4,6 +4,8 @@ namespace Translationmanager\Module\YoastSeo;
 
 use Translationmanager\TranslationData;
 
+// TODO May be an interface including prepare_outgoing, update_translation ?
+
 class WordPressSeo {
 
 	const _NAMESPACE = 'wordpress_seo';

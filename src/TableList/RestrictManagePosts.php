@@ -39,9 +39,9 @@ class RestrictManagePosts {
 	/**
 	 * RestrictManagePosts constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Plugin $plugin The plugin instance.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Plugin $plugin ) {
 
@@ -51,9 +51,8 @@ class RestrictManagePosts {
 	/**
 	 * Enqueue Styles
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 
@@ -69,9 +68,8 @@ class RestrictManagePosts {
 	/**
 	 * Enqueue Scripts
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function enqueue_scripts() {
 
@@ -87,7 +85,8 @@ class RestrictManagePosts {
 			'translationmanager-restrict-manage-posts',
 			'strings',
 			[
-				'noElementsSelected' => esc_html__( 'You must need to select at least one element for translate.', 'translationmanager' ),
+				'noElementsSelected' => esc_html__( 'You must need to select at least one element for translate.',
+					'translationmanager' ),
 			]
 		);
 	}
@@ -95,11 +94,10 @@ class RestrictManagePosts {
 	/**
 	 * Filter Bulk Action List
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array $actions The actions to filter.
 	 *
 	 * @return array The filtered actions
+	 * @since 1.0.0
 	 */
 	public function filter_bulk_action_list( $actions ) {
 
@@ -113,11 +111,10 @@ class RestrictManagePosts {
 	/**
 	 * Restrict Manage Posts
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $which The location of the extra table nav markup: 'top' or 'bottom'.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function restrict_manage_posts( $which ) {
 

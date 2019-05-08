@@ -75,10 +75,10 @@ class SupportRequest implements RequestHandleable {
 	/**
 	 * SupportRequest constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
 	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Authable $auth, NonceInterface $nonce ) {
 
@@ -104,7 +104,7 @@ class SupportRequest implements RequestHandleable {
 			if ( ! $response ) {
 				$this->response(
 					sprintf(
-						// translators: s is the destination email address.
+					// translators: s is the destination email address.
 						esc_html__(
 							'Sorry seems something went wrong sending your support request please, try again or contact us at %s',
 							'translationmanager'
@@ -136,7 +136,7 @@ class SupportRequest implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-			   && $this->auth->request_is_valid( $this->nonce );
+		       && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**
@@ -173,11 +173,11 @@ class SupportRequest implements RequestHandleable {
 	/**
 	 * Build Mail Data
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array $data The submitted data.
 	 *
 	 * @return array The data to use for the email.
+	 * @since 1.0.0
+	 *
 	 */
 	private function build_mail_data( array $data ) {
 
@@ -198,9 +198,8 @@ class SupportRequest implements RequestHandleable {
 	/**
 	 * Validate Upload Files
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return array A list of valid files path.
+	 * @since 1.0.0
 	 */
 	private function validate_upload_files() {
 
@@ -245,14 +244,13 @@ class SupportRequest implements RequestHandleable {
 	/**
 	 * Set Response for the request
 	 *
-	 * @since 1.0.0
-	 *
-	 * @see   StorableNotice
-	 *
 	 * @param string $message  The message string.
 	 * @param string $severity The severity.
 	 *
 	 * @return void
+	 * @see   StorableNotice
+	 *
+	 * @since 1.0.0
 	 */
 	private function response( $message, $severity ) {
 

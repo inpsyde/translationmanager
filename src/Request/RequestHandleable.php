@@ -13,27 +13,24 @@ interface RequestHandleable {
 	/**
 	 * Handle Request Request
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function handle();
 
 	/**
 	 * Check if request is valid
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool True if a valid request, false otherwise
+	 * @since 1.0.0
 	 */
 	public function is_valid_request();
 
 	/**
 	 * Retrieve the requested data
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return array A list of data retrieved by the request
+	 * @since 1.0.0
 	 */
 	public function request_data();
 }

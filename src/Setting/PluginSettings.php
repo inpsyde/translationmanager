@@ -61,9 +61,8 @@ class PluginSettings {
 	/**
 	 * Register all settings.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function register_setting() {
 
@@ -137,9 +136,9 @@ class PluginSettings {
 	/**
 	 * Create input field for option.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array $field Must have a "name" key with the actual option name/id as its value.
+	 *
+	 * @since 1.0.0
 	 */
 	public function dispatch_input_text( $field ) {
 
@@ -153,9 +152,8 @@ class PluginSettings {
 	/**
 	 * Has Fresh Token
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool
+	 * @since 1.0.0
 	 */
 	public function has_refresh_token() {
 
@@ -164,8 +162,6 @@ class PluginSettings {
 
 	/**
 	 * Simplify adding setting fields.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @param string   $id        Slug-name to identify the field. Used in the 'id' attribute of
 	 *                            tags.
@@ -186,6 +182,7 @@ class PluginSettings {
 	 * @type string    $class     CSS Class to be added to the `<tr>` element when the
 	 *                             field is output.
 	 * }
+	 * @since 1.0.0
 	 */
 	private function add_settings_field( $id, $title, $callback, $page, $section, $args = [] ) {
 

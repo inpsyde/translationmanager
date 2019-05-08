@@ -19,6 +19,7 @@ use Translationmanager\Setting\PluginSettings;
  * @package Translationmanager\Pages
  */
 class ServiceProvider implements BootstrappableServiceProvider {
+
 	/**
 	 * @inheritdoc
 	 */

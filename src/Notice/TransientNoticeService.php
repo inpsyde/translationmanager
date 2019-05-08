@@ -19,9 +19,8 @@ class TransientNoticeService {
 	/**
 	 * Notice
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return \Translationmanager\Notice\TransientNotice Everytime the same instance
+	 * @since 1.0.0
 	 */
 	private static function notice() {
 
@@ -37,12 +36,11 @@ class TransientNoticeService {
 	/**
 	 * Add Notice
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $message  The message to store.
 	 * @param string $severity The severity under which the message must be stored.
 	 *
 	 * @return bool True on success false on failure
+	 * @since 1.0.0
 	 */
 	public static function add_notice( $message, $severity ) {
 
@@ -52,9 +50,8 @@ class TransientNoticeService {
 	/**
 	 * Show Messages
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public static function show() {
 

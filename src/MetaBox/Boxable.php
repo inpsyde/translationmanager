@@ -19,27 +19,24 @@ interface Boxable {
 	/**
 	 * Add Metabox
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function add_meta_box();
 
 	/**
 	 * Render Meta Box Template
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function render_template();
 
 	/**
 	 * Create Nonce Instance
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return \Brain\Nonces\WpNonce The nonce instance
+	 * @since 1.0.0
 	 */
 	public function nonce();
 }

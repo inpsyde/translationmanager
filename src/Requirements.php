@@ -37,9 +37,8 @@ class Requirements {
 	/**
 	 * Check PHP Version
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool True if the current version is less than the minimum required version
+	 * @since 1.0.0
 	 */
 	public function is_php_version_ok() {
 

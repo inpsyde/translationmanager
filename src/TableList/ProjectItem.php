@@ -87,7 +87,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return array The filtered sortable columns
 	 * @since 1.0.0
-	 *
 	 */
 	public function get_sortable_columns() {
 
@@ -159,7 +158,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return array A list of \WP_Post elements
 	 * @since 1.0.0
-	 *
 	 */
 	public function items() {
 
@@ -239,7 +237,6 @@ final class ProjectItem extends TableList {
 	 * @param \WP_Post $item The post instance.
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	protected function column_default( $item, $column_name ) {
 
@@ -297,7 +294,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return array A list of Languages instances
 	 * @since 1.0.0
-	 *
 	 */
 	private function languages() {
 
@@ -319,7 +315,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return array An array of \WP_Users instances
 	 * @since 1.0.0
-	 *
 	 */
 	private function users() {
 
@@ -343,7 +338,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return array The filtered users
 	 * @since 1.0.0
-	 *
 	 */
 	private function filter_users_by_items( $users ) {
 
@@ -373,7 +367,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
 	 */
 	private function target_language_filter_template() {
 
@@ -393,7 +386,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
 	 */
 	private function added_by_filter_template() {
 
@@ -421,7 +413,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return array The filtered columns
 	 * @since 1.0.0
-	 *
 	 */
 	private function column_project( $columns ) {
 
@@ -463,7 +454,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return array The filtered columns
 	 * @since 1.0.0
-	 *
 	 */
 	private function column_languages( $columns ) {
 
@@ -478,7 +468,6 @@ final class ProjectItem extends TableList {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
 	 */
 	private function set_pagination() {
 
@@ -507,7 +496,6 @@ final class ProjectItem extends TableList {
 	 * @since 1.0.0
 	 *
 	 * @throw \RuntimeException In case the wp term cannot be retrieved
-	 *
 	 */
 	private function project_id_by_request() {
 

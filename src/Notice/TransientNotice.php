@@ -28,9 +28,9 @@ class TransientNotice implements StorableNotice {
 	/**
 	 * TransientNotice constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $key The transient key.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( $key ) {
 
@@ -79,9 +79,8 @@ class TransientNotice implements StorableNotice {
 	/**
 	 * Clean the transient
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	private function clean() {
 
@@ -91,12 +90,11 @@ class TransientNotice implements StorableNotice {
 	/**
 	 * Get the cleaned version of the messages
 	 *
-	 * @since 1.0.0
-	 *
+	 * @return array
 	 * @uses  wp_kses_post() To clean the message string.
 	 * @uses  sanitize_key() To clean the severity key.
 	 *
-	 * @return array
+	 * @since 1.0.0
 	 */
 	private function get_cleaned_transient_messages() {
 
@@ -116,9 +114,8 @@ class TransientNotice implements StorableNotice {
 	/**
 	 * Get the transient
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return array The transient value
+	 * @since 1.0.0
 	 */
 	private function transient() {
 

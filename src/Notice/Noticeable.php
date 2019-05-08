@@ -19,9 +19,8 @@ interface Noticeable {
 	/**
 	 * Show Messages
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void All of the messages will be showed
+	 * @since 1.0.0
 	 */
 	public function show();
 }

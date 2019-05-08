@@ -2,8 +2,13 @@
 
 namespace Translationmanager\Functions;
 
+use Exception;
 use Translationmanager\Api;
+use Translationmanager\Domain\Project;
+use Translationmanager\Plugin;
 use Translationmanager\Setting\PluginSettings;
+use Translationmanager\TranslationData;
+use WP_Term;
 
 /**
  * Retrieve API Instance
@@ -11,11 +16,10 @@ use Translationmanager\Setting\PluginSettings;
  * Helper function to retrieve the instance of the translation manager api.
  * It's always return the same instance.
  *
- * @api
- *
+ * @return \Translationmanager\Api The Instance
  * @since 1.0.0
  *
- * @return \Translationmanager\Api The Instance
+ * @api
  */
 function translationmanager_api() {
 
@@ -26,9 +30,9 @@ function translationmanager_api() {
 		/**
 		 * Filter Api URL
 		 *
-		 * @since 1.0.0
-		 *
 		 * @param string The api url.
+		 *
+		 * @since 1.0.0
 		 */
 		$url = apply_filters( 'translationmanager_api_url', 'http://api.eurotext.de/api/v1' );
 
@@ -45,22 +49,21 @@ function translationmanager_api() {
 /**
  * Update Project
  *
- * @api
- *
- * @since 1.0.0
- *
- * @throws \Exception In case the project ID cannot be retrieved.
- *
  * @param \WP_Term $project The project term to use to retrieve the info to update the post.
  *
  * @return void
+ * @throws Exception In case the project ID cannot be retrieved.
+ *
+ * @since 1.0.0
+ *
+ * @api
  */
-function project_update( \WP_Term $project ) {
+function project_update( WP_Term $project ) {
 
 	$project_id = get_term_meta( $project->term_id, '_translationmanager_order_id', true );
 
 	if ( ! $project_id ) {
-		throw new \Exception(
+		throw new Exception(
 			esc_html__( 'Invalid Project ID, impossible to update the project', 'translationmanager' )
 		);
 	}
@@ -75,15 +78,15 @@ function project_update( \WP_Term $project ) {
 				continue;
 			}
 
-			foreach ( $item['data'] as $incomingTranslation ) {
-				$translation = \Translationmanager\TranslationData::for_incoming( (array) $incomingTranslation );
+			foreach ( $item['data'] as $incoming_translation ) {
+				$translation = TranslationData::for_incoming( (array) $incoming_translation );
 
 				/**
 				 * Fires for each item or translation received from the API.
 				 *
 				 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
 				 */
-				do_action('translationmanager_incoming_data', $translation );
+				do_action( 'translationmanager_incoming_data', $translation );
 
 				/**
 				 * Filters the updater that executed have to return the updated post
@@ -110,17 +113,16 @@ function project_update( \WP_Term $project ) {
 /**
  * Retrieve project items statuses
  *
- * @api
- *
- * @since 1.0.0
- *
- * @throws \Translationmanager\Api\ApiException If something went wrong during retrieve the project data.
- *
  * @param \WP_Term $project_term The term instance to retrieve the project data.
  *
  * @return array All posts statues
+ * @throws \Translationmanager\Api\ApiException If something went wrong during retrieve the project data.
+ *
+ * @since 1.0.0
+ *
+ * @api
  */
-function project_items_statuses( \WP_Term $project_term ) {
+function project_items_statuses( WP_Term $project_term ) {
 
 	$statuses = [];
 
@@ -145,17 +147,16 @@ function project_items_statuses( \WP_Term $project_term ) {
 /**
  * Get Global Project status
  *
- * @api
- *
- * @since 1.0.0
- *
+ * @return string The translation status label
  * @throws \Translationmanager\Api\ApiException If something went wrong during retrieve the project data.
  *
  * param \WP_Term $project_term The term instance to retrieve the project data.
  *
- * @return string The translation status label
+ * @api
+ *
+ * @since 1.0.0
  */
-function project_global_status( \WP_Term $project_term ) {
+function project_global_status( WP_Term $project_term ) {
 
 	$statuses = array_values( project_items_statuses( $project_term ) );
 
@@ -178,25 +179,24 @@ function project_global_status( \WP_Term $project_term ) {
 /**
  * Project Order
  *
- * @api
- *
- * @since 1.0.0
- *
- * @throws \Translationmanager\Api\ApiException In case the project cannot be created.
- *
  * @param \WP_Term $project_term The project term associated.
  *
  * @return mixed Whatever the update_term_meta returns
+ * @throws \Translationmanager\Api\ApiException In case the project cannot be created.
+ *
+ * @since 1.0.0
+ *
+ * @api
  */
-function create_project_order( \WP_Term $project_term ) {
+function create_project_order( WP_Term $project_term ) {
 
 	global $wp_version;
 
-	$project = new \Translationmanager\Domain\Project(
+	$project = new Project(
 		'WordPress',
 		$wp_version,
 		'translationmanager',
-		( new \Translationmanager\Plugin() )->version(),
+		( new Plugin() )->version(),
 		$project_term->name
 	);
 
@@ -220,7 +220,7 @@ function create_project_order( \WP_Term $project_term ) {
 
 		$source_site_id = get_current_blog_id();
 
-		$data = \Translationmanager\TranslationData::for_outgoing(
+		$data = TranslationData::for_outgoing(
 			$source_post,
 			$source_site_id,
 			$post->_translationmanager_target_id,
@@ -232,9 +232,9 @@ function create_project_order( \WP_Term $project_term ) {
 		 *
 		 * Data can be edited in place by listeners.
 		 *
-		 * @since 1.0.0
-		 *
 		 * @param \Translationmanager\TranslationData $data
+		 *
+		 * @since 1.0.0
 		 */
 		do_action_ref_array( 'translationmanager_outgoing_data', [ $data ] );
 

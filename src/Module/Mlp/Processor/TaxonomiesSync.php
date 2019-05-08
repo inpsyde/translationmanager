@@ -80,6 +80,7 @@ class TaxonomiesSync implements IncomingProcessor {
 				[ 'post', 'page' ],
 				get_post_types( [
 					'public'   => true,
+					// TODO Do not only allow build in, but let third party developers to add a list of post types to support
 					'_builtin' => false,
 				] )
 			),

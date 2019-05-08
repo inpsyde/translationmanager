@@ -51,11 +51,10 @@ class Project implements Pageable {
 	 *
 	 * Since we are adding an hidden page the `<title>` tag will miss the page title.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $admin_title The page title in the admin.
 	 *
 	 * @return string The page title
+	 * @since 1.0.0
 	 */
 	public function reintroduce_page_title_in_header( $admin_title ) {
 
@@ -114,9 +113,8 @@ class Project implements Pageable {
 	/**
 	 * Requires Additional Stuffs
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	private function requires() {
 
@@ -126,9 +124,8 @@ class Project implements Pageable {
 	/**
 	 * Check if the current screen is the post type
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool True if the current screen is for the post type, false otherwise
+	 * @since 1.0.0
 	 */
 	private function is_project_item_cpt() {
 

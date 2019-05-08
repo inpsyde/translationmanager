@@ -30,9 +30,9 @@ class Translationmanager {
 	/**
 	 * Translationmanager constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Plugin $plugin Instance of the class.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Plugin $plugin ) {
 
@@ -42,9 +42,8 @@ class Translationmanager {
 	/**
 	 * Register Style
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function register_style() {
 

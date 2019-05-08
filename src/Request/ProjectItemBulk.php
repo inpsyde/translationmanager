@@ -78,9 +78,8 @@ class ProjectItemBulk implements RequestHandleable {
 	/**
 	 * Trash Requested Posts
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	private function trash_posts() {
 

@@ -54,7 +54,6 @@ class Translationmanager implements Information {
 	 *
 	 * @return string
 	 * @since 1.0.0
-	 *
 	 */
 	public function title() {
 
@@ -91,7 +90,6 @@ class Translationmanager implements Information {
 	 * @since 1.0.0
 	 *
 	 * @todo  Seems the api `info/whoami` returns null in case of success. Need fix.
-	 *
 	 */
 	public function apiConnectionTest() {
 
@@ -122,7 +120,6 @@ class Translationmanager implements Information {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
 	 */
 	public function activatedLanguages() {
 

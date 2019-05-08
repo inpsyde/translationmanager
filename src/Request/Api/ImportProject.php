@@ -53,10 +53,10 @@ class ImportProject implements RequestHandleable {
 	/**
 	 * ImportProject constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
 	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Authable $auth, NonceInterface $nonce ) {
 
@@ -127,7 +127,7 @@ class ImportProject implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-			   && $this->auth->request_is_valid( $this->nonce );
+		       && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**

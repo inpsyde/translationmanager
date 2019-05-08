@@ -56,6 +56,7 @@ class Translation implements Boxable {
 			'translationmanager_translation_box_screen',
 			get_post_types( [
 				'show_ui'  => true,
+				// TODO Do not only allow build in, but let third party developers to add a list of post types to support
 				'_builtin' => true,
 			] )
 		);
@@ -98,7 +99,6 @@ class Translation implements Boxable {
 	 * @since 1.0.0
 	 *
 	 * Actually used within the translation-box.php only, don't remove it.
-	 *
 	 */
 	private function get_customer_key() {
 
@@ -110,7 +110,6 @@ class Translation implements Boxable {
 	 *
 	 * @return mixed Whatever the get_term_field returns
 	 * @since 1.0.0
-	 *
 	 */
 	private function get_recent_project_name() {
 
@@ -126,7 +125,6 @@ class Translation implements Boxable {
 	 *
 	 * @return mixed Whatever the get_user_meta returns
 	 * @since 1.0.0
-	 *
 	 */
 	private function get_recent_project_id() {
 
@@ -138,7 +136,6 @@ class Translation implements Boxable {
 	 *
 	 * @return string The button label string
 	 * @since 1.0.0
-	 *
 	 */
 	private function context_button_label() {
 

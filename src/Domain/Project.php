@@ -81,8 +81,6 @@ class Project {
 	/**
 	 * Project constructor.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $system         Current CMS or Framework.
 	 * @param string $system_version Version of the CMS or Framework.
 	 * @param string $plugin         Plugin or extension allowing API communication.
@@ -90,6 +88,8 @@ class Project {
 	 * @param string $name           Project Name.
 	 * @param string $type           Could be "order" or "quote".
 	 * @param null   $callback       URL to trigger after translation is completely done.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct(
 		$system,
@@ -111,9 +111,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return array
+	 * @since 1.0.0
 	 */
 	public function to_header_array() {
 
@@ -129,9 +128,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public function get_system() {
 
@@ -139,9 +137,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public function get_system_version() {
 
@@ -149,9 +146,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public function get_plugin() {
 
@@ -159,9 +155,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public function get_plugin_version() {
 
@@ -169,9 +164,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public function get_name() {
 
@@ -179,9 +173,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	public function get_type() {
 
@@ -189,9 +182,8 @@ class Project {
 	}
 
 	/**
-	 * @since 1.0.0
-	 *
 	 * @return null|string
+	 * @since 1.0.0
 	 */
 	public function get_callback() {
 

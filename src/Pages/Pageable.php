@@ -19,18 +19,16 @@ interface Pageable {
 	/**
 	 * Register Page
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function add_page();
 
 	/**
 	 * Render Page Template
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function render_template();
 }

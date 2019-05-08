@@ -6,6 +6,11 @@ use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\TranslationData;
 
+/**
+ * Class PostThumbSync
+ *
+ * @package Translationmanager\Module\Mlp\Processor
+ */
 class PostThumbSync implements IncomingProcessor {
 
 	/**

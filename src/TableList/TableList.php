@@ -29,11 +29,10 @@ class TableList extends \WP_List_Table {
 	/**
 	 * Column Title
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \WP_Post $item The post from which retrieve the title.
 	 *
 	 * @return string The post title
+	 * @since 1.0.0
 	 */
 	public function column_title( $item ) {
 

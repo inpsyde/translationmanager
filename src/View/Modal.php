@@ -63,7 +63,6 @@ class Modal implements Viewable {
 	 * @param \Translationmanager\Plugin $plugin   Instance of the plugin.
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	public function __construct( $title, $icon, callable $callback, Plugin $plugin ) {
 
@@ -127,7 +126,6 @@ class Modal implements Viewable {
 	 * @param string $label The label to show to the user.
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	public function modal_trigger( $label ) {
 

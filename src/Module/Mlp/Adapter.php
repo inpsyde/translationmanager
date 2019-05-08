@@ -97,11 +97,12 @@ class Adapter {
 	/**
 	 * Adapter constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $plugin_file       The plugin file path from which retrieve the plugin info.
 	 * @param mixed  $site_relations    The instance for site relations.
 	 * @param mixed  $content_relations The instance for content relations.
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	public function __construct( $plugin_file, $site_relations, $content_relations ) {
 
@@ -123,9 +124,8 @@ class Adapter {
 	/**
 	 * The currently active mlp version
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return int The major version number of the currently active mlp
+	 * @since 1.0.0
 	 */
 	public function version() {
 
@@ -135,11 +135,10 @@ class Adapter {
 	/**
 	 * Blog Language
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param int $site_id The id of the site for which retrieve the isocode language.
 	 *
 	 * @return string The iso code language of the site
+	 * @since 1.0.0
 	 */
 	public function blog_language( $site_id, $short = false ) {
 
@@ -160,11 +159,10 @@ class Adapter {
 	/**
 	 * Language label
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $lang_iso The iso code of the language for which retrieve the label.
 	 *
 	 * @return string The label name of the language by his iso code
+	 * @since 1.0.0
 	 */
 	public function lang_by_iso( $lang_iso ) {
 
@@ -191,11 +189,10 @@ class Adapter {
 	/**
 	 * Related Sites
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param int $site_id The site for which retrieve the related sites.
 	 *
 	 * @return int[] A list of related sites ID's
+	 * @since 1.0.0
 	 */
 	public function related_sites( $site_id ) {
 
@@ -210,13 +207,12 @@ class Adapter {
 	/**
 	 * Relations
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param int    $site_id   The site for which retrieve the relations.
 	 * @param int    $object_id The object ID for which retrieve the relations.
 	 * @param string $type      The type of the object for which retrieve the relations.
 	 *
 	 * @return array The relations of the object type
+	 * @since 1.0.0
 	 */
 	public function relations( $site_id, $object_id, $type = 'post' ) {
 
@@ -231,8 +227,6 @@ class Adapter {
 	/**
 	 * Set Relationship for objects
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param int    $source_site_id    Source blog ID.
 	 * @param int    $target_site_id    Target blog ID.
 	 * @param int    $source_content_id Source post ID or term taxonomy ID.
@@ -240,6 +234,7 @@ class Adapter {
 	 * @param string $type              Content type.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function set_relation(
 		$source_site_id,

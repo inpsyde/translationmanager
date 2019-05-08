@@ -8,7 +8,9 @@
 
 namespace Translationmanager\Auth;
 
+use Brain\Nonces\NonceInterface;
 use Brain\Nonces\RequestGlobalsContext;
+use WP_User;
 
 /**
  * Class Validator
@@ -21,7 +23,7 @@ class Validator implements Authable {
 	/**
 	 * @inheritdoc
 	 */
-	public function can( \WP_User $user, $capability ) {
+	public function can( WP_User $user, $capability ) {
 
 		return user_can( $user, $capability );
 	}
@@ -29,7 +31,7 @@ class Validator implements Authable {
 	/**
 	 * @inheritdoc
 	 */
-	public function request_is_valid( \Brain\Nonces\NonceInterface $nonce ) {
+	public function request_is_valid( NonceInterface $nonce ) {
 
 		return $nonce->validate( new RequestGlobalsContext() );
 	}

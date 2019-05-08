@@ -56,10 +56,10 @@ class AddTranslation implements RequestHandleable {
 	/**
 	 * AddTranslation constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
 	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Authable $auth, NonceInterface $nonce, ProjectHandler $project_handler ) {
 
@@ -107,12 +107,13 @@ class AddTranslation implements RequestHandleable {
 			 * In that case it will neither add things to the project/project
 			 * nor redirect to the project- / project-view.
 			 *
-			 * @see wp_insert_post() actions and filter to access each single transation that is added to project.
-			 *
 			 * @param bool  $valid                       Initially true and can be torn to false to stop adding items to the project.
 			 * @param int   $project                     ID of the project (actually a term ID).
 			 * @param int   $post_ID                     The post ID for the post to translate.
 			 * @param array $translationmanager_language The language in which translate the post.
+			 *
+			 * @see wp_insert_post() actions and filter to access each single transation that is added to project.
+			 *
 			 */
 			$valid = apply_filters(
 				'translationmanager_filter_before_add_to_project',
@@ -189,7 +190,7 @@ class AddTranslation implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-			   && $this->auth->request_is_valid( $this->nonce );
+		       && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**

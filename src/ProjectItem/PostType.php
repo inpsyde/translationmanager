@@ -27,9 +27,9 @@ class PostType {
 	/**
 	 * ProjectItem constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Plugin $plugin The plugin instance.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Plugin $plugin ) {
 
@@ -39,9 +39,8 @@ class PostType {
 	/**
 	 * Register The post type
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function register_post_type() {
 
@@ -78,12 +77,11 @@ class PostType {
 	/**
 	 * Filter Row Actions for Project post type
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array    $actions The actions list.
 	 * @param \WP_Post $post    The current post.
 	 *
 	 * @return array The filtered list
+	 * @since 1.0.0
 	 */
 	public function filter_row_actions( array $actions, \WP_Post $post ) {
 
@@ -105,12 +103,11 @@ class PostType {
 	/**
 	 * Remove states from Project Post Type
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array    $post_states The post states.
 	 * @param \WP_Post $post        The post object.
 	 *
 	 * @return array Empty array if the post type is the project one.
+	 * @since 1.0.0
 	 */
 	public function remove_states_from_table_list( array $post_states, \WP_Post $post ) {
 
@@ -124,18 +121,18 @@ class PostType {
 	/**
 	 * Filter Bulk Messages
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param array $bulk_messages The messages list for the post type.
 	 * @param array $bulk_counts   The quantity of the posts based on states.
 	 *
 	 * @return array The filtered bulk messages
+	 * @since 1.0.0
 	 */
 	public function filter_bulk_updated_messages( array $bulk_messages, array $bulk_counts ) {
 
 		$locked_msg = 1 === $bulk_counts['locked']
 			? esc_html__( '1 page not updated, somebody is editing it.', 'translationmanager' )
-			: _n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.', $bulk_counts['locked'] );
+			: _n( '%s page not updated, somebody is editing it.', '%s pages not updated, somebody is editing them.',
+				$bulk_counts['locked'] );
 
 		$bulk_messages['project_item'] = [
 			'updated'   => esc_html__( 'Project has been updated.', 'translationmanager' ),
@@ -179,9 +176,8 @@ class PostType {
 	/**
 	 * Check if the current screen is the post type
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool True if the current screen is for the post type, false otherwise
+	 * @since 1.0.0
 	 */
 	private function is_project_item_cpt() {
 

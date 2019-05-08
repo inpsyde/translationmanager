@@ -22,11 +22,10 @@ interface IntegrableServiceProvider extends ServiceProviderInterface {
 	/**
 	 * Integrate service into plugin
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Pimple\Container $container The container instance.
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function integrate( Container $container );
 }

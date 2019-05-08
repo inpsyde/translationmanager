@@ -65,7 +65,11 @@ class PostSaver implements IncomingProcessor {
 
 		$sync_on_update = true;
 		if ( $data->get_meta( PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE ) ) {
-			$sync_on_update = apply_filters( 'translationmanager_mlp_module_sync_post_relation_on_update', true, $data );
+			$sync_on_update = apply_filters(
+				'translationmanager_mlp_module_sync_post_relation_on_update',
+				true,
+				$data
+			);
 		}
 
 		// If it is a new post creation, link created post with source post.

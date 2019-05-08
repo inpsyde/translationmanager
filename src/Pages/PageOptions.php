@@ -44,14 +44,17 @@ class PageOptions implements Pageable {
 		'update_categories',
 	];
 
+	/**
+	 * @var \Translationmanager\Plugin
+	 */
 	private $plugin;
 
 	/**
 	 * PageOptions constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param Plugin $plugin The plugin instance.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Plugin $plugin ) {
 
@@ -120,9 +123,8 @@ class PageOptions implements Pageable {
 	/**
 	 * Enqueue Style
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function enqueue_style() {
 
@@ -138,9 +140,8 @@ class PageOptions implements Pageable {
 	/**
 	 * Enqueue Script
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function enqueue_script() {
 
@@ -156,9 +157,8 @@ class PageOptions implements Pageable {
 	/**
 	 * Handle Support Request
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function handle_support_request_form() {
 

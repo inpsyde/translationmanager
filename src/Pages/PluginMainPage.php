@@ -45,9 +45,9 @@ class PluginMainPage implements Pageable {
 	/**
 	 * PluginMainPage constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Plugin $plugin The instance of the plugin.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( Plugin $plugin ) {
 

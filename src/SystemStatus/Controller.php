@@ -34,9 +34,8 @@ class Controller {
 	/**
 	 * Create the System Status instance with information
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return \Inpsyde\SystemStatus\Builder
+	 * @since 1.0.0
 	 */
 	public function system_status() {
 
@@ -46,14 +45,13 @@ class Controller {
 	/**
 	 * Render System Status
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function render() {
 
 		$this->system_status()
-			 ->build()
-			 ->render();
+		     ->build()
+		     ->render();
 	}
 }

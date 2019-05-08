@@ -8,6 +8,8 @@
 
 namespace Translationmanager\Api;
 
+use RuntimeException;
+
 /**
  * Class ApiException
  *
@@ -16,6 +18,6 @@ namespace Translationmanager\Api;
  * @since   1.0.0
  * @package Translationmanager\Api
  */
-class ApiException extends \RuntimeException {
+class ApiException extends RuntimeException {
 
 }

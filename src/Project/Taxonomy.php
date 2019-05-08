@@ -80,7 +80,6 @@ class Taxonomy {
 	 *        Is there a way to move into an action?
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	public function order_project_box_form( $value ) {
 
@@ -101,7 +100,6 @@ class Taxonomy {
 	 *
 	 * @return \Brain\Nonces\WpNonce The nonce instance
 	 * @since 1.0.0
-	 *
 	 */
 	public function nonce() {
 
@@ -113,7 +111,6 @@ class Taxonomy {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
 	 */
 	public function project_info_save() {
 
@@ -222,7 +219,6 @@ class Taxonomy {
 	 *
 	 * @return array The columns content
 	 * @since 1.0.0
-	 *
 	 */
 	public static function modify_row_actions( $columns, $term ) {
 
@@ -245,7 +241,6 @@ class Taxonomy {
 	 *
 	 * @return string
 	 * @since 1.0.0
-	 *
 	 */
 	public static function get_project_link( $project ) {
 
@@ -267,7 +262,6 @@ class Taxonomy {
 	 *
 	 * @return array
 	 * @since 1.0.0
-	 *
 	 */
 	public static function modify_columns( $columns ) {
 
@@ -292,7 +286,6 @@ class Taxonomy {
 	 *
 	 * @return string
 	 * @since 1.0.0
-	 *
 	 */
 	public static function print_column( $value, $column_name, $term_id ) {
 
@@ -327,7 +320,6 @@ class Taxonomy {
 	 *
 	 * @return string The filtered location
 	 * @since 1.0.0
-	 *
 	 */
 	public function edit_term_link( $location, $term_id, $taxonomy ) {
 

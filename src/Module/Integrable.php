@@ -19,9 +19,8 @@ interface Integrable {
 	/**
 	 * Integrate Module
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function integrate();
 }

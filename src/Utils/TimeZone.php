@@ -9,6 +9,7 @@ namespace Translationmanager\Utils;
  * @package Translationmanager\Utils
  */
 class TimeZone {
+
 	/**
 	 * Time Zone
 	 *
@@ -32,10 +33,9 @@ class TimeZone {
 	/**
 	 * Get the Time Zone
 	 *
+	 * @return \DateTimeZone The \DateTimeZone instance
 	 * @since  1.0.0
 	 * @access public
-	 *
-	 * @return \DateTimeZone The \DateTimeZone instance
 	 */
 	public function value() {
 
@@ -47,9 +47,8 @@ class TimeZone {
 	 *
 	 * Retrieve the timezone based on WordPress option.
 	 *
-	 * @since  1.0.0
-	 *
 	 * @return string The timezone option value
+	 * @since  1.0.0
 	 */
 	private function get_timezone_option() {
 
@@ -68,9 +67,8 @@ class TimeZone {
 	/**
 	 * Create the time zone instance
 	 *
-	 * @since  1.0.0
-	 *
 	 * @return \DateTimeZone
+	 * @since  1.0.0
 	 */
 	private function create_timezone() {
 

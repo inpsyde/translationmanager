@@ -7,6 +7,7 @@ use Translationmanager\Api\Project;
 use Translationmanager\Api\ProjectItem;
 
 class Api {
+
 	/**
 	 * Project
 	 *
@@ -55,11 +56,11 @@ class Api {
 	/**
 	 * Api constructor.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string      $api_key    Key of the customer.
 	 * @param string      $plugin_key Key of the plugin.
 	 * @param null|string $base_url   URL to the API.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( $api_key, $plugin_key, $base_url ) {
 
@@ -71,15 +72,14 @@ class Api {
 	/**
 	 * POST Request
 	 *
-	 * @since 1.0.0
-	 *
-	 * @throws ApiException In case something with the request went wrong.
-	 *
 	 * @param string $path    The url to call.
 	 * @param array  $data    The data to send.
 	 * @param array  $headers The header for the request.
 	 *
 	 * @return mixed Depending on the data response.
+	 * @throws ApiException In case something with the request went wrong.
+	 *
+	 * @since 1.0.0
 	 */
 	public function post( $path, $data = array(), $headers = [] ) {
 
@@ -89,15 +89,14 @@ class Api {
 	/**
 	 * GET Request
 	 *
-	 * @since 1.0.0
-	 *
-	 * @throws ApiException In case something with the request went wrong.
-	 *
 	 * @param string $path    The url to call.
 	 * @param array  $data    The data to send.
 	 * @param array  $headers The header for the request.
 	 *
 	 * @return mixed Depending on the data response.
+	 * @throws ApiException In case something with the request went wrong.
+	 *
+	 * @since 1.0.0
 	 */
 	public function get( $path, $data = [], $headers = [] ) {
 
@@ -107,13 +106,12 @@ class Api {
 	/**
 	 * Patch
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $path    The path for the call.
 	 * @param array  $data    The body content.
 	 * @param array  $headers The headers for the server.
 	 *
 	 * @return mixed Depending on the data response.
+	 * @since 1.0.0
 	 */
 	public function patch( $path, $data = [], $headers ) {
 
@@ -125,9 +123,8 @@ class Api {
 	 *
 	 * This function always create the instance once.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return Project A new instance of a project class
+	 * @since 1.0.0
 	 */
 	public function project() {
 
@@ -143,9 +140,8 @@ class Api {
 	 *
 	 * This function always create the instance once.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return ProjectItem A new instance of a projectItem class
+	 * @since 1.0.0
 	 */
 	public function project_item() {
 
@@ -159,16 +155,15 @@ class Api {
 	/**
 	 * Request
 	 *
-	 * @since 1.0.0
-	 *
-	 * @throws ApiException In case something with the request went wrong.
-	 *
 	 * @param string $method  The method to use for the api.
 	 * @param string $path    The url to call.
 	 * @param array  $data    The data to send.
 	 * @param array  $headers The header for the request.
 	 *
 	 * @return mixed Depending on the data response. NULL if json_decode fails.
+	 * @throws ApiException In case something with the request went wrong.
+	 *
+	 * @since 1.0.0
 	 */
 	private function request( $method, $path, $data = [], $headers = [] ) {
 
@@ -246,13 +241,12 @@ class Api {
 	/**
 	 * Url
 	 *
-	 * @since 1.0.0
-	 *
-	 * @throws \InvalidArgumentException If the $path parameter isn't a valid string.
-	 *
 	 * @param string $path Retrieve the url based on request path.
 	 *
 	 * @return string The url for the request
+	 * @throws \InvalidArgumentException If the $path parameter isn't a valid string.
+	 *
+	 * @since 1.0.0
 	 */
 	private function get_url( $path ) {
 

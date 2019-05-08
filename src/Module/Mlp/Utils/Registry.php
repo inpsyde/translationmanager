@@ -12,7 +12,7 @@ class Registry {
 	private $services = [];
 
 	/**
-	 * @param  \Mlp_Content_Relations $content_relations
+	 * @param \Translationmanager\Module\Mlp\Adapter $adapter
 	 *
 	 * @return ImageCopier
 	 */

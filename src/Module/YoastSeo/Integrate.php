@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Integrate
  *
@@ -19,43 +20,13 @@ use Translationmanager\Module\Integrable;
 class Integrate implements Integrable {
 
 	/**
-	 * Plugin File
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The plugin file path
-	 */
-	private $plugin_file;
-
-	/**
-	 * Integrate constructor
-	 *
-	 * @param string $plugin_file The plugin file path.
-	 *
-	 * @since 1.0.0
-	 *
-	 */
-	public function __construct( $plugin_file ) {
-
-		$this->plugin_file = $plugin_file;
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function integrate() {
 
-		$wordpress_seo = new \Translationmanager\Module\YoastSeo\WordPressSeo();
+		$wordpress_seo = new WordPressSeo();
 
-		add_action( 'translationmanager_outgoing_data', [
-			$wordpress_seo,
-			'prepare_outgoing',
-		] );
-		add_action(
-			'translationmanager_updated_post',
-			[ $wordpress_seo, 'update_translation', ],
-			10,
-			2
-		);
+		add_action( 'translationmanager_outgoing_data', [ $wordpress_seo, 'prepare_outgoing' ] );
+		add_action( 'translationmanager_updated_post', [ $wordpress_seo, 'update_translation' ], 10, 2 );
 	}
 }

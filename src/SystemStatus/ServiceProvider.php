@@ -19,6 +19,7 @@ use Translationmanager\Service\BootstrappableServiceProvider;
  * @package Translationmanager\SystemStatus
  */
 class ServiceProvider implements BootstrappableServiceProvider {
+
 	/**
 	 * @inheritdoc
 	 */

@@ -1,5 +1,4 @@
 <?php
-declare( strict_types=1 );
 
 /**
  * ServiceProvider
@@ -38,6 +37,7 @@ use Translationmanager\Service\BootstrappableServiceProvider;
  * @package Translationmanager\TableList
  */
 class ServiceProvider implements BootstrappableServiceProvider {
+
 	/**
 	 * @inheritdoc
 	 */

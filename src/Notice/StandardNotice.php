@@ -37,10 +37,10 @@ class StandardNotice implements Noticeable {
 	/**
 	 * StandardNotice constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $message  The notice message.
 	 * @param string $severity The severity for the notice. Can be: success, warning or error.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( $message, $severity ) {
 

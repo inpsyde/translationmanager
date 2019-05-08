@@ -49,10 +49,11 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 	/**
 	 * UpdateProjectOrderStatus constructor
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
 	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	public function __construct( Authable $auth, NonceInterface $nonce ) {
 
@@ -131,7 +132,7 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 		}
 
 		return $this->auth->can( wp_get_current_user(), self::$capability )
-			   && $this->auth->request_is_valid( $this->nonce );
+		       && $this->auth->request_is_valid( $this->nonce );
 	}
 
 	/**
@@ -150,12 +151,11 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 	/**
 	 * Update Order Status
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \WP_Term $project The term object for which update the meta.
 	 * @param string   $status  The value to store as meta value.
 	 *
 	 * @return mixed Whatever the *_term_meta returns
+	 * @since 1.0.0
 	 */
 	private function update_project_status( \WP_Term $project, $status ) {
 
@@ -165,11 +165,10 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 	/**
 	 * Update Order Status Last Update Date
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \WP_Term $project The term object for which update the meta.
 	 *
 	 * @return mixed Whatever the *_term_meta returns
+	 * @since 1.0.0
 	 */
 	private function update_project_status_request_date( \WP_Term $project ) {
 
@@ -183,11 +182,10 @@ class UpdateProjectOrderStatus implements RequestHandleable {
 	/**
 	 * Update Project Translated at meta
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param \WP_Term $project The term object for which update the meta.
 	 *
 	 * @return mixed Whatever the *_term_meta returns
+	 * @since 1.0.0
 	 */
 	private function update_project_translated_at( \WP_Term $project ) {
 

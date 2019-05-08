@@ -59,6 +59,8 @@ class Connector {
 		$this->processors->process( $data, $this->adapter );
 	}
 
+	// TODO Split the connector and move `prepare_outgoing` and `update_translations` outside in another class?
+
 	/**
 	 * @wp-hook translationmanager_post_updater
 	 *
@@ -74,6 +76,10 @@ class Connector {
 	 *
 	 * @return null|\WP_Post
 	 */
+	// TODO Move outside in the same class of `prepare_updater`, rename it to `update_translation`
+	//      The `Connection` class then will get injected the new class will where the two methods are defined,
+	//      This method instead will be renamed to call the `update_translation` and return the newly post object.
+	//      This way we'll have a consistent interface to process outgoing and incoing data.
 	public function update_translations( TranslationData $data ) {
 
 		if ( ! $data->is_valid() ) {

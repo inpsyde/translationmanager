@@ -65,7 +65,6 @@ class Integrate implements Integrable {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
 	 */
 	private function mlp2() {
 
@@ -91,7 +90,6 @@ class Integrate implements Integrable {
 	 *
 	 * @return void
 	 * @since 1.0.0
-	 *
 	 */
 	private function mlp3() {
 
@@ -112,7 +110,6 @@ class Integrate implements Integrable {
 	 * @param \Translationmanager\Module\Mlp\Adapter $adapter The instance of the adapter.
 	 *
 	 * @since 1.0.0
-	 *
 	 */
 	public static function action( Adapter $adapter ) {
 
@@ -121,12 +118,7 @@ class Integrate implements Integrable {
 		// TM interface hooks to let it know about the environment.
 		add_filter( 'translationmanager_current_language', [ $connector, 'current_language' ] );
 		add_filter( 'translationmanager_languages', [ $connector, 'related_sites' ], 10, 2 );
-		add_filter(
-			'translation_manager_languages_by_site_id',
-			[ $connector, 'related_sites', ],
-			10,
-			2
-		);
+		add_filter( 'translation_manager_languages_by_site_id', [ $connector, 'related_sites' ], 10, 2 );
 
 		// Setup the translation workflow.
 		add_action( 'translationmanager_outgoing_data', [ $connector, 'prepare_outgoing' ] );

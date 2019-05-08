@@ -18,13 +18,12 @@ class ProjectHandler {
 	/**
 	 * Create Project
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $title The title for the project.
 	 *
+	 * @return int The newly term ID
 	 * @throws \Exception In case the project cannot be created.
 	 *
-	 * @return int The newly term ID
+	 * @since 1.0.0
 	 */
 	public function create_project( $title ) {
 
@@ -46,11 +45,11 @@ class ProjectHandler {
 	/**
 	 * Add Translation
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param int $project The project ID.
 	 * @param int $post_id The post associated to this project item.
 	 * @param int $lang_id The language id of the project item.
+	 *
+	 * @since 1.0.0
 	 */
 	public function add_translation( $project, $post_id, $lang_id ) {
 
@@ -80,11 +79,10 @@ class ProjectHandler {
 	/**
 	 * Create new Project by Date
 	 *
-	 * @since 1.0.0
-	 *
+	 * @return int The new project ID
 	 * @throws \Exception In case the project cannot be created.
 	 *
-	 * @return int The new project ID
+	 * @since 1.0.0
 	 */
 	public static function create_project_using_date() {
 

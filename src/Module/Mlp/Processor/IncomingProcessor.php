@@ -10,12 +10,11 @@ interface IncomingProcessor extends Processor {
 	/**
 	 * Process Incoming
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param TranslationData                        $data
 	 * @param \Translationmanager\Module\Mlp\Adapter $adapter
 	 *
 	 * @return void
+	 * @since 1.0.0
 	 */
 	public function process_incoming( TranslationData $data, Adapter $adapter );
 }
