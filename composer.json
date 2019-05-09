@@ -3,6 +3,7 @@
     "description": "WordPress Plugin to connect to the Eurotext REST API.",
     "license": "proprietary",
     "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
     "config": {
         "sort-packages": true
     },

@@ -7,7 +7,7 @@
  * Author:      Inpsyde
  * Author URI:  https://inpsyde.com/
  * Text Domain: translationmanager
- * License:     GPL2
+ * License:     GPLv2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires PHP: 5.6
  * Domain Path: /languages

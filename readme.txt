@@ -36,6 +36,7 @@ Just send an email to info@eurotext.de and request one.
 == Changelog ==
 = X.X.X =
 * Fix brand typo
+* Fix missing text domains in some strings
 
 = 1.2.1 =
 * Fixing the bug where not all translations could be received
