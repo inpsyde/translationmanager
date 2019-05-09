@@ -4,10 +4,12 @@ namespace Translationmanager\Functions;
 
 use Exception;
 use Translationmanager\Api;
+use Translationmanager\Api\ApiException;
 use Translationmanager\Domain\Project;
 use Translationmanager\Plugin;
 use Translationmanager\Setting\PluginSettings;
 use Translationmanager\TranslationData;
+use WP_Post;
 use WP_Term;
 
 /**
@@ -21,35 +23,35 @@ use WP_Term;
  *
  * @api
  */
-function translationmanager_api() {
+function translationmanager_api()
+{
+    static $api = null;
 
-	static $api = null;
+    if (null === $api) {
 
-	if ( null === $api ) {
+        /**
+         * Filter Api URL
+         *
+         * @param string The api url.
+         *
+         * @since 1.0.0
+         */
+        $url = apply_filters('translationmanager_api_url', 'http://sandbox.api.eurotext.de/api/v1');
 
-		/**
-		 * Filter Api URL
-		 *
-		 * @param string The api url.
-		 *
-		 * @since 1.0.0
-		 */
-		$url = apply_filters( 'translationmanager_api_url', 'http://api.eurotext.de/api/v1' );
+        $api = new Api(
+            get_option(PluginSettings::API_KEY),
+            'b37270d25d5b3fccf137f7462774fe76',
+            $url
+        );
+    }
 
-		$api = new Api(
-			get_option( PluginSettings::API_KEY ),
-			'b37270d25d5b3fccf137f7462774fe76',
-			$url
-		);
-	}
-
-	return $api;
+    return $api;
 }
 
 /**
  * Update Project
  *
- * @param \WP_Term $project The project term to use to retrieve the info to update the post.
+ * @param WP_Term $project The project term to use to retrieve the info to update the post.
  *
  * @return void
  * @throws Exception In case the project ID cannot be retrieved.
@@ -58,97 +60,97 @@ function translationmanager_api() {
  *
  * @api
  */
-function project_update( WP_Term $project ) {
+function project_update(WP_Term $project)
+{
+    $project_id = get_term_meta($project->term_id, '_translationmanager_order_id', true);
 
-	$project_id = get_term_meta( $project->term_id, '_translationmanager_order_id', true );
+    if (!$project_id) {
+        throw new Exception(
+            esc_html__('Invalid Project ID, impossible to update the project', 'translationmanager')
+        );
+    }
 
-	if ( ! $project_id ) {
-		throw new Exception(
-			esc_html__( 'Invalid Project ID, impossible to update the project', 'translationmanager' )
-		);
-	}
+    $translation_data = translationmanager_api()->project()->get($project_id);
 
-	$translation_data = translationmanager_api()->project()->get( $project_id );
+    foreach ($translation_data['items'] as $item_id => $items) {
+        foreach ($items as &$item) {
+            $item = translationmanager_api()->project_item()->get($project_id, $item_id);
 
-	foreach ( $translation_data['items'] as $item_id => $items ) {
-		foreach ( $items as &$item ) {
-			$item = translationmanager_api()->project_item()->get( $project_id, $item_id );
+            if (!$item || !isset($item['data']) || !is_array($item['data'])) {
+                continue;
+            }
 
-			if ( ! $item || ! isset( $item['data'] ) || ! is_array( $item['data'] ) ) {
-				continue;
-			}
+            foreach ($item['data'] as $incoming_translation) {
+                $translation = TranslationData::for_incoming((array)$incoming_translation);
 
-			foreach ( $item['data'] as $incoming_translation ) {
-				$translation = TranslationData::for_incoming( (array) $incoming_translation );
+                /**
+                 * Fires for each item or translation received from the API.
+                 *
+                 * @param TranslationData $translation Translation data built from data received from API
+                 */
+                do_action('translationmanager_incoming_data', $translation);
 
-				/**
-				 * Fires for each item or translation received from the API.
-				 *
-				 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
-				 */
-				do_action( 'translationmanager_incoming_data', $translation );
+                /**
+                 * Filters the updater that executed have to return the updated post
+                 */
+                $updater = apply_filters('translationmanager_post_updater', null, $translation);
 
-				/**
-				 * Filters the updater that executed have to return the updated post
-				 */
-				$updater = apply_filters( 'translationmanager_post_updater', null, $translation );
+                $post = is_callable($updater) ? $updater($translation) : null;
 
-				$post = is_callable( $updater ) ? $updater( $translation ) : null;
+                if ($post instanceof WP_Post) {
 
-				if ( $post instanceof \WP_Post ) {
-
-					/**
-					 * Fires after the updater has updated the post.
-					 *
-					 * @param \WP_Post                            $post        Just updated post
-					 * @param \Translationmanager\TranslationData $translation Translation data built from data received from API
-					 */
-					do_action( 'translationmanager_updated_post', $post, $translation );
-				}
-			}
-		}
-	}
+                    /**
+                     * Fires after the updater has updated the post.
+                     *
+                     * @param WP_Post $post Just updated post
+                     * @param TranslationData $translation Translation data built from data received from API
+                     */
+                    do_action('translationmanager_updated_post', $post, $translation);
+                }
+            }
+        }
+    }
 }
 
 /**
  * Retrieve project items statuses
  *
- * @param \WP_Term $project_term The term instance to retrieve the project data.
+ * @param WP_Term $project_term The term instance to retrieve the project data.
  *
  * @return array All posts statues
- * @throws \Translationmanager\Api\ApiException If something went wrong during retrieve the project data.
+ * @throws ApiException If something went wrong during retrieve the project data.
  *
  * @since 1.0.0
  *
  * @api
  */
-function project_items_statuses( WP_Term $project_term ) {
+function project_items_statuses(WP_Term $project_term)
+{
+    $statuses = [];
 
-	$statuses = [];
+    $project_id = get_term_meta($project_term->term_id, '_translationmanager_order_id', true);
+    if (!$project_id) {
+        return $statuses;
+    }
 
-	$project_id = get_term_meta( $project_term->term_id, '_translationmanager_order_id', true );
-	if ( ! $project_id ) {
-		return $statuses;
-	}
+    $translation_data = translationmanager_api()->project()->get($project_id);
+    if (!$translation_data) {
+        return $statuses;
+    }
 
-	$translation_data = translationmanager_api()->project()->get( $project_id );
-	if ( ! $translation_data ) {
-		return $statuses;
-	}
+    foreach ($translation_data['items'] as $item) {
+        $slug = sanitize_title($item[0]['post_title']);
+        $statuses[$slug] = $item['status'];
+    }
 
-	foreach ( $translation_data['items'] as $item ) {
-		$slug              = sanitize_title( $item[0]['post_title'] );
-		$statuses[ $slug ] = $item['status'];
-	}
-
-	return $statuses;
+    return $statuses;
 }
 
 /**
  * Get Global Project status
  *
  * @return string The translation status label
- * @throws \Translationmanager\Api\ApiException If something went wrong during retrieve the project data.
+ * @throws ApiException If something went wrong during retrieve the project data.
  *
  * param \WP_Term $project_term The term instance to retrieve the project data.
  *
@@ -156,112 +158,113 @@ function project_items_statuses( WP_Term $project_term ) {
  *
  * @since 1.0.0
  */
-function project_global_status( WP_Term $project_term ) {
+function project_global_status(WP_Term $project_term)
+{
+    $statuses = array_values(project_items_statuses($project_term));
 
-	$statuses = array_values( project_items_statuses( $project_term ) );
+    if (!$statuses) {
+        return esc_html__('Unknown Status', 'translationmanager');
+    }
 
-	if ( ! $statuses ) {
-		return esc_html__( 'Unknown Status', 'translationmanager' );
-	}
+    $unique_statuses = array_unique($statuses);
 
-	$unique_statuses = array_unique( $statuses );
+    $status = array_filter($unique_statuses, function ($status) {
 
-	$status = array_filter( $unique_statuses, function ( $status ) {
+        return 'finished' === $status;
+    });
 
-		return 'finished' === $status;
-	} );
-
-	return ( count( $status ) === count( $unique_statuses )
-		? esc_html__( 'Finished', 'translationmanager' )
-		: esc_html__( 'In Progress', 'translationmanager' ) );
+    return (count($status) === count($unique_statuses)
+        ? esc_html__('Finished', 'translationmanager')
+        : esc_html__('In Progress', 'translationmanager'));
 }
 
 /**
  * Project Order
  *
- * @param \WP_Term $project_term The project term associated.
+ * @param WP_Term $project_term The project term associated.
  *
  * @return mixed Whatever the update_term_meta returns
- * @throws \Translationmanager\Api\ApiException In case the project cannot be created.
+ * @throws ApiException In case the project cannot be created.
  *
  * @since 1.0.0
  *
  * @api
  */
-function create_project_order( WP_Term $project_term ) {
+function create_project_order(WP_Term $project_term)
+{
+    global $wp_version;
 
-	global $wp_version;
+    $project = new Project(
+        'WordPress',
+        $wp_version,
+        'translationmanager',
+        (new Plugin())->version(),
+        $project_term->name
+    );
 
-	$project = new Project(
-		'WordPress',
-		$wp_version,
-		'translationmanager',
-		( new Plugin() )->version(),
-		$project_term->name
-	);
+    $project_id = translationmanager_api()->project()->create($project);
 
-	$project_id = translationmanager_api()->project()->create( $project );
+    // Posts get collected by post type.
+    $post_types = [];
+    $languages = get_languages();
+    $project_items = get_project_items($project_term->term_id);
 
-	// Posts get collected by post type.
-	$post_types    = [];
-	$languages     = get_languages();
-	$project_items = get_project_items( $project_term->term_id );
+    foreach ($project_items as $post) {
+        if (!$post->_translationmanager_post_id || !isset($languages[$post->_translationmanager_target_id])) {
+            // Invalid state, try next one.
+            continue;
+        }
 
-	foreach ( $project_items as $post ) {
-		if ( ! $post->_translationmanager_post_id || ! isset( $languages[ $post->_translationmanager_target_id ] ) ) {
-			// Invalid state, try next one.
-			continue;
-		}
+        $source_post = get_post($post->_translationmanager_post_id);
+        if (!$source_post) {
+            continue;
+        }
 
-		$source_post = get_post( $post->_translationmanager_post_id );
-		if ( ! $source_post ) {
-			continue;
-		}
+        $source_site_id = get_current_blog_id();
 
-		$source_site_id = get_current_blog_id();
+        $data = TranslationData::for_outgoing(
+            $source_post,
+            $source_site_id,
+            $post->_translationmanager_target_id,
+            $languages[$post->_translationmanager_target_id]->get_lang_code()
+        );
 
-		$data = TranslationData::for_outgoing(
-			$source_post,
-			$source_site_id,
-			$post->_translationmanager_target_id,
-			$languages[ $post->_translationmanager_target_id ]->get_lang_code()
-		);
+        /**
+         * Fires before translation data is transfered to the API.
+         *
+         * Data can be edited in place by listeners.
+         *
+         * @param TranslationData $data
+         *
+         * @since 1.0.0
+         */
+        do_action_ref_array('translationmanager_outgoing_data', [$data]);
 
-		/**
-		 * Fires before translation data is transfered to the API.
-		 *
-		 * Data can be edited in place by listeners.
-		 *
-		 * @param \Translationmanager\TranslationData $data
-		 *
-		 * @since 1.0.0
-		 */
-		do_action_ref_array( 'translationmanager_outgoing_data', [ $data ] );
+        $post_types[$languages[$post->_translationmanager_target_id]->get_lang_code()][$source_post->post_type][] = $data->to_array();
+    }
 
-		$post_types[ $languages[ $post->_translationmanager_target_id ]->get_lang_code() ][ $source_post->post_type ][] = $data->to_array();
-	}
+    foreach ($post_types as $post_type_target_language => $post_types_data) {
+        foreach ($post_types_data as $post_type_name => $post_type_content) {
+            translationmanager_api()
+                ->project_item()
+                ->create($project_id, $post_type_name, $post_type_target_language,
+                    $post_type_content);
+        }
+    }
 
-	foreach ( $post_types as $post_type_target_language => $post_types_data ) {
-		foreach ( $post_types_data as $post_type_name => $post_type_content ) {
-			translationmanager_api()
-				->project_item()
-				->create( $project_id, $post_type_name, $post_type_target_language, $post_type_content );
-		}
-	}
+    translationmanager_api()
+        ->project()
+        ->update_status($project_id, 'new');
 
-	translationmanager_api()
-		->project()
-		->update_status( $project_id, 'new' );
+    // Set the order ID.
+    if (!set_unique_term_meta($project_term, '_translationmanager_order_id', $project_id)) {
+        return false;
+    }
 
-	// Set the order ID.
-	if ( ! set_unique_term_meta( $project_term, '_translationmanager_order_id', $project_id ) ) {
-		return false;
-	}
-
-	// Set the default order status.
-	return set_unique_term_meta(
-		$project_term,
-		'_translationmanager_order_status',
-		esc_html__( 'In Transition', 'translationmanager' )
-	);
+    // Set the default order status.
+    return set_unique_term_meta(
+        $project_term,
+        '_translationmanager_order_status',
+        esc_html__('In Transition', 'translationmanager')
+    );
 }

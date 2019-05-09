@@ -14,13 +14,14 @@ namespace Translationmanager\View;
  * @since   1.0.0
  * @package Translationmanager\View
  */
-interface Viewable {
+interface Viewable
+{
 
-	/**
-	 * Render Template
-	 *
-	 * @return void This function render the template
-	 * @since 1.0.0
-	 */
-	public function render();
+    /**
+     * Render Template
+     *
+     * @return void This function render the template
+     * @since 1.0.0
+     */
+    public function render();
 }

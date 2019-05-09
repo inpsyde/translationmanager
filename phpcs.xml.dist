@@ -1,24 +1,34 @@
 <?xml version="1.0"?>
-<ruleset name="Inpsyde Coding Standards Configuration">
-    <!-- See https://github.com/inpsyde/Codex/tree/master/tools/CodeSniffer -->
-    <!-- See https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml -->
+<ruleset name="Translation Manager">
 
-    <!-- Set a description for this ruleset. -->
-    <description>Coding standards for the Eurotext WordPress Plugins.</description>
+    <description>Translation Manager Rules</description>
 
     <file>./src</file>
-    <file>./inc</file>
-    <file>./translationmanager.php</file>
+    <exclude-pattern>./tests/</exclude-pattern>
 
-    <config name="text_domain" value="translationmanager"/>
-    <config name="testVersion" value="5.6-7.1"/>
+    <config name="testVersion" value="5.6-"/>
     <config name="ignore_warnings_on_exit" value="1"/>
+    <config name="text_domain" value="translationmanager"/>
 
-    <!-- Include the WordPress ruleset, with exclusions. -->
-    <rule ref="WordPress">
-        <exclude name="WordPress.WhiteSpace.DisallowInlineTabs" />
-        <exclude name="WordPress.WhiteSpace.PrecisionAlignment" />
+    <rule ref="Inpsyde">
+        <exclude name="NeutronStandard.StrictTypes.RequireStrictTypes.StrictTypes"/>
+        <exclude name="Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType"/>
+        <exclude name="Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType"/>
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+        <exclude name="Inpsyde.CodeQuality.VariablesName.SnakeCaseVar"/>
+        <exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+        <exclude name="Inpsyde.CodeQuality.NoAccessors.NoGetter"/>
+        <exclude name="Inpsyde.CodeQuality.NoAccessors.NoSetter"/>
+        <exclude name="Inpsyde.CodeQuality.ElementNameMinimalLength.TooShort"/>
+        <exclude name="Inpsyde.CodeQuality.LineLength.TooLong"/>
+        <exclude name="Inpsyde.CodeQuality.NoElse.ElseFound"/>
+        <exclude name="Inpsyde.CodeQuality.FunctionLength.TooLong"/>
+        <exclude name="Generic.Metrics.NestingLevel.TooHigh"/>
+        <exclude name="NeutronStandard.Arrays.DisallowLongformArray.LongformArray"/>
     </rule>
 
-    <rule ref="PHPCompatibility" />
+    <rule ref="PHPCompatibility">
+        <exclude name="PHPCompatibility.Interfaces.NewInterfaces.jsonserializableFound"/>
+    </rule>
+
 </ruleset>

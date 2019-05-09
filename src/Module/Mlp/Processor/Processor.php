@@ -7,6 +7,7 @@ namespace Translationmanager\Module\Mlp\Processor;
  *
  * @package Translationmanager\Module\Mlp\Processor
  */
-interface Processor {
+interface Processor
+{
 
 }

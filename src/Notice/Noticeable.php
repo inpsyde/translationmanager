@@ -14,13 +14,14 @@ namespace Translationmanager\Notice;
  * @since   1.0.0
  * @package Translationmanager\Notice
  */
-interface Noticeable {
+interface Noticeable
+{
 
-	/**
-	 * Show Messages
-	 *
-	 * @return void All of the messages will be showed
-	 * @since 1.0.0
-	 */
-	public function show();
+    /**
+     * Show Messages
+     *
+     * @return void All of the messages will be showed
+     * @since 1.0.0
+     */
+    public function show();
 }

@@ -3,6 +3,8 @@
 namespace Translationmanager\Request\Api;
 
 use Brain\Nonces\NonceInterface;
+use DateTime;
+use Exception;
 use Translationmanager\Request\RequestHandleable;
 use Translationmanager\Auth\Authable;
 use function Translationmanager\Functions\project_global_status;
@@ -10,6 +12,7 @@ use function Translationmanager\Functions\redirect_admin_page_network;
 use function Translationmanager\Functions\set_unique_term_meta;
 use Translationmanager\Notice\TransientNoticeService;
 use Translationmanager\Utils\TimeZone;
+use WP_Term;
 
 /**
  * Class UpdateProjectOrderStatus
@@ -17,182 +20,192 @@ use Translationmanager\Utils\TimeZone;
  * @since   1.0.0
  * @package Translationmanager\Request
  */
-class UpdateProjectOrderStatus implements RequestHandleable {
+class UpdateProjectOrderStatus implements RequestHandleable
+{
+    /**
+     * Auth
+     *
+     * @since 1.0.0
+     *
+     * @var Authable The instance to use to verify the request
+     */
+    private $auth;
 
-	/**
-	 * Auth
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Translationmanager\Auth\Authable The instance to use to verify the request
-	 */
-	private $auth;
+    /**
+     * Nonce
+     *
+     * @since 1.0.0
+     *
+     * @var NonceInterface The instance to use to verify the request
+     */
+    private $nonce;
 
-	/**
-	 * Nonce
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Brain\Nonces\NonceInterface The instance to use to verify the request
-	 */
-	private $nonce;
+    /**
+     * User Capability
+     *
+     * @since 1.0.0
+     *
+     * @var string The capability needed by the user to be able to perform the request
+     */
+    private static $capability = 'manage_options';
 
-	/**
-	 * User Capability
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The capability needed by the user to be able to perform the request
-	 */
-	private static $capability = 'manage_options';
+    /**
+     * UpdateProjectOrderStatus constructor
+     *
+     * @param Authable $auth The instance to use to verify the request.
+     * @param NonceInterface $nonce The instance to use to verify the request.
+     *
+     * @since 1.0.0
+     */
+    public function __construct(Authable $auth, NonceInterface $nonce)
+    {
+        $this->auth = $auth;
+        $this->nonce = $nonce;
+    }
 
-	/**
-	 * UpdateProjectOrderStatus constructor
-	 *
-	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
-	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
-	 *
-	 * @since 1.0.0
-	 *
-	 */
-	public function __construct( Authable $auth, NonceInterface $nonce ) {
+    /**
+     * @inheritdoc
+     */
+    public function handle()
+    {
+        if (!$this->is_valid_request()) {
+            return;
+        }
 
-		$this->auth  = $auth;
-		$this->nonce = $nonce;
-	}
+        $data = $this->request_data();
 
-	/**
-	 * @inheritdoc
-	 */
-	public function handle() {
+        if (!$data) {
+            TransientNoticeService::add_notice(
+                esc_html__('Request is valid but no data found in it.', 'translationmanager'),
+                'error'
+            );
 
-		if ( ! $this->is_valid_request() ) {
-			return;
-		}
+            return;
+        }
 
-		$data = $this->request_data();
+        try {
+            // Retrieve the project info.
+            $project = get_term(
+                $data['translationmanager_project_id'],
+                'translationmanager_project'
+            );
+            if (!$project instanceof WP_Term) {
+                TransientNoticeService::add_notice(
+                    esc_html__('Invalid Project Name.', 'translationmanager'),
+                    'error'
+                );
 
-		if ( ! $data ) {
-			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
+                return;
+            }
 
-			return;
-		}
+            // Retrieve the generic status for the translation.
+            $status = project_global_status($project);
 
-		try {
-			// Retrieve the project info.
-			$project = get_term( $data['translationmanager_project_id'], 'translationmanager_project' );
-			if ( ! $project instanceof \WP_Term ) {
-				TransientNoticeService::add_notice( esc_html__( 'Invalid Project Name.' ), 'error' );
+            $this->update_project_status($project, $status);
+            $this->update_project_status_request_date($project);
 
-				return;
-			}
+            if ('finished' === strtolower($status)) {
+                // Update the translated at meta.
+                $this->update_project_translated_at($project);
+            }
 
-			// Retrieve the generic status for the translation.
-			$status = project_global_status( $project );
+            $notice = [
+                'message' => esc_html__('Project Updated.', 'translationmanager'),
+                'severity' => 'success',
+            ];
+        } catch (Exception $e) {
+            $notice = [
+                'message' => $e->getMessage(),
+                'severity' => 'error',
+            ];
+        }
 
-			$this->update_project_status( $project, $status );
-			$this->update_project_status_request_date( $project );
+        TransientNoticeService::add_notice($notice['message'], $notice['severity']);
 
-			if ( 'finished' === strtolower( $status ) ) {
-				// Update the translated at meta.
-				$this->update_project_translated_at( $project );
-			}
+        redirect_admin_page_network(
+            'admin.php',
+            [
+                'page' => 'translationmanager-project',
+                'translationmanager_project_id' => $project->term_id,
+                'post_type' => 'project_item',
+                'project_status' => $status,
+            ]
+        );
+    }
 
-			$notice = [
-				'message'  => esc_html__( 'Project Updated.', 'translationmanager' ),
-				'severity' => 'success',
-			];
-		} catch ( \Exception $e ) {
-			$notice = [
-				'message'  => $e->getMessage(),
-				'severity' => 'error',
-			];
-		}
+    /**
+     * @inheritdoc
+     */
+    public function is_valid_request()
+    {
+        if (!isset($_POST['translationmanager_action_project_update'])) { // phpcs:ignore
+            return false;
+        }
 
-		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
+        return $this->auth->can(wp_get_current_user(), self::$capability)
+            && $this->auth->request_is_valid($this->nonce);
+    }
 
-		redirect_admin_page_network(
-			'admin.php',
-			[
-				'page'                          => 'translationmanager-project',
-				'translationmanager_project_id' => $project->term_id,
-				'post_type'                     => 'project_item',
-				'project_status'                => $status,
-			]
-		);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function request_data()
+    {
+        return filter_input_array(
+            INPUT_POST,
+            [
+                'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
+            ]
+        );
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function is_valid_request() {
+    /**
+     * Update Order Status
+     *
+     * @param WP_Term $project The term object for which update the meta.
+     * @param string $status The value to store as meta value.
+     *
+     * @return mixed Whatever the *_term_meta returns
+     * @since 1.0.0
+     */
+    private function update_project_status(WP_Term $project, $status)
+    {
+        return set_unique_term_meta($project, '_translationmanager_order_status', $status);
+    }
 
-		if ( ! isset( $_POST['translationmanager_action_project_update'] ) ) { // phpcs:ignore
-			return false;
-		}
+    /**
+     * Update Order Status Last Update Date
+     *
+     * @param WP_Term $project The term object for which update the meta.
+     *
+     * @return mixed Whatever the *_term_meta returns
+     * @throws Exception
+     * @since 1.0.0
+     */
+    private function update_project_status_request_date(WP_Term $project)
+    {
+        return set_unique_term_meta(
+            $project,
+            '_translationmanager_order_status_last_update_request',
+            (new DateTime('now', (new TimeZone())->value()))->getTimestamp()
+        );
+    }
 
-		return $this->auth->can( wp_get_current_user(), self::$capability )
-		       && $this->auth->request_is_valid( $this->nonce );
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function request_data() {
-
-		return filter_input_array(
-			INPUT_POST,
-			[
-				'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
-			]
-		);
-	}
-
-	/**
-	 * Update Order Status
-	 *
-	 * @param \WP_Term $project The term object for which update the meta.
-	 * @param string   $status  The value to store as meta value.
-	 *
-	 * @return mixed Whatever the *_term_meta returns
-	 * @since 1.0.0
-	 */
-	private function update_project_status( \WP_Term $project, $status ) {
-
-		return set_unique_term_meta( $project, '_translationmanager_order_status', $status );
-	}
-
-	/**
-	 * Update Order Status Last Update Date
-	 *
-	 * @param \WP_Term $project The term object for which update the meta.
-	 *
-	 * @return mixed Whatever the *_term_meta returns
-	 * @since 1.0.0
-	 */
-	private function update_project_status_request_date( \WP_Term $project ) {
-
-		return set_unique_term_meta(
-			$project,
-			'_translationmanager_order_status_last_update_request',
-			( new \DateTime( 'now', ( new TimeZone() )->value() ) )->getTimestamp()
-		);
-	}
-
-	/**
-	 * Update Project Translated at meta
-	 *
-	 * @param \WP_Term $project The term object for which update the meta.
-	 *
-	 * @return mixed Whatever the *_term_meta returns
-	 * @since 1.0.0
-	 */
-	private function update_project_translated_at( \WP_Term $project ) {
-
-		return set_unique_term_meta(
-			$project,
-			'_translationmanager_order_translated_at',
-			( new \DateTime( 'now', ( new TimeZone() )->value() ) )->getTimestamp()
-		);
-	}
+    /**
+     * Update Project Translated at meta
+     *
+     * @param WP_Term $project The term object for which update the meta.
+     *
+     * @return mixed Whatever the *_term_meta returns
+     * @throws Exception
+     * @since 1.0.0
+     */
+    private function update_project_translated_at(WP_Term $project)
+    {
+        return set_unique_term_meta(
+            $project,
+            '_translationmanager_order_translated_at',
+            (new DateTime('now', (new TimeZone())->value()))->getTimestamp()
+        );
+    }
 }

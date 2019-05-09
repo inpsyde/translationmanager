@@ -18,135 +18,135 @@ use Translationmanager\Plugin;
  * @since   1.0.0
  * @package Translationmanager\Module
  */
-class Loader {
+class Loader
+{
+    /**
+     * Plugin
+     *
+     * @since 1.0.0
+     *
+     * @var \Translationmanager\Plugin Instance of the plugin class
+     */
+    private $plugin;
 
-	/**
-	 * Plugin
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Translationmanager\Plugin Instance of the plugin class
-	 */
-	private $plugin;
+    /**
+     * Installed Plugins List
+     *
+     * @since 1.0.0
+     *
+     * @var array The list of the installed and active plugins
+     */
+    private $installed_plugins;
 
-	/**
-	 * Installed Plugins List
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array The list of the installed and active plugins
-	 */
-	private $installed_plugins;
+    /**
+     * List of Integrations
+     *
+     * @var array List of integrations
+     */
+    private $integrations = [];
 
-	/**
-	 * List of Integrations
-	 *
-	 * @var array List of integrations
-	 */
-	private $integrations = [];
+    /**
+     * Modules
+     *
+     * @since 1.0.0
+     *
+     * @var array List of modules we want to integrate if the relative plugins are active
+     */
+    private static $modules = [
+        'multilingualpress' => Mlp\Integrator::class,
+        'multilingual-press' => Mlp\Integrator::class,
+        'wp-seo' => YoastSeo\Integrator::class,
+    ];
 
-	/**
-	 * Modules
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array List of modules we want to integrate if the relative plugins are active
-	 */
-	private static $modules = [
-		'multilingualpress'  => Mlp\Integrate::class,
-		'multilingual-press' => Mlp\Integrate::class,
-		'wp-seo'             => YoastSeo\Integrate::class,
-	];
+    /**
+     * Loader constructor
+     *
+     * @param \Translationmanager\Plugin $plugin Instance of the plugin class.
+     * @param array $installed_plugins The list of the installed and active
+     *                                                      plugins.
+     *
+     * @since 1.0.0
+     */
+    public function __construct(Plugin $plugin, array $installed_plugins)
+    {
+        $this->plugin = $plugin;
+        $this->installed_plugins = $installed_plugins;
+    }
 
-	/**
-	 * Loader constructor
-	 *
-	 * @param \Translationmanager\Plugin $plugin            Instance of the plugin class.
-	 * @param array                      $installed_plugins The list of the installed and active
-	 *                                                      plugins.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct( Plugin $plugin, array $installed_plugins ) {
+    /**
+     * Register the integrations instances
+     *
+     * @return $this For concatenation
+     * @since 1.0.0
+     */
+    public function register_integrations()
+    {
+        $this->installed_plugins_as_assoc_list();
 
-		$this->plugin            = $plugin;
-		$this->installed_plugins = $installed_plugins;
-	}
+        $available_modules = $this->available_modules();
 
-	/**
-	 * Register the integrations instances
-	 *
-	 * @return $this For concatenation
-	 * @since 1.0.0
-	 */
-	public function register_integrations() {
+        // Are there modules installed?
+        if (!$available_modules) {
+            return $this;
+        }
 
-		$this->installed_plugins_as_assoc_list();
+        foreach ($available_modules as $module) {
+            if (!class_exists(self::$modules[$module])) {
+                continue;
+            }
 
-		$available_modules = $this->available_modules();
+            $this->integrations[] = new self::$modules[$module](
+                $this->installed_plugins[$module]
+            );
+        }
 
-		// Are there modules installed?
-		if ( ! $available_modules ) {
-			return $this;
-		}
+        return $this;
+    }
 
-		foreach ( $available_modules as $module ) {
-			if ( ! class_exists( self::$modules[ $module ] ) ) {
-				continue;
-			}
+    /**
+     * Integrate every module
+     *
+     * @return $this For concatenation
+     * @since 1.0.0
+     */
+    public function integrate()
+    {
+        foreach ($this->integrations as $integration) {
+            $integration->integrate();
+        }
 
-			$this->integrations[] = new self::$modules[ $module ](
-				$this->installed_plugins[ $module ]
-			);
-		}
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * From index to assoc installed plugins list
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    private function installed_plugins_as_assoc_list()
+    {
+        $list = [];
 
-	/**
-	 * Integrate every module
-	 *
-	 * @return $this For concatenation
-	 * @since 1.0.0
-	 */
-	public function integrate() {
+        foreach ($this->installed_plugins as $plugin) {
+            $basename = basename($plugin, '.php');
 
-		foreach ( $this->integrations as $integration ) {
-			$integration->integrate();
-		}
+            $list[$basename] = $plugin;
+        }
 
-		return $this;
-	}
+        $this->installed_plugins = $list;
+    }
 
-	/**
-	 * From index to assoc installed plugins list
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	private function installed_plugins_as_assoc_list() {
+    /**
+     * Has Modules
+     *
+     * @return array The existing modules installed or empty array if no modules are available
+     * @since 1.0.0
+     */
+    private function available_modules()
+    {
+        return array_intersect(array_keys($this->installed_plugins), array_keys(self::$modules));
 
-		$list = [];
-
-		foreach ( $this->installed_plugins as $plugin ) {
-			$basename = basename( $plugin, '.php' );
-
-			$list[ $basename ] = $plugin;
-		}
-
-		$this->installed_plugins = $list;
-	}
-
-	/**
-	 * Has Modules
-	 *
-	 * @return array The existing modules installed or empty array if no modules are available
-	 * @since 1.0.0
-	 */
-	private function available_modules() {
-
-		return array_intersect( array_keys( $this->installed_plugins ), array_keys( self::$modules ) );
-
-		// TODO Add a filter in order to allow third party devs to inject their modules
-	}
+        // TODO Add a filter in order to allow third party devs to inject their modules
+    }
 }

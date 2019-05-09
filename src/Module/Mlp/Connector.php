@@ -8,140 +8,141 @@ namespace Translationmanager\Module\Mlp;
 
 use Translationmanager\Domain\Language;
 use Translationmanager\TranslationData;
+use WP_Post;
 
-class Connector {
+class Connector
+{
+    const DATA_NAMESPACE = 'MLP';
 
-	const DATA_NAMESPACE = 'MLP';
+    /**
+     * @var Utils\Registry;
+     */
+    private static $utils;
 
-	/**
-	 * @var Utils\Registry;
-	 */
-	private static $utils;
+    /**
+     * @var ProcessorBus
+     */
+    private $processors;
 
-	/**
-	 * @var ProcessorBus
-	 */
-	private $processors;
+    /**
+     * @var \Translationmanager\Module\Mlp\Adapter
+     */
+    private $adapter;
 
-	/**
-	 * @var \Translationmanager\Module\Mlp\Adapter
-	 */
-	private $adapter;
+    /**
+     * @return Utils\Registry
+     */
+    public static function utils()
+    {
+        self::$utils or self::$utils = new Utils\Registry();
 
-	/**
-	 * @return Utils\Registry
-	 */
-	public static function utils() {
+        return self::$utils;
+    }
 
-		self::$utils or self::$utils = new Utils\Registry();
+    /**
+     * Connector constructor
+     *
+     * @param \Translationmanager\Module\Mlp\Adapter $adapter
+     */
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+    }
 
-		return self::$utils;
-	}
+    /**
+     * @wp-hook translationmanager_outgoing_data
+     *
+     * @param TranslationData $data
+     */
+    public function prepare_outgoing(TranslationData $data)
+    {
+        $this->init_processors();
+        $this->processors->process($data, $this->adapter);
+    }
 
-	/**
-	 * Connector constructor
-	 *
-	 * @param \Translationmanager\Module\Mlp\Adapter $adapter
-	 */
-	public function __construct( Adapter $adapter ) {
+    // TODO Split the connector and move `prepare_outgoing` and `update_translations` outside in another class?
 
-		$this->adapter = $adapter;
-	}
+    /**
+     * @wp-hook translationmanager_post_updater
+     *
+     * @return callable
+     */
+    public function prepare_updater()
+    {
+        return [$this, 'update_translations'];
+    }
 
-	/**
-	 * @wp-hook translationmanager_outgoing_data
-	 *
-	 * @param TranslationData $data
-	 */
-	public function prepare_outgoing( TranslationData $data ) {
+    /**
+     * @param TranslationData $data
+     *
+     * @return null|\WP_Post
+     */
+    // TODO Move outside in the same class of `prepare_updater`, rename it to `update_translation`
+    //      The `Connection` class then will get injected the new class will where the two methods are defined,
+    //      This method instead will be renamed to call the `update_translation` and return the newly post object.
+    //      This way we'll have a consistent interface to process outgoing and incoing data.
+    public function update_translations(TranslationData $data)
+    {
+        if (!$data->is_valid()) {
+            return null;
+        }
 
-		$this->init_processors();
-		$this->processors->process( $data, $this->adapter );
-	}
+        $this->init_processors();
+        $this->processors->process($data, $this->adapter);
 
-	// TODO Split the connector and move `prepare_outgoing` and `update_translations` outside in another class?
+        $saved_post = $data->get_meta(Processor\PostSaver::SAVED_POST_KEY, self::DATA_NAMESPACE);
 
-	/**
-	 * @wp-hook translationmanager_post_updater
-	 *
-	 * @return callable
-	 */
-	public function prepare_updater() {
+        return ($saved_post instanceof WP_Post && $saved_post->ID)
+            ? $saved_post
+            : null;
+    }
 
-		return [ $this, 'update_translations' ];
-	}
+    /**
+     * @wp-hook translationmanager_current_language
+     *
+     * @return Language
+     */
+    public function current_language()
+    {
+        $site_id = get_current_blog_id();
+        $lang_iso = $this->adapter->blog_language($site_id, false);
+        $lang_name = $this->adapter->lang_by_iso($lang_iso);
 
-	/**
-	 * @param TranslationData $data
-	 *
-	 * @return null|\WP_Post
-	 */
-	// TODO Move outside in the same class of `prepare_updater`, rename it to `update_translation`
-	//      The `Connection` class then will get injected the new class will where the two methods are defined,
-	//      This method instead will be renamed to call the `update_translation` and return the newly post object.
-	//      This way we'll have a consistent interface to process outgoing and incoing data.
-	public function update_translations( TranslationData $data ) {
+        return new Language($lang_iso, $lang_name);
+    }
 
-		if ( ! $data->is_valid() ) {
-			return null;
-		}
+    /**
+     * @wp-hook translationmanager_languages
+     *
+     * @param array $languages
+     * @param int $site_id
+     *
+     * @return Language[]
+     */
+    public function related_sites($languages, $site_id)
+    {
+        $sites = $this->adapter->related_sites($site_id);
 
-		$this->init_processors();
-		$this->processors->process( $data, $this->adapter );
+        foreach ($sites as $site) {
+            $lang_iso = $this->adapter->blog_language($site, false);
 
-		$saved_post = $data->get_meta( Processor\PostSaver::SAVED_POST_KEY, self::DATA_NAMESPACE );
+            $languages[$site] = new Language($lang_iso, $this->adapter->lang_by_iso($lang_iso));
+        }
 
-		return ( $saved_post instanceof \WP_Post && $saved_post->ID )
-			? $saved_post
-			: null;
-	}
+        return $languages;
+    }
 
-	/**
-	 * @wp-hook translationmanager_current_language
-	 *
-	 * @return Language
-	 */
-	public function current_language() {
-
-		$site_id   = get_current_blog_id();
-		$lang_iso  = $this->adapter->blog_language( $site_id, false );
-		$lang_name = $this->adapter->lang_by_iso( $lang_iso );
-
-		return new Language( $lang_iso, $lang_name );
-	}
-
-	/**
-	 * @wp-hook translationmanager_languages
-	 *
-	 * @param array $languages
-	 * @param int   $site_id
-	 *
-	 * @return Language[]
-	 */
-	public function related_sites( $languages, $site_id ) {
-
-		$sites = $this->adapter->related_sites( $site_id );
-
-		foreach ( $sites as $site ) {
-			$lang_iso = $this->adapter->blog_language( $site, false );
-
-			$languages[ $site ] = new Language( $lang_iso, $this->adapter->lang_by_iso( $lang_iso ) );
-		}
-
-		return $languages;
-	}
-
-	/**
-	 * Initialize processors bus and add default processors to it.
-	 */
-	private function init_processors() {
-
-		$this->processors = new ProcessorBus();
-		$this->processors
-			->push_processor( new Processor\PostDataBuilder() )
-			->push_processor( new Processor\PostParentSync() )
-			->push_processor( new Processor\PostSaver() )
-			->push_processor( new Processor\PostThumbSync() )
-			->push_processor( new Processor\TaxonomiesSync() );
-	}
+    /**
+     * Initialize processors bus and add default processors to it.
+     */
+    private function init_processors()
+    {
+        $this->processors = new ProcessorBus();
+        $this->processors
+            ->push_processor(new Processor\PostDataBuilder())
+            ->push_processor(new Processor\PostParentSync())
+            ->push_processor(new Processor\PostSaver())
+            ->push_processor(new Processor\PostThumbSync())
+            ->push_processor(new Processor\TaxonomiesSync());
+    }
 }

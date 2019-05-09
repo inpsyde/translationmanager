@@ -9,6 +9,7 @@ use Translationmanager\Auth\Authable;
 use Translationmanager\Notice\TransientNoticeService;
 use function Translationmanager\Functions\create_project_order;
 use function Translationmanager\Functions\redirect_admin_page_network;
+use WP_Term;
 
 /**
  * Class OrderProject
@@ -16,125 +17,134 @@ use function Translationmanager\Functions\redirect_admin_page_network;
  * @since   1.0.0
  * @package Translationmanager\Request
  */
-class OrderProject implements RequestHandleable {
+class OrderProject implements RequestHandleable
+{
+    /**
+     * Auth
+     *
+     * @since 1.0.0
+     *
+     * @var \Translationmanager\Auth\Authable The instance to use to verify the request
+     */
+    private $auth;
 
-	/**
-	 * Auth
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Translationmanager\Auth\Authable The instance to use to verify the request
-	 */
-	private $auth;
+    /**
+     * Nonce
+     *
+     * @since 1.0.0
+     *
+     * @var \Brain\Nonces\NonceInterface The instance to use to verify the request
+     */
+    private $nonce;
 
-	/**
-	 * Nonce
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Brain\Nonces\NonceInterface The instance to use to verify the request
-	 */
-	private $nonce;
+    /**
+     * User Capability
+     *
+     * @since 1.0.0
+     *
+     * @var string The capability needed by the user to be able to perform the request
+     */
+    private static $capability = 'manage_options';
 
-	/**
-	 * User Capability
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var string The capability needed by the user to be able to perform the request
-	 */
-	private static $capability = 'manage_options';
+    /**
+     * OrderProject constructor
+     *
+     * @param \Translationmanager\Auth\Authable $auth The instance to use to verify the request.
+     * @param \Brain\Nonces\NonceInterface $nonce The instance to use to verify the request.
+     *
+     * @since 1.0.0
+     */
+    public function __construct(Authable $auth, NonceInterface $nonce)
+    {
+        $this->auth = $auth;
+        $this->nonce = $nonce;
+    }
 
-	/**
-	 * OrderProject constructor
-	 *
-	 * @param \Translationmanager\Auth\Authable $auth  The instance to use to verify the request.
-	 * @param \Brain\Nonces\NonceInterface      $nonce The instance to use to verify the request.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct( Authable $auth, NonceInterface $nonce ) {
+    /**
+     * @inheritdoc
+     */
+    public function handle()
+    {
+        if (!$this->is_valid_request()) {
+            return;
+        }
 
-		$this->auth  = $auth;
-		$this->nonce = $nonce;
-	}
+        $data = $this->request_data();
 
-	/**
-	 * @inheritdoc
-	 */
-	public function handle() {
+        if (!$data) {
+            TransientNoticeService::add_notice(
+                esc_html__('Request is valid but no data found in it.', 'translationmanager'),
+                'error'
+            );
 
-		if ( ! $this->is_valid_request() ) {
-			return;
-		}
+            return;
+        }
 
-		$data = $this->request_data();
+        $project = get_term($data['translationmanager_project_id'], 'translationmanager_project');
+        if (!$project instanceof WP_Term) {
+            TransientNoticeService::add_notice(
+                esc_html__('Invalid Project Name.', 'translationmanager'),
+                'error'
+            );
 
-		if ( ! $data ) {
-			TransientNoticeService::add_notice( esc_html__( 'Request is valid but no data found in it.' ), 'error' );
+            return;
+        }
 
-			return;
-		}
+        try {
+            create_project_order($project);
 
-		$project = get_term( $data['translationmanager_project_id'], 'translationmanager_project' );
-		if ( ! $project instanceof \WP_Term ) {
-			TransientNoticeService::add_notice( esc_html__( 'Invalid Project Name.' ), 'error' );
+            $notice = [
+                'message' => esc_html__(
+                    'A new project request has been sent.',
+                    'translationmanager'
+                ),
+                'severity' => 'success',
+            ];
+        } catch (ApiException $e) {
+            $notice = [
+                'message' => sprintf(
+                    esc_html__('translationMANAGER: %s', 'translationmanager'),
+                    $e->getMessage()
+                ),
+                'severity' => 'error',
+            ];
+        }
 
-			return;
-		}
+        TransientNoticeService::add_notice($notice['message'], $notice['severity']);
 
-		try {
-			create_project_order( $project );
+        redirect_admin_page_network(
+            'admin.php',
+            [
+                'page' => 'translationmanager-project',
+                'translationmanager_project_id' => $data['translationmanager_project_id'],
+                'post_type' => 'project_item',
+            ]
+        );
+    }
 
-			$notice = [
-				'message'  => esc_html__( 'A new project request has been sent.', 'translationmanager' ),
-				'severity' => 'success',
-			];
-		} catch ( ApiException $e ) {
-			$notice = [
-				'message'  => sprintf(
-					esc_html__( 'translationMANAGER: %s', 'translationmanager' ),
-					$e->getMessage()
-				),
-				'severity' => 'error',
-			];
-		}
+    /**
+     * @inheritdoc
+     */
+    public function is_valid_request()
+    {
+        if (!isset($_POST['translationmanager_action_project_order'])) { // phpcs:ignore
+            return false;
+        }
 
-		TransientNoticeService::add_notice( $notice['message'], $notice['severity'] );
+        return $this->auth->can(wp_get_current_user(), self::$capability)
+            && $this->auth->request_is_valid($this->nonce);
+    }
 
-		redirect_admin_page_network(
-			'admin.php',
-			[
-				'page'                          => 'translationmanager-project',
-				'translationmanager_project_id' => $data['translationmanager_project_id'],
-				'post_type'                     => 'project_item',
-			]
-		);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function is_valid_request() {
-
-		if ( ! isset( $_POST['translationmanager_action_project_order'] ) ) { // phpcs:ignore
-			return false;
-		}
-
-		return $this->auth->can( wp_get_current_user(), self::$capability )
-		       && $this->auth->request_is_valid( $this->nonce );
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function request_data() {
-
-		return filter_input_array(
-			INPUT_POST,
-			[
-				'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
-			]
-		);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function request_data()
+    {
+        return filter_input_array(
+            INPUT_POST,
+            [
+                'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
+            ]
+        );
+    }
 }

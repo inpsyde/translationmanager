@@ -69,75 +69,78 @@ function kses_post( $data, array $extra_attrs = [] ) {
 
 	global $allowedposttags;
 
-	$tags_input_included = array_merge( $allowedposttags, [
-		'input'    => [
-			'accept'       => true,
-			'autocomplete' => true,
-			'autofocus'    => true,
-			'checked'      => true,
-			'class'        => true,
-			'disabled'     => true,
-			'id'           => true,
-			'height'       => true,
-			'min'          => true,
-			'max'          => true,
-			'minlenght'    => true,
-			'maxlength'    => true,
-			'name'         => true,
-			'pattern'      => true,
-			'placeholder'  => true,
-			'readony'      => true,
-			'required'     => true,
-			'size'         => true,
-			'src'          => true,
-			'step'         => true,
-			'type'         => true,
-			'value'        => true,
-			'width'        => true,
-		],
-		'select'   => [
-			'autofocus' => true,
-			'class'     => true,
-			'id'        => true,
-			'disabled'  => true,
-			'form'      => true,
-			'multiple'  => true,
-			'name'      => true,
-			'required'  => true,
-			'size'      => true,
-		],
-		'option'   => [
-			'disabled' => true,
-			'label'    => true,
-			'selected' => true,
-			'value'    => true,
-		],
-		'optgroup' => [
-			'disabled' => true,
-			'label'    => true,
-		],
-		'textarea' => [
-			'placeholder' => true,
-			'cols'        => true,
-			'rows'        => true,
-			'disabled'    => true,
-			'name'        => true,
-			'id'          => true,
-			'readonly'    => true,
-			'required'    => true,
-			'autofocus'   => true,
-			'form'        => true,
-			'wrap'        => true,
-		],
-		'picture'  => true,
-		'source'   => [
-			'sizes'  => true,
-			'src'    => true,
-			'srcset' => true,
-			'type'   => true,
-			'media'  => true,
-		],
-	] );
+	$tags_input_included = array_merge(
+		$allowedposttags,
+		[
+			'input'    => [
+				'accept'       => true,
+				'autocomplete' => true,
+				'autofocus'    => true,
+				'checked'      => true,
+				'class'        => true,
+				'disabled'     => true,
+				'id'           => true,
+				'height'       => true,
+				'min'          => true,
+				'max'          => true,
+				'minlenght'    => true,
+				'maxlength'    => true,
+				'name'         => true,
+				'pattern'      => true,
+				'placeholder'  => true,
+				'readony'      => true,
+				'required'     => true,
+				'size'         => true,
+				'src'          => true,
+				'step'         => true,
+				'type'         => true,
+				'value'        => true,
+				'width'        => true,
+			],
+			'select'   => [
+				'autofocus' => true,
+				'class'     => true,
+				'id'        => true,
+				'disabled'  => true,
+				'form'      => true,
+				'multiple'  => true,
+				'name'      => true,
+				'required'  => true,
+				'size'      => true,
+			],
+			'option'   => [
+				'disabled' => true,
+				'label'    => true,
+				'selected' => true,
+				'value'    => true,
+			],
+			'optgroup' => [
+				'disabled' => true,
+				'label'    => true,
+			],
+			'textarea' => [
+				'placeholder' => true,
+				'cols'        => true,
+				'rows'        => true,
+				'disabled'    => true,
+				'name'        => true,
+				'id'          => true,
+				'readonly'    => true,
+				'required'    => true,
+				'autofocus'   => true,
+				'form'        => true,
+				'wrap'        => true,
+			],
+			'picture'  => true,
+			'source'   => [
+				'sizes'  => true,
+				'src'    => true,
+				'srcset' => true,
+				'type'   => true,
+				'media'  => true,
+			],
+		]
+	);
 
 	if ( $extra_attrs ) {
 		// Extract the key for comparison.
@@ -161,12 +164,15 @@ function kses_post( $data, array $extra_attrs = [] ) {
 	$tags_input_included['form'] = array_merge( $tags_input_included['form'], [ 'novalidate' => true ] );
 	// Fieldset attributes.
 	// WordPress have an empty array.
-	$tags_input_included['fieldset'] = array_merge( $tags_input_included['fieldset'], [
-		'id'    => true,
-		'class' => true,
-		'form'  => true,
-		'name'  => true,
-	] );
+	$tags_input_included['fieldset'] = array_merge(
+		$tags_input_included['fieldset'],
+		[
+			'id'    => true,
+			'class' => true,
+			'form'  => true,
+			'name'  => true,
+		]
+	);
 
 	return wp_kses( $data, $tags_input_included );
 }

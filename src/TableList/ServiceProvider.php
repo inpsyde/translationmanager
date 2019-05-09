@@ -36,48 +36,48 @@ use Translationmanager\Service\BootstrappableServiceProvider;
  * @since   1.0.0
  * @package Translationmanager\TableList
  */
-class ServiceProvider implements BootstrappableServiceProvider {
+class ServiceProvider implements BootstrappableServiceProvider
+{
+    /**
+     * @inheritdoc
+     */
+    public function register(Container $container)
+    {
+        $container['TableList.RestrictManagePosts'] = function (Container $container) {
 
-	/**
-	 * @inheritdoc
-	 */
-	public function register( Container $container ) {
+            return new RestrictManagePosts($container['translationmanager.plugin']);
+        };
+    }
 
-		$container['TableList.RestrictManagePosts'] = function ( Container $container ) {
-
-			return new RestrictManagePosts( $container['translationmanager.plugin'] );
-		};
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function boot( Container $container ) {
-
-		// Restrict Content Manage Posts.
-		add_action(
-			'manage_posts_extra_tablenav',
-			[ $container['TableList.RestrictManagePosts'], 'restrict_manage_posts' ]
-		);
-		add_action(
-			'admin_head',
-			[ $container['TableList.RestrictManagePosts'], 'enqueue_styles' ]
-		);
-		add_action(
-			'admin_head',
-			[ $container['TableList.RestrictManagePosts'], 'enqueue_scripts' ]
-		);
-		add_action(
-			'manage_posts_extra_tablenav',
-			[ $container['TableList.RestrictManagePosts'], 'restrict_manage_posts' ]
-		);
-		add_filter(
-			'bulk_actions-edit-post',
-			[ $container['TableList.RestrictManagePosts'], 'filter_bulk_action_list' ]
-		);
-		add_filter(
-			'bulk_actions-edit-page',
-			[ $container['TableList.RestrictManagePosts'], 'filter_bulk_action_list' ]
-		);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function boot(Container $container)
+    {
+        // Restrict Content Manage Posts.
+        add_action(
+            'manage_posts_extra_tablenav',
+            [$container['TableList.RestrictManagePosts'], 'restrict_manage_posts']
+        );
+        add_action(
+            'admin_head',
+            [$container['TableList.RestrictManagePosts'], 'enqueue_styles']
+        );
+        add_action(
+            'admin_head',
+            [$container['TableList.RestrictManagePosts'], 'enqueue_scripts']
+        );
+        add_action(
+            'manage_posts_extra_tablenav',
+            [$container['TableList.RestrictManagePosts'], 'restrict_manage_posts']
+        );
+        add_filter(
+            'bulk_actions-edit-post',
+            [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
+        );
+        add_filter(
+            'bulk_actions-edit-page',
+            [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
+        );
+    }
 }

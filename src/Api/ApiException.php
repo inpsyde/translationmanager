@@ -18,6 +18,7 @@ use RuntimeException;
  * @since   1.0.0
  * @package Translationmanager\Api
  */
-class ApiException extends RuntimeException {
+class ApiException extends RuntimeException
+{
 
 }

@@ -11,93 +11,98 @@ use \Translationmanager\Tests\TestCase;
  *
  * @package Translationmanager\Tests\TableList
  */
-class ProjectItemTest extends TestCase {
+class ProjectItemTest extends TestCase
+{
 
-	/**
-	 * Test Instance
-	 */
-	public function testInstance() {
+    /**
+     * Test Instance
+     */
+    public function testInstance()
+    {
 
-		\Mockery::mock( 'overload:\WP_List_Table' );
+        \Mockery::mock('overload:\WP_List_Table');
 
-		$sut = new ProjectItem();
+        $sut = new ProjectItem();
 
-		$this->assertInstanceOf( 'Translationmanager\\TableList\\ProjectItem', $sut );
-	}
+        $this->assertInstanceOf('Translationmanager\\TableList\\ProjectItem', $sut);
+    }
 
-	/**
-	 * Test Project ID By Request Is Valid
-	 */
-	public function testProjectIDByRequestIsValid() {
+    /**
+     * Test Project ID By Request Is Valid
+     */
+    public function testProjectIDByRequestIsValid()
+    {
 
-		\Mockery::mock( 'overload:\Translationmanager\\TableList\\TableList', [
-			'get_items_per_page' => 10,
-		] );
+        \Mockery::mock('overload:\Translationmanager\\TableList\\TableList', [
+            'get_items_per_page' => 10,
+        ]);
 
-		$term          = \Mockery::mock( 'WP_Term' );
-		$term->term_id = 10;
+        $term = \Mockery::mock('WP_Term');
+        $term->term_id = 10;
 
-		Functions\when( 'Translationmanager\\Functions\\filter_input' )
-			->justReturn( [
-				'translationmanager_project_id' => 10,
-			] );
+        Functions\when('Translationmanager\\Functions\\filter_input')
+            ->justReturn([
+                'translationmanager_project_id' => 10,
+            ]);
 
-		Functions\expect( 'get_term' )
-			->once()
-			->with( 10, \Mockery::type( 'string' ) )
-			->andReturn( $term );
+        Functions\expect('get_term')
+            ->once()
+            ->with(10, \Mockery::type('string'))
+            ->andReturn($term);
 
-		Functions\expect( 'Translationmanager\\Functions\\get_project_items' )
-			->once()
-			->with( 10, \Mockery::type( 'array' ) )
-			->andReturn( [] );
+        Functions\expect('Translationmanager\\Functions\\get_project_items')
+            ->once()
+            ->with(10, \Mockery::type('array'))
+            ->andReturn([]);
 
-		$sut         = new ProjectItem();
-		$sut->screen = (object) [
-			'id' => 'project_item',
-		];
+        $sut = new ProjectItem();
+        $sut->screen = (object)[
+            'id' => 'project_item',
+        ];
 
-		$sut->items();
+        $sut->items();
 
-		$this->assertTrue( true );
-	}
+        $this->assertTrue(true);
+    }
 
-	/**
-	 * Test Project by ID Request Throw an Exception if get Term returns a WP_Error
-	 */
-	public function testProjectIDRequestThrowExceptionIfWpError() {
+    /**
+     * Test Project by ID Request Throw an Exception if get Term returns a WP_Error
+     */
+    public function testProjectIDRequestThrowExceptionIfWpError()
+    {
 
-		\Mockery::mock( 'overload:\Translationmanager\\TableList\\TableList' );
+        \Mockery::mock('overload:\Translationmanager\\TableList\\TableList');
 
-		Functions\when( 'Translationmanager\\Functions\\filter_input' )
-			->justReturn( [ 'translationmanager_project_id' => 10 ] );
+        Functions\when('Translationmanager\\Functions\\filter_input')
+            ->justReturn(['translationmanager_project_id' => 10]);
 
-		Functions\expect( 'get_term' )
-			->once()
-			->with( 10, \Mockery::type( 'string' ) )
-			->andReturn( \Mockery::mock( 'WP_Error' ) );
+        Functions\expect('get_term')
+            ->once()
+            ->with(10, \Mockery::type('string'))
+            ->andReturn(\Mockery::mock('WP_Error'));
 
-		$sut = new ProjectItem();
+        $sut = new ProjectItem();
 
-		$sut->items();
+        $sut->items();
 
-		$this->assertTrue( true );
-	}
+        $this->assertTrue(true);
+    }
 
-	/**
-	 * Test Items Return Empty if No Project Id Can be Retrieved
-	 */
-	public function testItemsReturnEmptyIfNoProjectIDCanBeRetrievedByRequest() {
+    /**
+     * Test Items Return Empty if No Project Id Can be Retrieved
+     */
+    public function testItemsReturnEmptyIfNoProjectIDCanBeRetrievedByRequest()
+    {
 
-		\Mockery::mock( 'overload:\Translationmanager\\TableList\\TableList' );
+        \Mockery::mock('overload:\Translationmanager\\TableList\\TableList');
 
-		Functions\when( 'Translationmanager\\Functions\\filter_input' )
-			->justReturn( false );
+        Functions\when('Translationmanager\\Functions\\filter_input')
+            ->justReturn(false);
 
-		$sut = new ProjectItem();
+        $sut = new ProjectItem();
 
-		$response = $sut->items();
+        $response = $sut->items();
 
-		$this->assertSame( [], $response );
-	}
+        $this->assertSame([], $response);
+    }
 }

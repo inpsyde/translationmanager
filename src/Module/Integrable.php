@@ -14,13 +14,14 @@ namespace Translationmanager\Module;
  * @since   1.0.0
  * @package Translationmanager\Module
  */
-interface Integrable {
+interface Integrable
+{
 
-	/**
-	 * Integrate Module
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function integrate();
+    /**
+     * Integrate Module
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function integrate();
 }

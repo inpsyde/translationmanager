@@ -18,28 +18,28 @@ use Translationmanager\Service\BootstrappableServiceProvider;
  * @since   1.0.0
  * @package Translationmanager\SystemStatus
  */
-class ServiceProvider implements BootstrappableServiceProvider {
+class ServiceProvider implements BootstrappableServiceProvider
+{
+    /**
+     * @inheritdoc
+     */
+    public function register(Container $container)
+    {
+        $container['SystemStatus.Controller'] = function () {
 
-	/**
-	 * @inheritdoc
-	 */
-	public function register( Container $container ) {
+            return new Controller();
+        };
+    }
 
-		$container['SystemStatus.Controller'] = function () {
-
-			return new Controller();
-		};
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function boot( Container $container ) {
-
-		( new Styles(
-			$container['translationmanager.plugin']->url( '/assets/css/' ),
-			''
-		)
-		)->init();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function boot(Container $container)
+    {
+        (new Styles(
+            $container['translationmanager.plugin']->url('/assets/css/'),
+            ''
+        )
+        )->init();
+    }
 }

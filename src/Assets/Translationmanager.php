@@ -16,43 +16,43 @@ use Translationmanager\Plugin;
  * @since   1.0.0
  * @package Translationmanager\Assets
  */
-class Translationmanager {
+class Translationmanager
+{
+    /**
+     * Plugin
+     *
+     * @since 1.0.0
+     *
+     * @var \Translationmanager\Plugin Instance of the class
+     */
+    private $plugin;
 
-	/**
-	 * Plugin
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Translationmanager\Plugin Instance of the class
-	 */
-	private $plugin;
+    /**
+     * Translationmanager constructor
+     *
+     * @param \Translationmanager\Plugin $plugin Instance of the class.
+     *
+     * @since 1.0.0
+     */
+    public function __construct(Plugin $plugin)
+    {
+        $this->plugin = $plugin;
+    }
 
-	/**
-	 * Translationmanager constructor
-	 *
-	 * @param \Translationmanager\Plugin $plugin Instance of the class.
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct( Plugin $plugin ) {
-
-		$this->plugin = $plugin;
-	}
-
-	/**
-	 * Register Style
-	 *
-	 * @return void
-	 * @since 1.0.0
-	 */
-	public function register_style() {
-
-		wp_enqueue_style(
-			'translationmanager',
-			$this->plugin->url( '/assets/css/translationmanager.css' ),
-			[],
-			filemtime( $this->plugin->dir( '/assets/css/translationmanager.css' ) ),
-			'screen'
-		);
-	}
+    /**
+     * Register Style
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function register_style()
+    {
+        wp_enqueue_style(
+            'translationmanager',
+            $this->plugin->url('/assets/css/translationmanager.css'),
+            [],
+            filemtime($this->plugin->dir('/assets/css/translationmanager.css')),
+            'screen'
+        );
+    }
 }

@@ -2,87 +2,89 @@
 
 namespace Translationmanager\Module\Mlp\Processor;
 
+use stdClass;
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\TranslationData;
+use WP_Post;
 
-class PostSaver implements IncomingProcessor {
+class PostSaver implements IncomingProcessor
+{
+    const SAVED_POST_KEY = 'saved_post';
 
-	const SAVED_POST_KEY = 'saved_post';
+    /**
+     * @param TranslationData $data
+     * @param Adapter $adapter
+     *
+     * @return void
+     */
+    public function process_incoming(TranslationData $data, Adapter $adapter)
+    {
+        $post_vars = get_object_vars(new WP_Post(new stdClass()));
+        $post_data = [];
 
-	/**
-	 * @param TranslationData $data
-	 * @param Adapter         $adapter
-	 *
-	 * @return void
-	 */
-	public function process_incoming( TranslationData $data, Adapter $adapter ) {
+        foreach ($post_vars as $key => $value) {
+            if ($data->has_value($key)) {
+                $post_data[$key] = $data->get_value($key);
+            }
+        }
 
-		$post_vars = get_object_vars( new \WP_Post( new \stdClass() ) );
-		$post_data = [];
+        switch_to_blog($data->target_site_id());
 
-		foreach ( $post_vars as $key => $value ) {
-			if ( $data->has_value( $key ) ) {
-				$post_data[ $key ] = $data->get_value( $key );
-			}
-		}
+        $existing_id = array_key_exists('ID', $post_data) ? $post_data['ID'] : 0;
 
-		switch_to_blog( $data->target_site_id() );
+        // Save post with all the data.
+        $target_post_id = wp_insert_post($post_data, true);
 
-		$existing_id = array_key_exists( 'ID', $post_data ) ? $post_data['ID'] : 0;
+        do_action(
+            'translationmanager_log',
+            [
+                'message' => 'Incoming post data from API processed.',
+                'context' => [
+                    'Post data ID' => $existing_id . ' (should equal "Source post ID")',
+                    'Source post ID' => $data->source_post_id() . ' (should equal "Post data ID")',
+                    'Result' => is_wp_error($target_post_id)
+                        ? $target_post_id->get_error_message()
+                        : "Post ID {$target_post_id} saved correctly.",
+                    'Target lang' => $data->target_language(),
+                    'Target site' => $data->target_site_id(),
+                    'Source site' => $data->source_site_id(),
+                ],
+            ]
+        );
 
-		// Save post with all the data.
-		$target_post_id = wp_insert_post( $post_data, true );
+        if (is_wp_error($target_post_id)) {
+            $target_post_id = 0;
+        }
 
-		do_action(
-			'translationmanager_log',
-			[
-				'message' => 'Incoming post data from API processed.',
-				'context' => [
-					'Post data ID'   => $existing_id . ' (should equal "Source post ID")',
-					'Source post ID' => $data->source_post_id() . ' (should equal "Post data ID")',
-					'Result'         => is_wp_error( $target_post_id )
-						? $target_post_id->get_error_message()
-						: "Post ID {$target_post_id} saved correctly.",
-					'Target lang'    => $data->target_language(),
-					'Target site'    => $data->target_site_id(),
-					'Source site'    => $data->source_site_id(),
-				],
-			]
-		);
+        $target_post = $target_post_id ? get_post($target_post_id) : null;
 
-		if ( is_wp_error( $target_post_id ) ) {
-			$target_post_id = 0;
-		}
+        restore_current_blog();
 
-		$target_post = $target_post_id ? get_post( $target_post_id ) : null;
+        if (!$target_post) {
+            return;
+        }
 
-		restore_current_blog();
+        $sync_on_update = true;
+        if ($data->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
+            $sync_on_update = apply_filters(
+                'translationmanager_mlp_module_sync_post_relation_on_update',
+                true,
+                $data
+            );
+        }
 
-		if ( ! $target_post ) {
-			return;
-		}
+        // If it is a new post creation, link created post with source post.
+        if ($sync_on_update) {
+            $adapter->set_relation(
+                $data->source_site_id(),
+                $data->target_site_id(),
+                $data->source_post_id(),
+                $target_post->ID,
+                'post'
+            );
+        }
 
-		$sync_on_update = true;
-		if ( $data->get_meta( PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE ) ) {
-			$sync_on_update = apply_filters(
-				'translationmanager_mlp_module_sync_post_relation_on_update',
-				true,
-				$data
-			);
-		}
-
-		// If it is a new post creation, link created post with source post.
-		if ( $sync_on_update ) {
-			$adapter->set_relation(
-				$data->source_site_id(),
-				$data->target_site_id(),
-				$data->source_post_id(),
-				$target_post->ID,
-				'post'
-			);
-		}
-
-		$data->set_meta( self::SAVED_POST_KEY, $target_post, Connector::DATA_NAMESPACE );
-	}
+        $data->set_meta(self::SAVED_POST_KEY, $target_post, Connector::DATA_NAMESPACE);
+    }
 }

@@ -18,34 +18,35 @@ use Inpsyde\MultilingualPress\Framework\Service\Container;
  * @since   1.0.0
  * @package Translationmanager\Module\Mlp
  */
-class ServiceProvider implements BootstrappableServiceProvider {
-	/**
-	 * @inheritdoc
-	 */
-	public function register( Container $container ) {
+class ServiceProvider implements BootstrappableServiceProvider
+{
+    /**
+     * @inheritdoc
+     */
+    public function register(Container $container)
+    {
+        $container[Adapter::class] = function (Container $container) {
 
-		$container[ Adapter::class ] = function ( Container $container ) {
+            return new Adapter(
+                $container[PluginProperties::class]['filePath'],
+                $container['Inpsyde\\MultilingualPress\\Framework\\Api\\SiteRelations'],
+                $container['Inpsyde\\MultilingualPress\\Framework\\Api\\ContentRelations']
+            );
+        };
+    }
 
-			return new Adapter(
-				$container[ PluginProperties::class ]['filePath'],
-				$container['Inpsyde\\MultilingualPress\\Framework\\Api\\SiteRelations'],
-				$container['Inpsyde\\MultilingualPress\\Framework\\Api\\ContentRelations']
-			);
-		};
-	}
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap(Container $container)
+    {
+        $adapter = $container[Adapter::class];
+        add_action(
+            'multilingualpress.bootstrapped',
+            function () use ($adapter) {
 
-	/**
-	 * @inheritdoc
-	 */
-	public function bootstrap( Container $container ) {
-
-		$adapter = $container[ Adapter::class ];
-		add_action(
-			'multilingualpress.bootstrapped',
-			function () use ( $adapter ) {
-
-				Integrate::action( $adapter );
-			}
-		);
-	}
+                Integrator::action($adapter);
+            }
+        );
+    }
 }

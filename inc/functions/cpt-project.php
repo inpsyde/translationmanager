@@ -14,18 +14,23 @@ namespace Translationmanager\Functions;
  */
 function get_project_items( $term_id, array $args = [] ) {
 
-	$get_posts = get_posts( array_merge( [
-		'post_type'      => 'project_item',
-		'tax_query'      => [
+	$get_posts = get_posts(
+		array_merge(
 			[
-				'taxonomy' => 'translationmanager_project',
-				'field'    => 'id',
-				'terms'    => $term_id,
+				'post_type'      => 'project_item',
+				'tax_query'      => [
+					[
+						'taxonomy' => 'translationmanager_project',
+						'field'    => 'id',
+						'terms'    => $term_id,
+					],
+				],
+				'posts_per_page' => - 1,
+				'post_status'    => [ 'draft', 'published' ],
 			],
-		],
-		'posts_per_page' => - 1,
-		'post_status'    => [ 'draft', 'published' ],
-	], $args ) );
+			$args
+		)
+	);
 
 	if ( ! $get_posts || is_wp_error( $get_posts ) ) {
 		return [];
@@ -59,16 +64,18 @@ function delete_all_projects_posts_based_on_project_taxonomy_term( $term_id ) {
 		return;
 	}
 
-	$posts = get_posts( [
-		'post_type'      => 'project_item',
-		'post_status'    => 'any',
-		'posts_per_page' => - 1,
-		'tax_query'      => [
-			'taxonomy' => $taxonomy,
-			'field'    => 'id',
-			'terms'    => $term_id,
-		],
-	] );
+	$posts = get_posts(
+		[
+			'post_type'      => 'project_item',
+			'post_status'    => 'any',
+			'posts_per_page' => - 1,
+			'tax_query'      => [
+				'taxonomy' => $taxonomy,
+				'field'    => 'id',
+				'terms'    => $term_id,
+			],
+		]
+	);
 
 	foreach ( $posts as $post ) {
 		wp_delete_post( $post->ID, true );
