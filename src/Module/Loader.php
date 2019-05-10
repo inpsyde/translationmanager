@@ -8,6 +8,8 @@
 
 namespace Translationmanager\Module;
 
+use ReflectionClass;
+use ReflectionException;
 use Translationmanager\Module\Mlp;
 use Translationmanager\Module\YoastSeo;
 
@@ -87,6 +89,18 @@ class Loader
 
         foreach ($available_modules as $module) {
             if (!class_exists($modules[$module])) {
+                continue;
+            }
+
+            try {
+                $class = $modules[$module];
+                $classReflection = new ReflectionClass($class);
+                $isIntegrable = $classReflection->implementsInterface(Integrable::class);
+            } catch (ReflectionException $exc) {
+                continue;
+            }
+
+            if (!$isIntegrable) {
                 continue;
             }
 
