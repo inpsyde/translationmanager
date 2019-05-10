@@ -3,7 +3,7 @@
 namespace Translationmanager\Module\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
-use Translationmanager\Translatable;
+use Translationmanager\Translation;
 
 /**
  * Interface OutgoingProcessor
@@ -14,10 +14,9 @@ interface OutgoingProcessor extends Processor
     /**
      * Process Outgoing
      *
-     * @param Translatable $data
-     * @param Adapter $adapter
+     * @param Translation $translation
      *
      * @return void
      */
-    public function process_outgoing(Translatable $data, Adapter $adapter);
+    public function processOutgoing(Translation $translation);
 }

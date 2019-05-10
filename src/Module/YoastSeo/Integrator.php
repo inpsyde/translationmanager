@@ -10,6 +10,7 @@
 namespace Translationmanager\Module\YoastSeo;
 
 use Translationmanager\Module\Integrable;
+use Translationmanager\Module\Processor\ProcessorBusFactory;
 
 /**
  * Class Integrate
@@ -22,16 +23,15 @@ class Integrator implements Integrable
     /**
      * @inheritdoc
      */
-    public function integrate()
+    public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginPath)
     {
-        $wordpress_seo = new WordPressSeo();
+        $wordpressSeo = new WordPressSeo();
 
-        add_action('translationmanager_outgoing_data', [$wordpress_seo, 'prepare_outgoing']);
-        add_action(
-            'translationmanager_updated_post',
-            [$wordpress_seo, 'update_translation'],
-            10,
-            2
-        );
+        add_action('translationmanager_outgoing_data', [$wordpressSeo, 'prepare_outgoing']);
+        add_action('translationmanager_updated_post', [$wordpressSeo, 'update_translation'], 10, 2);
+    }
+
+    private function __construct()
+    {
     }
 }

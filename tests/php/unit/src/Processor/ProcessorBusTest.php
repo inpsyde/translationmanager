@@ -9,9 +9,8 @@ use SplQueue;
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Processor\IncomingProcessor;
 use Translationmanager\Module\Processor\OutgoingProcessor;
-use Translationmanager\Translatable;
-use TranslationmanagerTests\TestCase;
 use Translationmanager\Translation;
+use TranslationmanagerTests\TestCase;
 use Translationmanager\Module\Processor\ProcessorBus as Testee;
 
 /**
@@ -127,7 +126,7 @@ class ProcessorBusTest extends TestCase
     public function testNoProcessorIsExecutedBecauseNoProcessorInQueue()
     {
         {
-            $translationData = Mockery::mock(Translatable::class);
+            $translationData = Mockery::mock(Translation::class);
             $adapter = Mockery::mock(Adapter::class);
             $splQueue = Mockery::spy(SplQueue::class);
             $testee = new Testee(new SplQueue());

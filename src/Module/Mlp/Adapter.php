@@ -3,7 +3,7 @@
 namespace Translationmanager\Module\Mlp;
 
 use BadFunctionCallException;
-use Translationmanager\Functions;
+use Translationmanager\Utils\Assert;
 
 /**
  * Class Adapter
@@ -91,12 +91,12 @@ class Adapter
      */
     public function __construct($pluginVersion, $siteRelations, $contentRelations)
     {
+        Assert::semVersion($pluginVersion);
+
         $this->siteRelations = $siteRelations;
         $this->contentRelations = $contentRelations;
 
-        $this->version = Functions\version_compare('3.0.0', $pluginVersion, '<=')
-            ? 3
-            : 2;
+        $this->version = $pluginVersion;
     }
 
     /**

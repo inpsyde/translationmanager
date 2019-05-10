@@ -14,6 +14,8 @@ use Translationmanager\Module\Mlp\ConnectorFactory;
 use Translationmanager\Module\Mlp\DataProcessor;
 use Translationmanager\Module\Processor\ProcessorBus;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
+use Translationmanager\Module\WooCommerce\Integrator;
+use Translationmanager\Plugin;
 use Translationmanager\Service\IntegrableServiceProvider;
 
 /**
@@ -29,14 +31,20 @@ class ServiceProvider implements IntegrableServiceProvider
      */
     public function register(Container $container)
     {
-        $container[Loader::class] = function () {
-            $plugins = get_option('active_plugins', []);
-
-            if (function_exists('wp_get_active_network_plugins')) {
-                $plugins = array_merge($plugins, wp_get_active_network_plugins());
-            }
-
-            return new Loader($plugins);
+        $container[ModulesProvider::class] = function () {
+            return new ModulesProvider([
+                'wp-seo' => YoastSeo\Integrator::class,
+                'multilingualpress' => Mlp\Integrator::class,
+                'multilingual-press' => Mlp\Integrator::class,
+                'woocommerce' => WooCommerce\Integrator::class,
+            ]);
+        };
+        $container[ModuleIntegrator::class] = function (Container $container) {
+            return new ModuleIntegrator(
+                $container[Plugin::class],
+                $container[ModulesProvider::class],
+                $container[ProcessorBusFactory::class]
+            );
         };
         $container[ProcessorBusFactory::class] = function () {
             return new ProcessorBusFactory();
@@ -48,8 +56,6 @@ class ServiceProvider implements IntegrableServiceProvider
      */
     public function integrate(Container $container)
     {
-        $container[Loader::class]
-            ->register_integrations()
-            ->integrate();
+        $container[ModuleIntegrator::class]->integrate();
     }
 }

@@ -7,14 +7,27 @@
 
 namespace Translationmanager;
 
+use ArrayAccess;
+use JsonSerializable;
 use WP_Post;
 
 /**
  * Class TranslationData
  * @package Translationmanager
  */
-final class Translation implements Translatable
+class Translation implements ArrayAccess, JsonSerializable
 {
+    const META_KEY = '__meta';
+    const VALUES_KEY = '__values';
+    const SOURCE_POST_ID_KEY = 'source_post_id';
+    const SOURCE_POST_KEY = 'source_post_obj';
+    const SOURCE_SITE_KEY = 'source_site_id';
+    const TARGET_POST_KEY = 'target_post_id';
+    const TARGET_SITE_KEY = 'target_site_id';
+    const TARGET_LANG_KEY = 'target_language';
+    const INCOMING = 'incoming';
+    const OUTGOING = 'outgoing';
+
     private static $protected_meta = [
         self::SOURCE_POST_ID_KEY,
         self::SOURCE_POST_KEY,

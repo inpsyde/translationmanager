@@ -4,7 +4,7 @@ namespace Translationmanager\Module\Processor;
 
 use SplQueue;
 use Translationmanager\Module\Mlp\Adapter;
-use Translationmanager\Translatable;
+use Translationmanager\Translation;
 
 /**
  * Class ProcessorBus
@@ -46,14 +46,14 @@ class ProcessorBus
     /**
      * Process
      *
-     * @param Translatable $data
-     * @param Adapter $adapter
+     * @param Translation $data
      */
-    public function process(Translatable $data, Adapter $adapter)
+    public function process(Translation $data)
     {
-        $is_incoming = $data->is_incoming();
+        $isIncoming = $data->is_incoming();
+        $isOutComing = $data->is_outgoing();
 
-        if (!$is_incoming && !$data->is_outgoing()) {
+        if (!$isIncoming && !$isOutComing) {
             return;
         }
 
@@ -63,7 +63,7 @@ class ProcessorBus
          * Use this hook to add processors by calling `push_processor()` on passed bus instance.
          *
          * @param ProcessorBus $processor_bus
-         * @param Translatable $data
+         * @param Translation $data
          */
         do_action(self::FILTER_DATA_PROCESSORS, $this, $data);
 
@@ -75,8 +75,8 @@ class ProcessorBus
             /** @var IncomingProcessor|OutgoingProcessor $processor */
             $processor = $this->queue->dequeue();
 
-            $target = $is_incoming ? IncomingProcessor::class : OutgoingProcessor::class;
-            $method = $is_incoming ? 'process_incoming' : 'process_outgoing';
+            $target = $isIncoming ? IncomingProcessor::class : OutgoingProcessor::class;
+            $method = $isIncoming ? 'processIncoming' : 'processOutgoing';
 
             $allowDataProcessor = apply_filters(
                 self::FILTER_DATA_PROCESSOR_ENABLED,
@@ -101,7 +101,7 @@ class ProcessorBus
 
                 /** @var callable $cb */
                 $cb = [$processor, $method];
-                $cb($data, $adapter);
+                $cb($data);
             }
         }
     }

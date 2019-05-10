@@ -17,6 +17,8 @@
 
 // phpcs:disable
 
+use Translationmanager\Service\ServiceProviders;
+
 $bootstrap = \Closure::bind( function () {
 
 	/**
@@ -135,8 +137,9 @@ $bootstrap = \Closure::bind( function () {
 			return new \Translationmanager\Plugin();
 		};
 
-		$providers = new \Translationmanager\Service\ServiceProviders( $container );
+		$providers = new ServiceProviders( $container );
 		$providers
+            ->register( new Translationmanager\ServiceProvider())
 			->register( new Translationmanager\ProjectItem\ServiceProvider() )
 			->register( new Translationmanager\Project\ServiceProvider() )
 			->register( new Translationmanager\Pages\ServiceProvider() )

@@ -7,7 +7,7 @@ use stdClass;
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\Module\Processor\IncomingProcessor;
-use Translationmanager\Translatable;
+use Translationmanager\Translation;
 use WP_Post;
 
 /**
@@ -33,23 +33,36 @@ class PostDataBuilder implements IncomingProcessor
     ];
 
     /**
-     * @param Translatable $data
+     * @var Adapter
+     */
+    private $adapter;
+
+    /**
+     * TaxonomiesSync constructor
      * @param Adapter $adapter
      */
-    public function process_incoming(Translatable $data, Adapter $adapter)
+    public function __construct(Adapter $adapter)
     {
-        $source_post = $data->source_post();
+        $this->adapter = $adapter;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function processIncoming(Translation $translation)
+    {
+        $source_post = $translation->source_post();
 
         if (!$source_post) {
             return;
         }
 
         /** @var array $linked_posts Array with site ID as keys and content ID as values. */
-        $linked_posts = $adapter->relations($data->source_site_id(), $source_post->ID, 'post');
+        $linked_posts = $this->adapter->relations($translation->source_site_id(), $source_post->ID);
 
-        $target_site_id = $data->target_site_id();
+        $target_site_id = $translation->target_site_id();
 
-        switch_to_blog($data->target_site_id());
+        switch_to_blog($translation->target_site_id());
 
         $linked_post = array_key_exists($target_site_id, $linked_posts)
             ? get_post($linked_posts[$target_site_id])
@@ -64,8 +77,8 @@ class PostDataBuilder implements IncomingProcessor
         // Let's extract only post data from received translation data
         $translated_data = [];
         foreach (array_keys($post_vars) as $key) {
-            if ($data->has_value($key)) {
-                $translated_data[$key] = $data->get_value($key);
+            if ($translation->has_value($key)) {
+                $translated_data[$key] = $translation->get_value($key);
             }
         }
 
@@ -80,9 +93,9 @@ class PostDataBuilder implements IncomingProcessor
         $linked_post and $post_data['ID'] = $linked_post->ID;
         // Set back all post data in root namespace
         foreach ($post_data as $key => $value) {
-            $data->set_value($key, $value);
+            $translation->set_value($key, $value);
         }
 
-        $data->set_meta(self::IS_UPDATE_KEY, (bool)$linked_post, Connector::DATA_NAMESPACE);
+        $translation->set_meta(self::IS_UPDATE_KEY, (bool)$linked_post, Connector::DATA_NAMESPACE);
     }
 }

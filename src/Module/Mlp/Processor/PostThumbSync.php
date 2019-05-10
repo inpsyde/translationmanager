@@ -5,7 +5,7 @@ namespace Translationmanager\Module\Mlp\Processor;
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
 use Translationmanager\Module\Processor\IncomingProcessor;
-use Translationmanager\Translatable;
+use Translationmanager\Translation;
 
 /**
  * Class PostThumbSync
@@ -15,25 +15,36 @@ use Translationmanager\Translatable;
 class PostThumbSync implements IncomingProcessor
 {
     /**
-     * @param Translatable $data
-     * @param Adapter $adapter
-     *
-     * @return void
+     * @var Adapter
      */
-    public function process_incoming(Translatable $data, Adapter $adapter)
+    private $adapter;
+
+    /**
+     * TaxonomiesSync constructor
+     * @param Adapter $adapter
+     */
+    public function __construct(Adapter $adapter)
     {
-        $saved_post = $data->get_meta(PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE);
+        $this->adapter = $adapter;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function processIncoming(Translation $translation)
+    {
+        $saved_post = $translation->get_meta(PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE);
 
         if (!$saved_post || !post_type_supports($saved_post->post_type, 'thumbnail')) {
             return;
         }
 
         $sync_on_update = true;
-        if ($data->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
+        if ($translation->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
             $sync_on_update = apply_filters(
                 'translationmanager_mlp_module_sync_post_thumb_on_update',
                 true,
-                $data
+                $translation
             );
         }
 
@@ -41,25 +52,25 @@ class PostThumbSync implements IncomingProcessor
             return;
         }
 
-        $source_site_id = $data->source_site_id();
+        $source_site_id = $translation->source_site_id();
 
         switch_to_blog($source_site_id);
-        $source_thumb_id = get_post_thumbnail_id($data->source_post_id());
+        $source_thumb_id = get_post_thumbnail_id($translation->source_post_id());
         restore_current_blog();
 
         $target_thumb_id = 0;
 
         if ($source_thumb_id) {
-            $image_sync = Connector::utils()->image_sync($adapter);
+            $image_sync = Connector::utils()->image_sync($this->adapter);
             $target_thumb_id = $image_sync->copy_image(
                 $source_thumb_id,
                 $source_site_id,
-                $data->target_site_id()
+                $translation->target_site_id()
             );
         }
 
         if ($target_thumb_id) {
-            switch_to_blog($data->target_site_id());
+            switch_to_blog($translation->target_site_id());
             set_post_thumbnail($saved_post, $target_thumb_id);
             restore_current_blog();
         }

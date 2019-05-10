@@ -41,7 +41,7 @@
         "psr-4": {
             "TranslationmanagerTests\\": "tests/php",
             "TranslationmanagerTests\\Unit\\": "tests/php/unit/src",
-            "TranslationmanagerTests\\Integration\\": "tests/php/Functional/src",
+            "TranslationmanagerTests\\Functional\\": "tests/php/Functional/src",
             "TranslationmanagerTests\\Integration\\": "tests/php/integration/src"
         }
     }

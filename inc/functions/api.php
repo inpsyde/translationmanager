@@ -8,7 +8,6 @@ use Translationmanager\Api\ApiException;
 use Translationmanager\Domain\Project;
 use Translationmanager\Plugin;
 use Translationmanager\Setting\PluginSettings;
-use Translationmanager\Translatable;
 use Translationmanager\Translation;
 use WP_Post;
 use WP_Term;
@@ -87,7 +86,7 @@ function project_update(WP_Term $project)
                 /**
                  * Fires for each item or translation received from the API.
                  *
-                 * @param Translatable $translation Translation data built from data received from API
+                 * @param Translation $translation Translation data built from data received from API
                  */
                 do_action('translationmanager_incoming_data', $translation);
 
@@ -104,7 +103,7 @@ function project_update(WP_Term $project)
                      * Fires after the updater has updated the post.
                      *
                      * @param WP_Post $post Just updated post
-                     * @param Translatable $translation Translation data built from data received from API
+                     * @param Translation $translation Translation data built from data received from API
                      */
                     do_action('translationmanager_updated_post', $post, $translation);
                 }
@@ -235,7 +234,7 @@ function create_project_order(WP_Term $project_term)
          *
          * Data can be edited in place by listeners.
          *
-         * @param Translatable $data
+         * @param Translation $data
          *
          * @since 1.0.0
          */

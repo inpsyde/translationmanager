@@ -7,7 +7,7 @@ use TranslationmanagerTests\TestCase;
 use Translationmanager\Translation;
 
 /**
- * Class TranslatableTest
+ * Class TranslationTest
  *
  * @package TranslationmanagerTests\Unit
  */

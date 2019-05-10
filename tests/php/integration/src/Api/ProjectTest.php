@@ -121,7 +121,6 @@ class ProjectTest extends TestCase
         parent::setUp();
 
         require_once getenv('TESTS_PATH') . '/stubs/commonStubs.php';
-        require_once getenv('TESTS_PATH') . '/stubs/wpRemoteStubs.php';
 
         Functions\when('esc_html__')
             ->returnArg(1);

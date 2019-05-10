@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace TranslationmanagerTests\Unit\Module\Mlp;
+namespace TranslationmanagerTests\Integration\Module\Mlp;
 
 use Brain\Monkey\Functions;
 use Brain\Monkey\Actions;
-use Mockery;
-use Translationmanager\Module\Mlp\Integrator;
+use Translationmanager\Module\Mlp\Integrator as Testee;
+use Translationmanager\Module\Processor\ProcessorBusFactory;
 use TranslationmanagerTests\TestCase;
 
 /**
@@ -25,25 +25,13 @@ use TranslationmanagerTests\TestCase;
 class IntegratorTest extends TestCase
 {
     /**
-     * Test Instance Creation
-     */
-    public function testInstance()
-    {
-        $testee = new Integrator('3.0.0');
-
-        self::assertInstanceOf(Integrator::class, $testee);
-    }
-
-    /**
      * Test Mlp2 Integration
      */
     public function testMlp2Integration()
     {
         {
-            $testee = new Integrator('3.0.0');
-        }
+            Functions\when('get_file_data')->justReturn(['version' => '2']);
 
-        {
             Functions\when('Translationmanager\\Functions\\version_compare')
                 ->justReturn(false);
 
@@ -55,7 +43,7 @@ class IntegratorTest extends TestCase
         }
 
         {
-            $testee->integrate();
+            Testee::integrate(new ProcessorBusFactory(), 'file_plugin_path');
         }
     }
 
@@ -65,10 +53,8 @@ class IntegratorTest extends TestCase
     public function testMlp3Integration()
     {
         {
-            $testee = new Integrator('3.0.0');
-        }
+            Functions\when('get_file_data')->justReturn(['version' => '3']);
 
-        {
             Functions\when('Translationmanager\\Functions\\version_compare')
                 ->justReturn(true);
 
@@ -80,7 +66,7 @@ class IntegratorTest extends TestCase
         }
 
         {
-            $testee->integrate();
+            Testee::integrate(new ProcessorBusFactory(), 'file_plugin_path');
         }
     }
 }

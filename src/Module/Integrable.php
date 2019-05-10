@@ -8,20 +8,21 @@
 
 namespace Translationmanager\Module;
 
+use Translationmanager\Module\Processor\ProcessorBusFactory;
+
 /**
  * Class Integrable
  *
- * @since   1.0.0
  * @package Translationmanager\Module
  */
 interface Integrable
 {
-
     /**
      * Integrate Module
      *
+     * @param ProcessorBusFactory $processorBusFactory
+     * @param string $pluginPath
      * @return void
-     * @since 1.0.0
      */
-    public function integrate();
+    public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginPath);
 }

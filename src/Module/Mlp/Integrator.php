@@ -3,7 +3,6 @@
 namespace Translationmanager\Module\Mlp;
 
 use Inpsyde_Property_List_Interface;
-use Translationmanager\Utils\Assert;
 use Translationmanager\Functions;
 use Inpsyde\MultilingualPress\Framework\Service\ServiceProvidersCollection;
 use Translationmanager\Module\Integrable;
@@ -18,31 +17,19 @@ use Translationmanager\Module\Processor\ProcessorBusFactory;
 class Integrator implements Integrable
 {
     /**
-     * @var string
-     */
-    private $mlpVersion;
-
-    /**
-     * Integrate constructor
-     *
-     * @param string $pluginVersion
-     * @since 1.0.0
-     */
-    public function __construct($pluginVersion)
-    {
-        Assert::semVersion($pluginVersion);
-
-        $this->mlpVersion = $pluginVersion;
-    }
-
-    /**
      * @inheritdoc
      */
-    public function integrate()
+    public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginPath)
     {
-        Functions\version_compare('3.0.0', $this->mlpVersion, '<=')
-            ? $this->mlp3()
-            : $this->mlp2();
+        $pluginData = get_file_data($pluginPath, [
+            'version' => 'Version',
+        ]);
+
+        $instance = new self;
+
+        Functions\version_compare('3.0.0', $pluginData['version'], '<=')
+            ? $instance->mlp3()
+            : $instance->mlp2();
     }
 
     /**
@@ -86,5 +73,9 @@ class Integrator implements Integrable
                 $providers->add(new ServiceProvider());
             }
         );
+    }
+
+    private function __construct()
+    {
     }
 }

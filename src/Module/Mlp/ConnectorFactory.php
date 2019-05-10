@@ -43,11 +43,11 @@ class ConnectorFactory
     {
         $processorBus = $this->processorBusFactory->create();
         $processorBus
-            ->pushProcessor(new Processor\PostDataBuilder())
-            ->pushProcessor(new Processor\PostParentSync())
-            ->pushProcessor(new Processor\PostSaver())
-            ->pushProcessor(new Processor\PostThumbSync())
-            ->pushProcessor(new Processor\TaxonomiesSync());
+            ->pushProcessor(new Processor\PostDataBuilder($adapter))
+            ->pushProcessor(new Processor\PostParentSync($adapter))
+            ->pushProcessor(new Processor\PostSaver($adapter))
+            ->pushProcessor(new Processor\PostThumbSync($adapter))
+            ->pushProcessor(new Processor\TaxonomiesSync($adapter));
 
         return new Connector($adapter, $processorBus);
     }

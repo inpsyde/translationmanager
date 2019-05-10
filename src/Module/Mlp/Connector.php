@@ -8,7 +8,7 @@ namespace Translationmanager\Module\Mlp;
 
 use Translationmanager\Domain\Language;
 use Translationmanager\Module\Processor\ProcessorBus;
-use Translationmanager\Translatable;
+use Translationmanager\Translation;
 use WP_Post;
 
 /**
@@ -62,9 +62,9 @@ class Connector
     /**
      * @wp-hook translationmanager_outgoing_data
      *
-     * @param Translatable $data
+     * @param Translation $data
      */
-    public function prepare_outgoing(Translatable $data)
+    public function prepare_outgoing(Translation $data)
     {
         $this->processorBus->process($data, $this->adapter);
     }
@@ -80,11 +80,11 @@ class Connector
     }
 
     /**
-     * @param Translatable $data
+     * @param Translation $data
      *
      * @return null|WP_Post
      */
-    public function update_translations(Translatable $data)
+    public function update_translations(Translation $data)
     {
         if (!$data->is_valid()) {
             return null;
