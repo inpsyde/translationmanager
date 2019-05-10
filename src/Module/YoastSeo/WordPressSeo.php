@@ -2,7 +2,7 @@
 
 namespace Translationmanager\Module\YoastSeo;
 
-use Translationmanager\TranslationData;
+use Translationmanager\Translatable;
 use WP_Post;
 use WPSEO_Meta;
 
@@ -16,9 +16,9 @@ class WordPressSeo
      * Store WordPress SEO meta fields related to source post into translation data, using meta for fields that should
      * not be translated.
      *
-     * @param TranslationData $data
+     * @param Translatable $data
      */
-    public function prepare_outgoing(TranslationData $data)
+    public function prepare_outgoing(Translatable $data)
     {
         if (!class_exists('WPSEO_Meta') || !$data->is_valid()) {
             return;
@@ -56,10 +56,10 @@ class WordPressSeo
      *
      * @wp-hook translationmanager_updated_post
      *
-     * @param \WP_Post $translated_post
-     * @param TranslationData $data
+     * @param WP_Post $translated_post
+     * @param Translatable $data
      */
-    public function update_translation(WP_Post $translated_post, TranslationData $data)
+    public function update_translation(WP_Post $translated_post, Translatable $data)
     {
         if (!$data->is_valid()) {
             return;

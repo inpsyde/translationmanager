@@ -4,10 +4,11 @@ namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
-use Translationmanager\TranslationData;
+use Translationmanager\Translatable;
 use WP_Post;
 use WP_Term;
 use WP_Term_Query;
+use Translationmanager\Module\Processor\IncomingProcessor;
 
 /**
  * Class TaxonomiesSync
@@ -18,12 +19,12 @@ use WP_Term_Query;
 class TaxonomiesSync implements IncomingProcessor
 {
     /**
-     * @param TranslationData $data
+     * @param Translatable $data
      * @param Adapter $adapter
      *
      * @return void
      */
-    public function process_incoming(TranslationData $data, Adapter $adapter)
+    public function process_incoming(Translatable $data, Adapter $adapter)
     {
         $target_post = $this->check_incoming_data($data);
 
@@ -55,13 +56,13 @@ class TaxonomiesSync implements IncomingProcessor
     /**
      * Do sanity checks and extract the target post from data object.
      *
-     * @param TranslationData $data
+     * @param Translatable $data
      *
-     * @return \WP_Post|null Target post on successful check.
+     * @return WP_Post|null Target post on successful check.
      */
-    private function check_incoming_data(TranslationData $data)
+    private function check_incoming_data(Translatable $data)
     {
-        /** @var \WP_Post $target_post */
+        /** @var WP_Post $target_post */
         $target_post = $data->get_meta(PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE);
 
         if (!$target_post instanceof WP_Post || !$target_post->ID) {
@@ -113,11 +114,11 @@ class TaxonomiesSync implements IncomingProcessor
      * Taxonomies to target can be filtered.
      * Run in the context of source post site.
      *
-     * @param TranslationData $data
+     * @param Translatable $data
      *
      * @return int[]
      */
-    private function query_source_term_taxonomy_ids(TranslationData $data)
+    private function query_source_term_taxonomy_ids(Translatable $data)
     {
         $source_post = $data->source_post();
 
@@ -167,7 +168,7 @@ class TaxonomiesSync implements IncomingProcessor
      * If no existing relation is found, allow filters to create a target term "on the flight".
      * Run in the context of source post site.
      *
-     * @param TranslationData $data
+     * @param Translatable $data
      * @param array $source_term_taxonomy_ids Source post terms term taxonomy ids,
      *                                                  from query_source_term_taxonomy_ids
      * @param Adapter $adapter
@@ -181,7 +182,7 @@ class TaxonomiesSync implements IncomingProcessor
      *                  its' necessary to store in the DB first.
      */
     private function query_linked_terms(
-        TranslationData $data,
+        Translatable $data,
         $source_term_taxonomy_ids,
         Adapter $adapter
     ) {
@@ -234,15 +235,15 @@ class TaxonomiesSync implements IncomingProcessor
      *
      * Run in the context of target post site.
      *
-     * @param \WP_Term[] $terms_to_relate
-     * @param TranslationData $data
+     * @param WP_Term[] $terms_to_relate
+     * @param Translatable $data
      * @param Adapter $adapter
      *
      * @return int[] Term ids of terms that need to be associated to target post
      */
     private function relate_new_terms(
         array $terms_to_relate,
-        TranslationData $data,
+        Translatable $data,
         Adapter $adapter
     ) {
 
@@ -321,7 +322,7 @@ class TaxonomiesSync implements IncomingProcessor
      *
      * @param int[] $linked_tt_ids
      * @param int[][] $target_term_ids
-     * @param \WP_Post $target_post
+     * @param WP_Post $target_post
      */
     private function sync_target_terms(
         array $linked_tt_ids,

@@ -5,7 +5,8 @@ namespace Translationmanager\Module\Mlp\Processor;
 use stdClass;
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
-use Translationmanager\TranslationData;
+use Translationmanager\Module\Processor\IncomingProcessor;
+use Translationmanager\Translatable;
 use WP_Post;
 
 class PostSaver implements IncomingProcessor
@@ -13,12 +14,12 @@ class PostSaver implements IncomingProcessor
     const SAVED_POST_KEY = 'saved_post';
 
     /**
-     * @param TranslationData $data
+     * @param Translatable $data
      * @param Adapter $adapter
      *
      * @return void
      */
-    public function process_incoming(TranslationData $data, Adapter $adapter)
+    public function process_incoming(Translatable $data, Adapter $adapter)
     {
         $post_vars = get_object_vars(new WP_Post(new stdClass()));
         $post_data = [];

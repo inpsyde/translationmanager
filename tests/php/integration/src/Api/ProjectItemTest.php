@@ -1,17 +1,17 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Translationmanager\Tests\Integration\Api;
+namespace TranslationmanagerTests\Integration\Api;
 
 use Brain\Monkey\Functions;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Translationmanager\Api;
 use Translationmanager\Api\ProjectItem;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
 /**
  * Class ProjectItemTest
  *
- * @package Translationmanager\Tests\Integration\Api
+ * @package TranslationmanagerTests\Integration\Api
  */
 class ProjectItemTest extends TestCase
 {

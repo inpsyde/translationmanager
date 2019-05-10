@@ -8,7 +8,8 @@ use Translationmanager\Api\ApiException;
 use Translationmanager\Domain\Project;
 use Translationmanager\Plugin;
 use Translationmanager\Setting\PluginSettings;
-use Translationmanager\TranslationData;
+use Translationmanager\Translatable;
+use Translationmanager\Translation;
 use WP_Post;
 use WP_Term;
 
@@ -81,12 +82,12 @@ function project_update(WP_Term $project)
             }
 
             foreach ($item['data'] as $incoming_translation) {
-                $translation = TranslationData::for_incoming((array)$incoming_translation);
+                $translation = Translation::for_incoming((array)$incoming_translation);
 
                 /**
                  * Fires for each item or translation received from the API.
                  *
-                 * @param TranslationData $translation Translation data built from data received from API
+                 * @param Translatable $translation Translation data built from data received from API
                  */
                 do_action('translationmanager_incoming_data', $translation);
 
@@ -103,7 +104,7 @@ function project_update(WP_Term $project)
                      * Fires after the updater has updated the post.
                      *
                      * @param WP_Post $post Just updated post
-                     * @param TranslationData $translation Translation data built from data received from API
+                     * @param Translatable $translation Translation data built from data received from API
                      */
                     do_action('translationmanager_updated_post', $post, $translation);
                 }
@@ -222,7 +223,7 @@ function create_project_order(WP_Term $project_term)
 
         $source_site_id = get_current_blog_id();
 
-        $data = TranslationData::for_outgoing(
+        $data = Translation::for_outgoing(
             $source_post,
             $source_site_id,
             $post->_translationmanager_target_id,
@@ -234,7 +235,7 @@ function create_project_order(WP_Term $project_term)
          *
          * Data can be edited in place by listeners.
          *
-         * @param TranslationData $data
+         * @param Translatable $data
          *
          * @since 1.0.0
          */
@@ -247,8 +248,12 @@ function create_project_order(WP_Term $project_term)
         foreach ($post_types_data as $post_type_name => $post_type_content) {
             translationmanager_api()
                 ->project_item()
-                ->create($project_id, $post_type_name, $post_type_target_language,
-                    $post_type_content);
+                ->create(
+                    $project_id,
+                    $post_type_name,
+                    $post_type_target_language,
+                    $post_type_content
+                );
         }
     }
 

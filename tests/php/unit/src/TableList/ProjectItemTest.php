@@ -1,15 +1,15 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Translationmanager\Tests\TableList;
+namespace TranslationmanagerTests\TableList;
 
 use Brain\Monkey\Functions;
 use Translationmanager\TableList\ProjectItem;
-use \Translationmanager\Tests\TestCase;
+use \TranslationmanagerTests\TestCase;
 
 /**
  * Class ProjectItemTest
  *
- * @package Translationmanager\Tests\TableList
+ * @package TranslationmanagerTests\TableList
  */
 class ProjectItemTest extends TestCase
 {

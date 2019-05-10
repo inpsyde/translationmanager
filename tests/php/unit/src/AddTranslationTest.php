@@ -1,6 +1,6 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Translationmanager\Tests\Unit;
+namespace TranslationmanagerTests\Unit;
 
 use Brain\Nonces\NonceInterface;
 use Mockery;
@@ -10,12 +10,12 @@ use Translationmanager\Notice\TransientNoticeService;
 use Translationmanager\ProjectHandler;
 use Translationmanager\ProjectUpdater;
 use Translationmanager\Request\Api\AddTranslation;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
 /**
  * Class AddTranslationTest
  *
- * @package Translationmanager\Tests\unit\src
+ * @package TranslationmanagerTests\unit\src
  */
 class AddTranslationTest extends TestCase
 {

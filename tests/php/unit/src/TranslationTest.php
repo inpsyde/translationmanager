@@ -1,19 +1,18 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Translationmanager\Tests\Unit;
+namespace TranslationmanagerTests\Unit;
 
 use Brain\Monkey\Functions;
-use Translationmanager\Tests\TestCase;
-use Translationmanager\TranslationData;
+use TranslationmanagerTests\TestCase;
+use Translationmanager\Translation;
 
 /**
- * Class TranslationDataTest
+ * Class TranslatableTest
  *
- * @package Translationmanager\Tests\Unit
+ * @package TranslationmanagerTests\Unit
  */
-class TranslationDataTest extends TestCase
+class TranslationTest extends TestCase
 {
-
     /**
      * Test Incoming Constructor
      */
@@ -30,13 +29,13 @@ class TranslationDataTest extends TestCase
         Functions\when('get_current_blog_id')->justReturn(1);
         Functions\expect('get_post')->once()->with(123)->andReturn($post);
 
-        $incoming = TranslationData::for_incoming(
+        $incoming = Translation::for_incoming(
             [
-                TranslationData::META_KEY => [
-                    TranslationData::SOURCE_POST_ID_KEY => 123,
-                    TranslationData::SOURCE_SITE_KEY => 1,
-                    TranslationData::TARGET_SITE_KEY => 2,
-                    TranslationData::TARGET_LANG_KEY => 'de',
+                Translation::META_KEY => [
+                    Translation::SOURCE_POST_ID_KEY => 123,
+                    Translation::SOURCE_SITE_KEY => 1,
+                    Translation::TARGET_SITE_KEY => 2,
+                    Translation::TARGET_LANG_KEY => 'de',
                 ],
             ]
         );
@@ -72,7 +71,7 @@ class TranslationDataTest extends TestCase
         Functions\when('get_post')
             ->justReturn($post);
 
-        $outgoing = TranslationData::for_outgoing($post, 1, 2, 'de', []);
+        $outgoing = Translation::for_outgoing($post, 1, 2, 'de', []);
 
         static::assertFalse($outgoing->is_incoming());
         static::assertTrue($outgoing->is_outgoing());
@@ -89,7 +88,7 @@ class TranslationDataTest extends TestCase
     public function testHasGetSetValue()
     {
 
-        $incoming = TranslationData::for_incoming([]);
+        $incoming = Translation::for_incoming([]);
 
         $incoming->set_value('foo', 'foo');
         $incoming->set_value('bar', 'bar!!', '_ns');
@@ -113,7 +112,7 @@ class TranslationDataTest extends TestCase
     public function testHasGetSetMeta()
     {
 
-        $incoming = TranslationData::for_incoming([]);
+        $incoming = Translation::for_incoming([]);
 
         $incoming->set_meta('foo', 'foo');
         $incoming->set_meta('bar', 'bar!!', '_ns');
@@ -140,7 +139,7 @@ class TranslationDataTest extends TestCase
     public function testRemoveValue()
     {
 
-        $incoming = TranslationData::for_incoming([]);
+        $incoming = Translation::for_incoming([]);
 
         $incoming->set_value('foo', 'foo');
         $incoming->set_value('bar', 'bar!!', '_ns');
@@ -168,7 +167,7 @@ class TranslationDataTest extends TestCase
     public function testRemoveMeta()
     {
 
-        $incoming = TranslationData::for_incoming([]);
+        $incoming = Translation::for_incoming([]);
 
         $incoming->set_meta('foo', 'foo');
         $incoming->set_meta('bar', 'bar!!', '_ns');
@@ -196,11 +195,11 @@ class TranslationDataTest extends TestCase
     public function testToArray()
     {
 
-        $incoming = TranslationData::for_incoming(
+        $incoming = Translation::for_incoming(
             [
                 'foo' => 'Foo',
                 'bar' => 'Bar',
-                TranslationData::META_KEY => [
+                Translation::META_KEY => [
                     'source_post_id' => 1,
                     'source_site_id' => 2,
                     'target_site_id' => 3,
@@ -234,7 +233,7 @@ class TranslationDataTest extends TestCase
                 'hello' => 'Hello',
                 'goodbye' => 'Goodbye',
             ],
-            TranslationData::META_KEY => [
+            Translation::META_KEY => [
                 'source_post_id' => 1,
                 'source_site_id' => 2,
                 'target_site_id' => 3,

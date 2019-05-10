@@ -7,24 +7,14 @@
 
 namespace Translationmanager;
 
-use ArrayAccess;
-use JsonSerializable;
 use WP_Post;
 
-final class TranslationData implements ArrayAccess, JsonSerializable
+/**
+ * Class TranslationData
+ * @package Translationmanager
+ */
+final class Translation implements Translatable
 {
-
-    const META_KEY = '__meta';
-    const VALUES_KEY = '__values';
-    const SOURCE_POST_ID_KEY = 'source_post_id';
-    const SOURCE_POST_KEY = 'source_post_obj';
-    const SOURCE_SITE_KEY = 'source_site_id';
-    const TARGET_POST_KEY = 'target_post_id';
-    const TARGET_SITE_KEY = 'target_site_id';
-    const TARGET_LANG_KEY = 'target_language';
-    const INCOMING = 'incoming';
-    const OUTGOING = 'outgoing';
-
     private static $protected_meta = [
         self::SOURCE_POST_ID_KEY,
         self::SOURCE_POST_KEY,
@@ -60,7 +50,7 @@ final class TranslationData implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * @param \WP_Post $source_post
+     * @param WP_Post $source_post
      * @param int $source_site_id
      * @param int $target_site_id
      * @param string $target_language
@@ -147,275 +137,6 @@ final class TranslationData implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * @return bool
-     */
-    public function is_incoming()
-    {
-        return $this->direction === self::INCOMING;
-    }
-
-    /**
-     * @return bool
-     */
-    public function is_outgoing()
-    {
-        return $this->direction === self::OUTGOING;
-    }
-
-    /**
-     * @return bool
-     */
-    public function is_valid()
-    {
-        return $this->source_post_id()
-            && $this->source_site_id()
-            && $this->target_site_id()
-            && $this->target_language();
-    }
-
-    /**
-     * @return int
-     */
-    public function source_post_id()
-    {
-        return $this->storage[self::META_KEY][self::SOURCE_POST_ID_KEY];
-    }
-
-    /**
-     * @return int
-     */
-    public function source_site_id()
-    {
-        return $this->storage[self::META_KEY][self::SOURCE_SITE_KEY];
-    }
-
-    /**
-     * @return \WP_Post|null
-     */
-    public function source_post()
-    {
-        if (!empty($this->storage[self::META_KEY][self::SOURCE_POST_KEY])) {
-            return $this->storage[self::META_KEY][self::SOURCE_POST_KEY];
-        }
-
-        if (!$this->is_valid()) {
-            return null;
-        }
-
-        $site_id = $this->source_site_id();
-        $switched = $site_id !== get_current_blog_id();
-        $switched and switch_to_blog($site_id);
-        $post = get_post($this->source_post_id());
-        $switched and restore_current_blog();
-        $this->storage[self::META_KEY][self::SOURCE_POST_KEY] = $post ? $post : null;
-
-        // If source post does not return a valid post, we invalidate the data by unsetting post id
-        if (!$post) {
-            $this->storage[self::META_KEY][self::SOURCE_POST_ID_KEY] = null;
-        }
-
-        return $this->storage[self::META_KEY][self::SOURCE_POST_KEY];
-    }
-
-    /**
-     * @return int
-     */
-    public function target_site_id()
-    {
-        return $this->storage[self::META_KEY][self::TARGET_SITE_KEY];
-    }
-
-    /**
-     * @return int
-     */
-    public function target_language()
-    {
-        return $this->storage[self::META_KEY][self::TARGET_LANG_KEY];
-    }
-
-    /**
-     * @param string $key
-     * @param string $namespace
-     *
-     * @return bool
-     */
-    public function has_value($key, $namespace = '')
-    {
-        $storage = $this->storage[self::VALUES_KEY];
-        if ($namespace && !isset($storage[$namespace])) {
-            return false;
-        }
-
-        return $namespace ? array_key_exists($key, $storage[$namespace]) : array_key_exists(
-            $key,
-            $storage
-        );
-    }
-
-    /**
-     * @param string $key
-     * @param string $namespace
-     *
-     * @return mixed
-     */
-    public function get_value($key, $namespace = '')
-    {
-        if (!$this->has_value($key, $namespace)) {
-            return null;
-        }
-
-        $storage = $this->storage[self::VALUES_KEY];
-        if ($namespace && !isset($storage[$namespace])) {
-            return null;
-        } elseif ($namespace) {
-            $storage = $storage[$namespace];
-        }
-
-        return $storage[$key];
-    }
-
-    /**
-     * @param        $key
-     * @param        $value
-     * @param string $namespace
-     */
-    public function set_value($key, $value, $namespace = '')
-    {
-        $storage = &$this->storage[self::VALUES_KEY];
-
-        if ($namespace) {
-            isset($storage[$namespace]) or $storage[$namespace] = [];
-            $storage = &$storage[$namespace];
-        }
-
-        $storage[$key] = $value;
-    }
-
-    /**
-     * @param string $key
-     * @param string $namespace
-     */
-    public function remove_value($key, $namespace = '')
-    {
-        $storage = &$this->storage[self::VALUES_KEY];
-
-        if ($namespace) {
-            isset($storage[$namespace]) or $storage[$namespace] = [];
-            $storage = &$storage[$namespace];
-        }
-
-        unset($storage[$key]);
-    }
-
-    /**
-     * @param string $key
-     * @param string $namespace
-     *
-     * @return bool
-     */
-    public function has_meta($key, $namespace = '')
-    {
-        $storage = $this->storage[self::META_KEY];
-        if ($namespace && !isset($storage[$namespace])) {
-            return false;
-        }
-
-        return $namespace ? array_key_exists($key, $storage[$namespace]) : array_key_exists(
-            $key,
-            $storage
-        );
-    }
-
-    /**
-     * @param string $key
-     * @param string $namespace
-     *
-     * @return mixed
-     */
-    public function get_meta($key, $namespace = '')
-    {
-        if (!$this->has_meta($key, $namespace)) {
-            return null;
-        }
-
-        $storage = $this->storage[self::META_KEY];
-        if ($namespace && !isset($storage[$namespace])) {
-            return null;
-        } elseif ($namespace) {
-            $storage = $storage[$namespace];
-        }
-
-        return $storage[$key];
-    }
-
-    /**
-     * @param        $key
-     * @param        $value
-     * @param string $namespace
-     */
-    public function set_meta($key, $value, $namespace = '')
-    {
-        if (!$namespace && in_array($key, self::$protected_meta, true)) {
-            _doing_it_wrong(
-                __METHOD__,
-                // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-                "Meta key {$key} is protected and can't be overridden.",
-                '0.1'
-            );
-
-            return;
-        }
-
-        $storage = &$this->storage[self::META_KEY];
-
-        if ($namespace) {
-            isset($storage[$namespace]) or $storage[$namespace] = [];
-            $storage = &$storage[$namespace];
-        }
-
-        $storage[$key] = $value;
-    }
-
-    /**
-     * @param string $key
-     * @param string $namespace
-     */
-    public function remove_meta($key, $namespace = '')
-    {
-        if (!$namespace && in_array($key, self::$protected_meta, true)) {
-            _doing_it_wrong(
-                __METHOD__,
-                // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-                "Meta key {$key} is protected and can't be removed.",
-                '0.1'
-            );
-
-            return;
-        }
-
-        $storage = &$this->storage[self::META_KEY];
-
-        if ($namespace) {
-            isset($storage[$namespace]) or $storage[$namespace] = [];
-            $storage = &$storage[$namespace];
-        }
-
-        unset($storage[$key]);
-    }
-
-    /**
-     * @return array
-     */
-    public function to_array()
-    {
-        $data = $this->storage[self::VALUES_KEY];
-
-        $data[self::META_KEY] = $this->storage[self::META_KEY];
-
-        return $data;
-    }
-
-    /**
      * @inheritdoc
      */
     public function offsetExists($offset)
@@ -448,10 +169,261 @@ final class TranslationData implements ArrayAccess, JsonSerializable
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function jsonSerialize()
     {
         return $this->to_array();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function is_incoming()
+    {
+        return $this->direction === self::INCOMING;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function is_outgoing()
+    {
+        return $this->direction === self::OUTGOING;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function is_valid()
+    {
+        return $this->source_post_id()
+            && $this->source_site_id()
+            && $this->target_site_id()
+            && $this->target_language();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function source_post_id()
+    {
+        return $this->storage[self::META_KEY][self::SOURCE_POST_ID_KEY];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function source_site_id()
+    {
+        return $this->storage[self::META_KEY][self::SOURCE_SITE_KEY];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function source_post()
+    {
+        if (!empty($this->storage[self::META_KEY][self::SOURCE_POST_KEY])) {
+            return $this->storage[self::META_KEY][self::SOURCE_POST_KEY];
+        }
+
+        if (!$this->is_valid()) {
+            return null;
+        }
+
+        $site_id = $this->source_site_id();
+        $switched = $site_id !== get_current_blog_id();
+        $switched and switch_to_blog($site_id);
+        $post = get_post($this->source_post_id());
+        $switched and restore_current_blog();
+        $this->storage[self::META_KEY][self::SOURCE_POST_KEY] = $post ? $post : null;
+
+        // If source post does not return a valid post, we invalidate the data by unsetting post id
+        if (!$post) {
+            $this->storage[self::META_KEY][self::SOURCE_POST_ID_KEY] = null;
+        }
+
+        return $this->storage[self::META_KEY][self::SOURCE_POST_KEY];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function target_site_id()
+    {
+        return $this->storage[self::META_KEY][self::TARGET_SITE_KEY];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function target_language()
+    {
+        return $this->storage[self::META_KEY][self::TARGET_LANG_KEY];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function has_value($key, $namespace = '')
+    {
+        $storage = $this->storage[self::VALUES_KEY];
+        if ($namespace && !isset($storage[$namespace])) {
+            return false;
+        }
+
+        return $namespace ? array_key_exists($key, $storage[$namespace]) : array_key_exists(
+            $key,
+            $storage
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function get_value($key, $namespace = '')
+    {
+        if (!$this->has_value($key, $namespace)) {
+            return null;
+        }
+
+        $storage = $this->storage[self::VALUES_KEY];
+        if ($namespace && !isset($storage[$namespace])) {
+            return null;
+        } elseif ($namespace) {
+            $storage = $storage[$namespace];
+        }
+
+        return $storage[$key];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function set_value($key, $value, $namespace = '')
+    {
+        $storage = &$this->storage[self::VALUES_KEY];
+
+        if ($namespace) {
+            isset($storage[$namespace]) or $storage[$namespace] = [];
+            $storage = &$storage[$namespace];
+        }
+
+        $storage[$key] = $value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function remove_value($key, $namespace = '')
+    {
+        $storage = &$this->storage[self::VALUES_KEY];
+
+        if ($namespace) {
+            isset($storage[$namespace]) or $storage[$namespace] = [];
+            $storage = &$storage[$namespace];
+        }
+
+        unset($storage[$key]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function has_meta($key, $namespace = '')
+    {
+        $storage = $this->storage[self::META_KEY];
+        if ($namespace && !isset($storage[$namespace])) {
+            return false;
+        }
+
+        return $namespace ? array_key_exists($key, $storage[$namespace]) : array_key_exists(
+            $key,
+            $storage
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function get_meta($key, $namespace = '')
+    {
+        if (!$this->has_meta($key, $namespace)) {
+            return null;
+        }
+
+        $storage = $this->storage[self::META_KEY];
+        if ($namespace && !isset($storage[$namespace])) {
+            return null;
+        } elseif ($namespace) {
+            $storage = $storage[$namespace];
+        }
+
+        return $storage[$key];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function set_meta($key, $value, $namespace = '')
+    {
+        if (!$namespace && in_array($key, self::$protected_meta, true)) {
+            _doing_it_wrong(
+                __METHOD__,
+                // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+                "Meta key {$key} is protected and can't be overridden.",
+                '0.1'
+            );
+
+            return;
+        }
+
+        $storage = &$this->storage[self::META_KEY];
+
+        if ($namespace) {
+            isset($storage[$namespace]) or $storage[$namespace] = [];
+            $storage = &$storage[$namespace];
+        }
+
+        $storage[$key] = $value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function remove_meta($key, $namespace = '')
+    {
+        if (!$namespace && in_array($key, self::$protected_meta, true)) {
+            _doing_it_wrong(
+                __METHOD__,
+                // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+                "Meta key {$key} is protected and can't be removed.",
+                '0.1'
+            );
+
+            return;
+        }
+
+        $storage = &$this->storage[self::META_KEY];
+
+        if ($namespace) {
+            isset($storage[$namespace]) or $storage[$namespace] = [];
+            $storage = &$storage[$namespace];
+        }
+
+        unset($storage[$key]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function to_array()
+    {
+        $data = $this->storage[self::VALUES_KEY];
+
+        $data[self::META_KEY] = $this->storage[self::META_KEY];
+
+        return $data;
     }
 }

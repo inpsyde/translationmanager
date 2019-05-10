@@ -7,9 +7,17 @@
 namespace Translationmanager\Module\Mlp;
 
 use Translationmanager\Domain\Language;
-use Translationmanager\TranslationData;
+use Translationmanager\Module\Processor\ProcessorBus;
+use Translationmanager\Translatable;
 use WP_Post;
 
+/**
+ * Class Connector
+ *
+ * A connector between Translation Manager and MLP through the Adapter
+ *
+ * @package Translationmanager\Module\Mlp
+ */
 class Connector
 {
     const DATA_NAMESPACE = 'MLP';
@@ -20,14 +28,14 @@ class Connector
     private static $utils;
 
     /**
-     * @var ProcessorBus
-     */
-    private $processors;
-
-    /**
-     * @var \Translationmanager\Module\Mlp\Adapter
+     * @var Adapter
      */
     private $adapter;
+
+    /**
+     * @var ProcessorBus
+     */
+    private $processorBus;
 
     /**
      * @return Utils\Registry
@@ -42,25 +50,24 @@ class Connector
     /**
      * Connector constructor
      *
-     * @param \Translationmanager\Module\Mlp\Adapter $adapter
+     * @param Adapter $adapter
+     * @param ProcessorBus $processorBus
      */
-    public function __construct(Adapter $adapter)
+    public function __construct(Adapter $adapter, ProcessorBus $processorBus)
     {
         $this->adapter = $adapter;
+        $this->processorBus = $processorBus;
     }
 
     /**
      * @wp-hook translationmanager_outgoing_data
      *
-     * @param TranslationData $data
+     * @param Translatable $data
      */
-    public function prepare_outgoing(TranslationData $data)
+    public function prepare_outgoing(Translatable $data)
     {
-        $this->init_processors();
-        $this->processors->process($data, $this->adapter);
+        $this->processorBus->process($data, $this->adapter);
     }
-
-    // TODO Split the connector and move `prepare_outgoing` and `update_translations` outside in another class?
 
     /**
      * @wp-hook translationmanager_post_updater
@@ -73,22 +80,17 @@ class Connector
     }
 
     /**
-     * @param TranslationData $data
+     * @param Translatable $data
      *
-     * @return null|\WP_Post
+     * @return null|WP_Post
      */
-    // TODO Move outside in the same class of `prepare_updater`, rename it to `update_translation`
-    //      The `Connection` class then will get injected the new class will where the two methods are defined,
-    //      This method instead will be renamed to call the `update_translation` and return the newly post object.
-    //      This way we'll have a consistent interface to process outgoing and incoing data.
-    public function update_translations(TranslationData $data)
+    public function update_translations(Translatable $data)
     {
         if (!$data->is_valid()) {
             return null;
         }
 
-        $this->init_processors();
-        $this->processors->process($data, $this->adapter);
+        $this->processorBus->process($data, $this->adapter);
 
         $saved_post = $data->get_meta(Processor\PostSaver::SAVED_POST_KEY, self::DATA_NAMESPACE);
 
@@ -105,7 +107,7 @@ class Connector
     public function current_language()
     {
         $site_id = get_current_blog_id();
-        $lang_iso = $this->adapter->blog_language($site_id, false);
+        $lang_iso = $this->adapter->blog_language($site_id);
         $lang_name = $this->adapter->lang_by_iso($lang_iso);
 
         return new Language($lang_iso, $lang_name);
@@ -124,25 +126,11 @@ class Connector
         $sites = $this->adapter->related_sites($site_id);
 
         foreach ($sites as $site) {
-            $lang_iso = $this->adapter->blog_language($site, false);
+            $lang_iso = $this->adapter->blog_language($site);
 
             $languages[$site] = new Language($lang_iso, $this->adapter->lang_by_iso($lang_iso));
         }
 
         return $languages;
-    }
-
-    /**
-     * Initialize processors bus and add default processors to it.
-     */
-    private function init_processors()
-    {
-        $this->processors = new ProcessorBus();
-        $this->processors
-            ->push_processor(new Processor\PostDataBuilder())
-            ->push_processor(new Processor\PostParentSync())
-            ->push_processor(new Processor\PostSaver())
-            ->push_processor(new Processor\PostThumbSync())
-            ->push_processor(new Processor\TaxonomiesSync());
     }
 }

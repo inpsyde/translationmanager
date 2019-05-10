@@ -1,14 +1,14 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Translationmanager\Tests\Unit\Domain;
+namespace TranslationmanagerTests\Unit\Domain;
 
 use Translationmanager\Domain\Project;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
 /**
  * Class ProjectTest
  *
- * @package Translationmanager\Tests\Unit\Domain
+ * @package TranslationmanagerTests\Unit\Domain
  */
 class ProjectTest extends TestCase
 {

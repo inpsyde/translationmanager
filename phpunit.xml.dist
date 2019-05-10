@@ -10,7 +10,7 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	processIsolation="true"
-	stopOnFailure="true">
+	stopOnFailure="false">
 	<testsuites>
 		<testsuite name="Unit">
 			<directory suffix="Test.php">tests/php/unit/src</directory>

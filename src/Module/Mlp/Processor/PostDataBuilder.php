@@ -6,9 +6,14 @@ namespace Translationmanager\Module\Mlp\Processor;
 use stdClass;
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
-use Translationmanager\TranslationData;
+use Translationmanager\Module\Processor\IncomingProcessor;
+use Translationmanager\Translatable;
 use WP_Post;
 
+/**
+ * Class PostDataBuilder
+ * @package Translationmanager\Module\Mlp\Processor
+ */
 class PostDataBuilder implements IncomingProcessor
 {
     const IS_UPDATE_KEY = 'is-update';
@@ -28,10 +33,10 @@ class PostDataBuilder implements IncomingProcessor
     ];
 
     /**
-     * @param \Translationmanager\TranslationData $data
-     * @param \Translationmanager\Module\Mlp\Adapter $adapter
+     * @param Translatable $data
+     * @param Adapter $adapter
      */
-    public function process_incoming(TranslationData $data, Adapter $adapter)
+    public function process_incoming(Translatable $data, Adapter $adapter)
     {
         $source_post = $data->source_post();
 

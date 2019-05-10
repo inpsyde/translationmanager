@@ -40,7 +40,7 @@ Within your module you might be interested in the following.
 
 ### Translation data
 
-`Translationmanager\TranslationData` is a data transfer object that is used to encapsulate that data that is being sent and received to and
+`Translationmanager\Translatable` is a data transfer object that is used to encapsulate that data that is being sent and received to and
 from API.
 
 There are accessor methods for values to be translated and metadata (that will be returned unchanged).
@@ -51,10 +51,10 @@ their data from other modules without risk of conflicts.
 There are two main hooks: `translationmanager_outgoing_data` and `translationmanager_incoming_data` that pass this object to listeners, allowing for read and  write access.
 
 ### Actions: `'translationmanager_outgoing_data'`
- 
+
 The `translationmanager_outgoing_data` action fires before data is sent to API.
 
-Only passed argument is an instance `Translationmanager\TranslationData`, that allow write access, so modules can add custom values
+Only passed argument is an instance `Translationmanager\Translatable`, that allow write access, so modules can add custom values
 (and metadata) to be sent for translation. Metadata can be used for arbitrary values that will be returned unchanged
 from the API.
 
@@ -63,7 +63,7 @@ from the API.
 
 The `translationmanager_incoming_data` action fires after some translation data have been received from API.
 
-Only passed argument is an instance `Translationmanager\TranslationData`, that modules can use in read access to do operations
+Only passed argument is an instance `Translationmanager\Translatable`, that modules can use in read access to do operations
 based on received data before a translation post is updated, or for in just-in-time modification.
 
 The "raw" data received form API looks like this (JSON):
@@ -94,9 +94,9 @@ The "raw" data received form API looks like this (JSON):
       }
     }
 
-and the `Translationmanager\TranslationData` provides separate accessor for "values" (anything that is not "meta") and for "meta".
+and the `Translationmanager\Translatable` provides separate accessor for "values" (anything that is not "meta") and for "meta".
 
-Note that the method `Translationmanager\TranslationData::to_array()` convert the object in the array in everything similar to
+Note that the method `Translationmanager\Translatable::to_array()` convert the object in the array in everything similar to
 the original raw data.
 
 ### Filter: `translationmanager_post_updater`
@@ -105,14 +105,14 @@ Translation Manager can work with different translation plugins. This is why it 
 other write operation when data is received from API.
 
 What is  does it to fire the filter `translationmanager_post_updater` where translation
-plugins can hook to return a callback that will be used to update the translation post. The callback will be called with 
-an instance of `Translationmanager\TranslationData` that encapsulate data received from API and it must return the translated post
+plugins can hook to return a callback that will be used to update the translation post. The callback will be called with
+an instance of `Translationmanager\Translatable` that encapsulate data received from API and it must return the translated post
 object.
 
 ### Action: `translationmanager_updated_post`
 
-After a translation post have been updated by translation plugin, Translation Manager fires the hook "" (stored in 
-the constant `TranslationData`) passing the post object itself and the `Translationmanager\TranslationData` instance build from
+After a translation post have been updated by translation plugin, Translation Manager fires the hook "" (stored in
+the constant `Translatable`) passing the post object itself and the `Translationmanager\Translatable` instance build from
 API response.
 
 ### Setting languages
@@ -131,5 +131,5 @@ so that he translation agency and you afterwards know the origin language.
 
 ### Module example
 
-Explanatory usages example for all main plugin hooks can be found in MultilingualPress connection class, 
+Explanatory usages example for all main plugin hooks can be found in MultilingualPress connection class,
 found in `/includes/translationmanager/module/class-mlp-connect.php`

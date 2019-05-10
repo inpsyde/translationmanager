@@ -8,9 +8,9 @@
 
 namespace Translationmanager\Module\Mlp;
 
-use Inpsyde\MultilingualPress\Framework\PluginProperties;
-use Inpsyde\MultilingualPress\Framework\Service\BootstrappableServiceProvider;
 use Inpsyde\MultilingualPress\Framework\Service\Container;
+use Inpsyde\MultilingualPress\Framework\Service\BootstrappableServiceProvider;
+use Translationmanager\Module\Processor\ProcessorBusFactory;
 
 /**
  * Class ServiceProvider
@@ -26,9 +26,8 @@ class ServiceProvider implements BootstrappableServiceProvider
     public function register(Container $container)
     {
         $container[Adapter::class] = function (Container $container) {
-
             return new Adapter(
-                $container[PluginProperties::class]['filePath'],
+                3,
                 $container['Inpsyde\\MultilingualPress\\Framework\\Api\\SiteRelations'],
                 $container['Inpsyde\\MultilingualPress\\Framework\\Api\\ContentRelations']
             );
@@ -40,13 +39,15 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function bootstrap(Container $container)
     {
-        $adapter = $container[Adapter::class];
-        add_action(
-            'multilingualpress.bootstrapped',
-            function () use ($adapter) {
-
-                Integrator::action($adapter);
-            }
+        $connectorBootstrap = new ConnectorBootstrap(
+            new ConnectorFactory(
+                new ProcessorBusFactory()
+            )
         );
+        $adapter = $container[Adapter::class];
+
+        add_action('multilingualpress.bootstrapped', function () use ($connectorBootstrap, $adapter) {
+            $connectorBootstrap->boot($adapter);
+        });
     }
 }

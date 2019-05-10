@@ -10,7 +10,6 @@ namespace Translationmanager\Module;
 
 use Translationmanager\Module\Mlp;
 use Translationmanager\Module\YoastSeo;
-use Translationmanager\Plugin;
 
 /**
  * Class Loader
@@ -21,22 +20,13 @@ use Translationmanager\Plugin;
 class Loader
 {
     /**
-     * Plugin
-     *
-     * @since 1.0.0
-     *
-     * @var \Translationmanager\Plugin Instance of the plugin class
-     */
-    private $plugin;
-
-    /**
      * Installed Plugins List
      *
      * @since 1.0.0
      *
      * @var array The list of the installed and active plugins
      */
-    private $installed_plugins;
+    private $installedPlugins;
 
     /**
      * List of Integrations
@@ -53,24 +43,28 @@ class Loader
      * @var array List of modules we want to integrate if the relative plugins are active
      */
     private static $modules = [
+        'wp-seo' => YoastSeo\Integrator::class,
+    ];
+
+    /**
+     * MultilingualPress Modules
+     *
+     * @var array
+     */
+    private static $multilingualPressModules = [
         'multilingualpress' => Mlp\Integrator::class,
         'multilingual-press' => Mlp\Integrator::class,
-        'wp-seo' => YoastSeo\Integrator::class,
     ];
 
     /**
      * Loader constructor
      *
-     * @param \Translationmanager\Plugin $plugin Instance of the plugin class.
-     * @param array $installed_plugins The list of the installed and active
-     *                                                      plugins.
-     *
+     * @param array $installedPlugins The list of the installed and active plugins.
      * @since 1.0.0
      */
-    public function __construct(Plugin $plugin, array $installed_plugins)
+    public function __construct(array $installedPlugins)
     {
-        $this->plugin = $plugin;
-        $this->installed_plugins = $installed_plugins;
+        $this->installedPlugins = $installedPlugins;
     }
 
     /**
@@ -84,6 +78,7 @@ class Loader
         $this->installed_plugins_as_assoc_list();
 
         $available_modules = $this->available_modules();
+        $modules = array_merge(self::$modules, self::$multilingualPressModules);
 
         // Are there modules installed?
         if (!$available_modules) {
@@ -91,13 +86,24 @@ class Loader
         }
 
         foreach ($available_modules as $module) {
-            if (!class_exists(self::$modules[$module])) {
+            if (!class_exists($modules[$module])) {
                 continue;
             }
 
-            $this->integrations[] = new self::$modules[$module](
-                $this->installed_plugins[$module]
+            $pluginData = get_file_data(
+                $this->installedPlugins[$module],
+                [
+                    'version' => 'Version',
+                ]
             );
+
+            // Only for MultilingualPress until the end of support for MLP2
+            if (in_array($module, self::$multilingualPressModules, true)) {
+                $this->integrations[] = new $modules[$module]($pluginData['version']);
+                continue;
+            }
+
+            $this->integrations[] = new $modules[$module]();
         }
 
         return $this;
@@ -128,13 +134,13 @@ class Loader
     {
         $list = [];
 
-        foreach ($this->installed_plugins as $plugin) {
+        foreach ($this->installedPlugins as $plugin) {
             $basename = basename($plugin, '.php');
 
             $list[$basename] = $plugin;
         }
 
-        $this->installed_plugins = $list;
+        $this->installedPlugins = $list;
     }
 
     /**
@@ -145,7 +151,11 @@ class Loader
      */
     private function available_modules()
     {
-        return array_intersect(array_keys($this->installed_plugins), array_keys(self::$modules));
+        return array_intersect(
+            array_keys($this->installedPlugins),
+            array_keys(self::$modules),
+            array_keys(self::$multilingualPressModules)
+        );
 
         // TODO Add a filter in order to allow third party devs to inject their modules
     }

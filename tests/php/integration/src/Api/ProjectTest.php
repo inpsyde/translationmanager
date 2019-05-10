@@ -1,16 +1,16 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Translationmanager\Tests\Integration;
+namespace TranslationmanagerTests\Integration;
 
 use Brain\Monkey\Functions;
 use Translationmanager\Api;
 use Translationmanager\Api\Project;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
 /**
  * Class ProjectTest
  *
- * @package Translationmanager\Tests\Integration
+ * @package TranslationmanagerTests\Integration
  */
 class ProjectTest extends TestCase
 {

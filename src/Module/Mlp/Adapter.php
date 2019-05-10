@@ -69,7 +69,7 @@ class Adapter
      *
      * @var mixed Depending on the mlp version. The instance that handle the site relations
      */
-    private $site_relations;
+    private $siteRelations;
 
     /**
      * Content Relations
@@ -78,30 +78,23 @@ class Adapter
      *
      * @var mixed Depending on the mlp version. The instance that handle the content relations
      */
-    private $content_relations;
+    private $contentRelations;
 
     /**
      * Adapter constructor
      *
-     * @param string $plugin_file The plugin file path from which retrieve the plugin info.
-     * @param mixed $site_relations The instance for site relations.
-     * @param mixed $content_relations The instance for content relations.
+     * @param string $pluginVersion
+     * @param mixed $siteRelations The instance for site relations.
+     * @param mixed $contentRelations The instance for content relations.
      *
      * @since 1.0.0
      */
-    public function __construct($plugin_file, $site_relations, $content_relations)
+    public function __construct($pluginVersion, $siteRelations, $contentRelations)
     {
-        $this->site_relations = $site_relations;
-        $this->content_relations = $content_relations;
+        $this->siteRelations = $siteRelations;
+        $this->contentRelations = $contentRelations;
 
-        $plugin = get_file_data(
-            $plugin_file,
-            [
-                'version' => 'Version',
-            ]
-        );
-
-        $this->version = Functions\version_compare('3.0.0', $plugin['version'], '<=')
+        $this->version = Functions\version_compare('3.0.0', $pluginVersion, '<=')
             ? 3
             : 2;
     }
@@ -182,7 +175,7 @@ class Adapter
     public function related_sites($site_id)
     {
         $cb = [
-            $this->site_relations,
+            $this->siteRelations,
             self::$methods_mapper['site_relations'][__FUNCTION__][$this->version],
         ];
 
@@ -202,7 +195,7 @@ class Adapter
     public function relations($site_id, $object_id, $type = 'post')
     {
         $cb = [
-            $this->content_relations,
+            $this->contentRelations,
             self::$methods_mapper['content_relations'][__FUNCTION__][$this->version],
         ];
 
@@ -230,14 +223,14 @@ class Adapter
     ) {
 
         if (3 === $this->version) {
-            $relationship_id = $this->content_relations->relationshipId(
+            $relationship_id = $this->contentRelations->relationshipId(
                 [
                     $target_site_id => $target_content_id,
                 ],
                 $type
             );
 
-            $this->content_relations->saveRelation(
+            $this->contentRelations->saveRelation(
                 $relationship_id,
                 $target_site_id,
                 $target_content_id
@@ -247,7 +240,7 @@ class Adapter
         }
 
         // MLP version 2.
-        $this->content_relations->set_relation(
+        $this->contentRelations->set_relation(
             $source_site_id,
             $target_site_id,
             $source_content_id,

@@ -4,7 +4,8 @@ namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
-use Translationmanager\TranslationData;
+use Translationmanager\Module\Processor\IncomingProcessor;
+use Translationmanager\Translatable;
 
 /**
  * Class PostThumbSync
@@ -14,12 +15,12 @@ use Translationmanager\TranslationData;
 class PostThumbSync implements IncomingProcessor
 {
     /**
-     * @param TranslationData $data
+     * @param Translatable $data
      * @param Adapter $adapter
      *
      * @return void
      */
-    public function process_incoming(TranslationData $data, Adapter $adapter)
+    public function process_incoming(Translatable $data, Adapter $adapter)
     {
         $saved_post = $data->get_meta(PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE);
 
