@@ -13,7 +13,7 @@ use TranslationmanagerTests\TestCase;
  *
  * @author Guido Scialfa <dev@guidoscialfa.com>
  */
-class MetaProcessorTest extends TestCase
+class OutgoingMetaProcessorTest extends TestCase
 {
     /**
      * Test Bridge Prepare Products Outgoing Data
