@@ -9,6 +9,7 @@ namespace Translationmanager;
 
 use ArrayAccess;
 use JsonSerializable;
+use Translationmanager\Utils\NetworkState;
 use WP_Post;
 
 /**
@@ -22,7 +23,6 @@ class Translation implements ArrayAccess, JsonSerializable
     const SOURCE_POST_ID_KEY = 'source_post_id';
     const SOURCE_POST_KEY = 'source_post_obj';
     const SOURCE_SITE_KEY = 'source_site_id';
-    const TARGET_POST_KEY = 'target_post_id';
     const TARGET_SITE_KEY = 'target_site_id';
     const TARGET_LANG_KEY = 'target_language';
     const INCOMING = 'incoming';
@@ -32,7 +32,6 @@ class Translation implements ArrayAccess, JsonSerializable
         self::SOURCE_POST_ID_KEY,
         self::SOURCE_POST_KEY,
         self::SOURCE_SITE_KEY,
-        self::TARGET_POST_KEY,
         self::TARGET_SITE_KEY,
         self::TARGET_LANG_KEY,
     ];
@@ -246,11 +245,13 @@ class Translation implements ArrayAccess, JsonSerializable
         }
 
         $site_id = $this->source_site_id();
-        $switched = $site_id !== get_current_blog_id();
-        $switched and switch_to_blog($site_id);
+        $networkState = NetworkState::create();
+
+        $networkState->switch_to($site_id);
         $post = get_post($this->source_post_id());
-        $switched and restore_current_blog();
-        $this->storage[self::META_KEY][self::SOURCE_POST_KEY] = $post ? $post : null;
+        $networkState->restore();
+
+        $this->storage[self::META_KEY][self::SOURCE_POST_KEY] = $post ?: null;
 
         // If source post does not return a valid post, we invalidate the data by unsetting post id
         if (!$post) {

@@ -1,6 +1,6 @@
 <?php // -*- coding: utf-8 -*-
 
-namespace Translationmanager\Module\Mlp\Utils;
+namespace Translationmanager\Utils;
 
 /**
  * Storage for the (switched) state of the network.
@@ -68,5 +68,9 @@ class NetworkState
         $GLOBALS['switched'] = !empty($this->stack);
 
         return $current;
+    }
+
+    private function __construct()
+    {
     }
 }

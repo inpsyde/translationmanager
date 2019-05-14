@@ -3,6 +3,7 @@
 namespace Translationmanager\Module\Mlp\Utils;
 
 use Translationmanager\Module\Mlp\Adapter;
+use Translationmanager\Utils\NetworkState;
 
 class Registry
 {
@@ -12,7 +13,7 @@ class Registry
     private $services = [];
 
     /**
-     * @param \Translationmanager\Module\Mlp\Adapter $adapter
+     * @param Adapter $adapter
      *
      * @return ImageCopier
      */

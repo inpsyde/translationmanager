@@ -20,6 +20,8 @@ use Translationmanager\Plugin;
  */
 class ModuleIntegrator
 {
+    const POST_DATA_NAMESPACE = 'POST';
+
     /**
      * @var array
      */

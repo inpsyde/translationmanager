@@ -20,8 +20,6 @@ use WP_Post;
  */
 class Connector
 {
-    const DATA_NAMESPACE = 'MLP';
-
     /**
      * @var Utils\Registry;
      */
@@ -66,7 +64,7 @@ class Connector
      */
     public function prepare_outgoing(Translation $data)
     {
-        $this->processorBus->process($data, $this->adapter);
+        $this->processorBus->process($data);
     }
 
     /**
@@ -90,13 +88,7 @@ class Connector
             return null;
         }
 
-        $this->processorBus->process($data, $this->adapter);
-
-        $saved_post = $data->get_meta(Processor\PostSaver::SAVED_POST_KEY, self::DATA_NAMESPACE);
-
-        return ($saved_post instanceof WP_Post && $saved_post->ID)
-            ? $saved_post
-            : null;
+        $this->processorBus->process($data);
     }
 
     /**

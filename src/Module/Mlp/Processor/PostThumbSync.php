@@ -4,6 +4,8 @@ namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
+use Translationmanager\Module\ModuleIntegrator;
+use Translationmanager\Utils\NetworkState;
 use Translationmanager\Module\Processor\IncomingProcessor;
 use Translationmanager\Translation;
 
@@ -33,14 +35,22 @@ class PostThumbSync implements IncomingProcessor
      */
     public function processIncoming(Translation $translation)
     {
-        $saved_post = $translation->get_meta(PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE);
+        $saved_post = $translation->get_meta(
+            PostSaver::SAVED_POST_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
 
         if (!$saved_post || !post_type_supports($saved_post->post_type, 'thumbnail')) {
             return;
         }
 
         $sync_on_update = true;
-        if ($translation->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
+        $isUpdateKey = $translation->get_meta(
+            PostDataBuilder::IS_UPDATE_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
+
+        if ($isUpdateKey) {
             $sync_on_update = apply_filters(
                 'translationmanager_mlp_module_sync_post_thumb_on_update',
                 true,
@@ -53,10 +63,11 @@ class PostThumbSync implements IncomingProcessor
         }
 
         $source_site_id = $translation->source_site_id();
+        $networkState = NetworkState::create();
 
-        switch_to_blog($source_site_id);
+        $networkState->switch_to($source_site_id);
         $source_thumb_id = get_post_thumbnail_id($translation->source_post_id());
-        restore_current_blog();
+        $networkState->restore();
 
         $target_thumb_id = 0;
 

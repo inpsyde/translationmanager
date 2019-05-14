@@ -2,29 +2,31 @@
 
 namespace Translationmanager\Module\YoastSeo;
 
+use Translationmanager\Exception\UnexpectedEntityException;
+use Translationmanager\Module\TranslationEntityAwareTrait;
+use Translationmanager\Utils\NetworkState;
 use Translationmanager\Translation;
-use WP_Post;
 use WPSEO_Meta;
-
-// TODO May be an interface including prepare_outgoing, update_translation ?
 
 class WordPressSeo
 {
+    use TranslationEntityAwareTrait;
+
     const _NAMESPACE = 'wordpress_seo';
 
     /**
      * Store WordPress SEO meta fields related to source post into translation data, using meta for fields that should
      * not be translated.
      *
-     * @param Translation $data
+     * @param Translation $translation
      */
-    public function prepare_outgoing(Translation $data)
+    public function prepare_outgoing(Translation $translation)
     {
-        if (!class_exists('WPSEO_Meta') || !$data->is_valid()) {
+        if (!$translation->is_valid()) {
             return;
         }
 
-        $source_post_id = $data->source_post_id();
+        $source_post_id = $translation->source_post_id();
 
         $to_translate = [
             'title',
@@ -41,12 +43,12 @@ class WordPressSeo
 
         foreach ($to_translate as $key) {
             $field = get_post_meta($source_post_id, WPSEO_Meta::$meta_prefix . $key, true);
-            $data->set_value($key, $field, self::_NAMESPACE);
+            $translation->set_value($key, $field, self::_NAMESPACE);
         }
 
         foreach ($to_not_translate as $key) {
             $field = get_post_meta($source_post_id, WPSEO_Meta::$meta_prefix . $key, true);
-            $data->set_meta($key, $field, self::_NAMESPACE);
+            $translation->set_meta($key, $field, self::_NAMESPACE);
         }
     }
 
@@ -56,26 +58,37 @@ class WordPressSeo
      *
      * @wp-hook translationmanager_updated_post
      *
-     * @param WP_Post $translated_post
-     * @param Translation $data
+     * @param Translation $translation
      */
-    public function update_translation(WP_Post $translated_post, Translation $data)
+    public function update_translation(Translation $translation)
     {
-        if (!$data->is_valid()) {
+        if (!$translation->is_valid()) {
             return;
         }
 
-        $not_translated = $data->get_meta(self::_NAMESPACE);
-        $translated = $data->get_value(self::_NAMESPACE);
+        $networkState = NetworkState::create();
+
+        $networkState->switch_to($translation->target_site_id());
+
+        try {
+            $post = $this->post($translation);
+        } catch (UnexpectedEntityException $exc) {
+            $networkState->restore();
+            return;
+        }
+
+        $not_translated = $translation->get_meta(self::_NAMESPACE);
+        $translated = $translation->get_value(self::_NAMESPACE);
         $all_meta = array_filter(array_merge($not_translated, $translated));
 
         foreach ($all_meta as $key => $value) {
-            $exists = get_post_meta($translated_post->ID, WPSEO_Meta::$meta_prefix . $key);
-
+            $exists = get_post_meta($post->ID, WPSEO_Meta::$meta_prefix . $key);
             // Existent non-translated data are not updated
             if (!$exists && isset($translated[$key])) {
-                update_post_meta($translated_post->ID, WPSEO_Meta::$meta_prefix . $key, $value);
+                update_post_meta($post->ID, WPSEO_Meta::$meta_prefix . $key, $value);
             }
         }
+
+        $networkState->restore();
     }
 }

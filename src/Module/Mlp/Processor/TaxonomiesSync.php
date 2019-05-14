@@ -3,7 +3,8 @@
 namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
-use Translationmanager\Module\Mlp\Connector;
+use Translationmanager\Module\ModuleIntegrator;
+use Translationmanager\Utils\NetworkState;
 use Translationmanager\Translation;
 use WP_Post;
 use WP_Term;
@@ -43,24 +44,21 @@ class TaxonomiesSync implements IncomingProcessor
             return;
         }
 
-        switch_to_blog($translation->source_site_id());
+        $networkState = NetworkState::create();
 
+        $networkState->switch_to($translation->source_site_id());
         list ($target_post_term_tt_ids, $target_post_new_terms) = $this->query_linked_terms(
             $translation,
             $this->query_source_term_taxonomy_ids($translation)
         );
 
-        restore_current_blog();
-
-        switch_to_blog($translation->target_site_id());
-
+        $networkState->switch_to($translation->target_site_id());
         $this->sync_target_terms(
             $target_post_term_tt_ids,
             $this->relate_new_terms($target_post_new_terms, $translation),
             $target_post
         );
-
-        restore_current_blog();
+        $networkState->restore();
     }
 
     /**
@@ -73,14 +71,22 @@ class TaxonomiesSync implements IncomingProcessor
     private function check_incoming_data(Translation $data)
     {
         /** @var WP_Post $target_post */
-        $target_post = $data->get_meta(PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE);
+        $target_post = $data->get_meta(
+            PostSaver::SAVED_POST_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
 
         if (!$target_post instanceof WP_Post || !$target_post->ID) {
             return null;
         }
 
         $sync_on_update = true;
-        if ($data->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
+        $isUpdateKey = $data->get_meta(
+            PostDataBuilder::IS_UPDATE_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
+
+        if ($isUpdateKey) {
             $sync_on_update = apply_filters(
                 'translationmanager_mlp_module_sync_taxonomies_on_update',
                 true,

@@ -3,7 +3,7 @@
 namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
-use Translationmanager\Module\Mlp\Connector;
+use Translationmanager\Module\ModuleIntegrator;
 use Translationmanager\Module\Processor\IncomingProcessor;
 use Translationmanager\Translation;
 
@@ -37,7 +37,12 @@ class PostParentSync implements IncomingProcessor
         }
 
         $sync_on_update = true;
-        if ($translation->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
+        $isUpdateKey = $translation->get_meta(
+            PostDataBuilder::IS_UPDATE_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
+
+        if ($isUpdateKey) {
             $sync_on_update = apply_filters(
                 'translationmanager_mlp_module_sync_post_parent_on_update',
                 true,

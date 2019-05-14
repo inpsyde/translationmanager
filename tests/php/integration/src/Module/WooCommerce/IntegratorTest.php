@@ -3,8 +3,8 @@
 namespace TranslationmanagerTests\Integration\Module\WooCommerce;
 
 use Brain\Monkey\Actions;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
-use Translationmanager\Module\WooCommerce\Bridge;
 use Translationmanager\Module\WooCommerce\Integrator;
 use TranslationmanagerTests\TestCase;
 
@@ -15,11 +15,15 @@ use TranslationmanagerTests\TestCase;
  */
 class IntegratorTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * Test Integration with WooCommerce Happens Correctly
      */
     public function testIntegration()
     {
+        $this->markTestSkipped('WooCommerce support is not FULLY available at the moment.');
+
         {
             Actions\expectAdded('translationmanager_outgoing_data')->once();
             Actions\expectAdded('translationmanager_updated_post')->once();

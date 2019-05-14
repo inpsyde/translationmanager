@@ -4,7 +4,8 @@ namespace Translationmanager\Module\Mlp\Processor;
 
 use stdClass;
 use Translationmanager\Module\Mlp\Adapter;
-use Translationmanager\Module\Mlp\Connector;
+use Translationmanager\Module\ModuleIntegrator;
+use Translationmanager\Utils\NetworkState;
 use Translationmanager\Module\Processor\IncomingProcessor;
 use Translationmanager\Translation;
 use WP_Post;
@@ -41,7 +42,8 @@ class PostSaver implements IncomingProcessor
             }
         }
 
-        switch_to_blog($translation->target_site_id());
+        $networkState = NetworkState::create();
+        $networkState->switch_to($translation->target_site_id());
 
         $existing_id = array_key_exists('ID', $post_data) ? $post_data['ID'] : 0;
 
@@ -71,14 +73,19 @@ class PostSaver implements IncomingProcessor
 
         $target_post = $target_post_id ? get_post($target_post_id) : null;
 
-        restore_current_blog();
+        $networkState->restore();
 
         if (!$target_post) {
             return;
         }
 
         $sync_on_update = true;
-        if ($translation->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
+        $isUpdateKey = $translation->get_meta(
+            PostDataBuilder::IS_UPDATE_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
+
+        if ($isUpdateKey) {
             $sync_on_update = apply_filters(
                 'translationmanager_mlp_module_sync_post_relation_on_update',
                 true,
@@ -97,6 +104,10 @@ class PostSaver implements IncomingProcessor
             );
         }
 
-        $translation->set_meta(self::SAVED_POST_KEY, $target_post, Connector::DATA_NAMESPACE);
+        $translation->set_meta(
+            self::SAVED_POST_KEY,
+            $target_post,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
     }
 }

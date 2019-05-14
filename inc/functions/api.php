@@ -94,19 +94,14 @@ function project_update(WP_Term $project)
                  * Filters the updater that executed have to return the updated post
                  */
                 $updater = apply_filters('translationmanager_post_updater', null, $translation);
+                is_callable($updater) and $updater($translation);
 
-                $post = is_callable($updater) ? $updater($translation) : null;
-
-                if ($post instanceof WP_Post) {
-
-                    /**
-                     * Fires after the updater has updated the post.
-                     *
-                     * @param WP_Post $post Just updated post
-                     * @param Translation $translation Translation data built from data received from API
-                     */
-                    do_action('translationmanager_updated_post', $post, $translation);
-                }
+                /**
+                 * Fires after the updater has updated the post.
+                 *
+                 * @param Translation $translation Translation data built from data received from API
+                 */
+                do_action('translationmanager_updated_post', $translation);
             }
         }
     }

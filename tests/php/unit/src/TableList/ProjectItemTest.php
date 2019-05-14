@@ -3,7 +3,10 @@
 namespace TranslationmanagerTests\TableList;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Translationmanager\TableList\ProjectItem;
+use Translationmanager\TableList\TableList;
 use \TranslationmanagerTests\TestCase;
 
 /**
@@ -13,18 +16,18 @@ use \TranslationmanagerTests\TestCase;
  */
 class ProjectItemTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
 
     /**
      * Test Instance
      */
     public function testInstance()
     {
-
-        \Mockery::mock('overload:\WP_List_Table');
+        Mockery::mock('overload:\WP_List_Table');
 
         $sut = new ProjectItem();
 
-        $this->assertInstanceOf('Translationmanager\\TableList\\ProjectItem', $sut);
+        $this->assertInstanceOf(ProjectItem::class, $sut);
     }
 
     /**
@@ -32,12 +35,11 @@ class ProjectItemTest extends TestCase
      */
     public function testProjectIDByRequestIsValid()
     {
-
-        \Mockery::mock('overload:\Translationmanager\\TableList\\TableList', [
+        Mockery::mock('overload:' . TableList::class, [
             'get_items_per_page' => 10,
         ]);
 
-        $term = \Mockery::mock('WP_Term');
+        $term = Mockery::mock('WP_Term');
         $term->term_id = 10;
 
         Functions\when('Translationmanager\\Functions\\filter_input')
@@ -47,12 +49,12 @@ class ProjectItemTest extends TestCase
 
         Functions\expect('get_term')
             ->once()
-            ->with(10, \Mockery::type('string'))
+            ->with(10, Mockery::type('string'))
             ->andReturn($term);
 
         Functions\expect('Translationmanager\\Functions\\get_project_items')
             ->once()
-            ->with(10, \Mockery::type('array'))
+            ->with(10, Mockery::type('array'))
             ->andReturn([]);
 
         $sut = new ProjectItem();
@@ -61,8 +63,6 @@ class ProjectItemTest extends TestCase
         ];
 
         $sut->items();
-
-        $this->assertTrue(true);
     }
 
     /**
@@ -70,22 +70,19 @@ class ProjectItemTest extends TestCase
      */
     public function testProjectIDRequestThrowExceptionIfWpError()
     {
-
-        \Mockery::mock('overload:\Translationmanager\\TableList\\TableList');
+        Mockery::mock('overload:' . TableList::class);
 
         Functions\when('Translationmanager\\Functions\\filter_input')
             ->justReturn(['translationmanager_project_id' => 10]);
 
         Functions\expect('get_term')
             ->once()
-            ->with(10, \Mockery::type('string'))
-            ->andReturn(\Mockery::mock('WP_Error'));
+            ->with(10, Mockery::type('string'))
+            ->andReturn(Mockery::mock('WP_Error'));
 
         $sut = new ProjectItem();
 
         $sut->items();
-
-        $this->assertTrue(true);
     }
 
     /**
@@ -93,8 +90,7 @@ class ProjectItemTest extends TestCase
      */
     public function testItemsReturnEmptyIfNoProjectIDCanBeRetrievedByRequest()
     {
-
-        \Mockery::mock('overload:\Translationmanager\\TableList\\TableList');
+        Mockery::mock('overload:' . TableList::class);
 
         Functions\when('Translationmanager\\Functions\\filter_input')
             ->justReturn(false);

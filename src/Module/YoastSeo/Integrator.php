@@ -25,10 +25,14 @@ class Integrator implements Integrable
      */
     public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginPath)
     {
+        if (!class_exists('WPSEO_Meta')) {
+            return;
+        }
+
         $wordpressSeo = new WordPressSeo();
 
         add_action('translationmanager_outgoing_data', [$wordpressSeo, 'prepare_outgoing']);
-        add_action('translationmanager_updated_post', [$wordpressSeo, 'update_translation'], 10, 2);
+        add_action('translationmanager_updated_post', [$wordpressSeo, 'update_translation']);
     }
 
     private function __construct()

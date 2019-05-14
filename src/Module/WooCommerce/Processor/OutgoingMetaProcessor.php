@@ -25,11 +25,11 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         }
 
         $translationData = [
-            'purchase_note' => $product->get_purchase_note('edit'),
+            Integrator::PRODUCT_META_PURCHASE_NOTE => $product->get_purchase_note('edit'),
         ];
 
         foreach ($translationData as $metaKey => $metaValue) {
-            $translation->set_value($metaKey, $metaValue, Integrator::_NAMESPACE);
+            $translation->set_value($metaKey, $metaValue, Integrator::DATA_NAMESPACE);
         }
     }
 }

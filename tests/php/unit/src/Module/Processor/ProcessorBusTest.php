@@ -5,6 +5,7 @@ namespace TranslationmanagerTests\Unit\Module\Processor;
 use Brain\Monkey\Actions;
 use Brain\Monkey\Filters;
 use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use SplQueue;
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Processor\IncomingProcessor;
@@ -19,17 +20,15 @@ use Translationmanager\Module\Processor\ProcessorBus as Testee;
  */
 class ProcessorBusTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * Test Process Actually Fires Hooks
      */
     public function testProcessFiresHooks()
     {
-
         $testee = new Testee(new SplQueue());
-
         $data = Translation::for_incoming([]);
-
-        $adapter = Mockery::mock(Adapter::class);
 
         Filters\expectApplied(Testee::FILTER_DATA_PROCESSOR_ENABLED)
             ->once()
@@ -39,16 +38,15 @@ class ProcessorBusTest extends TestCase
         Actions\expectDone(Testee::FILTER_DATA_PROCESSORS)
             ->once()
             ->with(Mockery::type(Testee::class), $data)
-            ->whenHappen(function (Testee $testee) use ($data, $adapter) {
+            ->whenHappen(function (Testee $testee) use ($data) {
 
                 /** @var IncomingProcessor|\Mockery\MockInterface $processor */
                 $processor = Mockery::mock(IncomingProcessor::class);
                 $processor
-                    ->shouldReceive('process_incoming')
+                    ->shouldReceive('processIncoming')
                     ->once()
-                    ->with($data, $adapter)
+                    ->with($data)
                     ->andReturnUsing(function () {
-
                         echo 'Process happened!';
                     });
 
@@ -57,7 +55,7 @@ class ProcessorBusTest extends TestCase
 
         $this->expectOutputString('Process happened!');
 
-        $testee->process($data, $adapter);
+        $testee->process($data);
     }
 
     /**
@@ -68,7 +66,7 @@ class ProcessorBusTest extends TestCase
 
         /** @var OutgoingProcessor|\Mockery\MockInterface $processor */
         $processor = Mockery::mock(OutgoingProcessor::class);
-        $processor->shouldReceive('process_outgoing')->never();
+        $processor->shouldReceive('processOutgoing')->never();
 
         $testee = new Testee(new SplQueue());
         $testee->pushProcessor($processor);
@@ -92,11 +90,11 @@ class ProcessorBusTest extends TestCase
 
         /** @var OutgoingProcessor|\Mockery\MockInterface $processor_a */
         $processor_a = Mockery::mock(IncomingProcessor::class);
-        $processor_a->shouldReceive('process_incoming')->never();
+        $processor_a->shouldReceive('processIncoming')->never();
 
         /** @var OutgoingProcessor|\Mockery\MockInterface $processor_b */
         $processor_b = Mockery::mock(IncomingProcessor::class);
-        $processor_b->shouldReceive('process_incoming')->once()->andReturnUsing(function () {
+        $processor_b->shouldReceive('processIncoming')->once()->andReturnUsing(function () {
 
             echo 'Processor B executed!';
         });

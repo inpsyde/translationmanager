@@ -9,12 +9,8 @@
 namespace Translationmanager\Module;
 
 use Pimple\Container;
-use Translationmanager\Module\Mlp\ConnectorBootstrap;
-use Translationmanager\Module\Mlp\ConnectorFactory;
 use Translationmanager\Module\Mlp\DataProcessor;
-use Translationmanager\Module\Processor\ProcessorBus;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
-use Translationmanager\Module\WooCommerce\Integrator;
 use Translationmanager\Plugin;
 use Translationmanager\Service\IntegrableServiceProvider;
 

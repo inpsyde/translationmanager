@@ -1,22 +1,22 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace TranslationmanagerTests\Unit\Module\WooCommerce;
+namespace TranslationmanagerTests\Unit\Module\WooCommerce\Processor;
 
 use Brain\Monkey\Functions;
-use Translationmanager\Module\WooCommerce\Bridge;
+use Translationmanager\Module\WooCommerce\Integrator;
 use Translationmanager\Module\WooCommerce\Processor\OutgoingMetaProcessor;
 use Translationmanager\Translation;
 use TranslationmanagerTests\TestCase;
 
 /**
- * Class BridgeTest
+ * Class OutgoingMetaProcessorTest
  *
  * @author Guido Scialfa <dev@guidoscialfa.com>
  */
 class OutgoingMetaProcessorTest extends TestCase
 {
     /**
-     * Test Bridge Prepare Products Outgoing Data
+     * Test Prepare Products Outgoing Data
      */
     public function testProcessOutgoing()
     {
@@ -57,7 +57,7 @@ class OutgoingMetaProcessorTest extends TestCase
             $translation
                 ->expects($this->once())
                 ->method('set_value')
-                ->with('purchase_note', $productPurchaseNote)
+                ->with(Integrator::PRODUCT_META_PURCHASE_NOTE, $productPurchaseNote)
                 ->willReturn(null);
         }
 
