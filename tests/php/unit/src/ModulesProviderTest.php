@@ -9,7 +9,6 @@ use PHPUnit_Framework_MockObject_MockObject;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use stdClass;
 use Translationmanager\Module\ModulesProvider as Testee;
 use TranslationmanagerTests\stubs\IntegratorStub;
 use TranslationmanagerTests\TestCase;
@@ -65,16 +64,15 @@ class ModulesProviderTest extends TestCase
     }
 
     /**
-     * Test Only Modules that are within the Active Plugins List are Available
+     * Test Modules that are within the Active Plugins List are Available
      */
-    public function testOnlyAvailableModules()
+    public function testAvailableModules()
     {
         {
             list($testee, $methodReflection) = $this->createTesteeToTestProtectedMethods(
                 [
                     [
-                        'integrationstub' => IntegratorStub::class,
-                        'pluginthatnotexist' => stdClass::class,
+                        'integrationstub' => new IntegratorStub(),
                     ],
                 ],
                 'allowedModules'
@@ -102,10 +100,11 @@ class ModulesProviderTest extends TestCase
     public function testGetIterator()
     {
         {
+            $stubIntegrator = new IntegratorStub();
             $pluginsStubList = ['integrationstub' => 'integrationstub/integrationstub.php'];
             $allowedModulesStub = ['integrationstub',];
-            $modulesStub = ['integrationstub' => IntegratorStub::class];
-            $availableModulesStub = ['integrationstub/integrationstub.php' => IntegratorStub::class];
+            $modulesStub = ['integrationstub' => $stubIntegrator];
+            $availableModulesStub = ['integrationstub/integrationstub.php' => $stubIntegrator];
 
             $testee = $this->createTestee([$modulesStub], ['plugins', 'allowedModules']);
         }

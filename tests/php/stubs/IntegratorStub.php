@@ -13,8 +13,7 @@ use Translationmanager\Module\Processor\ProcessorBusFactory;
  */
 class IntegratorStub extends TestCase implements Integrable
 {
-    public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginName)
+    public function integrate()
     {
-        self::assertSame('/wp-content/plugins/integratorstub/integratorstub.php', $pluginName);
     }
 }
