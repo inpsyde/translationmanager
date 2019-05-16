@@ -11,10 +11,9 @@
 
 namespace TranslationmanagerTests\Integration\Module\Mlp;
 
-use Brain\Monkey\Functions;
 use Brain\Monkey\Actions;
+use PHPUnit_Framework_MockObject_MockObject;
 use Translationmanager\Module\Mlp\Integrator as Testee;
-use Translationmanager\Module\Processor\ProcessorBusFactory;
 use TranslationmanagerTests\TestCase;
 
 /**
@@ -30,20 +29,26 @@ class IntegratorTest extends TestCase
     public function testMlp2Integration()
     {
         {
-            Functions\when('get_file_data')->justReturn(['version' => '2']);
-
-            Functions\when('Translationmanager\\Functions\\version_compare')
-                ->justReturn(false);
-
-            Actions\expectAdded('inpsyde_mlp_loaded')
-                ->once();
-
-            Actions\expectAdded('multilingualpress.add_service_providers')
-                ->never();
+            $testee = $this->createTesteeInstance(['classExists']);
         }
 
         {
-            Testee::integrate(new ProcessorBusFactory(), 'file_plugin_path');
+            $testee
+                ->expects($this->exactly(2))
+                ->method('classExists')
+                ->withConsecutive(
+                    ['Inpsyde\\MultilingualPress\\MultilingualPress'],
+                    ['Multilingual_Press']
+                )
+                ->willReturnOnConsecutiveCalls(false, true);
+
+            Actions\expectAdded('inpsyde_mlp_loaded')->once();
+            Actions\expectAdded('multilingualpress.add_service_providers')->never();
+        }
+
+        {
+            /** @var Testee $testee */
+            $testee->integrate();
         }
     }
 
@@ -53,20 +58,38 @@ class IntegratorTest extends TestCase
     public function testMlp3Integration()
     {
         {
-            Functions\when('get_file_data')->justReturn(['version' => '3']);
-
-            Functions\when('Translationmanager\\Functions\\version_compare')
-                ->justReturn(true);
-
-            Actions\expectAdded('inpsyde_mlp_loaded')
-                ->never();
-
-            Actions\expectAdded('multilingualpress.add_service_providers')
-                ->once();
+            $testee = $this->createTesteeInstance(['classExists']);
         }
 
         {
-            Testee::integrate(new ProcessorBusFactory(), 'file_plugin_path');
+            $testee
+                ->expects($this->once())
+                ->method('classExists')
+                ->with('Inpsyde\\MultilingualPress\\MultilingualPress')
+                ->willReturn(true);
+
+            Actions\expectAdded('inpsyde_mlp_loaded')->never();
+            Actions\expectAdded('multilingualpress.add_service_providers')->once();
         }
+
+        {
+            /** @var Testee $testee */
+            $testee->integrate();
+        }
+    }
+
+    /**
+     * Create Testee Instance
+     *
+     * @param array $methods
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    private function createTesteeInstance(array $methods)
+    {
+        return $this
+            ->getMockBuilder(Testee::class)
+            ->disableOriginalConstructor()
+            ->setMethods($methods)
+            ->getMock();
     }
 }

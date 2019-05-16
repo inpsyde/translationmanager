@@ -6,6 +6,7 @@ use Inpsyde_Property_List_Interface;
 use Inpsyde\MultilingualPress\Framework\Service\ServiceProvidersCollection;
 use Translationmanager\Module\Integrable;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
+use Translationmanager\Utils\Assert;
 
 /**
  * Class Integrate
@@ -20,14 +21,26 @@ class Integrator implements Integrable
      */
     public function integrate()
     {
-        $instance = new self;
+        if ($this->classExists('Inpsyde\\MultilingualPress\\MultilingualPress')) {
+            $this->mlp3();
+            return;
+        }
+        if ($this->classExists('Multilingual_Press')) {
+            $this->mlp2();
+        }
+    }
 
-        if (class_exists('Inpsyde\\MultilingualPress\\MultilingualPress')) {
-            $instance->mlp3();
-        }
-        if (class_exists('Multilingual_Press')) {
-            $instance->mlp2();
-        }
+    /**
+     * Check if the Given Class Exists or not
+     *
+     * @param $class
+     * @return bool
+     */
+    protected function classExists($class)
+    {
+        Assert::stringNotEmpty($class);
+
+        return class_exists($class);
     }
 
     /**
@@ -36,7 +49,7 @@ class Integrator implements Integrable
      * @return void
      * @since 1.0.0
      */
-    private function mlp2()
+    protected function mlp2()
     {
         add_action(
             'inpsyde_mlp_loaded',
@@ -63,7 +76,7 @@ class Integrator implements Integrable
      * @return void
      * @since 1.0.0
      */
-    private function mlp3()
+    protected function mlp3()
     {
         add_action(
             'multilingualpress.add_service_providers',
