@@ -98,3 +98,6 @@ composer.phar
 
 # Node Modules
 node_modules
+
+# Static Analysis Tool and Coverage
+/coverage
