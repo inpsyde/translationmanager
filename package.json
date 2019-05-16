@@ -1,23 +1,27 @@
 {
-	"name": "translationmanager",
-	"version": "1.0.0",
-	"description": "Translate your contents in a WordPress Multisite and MultilingualPress.",
-	"main": "index.js",
-	"author": "Inpsyde",
-	"license": "GPL-2.0-or-later",
-	"homepage": "https://bitbucket.org/inpsyde/translationmanager#readme",
-	"devDependencies": {
-		"eslint": "^4.17.0",
-		"eslint-config-inpsyde": "^2.2.0"
-	},
-	"directories": {
-		"test": "tests"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+ssh://git@bitbucket.org/inpsyde/translationmanager.git"
-	}
+    "name": "translationmanager",
+    "version": "1.2.1",
+    "description": "Translate your contents in a WordPress Multisite and MultilingualPress.",
+    "main": "index.js",
+    "author": "Inpsyde",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://bitbucket.org/inpsyde/translationmanager#readme",
+    "devDependencies": {
+        "eslint": "^4.17.0",
+        "eslint-config-inpsyde": "^2.2.0",
+        "del": "^3.0.0",
+        "gulp": "^4.0.0",
+        "gulp-help-doc": "^1.1.1",
+        "gulp-phpcs": "^2.2.0",
+        "gulp-phpunit": "^0.26.0",
+        "gulp-zip": "^4.2.0",
+        "pump": "^3.0.0"
+    },
+    "directories": {
+        "test": "tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@bitbucket.org/inpsyde/translationmanager.git"
+    }
 }
