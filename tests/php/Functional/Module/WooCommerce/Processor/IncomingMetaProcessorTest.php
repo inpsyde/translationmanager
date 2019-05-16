@@ -98,7 +98,11 @@ class IncomingMetaProcessorTest extends TestCase
                 ->setMethods(['set_purchase_note'])
                 ->getMock();
 
-            list($testee, $testeeMethod) = $this->methodTestee('updatePurchaseNoteMeta');
+            list($testee, $testeeMethod) = $this->createTesteeToTestProtectedMethods(
+                Testee::class,
+                [],
+                ['updatePurchaseNoteMeta']
+            );
         }
 
         {
@@ -121,27 +125,6 @@ class IncomingMetaProcessorTest extends TestCase
         {
             $testeeMethod->invoke($testee, $translation, $product);
         }
-    }
-
-    /**
-     * Create Testee for Protected Method
-     *
-     * @param string $method
-     * @return array
-     * @throws ReflectionException
-     */
-    private function methodTestee($method)
-    {
-        $reflectionClass = new ReflectionClass(Testee::class);
-        $testee = $reflectionClass->newInstanceWithoutConstructor();
-
-        $reflectionMethod = new ReflectionMethod(Testee::class, $method);
-        $reflectionMethod->setAccessible(true);
-
-        return [
-            $testee,
-            $reflectionMethod,
-        ];
     }
 
     /**

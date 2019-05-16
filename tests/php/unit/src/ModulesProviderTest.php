@@ -27,6 +27,7 @@ class ModulesProviderTest extends TestCase
     {
         {
             list($testee, $methodReflection) = $this->createTesteeToTestProtectedMethods(
+                Testee::class,
                 [],
                 'plugins'
             );
@@ -70,6 +71,7 @@ class ModulesProviderTest extends TestCase
     {
         {
             list($testee, $methodReflection) = $this->createTesteeToTestProtectedMethods(
+                Testee::class,
                 [
                     [
                         'integrationstub' => new IntegratorStub(),
@@ -165,27 +167,5 @@ class ModulesProviderTest extends TestCase
             : $mock->setMethodsExcept(['getIterator']);
 
         return $mock->getMock();
-    }
-
-    /**
-     * @param $method
-     * @return array
-     * @throws ReflectionException
-     */
-    private function createTesteeToTestProtectedMethods($constructArgs, $method)
-    {
-        $reflectionClass = new ReflectionClass(Testee::class);
-
-        $testee = $constructArgs
-            ? $reflectionClass->newInstanceArgs($constructArgs)
-            : $reflectionClass->newInstanceWithoutConstructor();
-
-        $methodReflection = new ReflectionMethod(Testee::class, $method);
-        $methodReflection->setAccessible(true);
-
-        return [
-            $testee,
-            $methodReflection,
-        ];
     }
 }
