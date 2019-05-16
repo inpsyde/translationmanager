@@ -24,7 +24,7 @@ class Integrator implements Integrable
      */
     public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginPath)
     {
-        // Temporary disabled until WooCommerce fields will be supported
+        // TODO Temporary disabled until WooCommerce fields will be supported
         return;
 
         if (!function_exists('WC')) {
