@@ -29,7 +29,7 @@ class ModulesProviderTest extends TestCase
             list($testee, $methodReflection) = $this->createTesteeToTestProtectedMethods(
                 Testee::class,
                 [],
-                'plugins'
+                ['plugins']
             );
         }
 
@@ -77,7 +77,7 @@ class ModulesProviderTest extends TestCase
                         'integrationstub' => new IntegratorStub(),
                     ],
                 ],
-                'allowedModules'
+                ['allowedModules']
             );
         }
 
