@@ -32,7 +32,7 @@ class UnexpectedEntityException extends EntityException
      */
     public static function forTermValue($value, $message)
     {
-        $valueType = gettype($value);
+        $valueType = is_object($value) ? get_class($value) : gettype($value);
         $message = $message ?: "Unexpected term value retrieved. Should be WP_Term but got {$valueType}";
 
         return new self($message);
