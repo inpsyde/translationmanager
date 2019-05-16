@@ -20,9 +20,23 @@ class Integrator implements Integrable
     const PRODUCT_META_PURCHASE_NOTE = 'purchase_note';
 
     /**
+     * @var ProcessorBusFactory
+     */
+    private $processorBusFactory;
+
+    /**
+     * Integrator constructor
+     * @param ProcessorBusFactory $processorBusFactory
+     */
+    public function __construct(ProcessorBusFactory $processorBusFactory)
+    {
+        $this->processorBusFactory = $processorBusFactory;
+    }
+
+    /**
      * @inheritDoc
      */
-    public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginPath)
+    public function integrate()
     {
         // TODO Temporary disabled until WooCommerce fields will be supported
         return;
@@ -31,7 +45,7 @@ class Integrator implements Integrable
             return;
         }
 
-        $processorBus = $processorBusFactory->create();
+        $processorBus = $this->processorBusFactory->create();
         $processorBus
             ->pushProcessor(new OutgoingMetaProcessor())
             ->pushProcessor(new IncomingMetaProcessor());
@@ -48,9 +62,5 @@ class Integrator implements Integrable
                 $processorBus->process($translation);
             }
         );
-    }
-
-    private function __construct()
-    {
     }
 }

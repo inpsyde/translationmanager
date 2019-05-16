@@ -10,7 +10,6 @@
 namespace Translationmanager\Module\YoastSeo;
 
 use Translationmanager\Module\Integrable;
-use Translationmanager\Module\Processor\ProcessorBusFactory;
 
 /**
  * Class Integrate
@@ -23,7 +22,7 @@ class Integrator implements Integrable
     /**
      * @inheritdoc
      */
-    public static function integrate(ProcessorBusFactory $processorBusFactory, $pluginPath)
+    public function integrate()
     {
         if (!class_exists('WPSEO_Meta')) {
             return;
@@ -33,9 +32,5 @@ class Integrator implements Integrable
 
         add_action('translationmanager_outgoing_data', [$wordpressSeo, 'prepare_outgoing']);
         add_action('translationmanager_updated_post', [$wordpressSeo, 'update_translation']);
-    }
-
-    private function __construct()
-    {
     }
 }

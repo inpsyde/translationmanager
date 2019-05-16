@@ -24,24 +24,13 @@ class ModuleIntegratorTest extends TestCase
     public function testIntegrate()
     {
         {
-            $plugin = $this
-                ->getMockBuilder(Plugin::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['dir'])
-                ->getMock();
-
             $modulesProvider = $this
                 ->getMockBuilder(ModulesProvider::class)
                 ->disableOriginalConstructor()
                 ->setMethods(['getIterator'])
                 ->getMock();
 
-            $busProcessorFactory = $this
-                ->getMockBuilder(ProcessorBusFactory::class)
-                ->disableOriginalConstructor()
-                ->getMock();
-
-            $testee = $this->createTestee([$plugin, $modulesProvider, $busProcessorFactory]);
+            $testee = $this->createTestee([$modulesProvider]);
         }
 
         {
@@ -51,11 +40,6 @@ class ModuleIntegratorTest extends TestCase
                 ->willReturn(new ArrayIterator([
                     'integratorstub/integratorstub.php' => IntegratorStub::class,
                 ]));
-
-            $plugin
-                ->expects($this->exactly(1))
-                ->method('dir')
-                ->willReturn('/wp-content/plugins/plugin');
         }
 
         {

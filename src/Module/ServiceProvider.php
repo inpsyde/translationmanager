@@ -10,8 +10,10 @@ namespace Translationmanager\Module;
 
 use Pimple\Container;
 use Translationmanager\Module\Mlp\DataProcessor;
+use Translationmanager\Module\Mlp\Integrator as MultilingualPressIntegrator;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
-use Translationmanager\Plugin;
+use Translationmanager\Module\WooCommerce\Integrator as WooCommerceIntegrator;
+use Translationmanager\Module\YoastSeo\Integrator as WordPressSeoByYoastIntegrator;
 use Translationmanager\Service\IntegrableServiceProvider;
 
 /**
@@ -27,19 +29,29 @@ class ServiceProvider implements IntegrableServiceProvider
      */
     public function register(Container $container)
     {
-        $container[ModulesProvider::class] = function () {
+        $container[MultilingualPressIntegrator::class] = function () {
+            return new MultilingualPressIntegrator();
+        };
+        $container[WordPressSeoByYoastIntegrator::class] = function () {
+            return new WordPressSeoByYoastIntegrator();
+        };
+        $container[WooCommerceIntegrator::class] = function (Container $container) {
+            return new WooCommerceIntegrator(
+                $container[ProcessorBusFactory::class]
+            );
+        };
+
+        $container[ModulesProvider::class] = function (Container $container) {
             return new ModulesProvider([
-                'wp-seo' => YoastSeo\Integrator::class,
-                'multilingualpress' => Mlp\Integrator::class,
-                'multilingual-press' => Mlp\Integrator::class,
-                'woocommerce' => WooCommerce\Integrator::class,
+                'wp-seo' => $container[WordPressSeoByYoastIntegrator::class],
+                'multilingualpress' => $container[MultilingualPressIntegrator::class],
+                'multilingual-press' => $container[MultilingualPressIntegrator::class],
+                'woocommerce' => $container[WooCommerceIntegrator::class],
             ]);
         };
         $container[ModuleIntegrator::class] = function (Container $container) {
             return new ModuleIntegrator(
-                $container[Plugin::class],
-                $container[ModulesProvider::class],
-                $container[ProcessorBusFactory::class]
+                $container[ModulesProvider::class]
             );
         };
         $container[ProcessorBusFactory::class] = function () {

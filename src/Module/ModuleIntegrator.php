@@ -28,31 +28,13 @@ class ModuleIntegrator
     private $modulesProvider;
 
     /**
-     * @var Plugin
-     */
-    private $plugin;
-
-    /**
-     * @var ProcessorBusFactory
-     */
-    private $processorBusFactory;
-
-    /**
      * Loader constructor
      *
-     * @param Plugin $plugin
      * @param ModulesProvider $modulesProvider
-     * @param ProcessorBusFactory $processorBusFactory
      */
-    public function __construct(
-        Plugin $plugin,
-        ModulesProvider $modulesProvider,
-        ProcessorBusFactory $processorBusFactory
-    ) {
-
+    public function __construct(ModulesProvider $modulesProvider)
+    {
         $this->modulesProvider = $modulesProvider;
-        $this->plugin = $plugin;
-        $this->processorBusFactory = $processorBusFactory;
     }
 
     /**
@@ -60,25 +42,13 @@ class ModuleIntegrator
      */
     public function integrate()
     {
-        foreach ($this->modulesProvider as $pluginFilePath => $moduleClassName) {
-            $mainPluginDir = dirname($this->plugin->dir());
-            $moduleFilePath = "{$mainPluginDir}/{$pluginFilePath}";
-            if (!$moduleFilePath || !class_exists($moduleClassName)) {
+        /** @var Integrable $moduleInstance */
+        foreach ($this->modulesProvider as $pluginFilePath => $moduleInstance) {
+            if (!$moduleInstance instanceof Integrable) {
                 continue;
             }
 
-            try {
-                $classReflection = new ReflectionClass($moduleClassName);
-                $isIntegrable = $classReflection->implementsInterface(Integrable::class);
-            } catch (ReflectionException $exc) {
-                continue;
-            }
-
-            if (!$isIntegrable) {
-                continue;
-            }
-
-            $moduleClassName::integrate($this->processorBusFactory, $moduleFilePath);
+            $moduleInstance->integrate();
         }
     }
 }

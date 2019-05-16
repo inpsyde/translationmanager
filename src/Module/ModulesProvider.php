@@ -4,6 +4,7 @@ namespace Translationmanager\Module;
 
 use ArrayIterator;
 use IteratorAggregate;
+use Translationmanager\Utils\Assert;
 
 /**
  * Class ModuleProvider
@@ -25,6 +26,8 @@ class ModulesProvider implements IteratorAggregate
      */
     public function __construct(array $modules)
     {
+        Assert::allIsInstanceOf($modules, Integrable::class);
+
         $this->modules = $modules;
     }
 
@@ -48,10 +51,10 @@ class ModulesProvider implements IteratorAggregate
 
             foreach ($allowedModules as $name) {
                 $pluginPath = isset($plugins[$name]) ? $plugins[$name] : '';
-                $moduleClassName = isset($modules[$name]) ? $modules[$name] : '';
+                $moduleInstance = isset($modules[$name]) ? $modules[$name] : '';
 
-                if ($pluginPath && $moduleClassName) {
-                    $availableModules[$pluginPath] = $moduleClassName;
+                if ($pluginPath && $moduleInstance) {
+                    $availableModules[$pluginPath] = $moduleInstance;
                 }
             }
         }

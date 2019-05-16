@@ -3,9 +3,10 @@
 namespace TranslationmanagerTests\Integration\Module\WooCommerce;
 
 use Brain\Monkey\Actions;
+use Brain\Monkey\Functions;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
-use Translationmanager\Module\WooCommerce\Integrator;
+use Translationmanager\Module\WooCommerce\Integrator as Testee;
 use TranslationmanagerTests\TestCase;
 
 /**
@@ -25,12 +26,21 @@ class IntegratorTest extends TestCase
         $this->markTestSkipped('WooCommerce support is not FULLY available at the moment.');
 
         {
+            $testee = new Testee(new ProcessorBusFactory());
+        }
+
+        {
+            Functions\expect('function_exists')
+                ->once()
+                ->with('WC')
+                ->andReturn(true);
+
             Actions\expectAdded('translationmanager_outgoing_data')->once();
             Actions\expectAdded('translationmanager_updated_post')->once();
         }
 
         {
-            Integrator::integrate(new ProcessorBusFactory(), '');
+            $testee->integrate(new ProcessorBusFactory());
         }
     }
 }
