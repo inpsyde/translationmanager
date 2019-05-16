@@ -62,15 +62,15 @@ class PostDataBuilder implements IncomingProcessor
         $linked_posts = $this->adapter->relations($translation->source_site_id(), $source_post->ID);
         $target_site_id = $translation->target_site_id();
         $networkState = NetworkState::create();
+        $linkedPost = null;
 
-        $networkState->switch_to($translation->target_site_id());
-        $linked_post = array_key_exists($target_site_id, $linked_posts)
-            ? get_post($linked_posts[$target_site_id])
-            : null;
-        $networkState->restore();
+        if (array_key_exists($target_site_id, $linked_posts)) {
+            $networkState->switch_to($translation->target_site_id());
+            $linkedPost = get_post($linked_posts[$target_site_id]);
+            $networkState->restore();
+        }
 
-        $linked_post_data = $linked_post ? $linked_post->to_array() : [];
-
+        $linked_post_data = $linkedPost ? $linkedPost->to_array() : [];
         $post_vars = get_object_vars(new WP_Post(new stdClass()));
 
         // Let's extract only post data from received translation data
@@ -89,7 +89,7 @@ class PostDataBuilder implements IncomingProcessor
         // ... but remove problematic properties...
         $post_data = array_diff_key($post_data, self::$unwanted_data);
         // ... and force ID to be existing linked post if exists.
-        $linked_post and $post_data['ID'] = $linked_post->ID;
+        $linkedPost and $post_data['ID'] = $linkedPost->ID;
         // Set back all post data in root namespace
         foreach ($post_data as $key => $value) {
             $translation->set_value($key, $value);
@@ -97,7 +97,7 @@ class PostDataBuilder implements IncomingProcessor
 
         $translation->set_meta(
             self::IS_UPDATE_KEY,
-            (bool)$linked_post,
+            (bool)$linkedPost,
             ModuleIntegrator::POST_DATA_NAMESPACE
         );
     }
