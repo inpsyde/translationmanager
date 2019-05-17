@@ -36,7 +36,7 @@ function translationmanager_api()
          *
          * @since 1.0.0
          */
-        $url = apply_filters('translationmanager_api_url', 'http://sandbox.api.eurotext.de/api/v1');
+        $url = apply_filters('translationmanager_api_url', 'http://api.eurotext.de/api/v1');
 
         $api = new Api(
             get_option(PluginSettings::API_KEY),
