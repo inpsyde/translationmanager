@@ -165,19 +165,27 @@ function compressPackage (done)
   )
 
   return new Promise(() => {
-    pump(
-      gulp.src(`${PACKAGE_DESTINATION}/**/*`, {
-        base: PACKAGE_DESTINATION,
-      }),
-      gulpZip(`${PACKAGE_NAME}-${packageVersion}-${timeStamp}.zip`),
-      gulp.dest(
-        compressPath,
-        {
-          base: PACKAGE_DESTINATION,
-          cwd: './',
-        },
-      ),
-      done,
+    exec(
+      `git log -n 1 | head -n 1 | sed -e 's/^commit //' | head -c 8`,
+      {},
+      (error, stdout) => {
+        let shortHash = error ? timeStamp : stdout
+
+        pump(
+          gulp.src(`${PACKAGE_DESTINATION}/**/*`, {
+            base: PACKAGE_DESTINATION,
+          }),
+          gulpZip(`${PACKAGE_NAME}-${packageVersion}-${shortHash}.zip`),
+          gulp.dest(
+            compressPath,
+            {
+              base: PACKAGE_DESTINATION,
+              cwd: './',
+            },
+          ),
+          done,
+        )
+      },
     )
   })
 }
