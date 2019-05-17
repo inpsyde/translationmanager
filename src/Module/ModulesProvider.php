@@ -4,6 +4,7 @@ namespace Translationmanager\Module;
 
 use ArrayIterator;
 use IteratorAggregate;
+use NoRewindIterator;
 use Translationmanager\Utils\Assert;
 
 /**
@@ -36,30 +37,28 @@ class ModulesProvider implements IteratorAggregate
      */
     public function getIterator()
     {
-        static $availableModules;
+        $availableModules = [];
 
-        if (!$availableModules) {
-            /**
-             * Filter Modules
-             *
-             * @param array $modules All of the available modules
-             */
-            $modules = (array)apply_filters(self::FILTER_AVAILABLE_MODULES, $this->modules);
+        /**
+         * Filter Modules
+         *
+         * @param array $modules All of the available modules
+         */
+        $modules = (array)apply_filters(self::FILTER_AVAILABLE_MODULES, $this->modules);
 
-            $plugins = $this->plugins();
-            $allowedModules = $this->allowedModules($plugins);
+        $plugins = $this->plugins();
+        $allowedModules = $this->allowedModules($plugins);
 
-            foreach ($allowedModules as $name) {
-                $pluginPath = isset($plugins[$name]) ? $plugins[$name] : '';
-                $moduleInstance = isset($modules[$name]) ? $modules[$name] : '';
+        foreach ($allowedModules as $name) {
+            $pluginPath = isset($plugins[$name]) ? $plugins[$name] : '';
+            $moduleInstance = isset($modules[$name]) ? $modules[$name] : '';
 
-                if ($pluginPath && $moduleInstance) {
-                    $availableModules[$pluginPath] = $moduleInstance;
-                }
+            if ($pluginPath && $moduleInstance) {
+                $availableModules[$pluginPath] = $moduleInstance;
             }
         }
 
-        return new ArrayIterator($availableModules);
+        return new NoRewindIterator(new ArrayIterator($availableModules));
     }
 
     /**

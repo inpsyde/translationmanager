@@ -8,6 +8,7 @@
 
 namespace Translationmanager\Module;
 
+use CachingIterator;
 use Pimple\Container;
 use Translationmanager\Module\Mlp\DataProcessor;
 use Translationmanager\Module\Mlp\Integrator as MultilingualPressIntegrator;
@@ -51,7 +52,10 @@ class ServiceProvider implements IntegrableServiceProvider
         };
         $container[ModuleIntegrator::class] = function (Container $container) {
             return new ModuleIntegrator(
-                $container[ModulesProvider::class]
+                new CachingIterator(
+                    $container[ModulesProvider::class]->getIterator(),
+                    CachingIterator::FULL_CACHE
+                )
             );
         };
         $container[ProcessorBusFactory::class] = function () {
