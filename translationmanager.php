@@ -17,6 +17,7 @@
 
 // phpcs:disable
 
+use Translationmanager\Plugin;
 use Translationmanager\Service\ServiceProviders;
 
 $bootstrap = \Closure::bind( function () {
@@ -104,11 +105,11 @@ $bootstrap = \Closure::bind( function () {
 
 		// Require composer autoloader if exists.
 		if ( is_readable( __DIR__ . '/vendor/autoload.php' )
-		     && ! class_exists( \Translationmanager\Plugin::class )
+		     && ! class_exists( Plugin::class )
 		) {
 			require_once __DIR__ . '/vendor/autoload.php';
 		}
-		if ( ! class_exists( \Translationmanager\Plugin::class ) ) {
+		if ( ! class_exists( Plugin::class ) ) {
 			add_action( 'admin_notices', function () {
 
 				translationmanager_admin_notice(
@@ -133,13 +134,11 @@ $bootstrap = \Closure::bind( function () {
 		$container = new Pimple\Container();
 
 		$container['translationmanager.plugin'] = function () {
-
-			return new \Translationmanager\Plugin();
+			return new Plugin();
 		};
 
 		$providers = new ServiceProviders( $container );
 		$providers
-            ->register( new Translationmanager\ServiceProvider())
 			->register( new Translationmanager\ProjectItem\ServiceProvider() )
 			->register( new Translationmanager\Project\ServiceProvider() )
 			->register( new Translationmanager\Pages\ServiceProvider() )
