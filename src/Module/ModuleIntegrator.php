@@ -8,10 +8,7 @@
 
 namespace Translationmanager\Module;
 
-use ReflectionClass;
-use ReflectionException;
-use Translationmanager\Module\Processor\ProcessorBusFactory;
-use Translationmanager\Plugin;
+use Traversable;
 
 /**
  * Class Loader
@@ -30,9 +27,9 @@ class ModuleIntegrator
     /**
      * Loader constructor
      *
-     * @param ModulesProvider $modulesProvider
+     * @param Traversable $modulesProvider
      */
-    public function __construct(ModulesProvider $modulesProvider)
+    public function __construct(Traversable $modulesProvider)
     {
         $this->modulesProvider = $modulesProvider;
     }
