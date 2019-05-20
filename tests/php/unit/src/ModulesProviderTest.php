@@ -5,7 +5,6 @@ namespace Translationmanager\Tests\Unit\Module;
 use ArrayIterator;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
-use NoRewindIterator;
 use PHPUnit_Framework_MockObject_MockObject;
 use Translationmanager\Module\ModulesProvider as Testee;
 use TranslationmanagerTests\stubs\IntegratorStub;
@@ -137,7 +136,7 @@ class ModulesProviderTest extends TestCase
         }
 
         {
-            self::assertInstanceOf(NoRewindIterator::class, $response);
+            self::assertInstanceOf(ArrayIterator::class, $response);
 
             self::assertSame($availableModulesStub, $response->getArrayCopy());
         }

@@ -58,7 +58,7 @@ class ModulesProvider implements IteratorAggregate
             }
         }
 
-        return new NoRewindIterator(new ArrayIterator($availableModules));
+        return new ArrayIterator($availableModules);
     }
 
     /**
