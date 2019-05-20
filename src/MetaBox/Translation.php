@@ -57,7 +57,6 @@ class Translation implements Boxable
             get_post_types(
                 [
                     'show_ui' => true,
-                    '_builtin' => false,
                 ]
             )
         );
