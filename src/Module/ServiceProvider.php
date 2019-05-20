@@ -50,12 +50,15 @@ class ServiceProvider implements IntegrableServiceProvider
                 'woocommerce' => $container[WooCommerceIntegrator::class],
             ]);
         };
+        $container['Modules'] = function (Container $container) {
+            return new CachingIterator(
+                $container[ModulesProvider::class]->getIterator(),
+                CachingIterator::FULL_CACHE
+            );
+        };
         $container[ModuleIntegrator::class] = function (Container $container) {
             return new ModuleIntegrator(
-                new CachingIterator(
-                    $container[ModulesProvider::class]->getIterator(),
-                    CachingIterator::FULL_CACHE
-                )
+                $container['Modules']
             );
         };
         $container[ProcessorBusFactory::class] = function () {
