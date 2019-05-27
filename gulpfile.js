@@ -244,6 +244,7 @@ exports.tests = gulp.series(
  * @task {dist}
  * @arg {packageVersion} Package version, the version must to be conformed to semver.
  * @arg {compressPath} Where the resulting package zip have to be stored.
+ * @arg {compressedName} The name to give to the package instead of the default one.
  */
 exports.dist = gulp.series(
   validatePackageVersion,
