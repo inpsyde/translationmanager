@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca63b54e4002bc5d56afbc848ccb2369",
+    "content-hash": "6e0d72585f99d3b35ae6186efb7f43a1",
     "packages": [
         {
             "name": "brain/nonces",
@@ -339,6 +339,54 @@
             ],
             "description": "A set of phpcs sniffs for modern php development.",
             "time": "2018-09-11T19:08:15+00:00"
+        },
+        {
+            "name": "barryvdh/composer-cleanup-plugin",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/composer-cleanup-plugin.git",
+                "reference": "1efa5ce0aa415f1e7bc7fccfbedfe43d8f0941b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/composer-cleanup-plugin/zipball/1efa5ce0aa415f1e7bc7fccfbedfe43d8f0941b0",
+                "reference": "1efa5ce0aa415f1e7bc7fccfbedfe43d8f0941b0",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                },
+                "class": "Barryvdh\\Composer\\CleanupPlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\Composer\\": "src/"
+                }
+            },
+            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "A composer cleanup plugin, to remove tests and documentation to save space",
+            "time": "2018-05-14T08:32:22+00:00"
         },
         {
             "name": "brain/monkey",
@@ -2395,8 +2443,5 @@
         "php": ">=5.6",
         "ext-fileinfo": "*"
     },
-    "platform-dev": [],
-    "platform-overrides": {
-        "php": "7.0"
-    }
+    "platform-dev": []
 }
