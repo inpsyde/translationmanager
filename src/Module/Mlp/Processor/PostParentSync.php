@@ -3,31 +3,50 @@
 namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
-use Translationmanager\Module\Mlp\Connector;
-use Translationmanager\TranslationData;
+use Translationmanager\Module\ModuleIntegrator;
+use Translationmanager\Module\Processor\IncomingProcessor;
+use Translationmanager\Translation;
 
 class PostParentSync implements IncomingProcessor
 {
     /**
-     * @param TranslationData $data
+     * @var Adapter
+     */
+    private $adapter;
+
+    /**
+     * TaxonomiesSync constructor
      * @param Adapter $adapter
+     */
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+    }
+
+    /**
+     * @param Translation $translation
      *
      * @return void
      */
-    public function process_incoming(TranslationData $data, Adapter $adapter)
+    public function processIncoming(Translation $translation)
     {
-        $source_post = $data->source_post();
+        $source_post = $translation->source_post();
 
         if (!$source_post || !$source_post->post_parent) {
             return;
         }
 
         $sync_on_update = true;
-        if ($data->get_meta(PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE)) {
+        $isUpdateKey = $translation->get_meta(
+            PostDataBuilder::IS_UPDATE_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
+
+        if ($isUpdateKey) {
             $sync_on_update = apply_filters(
                 'translationmanager_mlp_module_sync_post_parent_on_update',
                 true,
-                $data
+                $translation
             );
         }
 
@@ -35,15 +54,15 @@ class PostParentSync implements IncomingProcessor
             return;
         }
 
-        $target_site_id = $data->target_site_id();
-        $source_site_id = $data->source_site_id();
+        $target_site_id = $translation->target_site_id();
+        $source_site_id = $translation->source_site_id();
 
-        $related_parents = $adapter->relations($source_site_id, $source_post->post_parent, 'post');
+        $related_parents = $this->adapter->relations($source_site_id, $source_post->post_parent);
 
         $parent = array_key_exists($target_site_id, $related_parents)
             ? $related_parents[$target_site_id]
             : 0;
 
-        $data->set_value('post_parent', $parent);
+        $translation->set_value('post_parent', $parent);
     }
 }

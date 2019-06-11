@@ -1,14 +1,14 @@
 <?php # -*- coding: utf-8 -*-
 // phpcs:disable
 
-namespace Translationmanager\Tests\Unit\Inc\Functions;
+namespace TranslationmanagerTests\Unit\Inc\Functions;
 
-use \Translationmanager\Tests\TestCase;
+use \TranslationmanagerTests\TestCase;
 
 /**
  * Class VersionCompareTest
  *
- * @package Translationmanager\Tests\Unit\Inc\Functions
+ * @package TranslationmanagerTests\Unit\Inc\Functions
  */
 class VersionCompareTest extends TestCase
 {

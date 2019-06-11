@@ -24,14 +24,13 @@ class Integrator implements Integrable
      */
     public function integrate()
     {
-        $wordpress_seo = new WordPressSeo();
+        if (!class_exists('WPSEO_Meta')) {
+            return;
+        }
 
-        add_action('translationmanager_outgoing_data', [$wordpress_seo, 'prepare_outgoing']);
-        add_action(
-            'translationmanager_updated_post',
-            [$wordpress_seo, 'update_translation'],
-            10,
-            2
-        );
+        $wordpressSeo = new WordPressSeo();
+
+        add_action('translationmanager_outgoing_data', [$wordpressSeo, 'prepare_outgoing']);
+        add_action('translationmanager_updated_post', [$wordpressSeo, 'update_translation']);
     }
 }

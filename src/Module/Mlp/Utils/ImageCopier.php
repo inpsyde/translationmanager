@@ -3,6 +3,7 @@
 namespace Translationmanager\Module\Mlp\Utils;
 
 use Translationmanager\Module\Mlp\Adapter;
+use Translationmanager\Utils\NetworkState;
 use WP_Post;
 
 /**
@@ -61,8 +62,8 @@ class ImageCopier
             return 0;
         }
 
-        $switched = $target_site_id && $target_site_id !== get_current_blog_id();
-        $switched and switch_to_blog($target_site_id);
+        $networkState = NetworkState::create();
+        $networkState->switch_to($target_site_id);
 
         $linked_file = $linked = null;
         $linked_attachments = $this->adapter->relations($source_site_id, $source_attachment_id);
@@ -72,7 +73,7 @@ class ImageCopier
         }
 
         if ($linked && basename($linked_file) === basename($source_file)) {
-            $switched and restore_current_blog();
+            $networkState->restore();
 
             return (int)$linked;
         }
@@ -89,7 +90,7 @@ class ImageCopier
             );
         }
 
-        $switched and restore_current_blog();
+        $networkState->restore();
 
         return $insert_id;
     }

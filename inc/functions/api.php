@@ -8,8 +8,7 @@ use Translationmanager\Api\ApiException;
 use Translationmanager\Domain\Project;
 use Translationmanager\Plugin;
 use Translationmanager\Setting\PluginSettings;
-use Translationmanager\TranslationData;
-use WP_Post;
+use Translationmanager\Translation;
 use WP_Term;
 
 /**
@@ -86,12 +85,12 @@ function project_update(WP_Term $project)
             }
 
             foreach ($item['data'] as $incoming_translation) {
-                $translation = TranslationData::for_incoming((array)$incoming_translation);
+                $translation = Translation::for_incoming((array)$incoming_translation);
 
                 /**
                  * Fires for each item or translation received from the API.
                  *
-                 * @param TranslationData $translation Translation data built from data received from API
+                 * @param Translation $translation Translation data built from data received from API
                  */
                 do_action('translationmanager_incoming_data', $translation);
 
@@ -99,19 +98,14 @@ function project_update(WP_Term $project)
                  * Filters the updater that executed have to return the updated post
                  */
                 $updater = apply_filters('translationmanager_post_updater', null, $translation);
+                is_callable($updater) and $updater($translation);
 
-                $post = is_callable($updater) ? $updater($translation) : null;
-
-                if ($post instanceof WP_Post) {
-
-                    /**
-                     * Fires after the updater has updated the post.
-                     *
-                     * @param WP_Post $post Just updated post
-                     * @param TranslationData $translation Translation data built from data received from API
-                     */
-                    do_action('translationmanager_updated_post', $post, $translation);
-                }
+                /**
+                 * Fires after the updater has updated the post.
+                 *
+                 * @param Translation $translation Translation data built from data received from API
+                 */
+                do_action('translationmanager_updated_post', $translation);
             }
         }
     }
@@ -230,7 +224,7 @@ function create_project_order(WP_Term $project_term)
 
         $source_site_id = get_current_blog_id();
 
-        $data = TranslationData::for_outgoing(
+        $data = Translation::for_outgoing(
             $source_post,
             $source_site_id,
             $post->_translationmanager_target_id,
@@ -242,14 +236,14 @@ function create_project_order(WP_Term $project_term)
          *
          * Data can be edited in place by listeners.
          *
-         * @param TranslationData $data
+         * @param Translation $data
          *
          * @since 1.0.0
          */
         do_action_ref_array('translationmanager_outgoing_data', [$data]);
 
-        $post_types[$languages[$post->_translationmanager_target_id]->get_lang_code(
-        )][$source_post->post_type][] = $data->to_array();
+        $post_types[$languages[$post->_translationmanager_target_id]->get_lang_code()][$source_post->post_type][] = $data->to_array();
+
     }
 
     foreach ($post_types as $post_type_target_language => $post_types_data) {

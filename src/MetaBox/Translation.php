@@ -57,8 +57,6 @@ class Translation implements Boxable
             get_post_types(
                 [
                     'show_ui' => true,
-                    // TODO Do not only allow build in, but let third party developers to add a list of post types to support
-                    '_builtin' => true,
                 ]
             )
         );

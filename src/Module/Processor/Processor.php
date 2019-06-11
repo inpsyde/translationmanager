@@ -1,6 +1,6 @@
 <?php // -*- coding: utf-8 -*-
 
-namespace Translationmanager\Module\Mlp\Processor;
+namespace Translationmanager\Module\Processor;
 
 /**
  * Interface Processor

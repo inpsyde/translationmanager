@@ -8,8 +8,7 @@
 
 namespace Translationmanager\TableList;
 
-use Exception;
-use RuntimeException;
+use Translationmanager\Exception\UnexpectedEntityException;
 use Translationmanager\Functions;
 use Translationmanager\Request;
 use WP_Query;
@@ -186,7 +185,7 @@ final class ProjectItem extends TableList
                 if (!$project) {
                     return [];
                 }
-            } catch (Exception $e) {
+            } catch (UnexpectedEntityException $e) {
                 return [];
             }
 
@@ -515,7 +514,7 @@ final class ProjectItem extends TableList
     {
         try {
             $project_id = $this->project_id_by_request()->term_id;
-        } catch (Exception $e) {
+        } catch (UnexpectedEntityException $e) {
             return;
         }
 
@@ -536,10 +535,8 @@ final class ProjectItem extends TableList
     /**
      * Retrieve Project ID By GET request
      *
-     * @return \WP_Term The term retrieved by the request.
-     * @since 1.0.0
-     *
-     * @throw \RuntimeException In case the wp term cannot be retrieved
+     * @return WP_Term The term retrieved by the request.
+     * @throws UnexpectedEntityException
      */
     private function project_id_by_request()
     {
@@ -555,7 +552,7 @@ final class ProjectItem extends TableList
         $project = get_term($project, 'translationmanager_project');
 
         if (!$project instanceof WP_Term) {
-            throw new RuntimeException($project->get_error_message());
+            throw UnexpectedEntityException::forTermValue($project, '');
         }
 
         return $project;

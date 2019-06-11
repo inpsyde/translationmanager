@@ -1,7 +1,6 @@
 {
     "name": "eurotext/translationmanager",
     "description": "WordPress Plugin to connect to the Eurotext REST API.",
-    "license": "proprietary",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "config": {
@@ -22,10 +21,11 @@
     ],
     "require": {
         "php": ">=5.6",
+        "ext-fileinfo": "*",
         "brain/nonces": "1.0.*",
         "inpsyde/system-status": "dev-master",
         "pimple/pimple": "^3.2",
-        "ext-fileinfo": "*"
+        "webmozart/assert": "^1.4"
     },
     "require-dev": {
         "barryvdh/composer-cleanup-plugin": "^0.2.0",
@@ -40,9 +40,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Translationmanager\\Tests\\": "tests/php",
-            "Translationmanager\\Tests\\Unit\\": "tests/unit/src",
-            "Translationmanager\\Tests\\Integration\\": "tests/integration/src"
+            "TranslationmanagerTests\\": "tests/php",
+            "TranslationmanagerTests\\Unit\\": "tests/php/unit/src",
+            "TranslationmanagerTests\\Functional\\": "tests/php/Functional/src",
+            "TranslationmanagerTests\\Integration\\": "tests/php/integration/src"
         }
     }
 }
