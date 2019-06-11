@@ -9,7 +9,6 @@ use Translationmanager\Domain\Project;
 use Translationmanager\Plugin;
 use Translationmanager\Setting\PluginSettings;
 use Translationmanager\Translation;
-use WP_Post;
 use WP_Term;
 
 /**
@@ -27,8 +26,13 @@ function translationmanager_api()
 {
     static $api = null;
 
-    if (null === $api) {
+    $url = 'http://api.eurotext.de/api/v1';
 
+    if (defined('TRANSLATION_MANAGER_API_URL') && TRANSLATION_MANAGER_API_URL) {
+        $url = TRANSLATION_MANAGER_API_URL;
+    }
+
+    if ($api === null) {
         /**
          * Filter Api URL
          *
@@ -36,7 +40,7 @@ function translationmanager_api()
          *
          * @since 1.0.0
          */
-        $url = apply_filters('translationmanager_api_url', 'http://api.eurotext.de/api/v1');
+        $url = apply_filters('translationmanager_api_url', $url);
 
         $api = new Api(
             get_option(PluginSettings::API_KEY),
@@ -163,10 +167,13 @@ function project_global_status(WP_Term $project_term)
 
     $unique_statuses = array_unique($statuses);
 
-    $status = array_filter($unique_statuses, function ($status) {
+    $status = array_filter(
+        $unique_statuses,
+        function ($status) {
 
-        return 'finished' === $status;
-    });
+            return 'finished' === $status;
+        }
+    );
 
     return (count($status) === count($unique_statuses)
         ? esc_html__('Finished', 'translationmanager')
@@ -236,6 +243,7 @@ function create_project_order(WP_Term $project_term)
         do_action_ref_array('translationmanager_outgoing_data', [$data]);
 
         $post_types[$languages[$post->_translationmanager_target_id]->get_lang_code()][$source_post->post_type][] = $data->to_array();
+
     }
 
     foreach ($post_types as $post_type_target_language => $post_types_data) {

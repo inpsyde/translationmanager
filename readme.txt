@@ -37,6 +37,8 @@ Just send an email to info@eurotext.de and request one.
 = X.X.X =
 * Fix brand typo
 * Fix missing text domains in some strings
+* Add `TRANSLATION_MANAGER_API_URL` constant to edit the API url at configuration level
+* Add basic support for WooCommerce
 
 = 1.2.1 =
 * Fixing the bug where not all translations could be received
