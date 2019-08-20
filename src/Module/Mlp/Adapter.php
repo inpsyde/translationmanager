@@ -3,6 +3,8 @@
 namespace Translationmanager\Module\Mlp;
 
 use BadFunctionCallException;
+use Inpsyde\MultilingualPress\Framework\Api\ContentRelations;
+use Inpsyde\MultilingualPress\Framework\Database\Exception\NonexistentTable;
 use Translationmanager\Utils\Assert;
 
 /**
@@ -212,6 +214,7 @@ class Adapter
      * @param string $type Content type.
      *
      * @return void
+     * @throws NonexistentTable
      * @since 1.0.0
      */
     public function set_relation(
@@ -223,17 +226,30 @@ class Adapter
     ) {
 
         if (3 === $this->version) {
-            $relationship_id = $this->contentRelations->relationshipId(
+            /** @var ContentRelations $contentRelations */
+            $contentRelations = $this->contentRelations;
+            $relationship_id = $contentRelations->relationshipId(
                 [
                     $target_site_id => $target_content_id,
                 ],
                 $type
             );
 
-            $this->contentRelations->saveRelation(
-                $relationship_id,
-                $target_site_id,
-                $target_content_id
+            if ($relationship_id) {
+                $contentRelations->saveRelation(
+                    $relationship_id,
+                    $target_site_id,
+                    $target_content_id
+                );
+                return;
+            }
+
+            $contentRelations->createRelationship(
+                [
+                    $source_site_id => $source_content_id,
+                    $target_site_id => $target_content_id,
+                ],
+                $type
             );
 
             return;
