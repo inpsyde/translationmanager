@@ -16,7 +16,7 @@ use function Brain\Monkey\Functions\when;
 use ReflectionProperty;
 use Translationmanager\Api;
 use function Translationmanager\Functions\translationmanager_api;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
 /**
  * Class ApiTest
