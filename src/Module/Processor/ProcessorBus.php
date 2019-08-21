@@ -2,8 +2,8 @@
 
 namespace Translationmanager\Module\Processor;
 
+use SplDoublyLinkedList;
 use SplQueue;
-use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Translation;
 
 /**
@@ -50,6 +50,8 @@ class ProcessorBus
      */
     public function process(Translation $data)
     {
+        $this->queue->setIteratorMode(SplDoublyLinkedList::IT_MODE_KEEP);
+
         $isIncoming = $data->is_incoming();
         $isOutComing = $data->is_outgoing();
 
@@ -71,10 +73,7 @@ class ProcessorBus
             return;
         }
 
-        while ($this->queue->count()) {
-            /** @var IncomingProcessor|OutgoingProcessor $processor */
-            $processor = $this->queue->dequeue();
-
+        foreach ($this->queue as $processor) {
             $target = $isIncoming ? IncomingProcessor::class : OutgoingProcessor::class;
             $method = $isIncoming ? 'processIncoming' : 'processOutgoing';
 

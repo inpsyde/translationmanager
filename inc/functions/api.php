@@ -76,37 +76,35 @@ function project_update(WP_Term $project)
 
     $translation_data = translationmanager_api()->project()->get($project_id);
 
-    foreach ($translation_data['items'] as $item_id => $items) {
-        foreach ($items as &$item) {
-            $item = translationmanager_api()->project_item()->get($project_id, $item_id);
+    foreach ($translation_data['items'] as $item_id => &$item) {
+        $item = translationmanager_api()->project_item()->get($project_id, $item_id);
 
-            if (!$item || !isset($item['data']) || !is_array($item['data'])) {
-                continue;
-            }
+        if (!$item || !isset($item['data']) || !is_array($item['data'])) {
+            continue;
+        }
 
-            foreach ($item['data'] as $incoming_translation) {
-                $translation = Translation::for_incoming((array)$incoming_translation);
+        foreach ($item['data'] as $incoming_translation) {
+            $translation = Translation::for_incoming((array)$incoming_translation);
 
-                /**
-                 * Fires for each item or translation received from the API.
-                 *
-                 * @param Translation $translation Translation data built from data received from API
-                 */
-                do_action('translationmanager_incoming_data', $translation);
+            /**
+             * Fires for each item or translation received from the API.
+             *
+             * @param Translation $translation Translation data built from data received from API
+             */
+            do_action('translationmanager_incoming_data', $translation);
 
-                /**
-                 * Filters the updater that executed have to return the updated post
-                 */
-                $updater = apply_filters('translationmanager_post_updater', null, $translation);
-                is_callable($updater) and $updater($translation);
+            /**
+             * Filters the updater that executed have to return the updated post
+             */
+            $updater = apply_filters('translationmanager_post_updater', null, $translation);
+            is_callable($updater) and $updater($translation);
 
-                /**
-                 * Fires after the updater has updated the post.
-                 *
-                 * @param Translation $translation Translation data built from data received from API
-                 */
-                do_action('translationmanager_updated_post', $translation);
-            }
+            /**
+             * Fires after the updater has updated the post.
+             *
+             * @param Translation $translation Translation data built from data received from API
+             */
+            do_action('translationmanager_updated_post', $translation);
         }
     }
 }
