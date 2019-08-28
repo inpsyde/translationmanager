@@ -136,7 +136,8 @@ function project_items_statuses(WP_Term $project_term)
     }
 
     foreach ($translation_data['items'] as $item) {
-        $slug = sanitize_title($item[0]['post_title']);
+        $post_title = isset($item[0]['post_title']) ? $item[0]['post_title'] : '';
+        $slug = sanitize_title($post_title);
         $statuses[$slug] = $item['status'];
     }
 
