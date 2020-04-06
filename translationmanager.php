@@ -99,9 +99,9 @@ $bootstrap = \Closure::bind( function () {
 	 */
 	function bootstrap() {
 
-		if ( ! is_admin() ) {
-			return;
-		}
+        if (!is_admin() && !defined('WP_CLI') && !WP_CLI) {
+            return;
+        }
 
 		// Require composer autoloader if exists.
 		if ( is_readable( __DIR__ . '/vendor/autoload.php' )
