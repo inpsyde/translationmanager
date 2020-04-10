@@ -19,6 +19,7 @@
 
 use Translationmanager\Plugin;
 use Translationmanager\Service\ServiceProviders;
+use function \Translationmanager\Functions\is_wp_cli;
 
 $bootstrap = \Closure::bind( function () {
 
@@ -99,7 +100,7 @@ $bootstrap = \Closure::bind( function () {
 	 */
 	function bootstrap() {
 
-		if (!is_admin() && !defined('WP_CLI') && !WP_CLI) {
+		if ( !is_admin() && !is_wp_cli() ) {
 			return;
 		}
 

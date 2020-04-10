@@ -364,3 +364,11 @@ function version_compare( $ver1, $ver2, $constraint ) {
 
 	return \version_compare( $ver1, $ver2, $constraint );
 }
+
+/**
+ * Check if is WP_CLI
+ * @return bool
+ */
+function is_wp_cli() {
+    return defined('WP_CLI') && WP_CLI;
+}
