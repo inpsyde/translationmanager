@@ -19,7 +19,6 @@
 
 use Translationmanager\Plugin;
 use Translationmanager\Service\ServiceProviders;
-use function \Translationmanager\Functions\is_wp_cli;
 
 $bootstrap = \Closure::bind( function () {
 
@@ -158,6 +157,14 @@ $bootstrap = \Closure::bind( function () {
 
 		unset( $container );
 	}
+
+    /**
+     * Check if is WP_CLI
+     * @return bool
+     */
+    function is_wp_cli() {
+        return defined('WP_CLI') && WP_CLI;
+    }
 
 	/**
 	 * Activate Plugin
