@@ -160,7 +160,9 @@ $bootstrap = \Closure::bind( function () {
 
     /**
      * Check if is WP_CLI
+     *
      * @return bool
+     * @since 1.2.1
      */
     function is_wp_cli() {
         return defined('WP_CLI') && WP_CLI;

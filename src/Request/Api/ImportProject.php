@@ -13,7 +13,6 @@ use Exception;
 use function Translationmanager\Functions\project_update;
 use function Translationmanager\Functions\redirect_admin_page_network;
 use Translationmanager\Request\RequestHandleable;
-use Translationmanager\Api\ApiException;
 use Translationmanager\Auth\Authable;
 use Translationmanager\Notice\TransientNoticeService;
 use WP_Term;

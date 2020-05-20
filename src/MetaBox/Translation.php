@@ -117,7 +117,7 @@ class Translation implements Boxable
             return esc_html__('New project', 'translationmanager');
         }
 
-        return get_term_field('name', $this->get_recent_project_id());
+        return get_term_field('name', $this->get_recent_project_id(), 'translationmanager_project');
     }
 
     /**
