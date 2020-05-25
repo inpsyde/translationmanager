@@ -148,6 +148,41 @@ class ProjectItem
      */
     private function normalize_language_code($lang_code)
     {
+        $api_language_codes = apply_filters(
+            'translationmanager_get_api_language_codes',
+            [
+                  'af' => 'afr',
+                  'bg-bg' => 'bg',
+                  'ca' => 'cat',
+                  'cy' => 'wel',
+                  'da-dk' => 'da',
+                  'ga' => 'gai',
+                  'gd' => 'gla',
+                  'gl-es' => 'glg',
+                  'gu-in' => 'guj',
+                  'he-il' => 'he',
+                  'hi-in' => 'hin',
+                  'hr' => 'hr',
+                  'hu-hu' => 'hu',
+                  'id-id' => 'ind',
+                  'is-is' => 'ice',
+                  'mk-mk' => 'mk',
+                  'ms-my' => 'msa',
+                  'my-mm' => 'my',
+                  'pl-pl' => 'pl',
+                  'sk-sk' => 'sk',
+                  'sl-si' => 'sl',
+                  'so-so' => 'som',
+                  'sr-rs' => 'sr',
+                  'tr-tr' => 'tr',
+                  'vi' => 'vn',
+            ]
+        );
+
+        if (array_key_exists($lang_code, $api_language_codes)) {
+            return $api_language_codes[$lang_code];
+        }
+
         return strtolower(str_replace('_', '-', $lang_code));
     }
 }
