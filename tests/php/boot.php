@@ -1,25 +1,25 @@
 <?php # -*- coding: utf-8 -*-
 
-if ( version_compare( PHP_VERSION, '5.6', '<' ) ) {
-	die( 'PHP 5.6 is required to run tests.' );
+if (version_compare(PHP_VERSION, '5.6', '<')) {
+    die('PHP 5.6 is required to run tests.');
 }
 
-putenv( 'TESTS_PATH=' . __DIR__ );
-putenv( 'LIBRARY_PATH=' . dirname( dirname( __DIR__ ) ) );
+putenv('TESTS_PATH=' . __DIR__);
+putenv('LIBRARY_PATH=' . dirname(dirname(__DIR__)));
 
-$vendor = dirname( dirname( __DIR__ ) ) . '/vendor/';
+$vendor = dirname(dirname(__DIR__)) . '/vendor/';
 
-if ( ! realpath( $vendor ) ) {
-	die( 'Please install via Composer before running tests.' );
+if (!realpath($vendor)) {
+    die('Please install via Composer before running tests.');
 }
 
-if ( ! defined( 'PHPUNIT_COMPOSER_INSTALL' ) ) {
-	define( 'PHPUNIT_COMPOSER_INSTALL', $vendor . 'autoload.php' );
+if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
+    define('PHPUNIT_COMPOSER_INSTALL', $vendor . 'autoload.php');
 }
 
-error_reporting( E_ALL );
+error_reporting(E_ALL);
 
 require_once $vendor . '/antecedent/patchwork/Patchwork.php';
 require_once $vendor . 'autoload.php';
 
-unset( $vendor );
+unset($vendor);

@@ -1,41 +1,42 @@
-<?php # -*- coding: utf-8 -*-
+<?php // -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\Mlp\Utils;
 
 use Translationmanager\Module\Mlp\Adapter;
+use Translationmanager\Utils\NetworkState;
 
-class Registry {
+class Registry
+{
+    /**
+     * @var array
+     */
+    private $services = [];
 
-	/**
-	 * @var array
-	 */
-	private $services = [];
+    /**
+     * @param Adapter $adapter
+     *
+     * @return ImageCopier
+     */
+    public function image_sync(Adapter $adapter)
+    {
+        if (!isset($this->services[__FUNCTION__])) {
+            $this->services[__FUNCTION__] = [];
+        }
 
-	/**
-	 * @param  \Mlp_Content_Relations $content_relations
-	 *
-	 * @return ImageCopier
-	 */
-	public function image_sync( Adapter $adapter ) {
+        $id = spl_object_hash($adapter);
 
-		if ( ! isset( $this->services[ __FUNCTION__ ] ) ) {
-			$this->services[ __FUNCTION__ ] = [];
-		}
+        if (!array_key_exists($id, $this->services[__FUNCTION__])) {
+            $this->services[__FUNCTION__][$id] = new ImageCopier($adapter);
+        }
 
-		$id = spl_object_hash( $adapter );
+        return $this->services[__FUNCTION__][$id];
+    }
 
-		if ( ! array_key_exists( $id, $this->services[ __FUNCTION__ ] ) ) {
-			$this->services[ __FUNCTION__ ][ $id ] = new ImageCopier( $adapter );
-		}
-
-		return $this->services[ __FUNCTION__ ][ $id ];
-	}
-
-	/**
-	 * @return NetworkState
-	 */
-	public function network_state() {
-
-		return NetworkState::create();
-	}
+    /**
+     * @return NetworkState
+     */
+    public function network_state()
+    {
+        return NetworkState::create();
+    }
 }

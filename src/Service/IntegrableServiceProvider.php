@@ -17,16 +17,16 @@ use Pimple\ServiceProviderInterface;
  * @since   1.0.0
  * @package Translationmanager\Service
  */
-interface IntegrableServiceProvider extends ServiceProviderInterface {
+interface IntegrableServiceProvider extends ServiceProviderInterface
+{
 
-	/**
-	 * Integrate service into plugin
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param \Pimple\Container $container The container instance.
-	 *
-	 * @return void
-	 */
-	public function integrate( Container $container );
+    /**
+     * Integrate service into plugin
+     *
+     * @param \Pimple\Container $container The container instance.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function integrate(Container $container);
 }

@@ -1,49 +1,49 @@
 {
-	"name" : "eurotext/translationmanager",
-	"description" : "WordPress Plugin to connect to the Eurotext REST API.",
-	"license" : "proprietary",
-	"type" : "wordpress-plugin",
-	"config" : {
-		"sort-packages" : true
-	},
-	"authors" : [
-		{
-			"name" : "Inpsyde GmbH",
-			"email" : "info@inpsyde.com",
-			"homepage" : "https://inpsyde.com/en/"
-		}
-	],
-	"repositories" : [
-		{
-			"type" : "vcs",
-			"url" : "git@bitbucket.org:inpsyde/system-status.git"
-		}
-	],
-	"require" : {
-		"php": ">=5.6",
-		"brain/nonces": "1.0.*",
-		"inpsyde/system-status": "dev-master",
-		"inpsyde/inpsyde-networksites-menu": "2.0.*",
-		"pimple/pimple": "^3.2"
-	},
-	"require-dev" : {
-		"php" : ">=5.6",
-		"phpunit/phpunit" : "~5",
-		"brain/monkey" : "2.*",
-		"squizlabs/php_codesniffer" : "~2.7",
-		"wimg/php-compatibility" : "^7.0",
-		"wp-coding-standards/wpcs" : "dev-master"
-	},
-	"autoload" : {
-		"psr-4" : {
-			"Translationmanager\\" : "src/"
-		}
-	},
-	"autoload-dev" : {
-		"psr-4" : {
-			"Translationmanager\\Tests\\" : "tests/php",
-			"Translationmanager\\Tests\\Unit\\" : "tests/unit/src",
-			"Translationmanager\\Tests\\Integration\\" : "tests/integration/src"
-		}
-	}
+    "name": "eurotext/translationmanager",
+    "description": "WordPress Plugin to connect to the Eurotext REST API.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "config": {
+        "sort-packages": true
+    },
+    "authors": [
+        {
+            "name": "Inpsyde GmbH",
+            "email": "info@inpsyde.com",
+            "homepage": "https://inpsyde.com/en/"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.packagist.com/inpsyde/"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "ext-fileinfo": "*",
+        "brain/nonces": "1.0.*",
+        "inpsyde/system-status": "dev-master",
+        "pimple/pimple": "^3.2",
+        "webmozart/assert": "^1.4"
+    },
+    "require-dev": {
+        "barryvdh/composer-cleanup-plugin": "^0.2.0",
+        "brain/monkey": "2.*",
+        "inpsyde/php-coding-standards": "^0.13.3",
+        "phpunit/phpunit": "~5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Translationmanager\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TranslationmanagerTests\\": "tests/php",
+            "TranslationmanagerTests\\Unit\\": "tests/php/unit/src",
+            "TranslationmanagerTests\\Functional\\": "tests/php/Functional/src",
+            "TranslationmanagerTests\\Integration\\": "tests/php/integration/src"
+        }
+    }
 }

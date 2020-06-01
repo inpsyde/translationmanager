@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset name="Translation Manager">
+
+    <description>Translation Manager Rules</description>
+
+    <file>./src</file>
+    <exclude-pattern>./tests/</exclude-pattern>
+
+    <config name="testVersion" value="5.6-"/>
+    <config name="ignore_warnings_on_exit" value="1"/>
+    <config name="text_domain" value="translationmanager"/>
+
+    <rule ref="Inpsyde">
+        <exclude name="NeutronStandard.StrictTypes.RequireStrictTypes.StrictTypes"/>
+        <exclude name="Inpsyde.CodeQuality.ReturnTypeDeclaration.NoReturnType"/>
+        <exclude name="Inpsyde.CodeQuality.ArgumentTypeDeclaration.NoArgumentType"/>
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+        <exclude name="Inpsyde.CodeQuality.VariablesName.SnakeCaseVar"/>
+        <exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+        <exclude name="Inpsyde.CodeQuality.NoAccessors.NoGetter"/>
+        <exclude name="Inpsyde.CodeQuality.NoAccessors.NoSetter"/>
+        <exclude name="Inpsyde.CodeQuality.ElementNameMinimalLength.TooShort"/>
+        <exclude name="Inpsyde.CodeQuality.LineLength.TooLong"/>
+        <exclude name="Inpsyde.CodeQuality.NoElse.ElseFound"/>
+        <exclude name="Inpsyde.CodeQuality.FunctionLength.TooLong"/>
+        <exclude name="Generic.Metrics.NestingLevel.TooHigh"/>
+        <exclude name="NeutronStandard.Arrays.DisallowLongformArray.LongformArray"/>
+    </rule>
+
+    <rule ref="PHPCompatibility">
+        <exclude name="PHPCompatibility.Interfaces.NewInterfaces.jsonserializableFound"/>
+    </rule>
+
+</ruleset>

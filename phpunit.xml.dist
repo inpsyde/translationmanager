@@ -10,7 +10,7 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	processIsolation="true"
-	stopOnFailure="true">
+	stopOnFailure="false">
 	<testsuites>
 		<testsuite name="Unit">
 			<directory suffix="Test.php">tests/php/unit/src</directory>
@@ -26,6 +26,8 @@
 		</whitelist>
 	</filter>
 	<logging>
-		<log type="coverage-clover" target="coverage.xml" />
+		<log type="coverage-clover" target="coverage/report/clover.xml"/>
+		<log type="coverage-html" target="coverage/report/html" lowUpperBound="35"
+		     highLowerBound="70"/>
 	</logging>
 </phpunit>

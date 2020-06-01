@@ -17,23 +17,24 @@ use Translationmanager\Service\IntegrableServiceProvider;
  * @since   1.0.0
  * @package Translationmanager\Installation
  */
-class ServiceProvider implements IntegrableServiceProvider {
-	/**
-	 * @inheritdoc
-	 */
-	public function register( Container $container ) {
+class ServiceProvider implements IntegrableServiceProvider
+{
+    /**
+     * @inheritdoc
+     */
+    public function register(Container $container)
+    {
+        $container['Activation.Activator'] = function (Container $container) {
 
-		$container['Activation.Activator'] = function ( Container $container ) {
+            return new Activator($container['translationmanager.plugin']);
+        };
+    }
 
-			return new Activator( $container['translationmanager.plugin'] );
-		};
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function integrate( Container $container ) {
-
-		$container['Activation.Activator']->store_version();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function integrate(Container $container)
+    {
+        $container['Activation.Activator']->store_version();
+    }
 }

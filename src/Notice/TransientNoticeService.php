@@ -14,50 +14,47 @@ namespace Translationmanager\Notice;
  * @since   1.0.0
  * @package Translationmanager\Notice
  */
-class TransientNoticeService {
+class TransientNoticeService
+{
+    /**
+     * Notice
+     *
+     * @return \Translationmanager\Notice\TransientNotice Everytime the same instance
+     * @since 1.0.0
+     */
+    private static function notice()
+    {
+        static $notice = null;
 
-	/**
-	 * Notice
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return \Translationmanager\Notice\TransientNotice Everytime the same instance
-	 */
-	private static function notice() {
+        if (null === $notice) {
+            $notice = new TransientNotice('translationmanager_general_notices');
+        }
 
-		static $notice = null;
+        return $notice;
+    }
 
-		if ( null === $notice ) {
-			$notice = new TransientNotice( 'translationmanager_general_notices' );
-		}
+    /**
+     * Add Notice
+     *
+     * @param string $message The message to store.
+     * @param string $severity The severity under which the message must be stored.
+     *
+     * @return bool True on success false on failure
+     * @since 1.0.0
+     */
+    public static function add_notice($message, $severity)
+    {
+        return self::notice()->store($message, $severity);
+    }
 
-		return $notice;
-	}
-
-	/**
-	 * Add Notice
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $message  The message to store.
-	 * @param string $severity The severity under which the message must be stored.
-	 *
-	 * @return bool True on success false on failure
-	 */
-	public static function add_notice( $message, $severity ) {
-
-		return self::notice()->store( $message, $severity );
-	}
-
-	/**
-	 * Show Messages
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public static function show() {
-
-		self::notice()->show();
-	}
+    /**
+     * Show Messages
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public static function show()
+    {
+        self::notice()->show();
+    }
 }

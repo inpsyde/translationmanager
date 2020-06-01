@@ -14,32 +14,30 @@ namespace Translationmanager\MetaBox;
  * @since   1.0.0
  * @package Translationmanager\MetaBox
  */
-interface Boxable {
+interface Boxable
+{
 
-	/**
-	 * Add Metabox
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function add_meta_box();
+    /**
+     * Add Metabox
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function add_meta_box();
 
-	/**
-	 * Render Meta Box Template
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function render_template();
+    /**
+     * Render Meta Box Template
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function render_template();
 
-	/**
-	 * Create Nonce Instance
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return \Brain\Nonces\WpNonce The nonce instance
-	 */
-	public function nonce();
+    /**
+     * Create Nonce Instance
+     *
+     * @return \Brain\Nonces\WpNonce The nonce instance
+     * @since 1.0.0
+     */
+    public function nonce();
 }

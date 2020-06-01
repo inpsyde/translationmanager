@@ -18,103 +18,101 @@ use Translationmanager\Service\Exception\BootstrappedException;
  * @since   1.0.0
  * @package Translationmanager\Service
  */
-final class ServiceProviders {
+final class ServiceProviders
+{
 
-	/**
-	 * Container
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var \Pimple\Container The instance of the container
-	 */
-	private $container;
+    /**
+     * Container
+     *
+     * @since 1.0.0
+     *
+     * @var \Pimple\Container The instance of the container
+     */
+    private $container;
 
-	/**
-	 * Providers
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var array The providers collection
-	 */
-	private $providers = [];
+    /**
+     * Providers
+     *
+     * @since 1.0.0
+     *
+     * @var array The providers collection
+     */
+    private $providers = [];
 
-	/**
-	 * Bootstrapped
-	 *
-	 * @since 1.0.0
-	 *
-	 * @var bool True if the providers are been bootstrapped, false otherwise
-	 */
-	private $bootstrapped = false;
+    /**
+     * Bootstrapped
+     *
+     * @since 1.0.0
+     *
+     * @var bool True if the providers are been bootstrapped, false otherwise
+     */
+    private $bootstrapped = false;
 
-	/**
-	 * ServiceProviders constructor
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param \Pimple\Container $container The instance of the container.
-	 */
-	public function __construct( Container $container ) {
+    /**
+     * ServiceProviders constructor
+     *
+     * @param \Pimple\Container $container The instance of the container.
+     *
+     * @since 1.0.0
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
-		$this->container = $container;
-	}
+    /**
+     * Register
+     *
+     * @param \Pimple\ServiceProviderInterface $provider The provider to register.
+     *
+     * @return $this For concatenation
+     * @since 1.0.0
+     */
+    public function register(ServiceProviderInterface $provider)
+    {
+        $this->container->register($provider);
+        $this->providers[] = $provider;
 
-	/**
-	 * Register
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param \Pimple\ServiceProviderInterface $provider The provider to register.
-	 *
-	 * @return $this For concatenation
-	 */
-	public function register( ServiceProviderInterface $provider ) {
+        return $this;
+    }
 
-		$this->container->register( $provider );
-		$this->providers[] = $provider;
+    /**
+     * Bootstrap Providers
+     *
+     * @return $this For concatenation
+     * @since 1.0.0
+     */
+    public function bootstrap()
+    {
+        if ($this->bootstrapped) {
+            throw new BootstrappedException('All ready Bootstrapped.');
+        }
 
-		return $this;
-	}
+        $this->bootstrapped = true;
 
-	/**
-	 * Bootstrap Providers
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return $this For concatenation
-	 */
-	public function bootstrap() {
+        foreach ($this->providers as $provider) {
+            if ($provider instanceof BootstrappableServiceProvider) {
+                $provider->boot($this->container);
+            }
+        }
 
-		if ( $this->bootstrapped ) {
-			throw new BootstrappedException( 'All ready Bootstrapped.' );
-		}
+        return $this;
+    }
 
-		$this->bootstrapped = true;
+    /**
+     * Integrate Providers
+     *
+     * @return $this For concatenation
+     * @since 1.0.0
+     */
+    public function integrate()
+    {
+        foreach ($this->providers as $provider) {
+            if ($provider instanceof IntegrableServiceProvider) {
+                $provider->integrate($this->container);
+            }
+        }
 
-		foreach ( $this->providers as $provider ) {
-			if ( $provider instanceof BootstrappableServiceProvider ) {
-				$provider->boot( $this->container );
-			}
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Integrate Providers
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return $this For concatenation
-	 */
-	public function integrate() {
-
-		foreach ( $this->providers as $provider ) {
-			if ( $provider instanceof IntegrableServiceProvider ) {
-				$provider->integrate( $this->container );
-			}
-		}
-
-		return $this;
-	}
+        return $this;
+    }
 }

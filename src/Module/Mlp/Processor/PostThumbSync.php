@@ -1,53 +1,89 @@
-<?php # -*- coding: utf-8 -*-
+<?php // -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Module\Mlp\Connector;
-use Translationmanager\TranslationData;
+use Translationmanager\Module\ModuleIntegrator;
+use Translationmanager\Utils\NetworkState;
+use Translationmanager\Module\Processor\IncomingProcessor;
+use Translationmanager\Translation;
 
-class PostThumbSync implements IncomingProcessor {
+/**
+ * Class PostThumbSync
+ *
+ * @package Translationmanager\Module\Mlp\Processor
+ */
+class PostThumbSync implements IncomingProcessor
+{
+    /**
+     * @var Adapter
+     */
+    private $adapter;
 
-	/**
-	 * @param TranslationData $data
-	 * @param Adapter         $adapter
-	 *
-	 * @return void
-	 */
-	public function process_incoming( TranslationData $data, Adapter $adapter ) {
+    /**
+     * TaxonomiesSync constructor
+     * @param Adapter $adapter
+     */
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+    }
 
-		$saved_post = $data->get_meta( PostSaver::SAVED_POST_KEY, Connector::DATA_NAMESPACE );
+    /**
+     * @inheritDoc
+     */
+    public function processIncoming(Translation $translation)
+    {
+        $saved_post = $translation->get_meta(
+            PostSaver::SAVED_POST_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
 
-		if ( ! $saved_post || ! post_type_supports( $saved_post->post_type, 'thumbnail' ) ) {
-			return;
-		}
+        if (!$saved_post || !post_type_supports($saved_post->post_type, 'thumbnail')) {
+            return;
+        }
 
-		$sync_on_update = true;
-		if ( $data->get_meta( PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE ) ) {
-			$sync_on_update = apply_filters( 'translationmanager_mlp_module_sync_post_thumb_on_update', true, $data );
-		}
+        $sync_on_update = true;
+        $isUpdateKey = $translation->get_meta(
+            PostDataBuilder::IS_UPDATE_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
 
-		if ( ! $sync_on_update ) {
-			return;
-		}
+        if ($isUpdateKey) {
+            $sync_on_update = apply_filters(
+                'translationmanager_mlp_module_sync_post_thumb_on_update',
+                true,
+                $translation
+            );
+        }
 
-		$source_site_id = $data->source_site_id();
+        if (!$sync_on_update) {
+            return;
+        }
 
-		switch_to_blog( $source_site_id );
-		$source_thumb_id = get_post_thumbnail_id( $data->source_post_id() );
-		restore_current_blog();
+        $source_site_id = $translation->source_site_id();
+        $networkState = NetworkState::create();
 
-		$target_thumb_id = 0;
+        $networkState->switch_to($source_site_id);
+        $source_thumb_id = get_post_thumbnail_id($translation->source_post_id());
+        $networkState->restore();
 
-		if ( $source_thumb_id ) {
-			$image_sync      = Connector::utils()->image_sync( $adapter );
-			$target_thumb_id = $image_sync->copy_image( $source_thumb_id, $source_site_id, $data->target_site_id() );
-		}
+        $target_thumb_id = 0;
 
-		if ( $target_thumb_id ) {
-			switch_to_blog( $data->target_site_id() );
-			set_post_thumbnail( $saved_post, $target_thumb_id );
-			restore_current_blog();
-		}
-	}
+        if ($source_thumb_id) {
+            $image_sync = Connector::utils()->image_sync($this->adapter);
+            $target_thumb_id = $image_sync->copy_image(
+                $source_thumb_id,
+                $source_site_id,
+                $translation->target_site_id()
+            );
+        }
+
+        if ($target_thumb_id) {
+            switch_to_blog($translation->target_site_id());
+            set_post_thumbnail($saved_post, $target_thumb_id);
+            restore_current_blog();
+        }
+    }
 }

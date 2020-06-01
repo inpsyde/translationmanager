@@ -8,32 +8,30 @@ namespace Translationmanager\Request;
  * @since   1.0.0
  * @package Translationmanager\Request
  */
-interface RequestHandleable {
+interface RequestHandleable
+{
 
-	/**
-	 * Handle Request Request
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function handle();
+    /**
+     * Handle Request Request
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function handle();
 
-	/**
-	 * Check if request is valid
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return bool True if a valid request, false otherwise
-	 */
-	public function is_valid_request();
+    /**
+     * Check if request is valid
+     *
+     * @return bool True if a valid request, false otherwise
+     * @since 1.0.0
+     */
+    public function is_valid_request();
 
-	/**
-	 * Retrieve the requested data
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array A list of data retrieved by the request
-	 */
-	public function request_data();
+    /**
+     * Retrieve the requested data
+     *
+     * @return array A list of data retrieved by the request
+     * @since 1.0.0
+     */
+    public function request_data();
 }
