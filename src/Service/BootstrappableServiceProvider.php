@@ -16,6 +16,15 @@ use Pimple\ServiceProviderInterface;
  * @since   1.0.0
  * @package Translationmanager\Service
  */
-interface BootstrappableServiceProvider extends ServiceProviderInterface {
-	public function boot( Container $container );
+interface BootstrappableServiceProvider extends ServiceProviderInterface
+{
+
+    /**
+     * Boot
+     *
+     * @param \Pimple\Container $container
+     *
+     * @return mixed
+     */
+    public function boot(Container $container);
 }

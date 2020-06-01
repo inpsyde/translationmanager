@@ -19,154 +19,157 @@ use Translationmanager\Setting;
  *
  * @package Translationmanager\Admin
  */
-class PageOptions implements Pageable {
+class PageOptions implements Pageable
+{
+    const USERNAME = 'translationmanager_api_username';
+    const PASSWORD = 'translationmanager_api_password';
 
-	const USERNAME = 'translationmanager_api_username';
-	const PASSWORD = 'translationmanager_api_password';
+    const TRANSIENT_CATEGORIES = 'translationmanager_categories';
+    const SELECTED_CATEGORIES = 'translationmanager_sync_categories';
+    const SLUG = 'translationmanager_settings';
 
-	const TRANSIENT_CATEGORIES = 'translationmanager_categories';
-	const SELECTED_CATEGORIES  = 'translationmanager_sync_categories';
-	const SLUG                 = 'translationmanager_settings';
+    /**
+     * Allowed actions
+     *
+     * If this is a field in the post data,
+     * then the equally names function will be called with the post data.
+     * Usually those is a list of buttons that can be pressed on the options page.
+     *
+     * @var string[]
+     */
+    private $actions = [
+        'fetch_files',
+        'save',
+        'save_categories',
+        'update_categories',
+    ];
 
-	/**
-	 * Allowed actions
-	 *
-	 * If this is a field in the post data,
-	 * then the equally names function will be called with the post data.
-	 * Usually those is a list of buttons that can be pressed on the options page.
-	 *
-	 * @var string[]
-	 */
-	private $actions = [
-		'fetch_files',
-		'save',
-		'save_categories',
-		'update_categories',
-	];
+    /**
+     * @var Plugin
+     */
+    private $plugin;
 
-	private $plugin;
+    /**
+     * PageOptions constructor
+     *
+     * @param Plugin $plugin The plugin instance.
+     *
+     * @since 1.0.0
+     */
+    public function __construct(Plugin $plugin)
+    {
+        $this->plugin = $plugin;
+    }
 
-	/**
-	 * PageOptions constructor
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param Plugin $plugin The plugin instance.
-	 */
-	public function __construct( Plugin $plugin ) {
+    /**
+     * @inheritdoc
+     */
+    public function add_page()
+    {
+        add_submenu_page(
+            'translationmanager',
+            esc_html__('Settings', 'translationmanager'),
+            esc_html__('Settings', 'translationmanager'),
+            'manage_options',
+            self::SLUG,
+            [$this, 'render_template']
+        );
+    }
 
-		$this->plugin = $plugin;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function render_template()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_die(esc_html__(
+                'You do not have sufficient permissions to access this page.',
+                'translationmanager'
+            ));
+        }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function add_page() {
+        wp_enqueue_style('translationmanager-options-page');
 
-		add_submenu_page(
-			'translationmanager',
-			esc_html__( 'Settings', 'translationmanager' ),
-			esc_html__( 'Settings', 'translationmanager' ),
-			'manage_options',
-			self::SLUG,
-			[ $this, 'render_template' ]
-		);
-	}
+        // Render the template.
+        require_once Functions\get_template('/views/options-page/layout.php');
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function render_template() {
+    /**
+     * Fetch token.
+     *
+     * Only / Best current point to hook in settings update process it the option page cap filter.
+     *
+     * @param string[] $capabilities A list of capabilities.
+     *
+     * @return \string[]
+     */
+    public function filter_capabilities($capabilities)
+    {
+        if (!check_admin_referer(Setting\PluginSettings::OPTION_GROUP . '-options')) {
+            // Seems like some other page so we won't do stuff.
+            return $capabilities;
+        }
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'translatemanager' ) );
-		}
+        $login_data = $_REQUEST; // input var okay
 
-		wp_enqueue_style( 'translationmanager-options-page' );
+        // Buttons the user can press.
+        $chosen_action = array_intersect(array_keys($login_data), $this->actions);
 
-		// Render the template.
-		require_once Functions\get_template( '/views/options-page/layout.php' );
-	}
+        if ($chosen_action) {
+            $chosen_action = current($chosen_action) . '_action';
+            $this->$chosen_action($login_data);
+        }
 
-	/**
-	 * Fetch token.
-	 *
-	 * Only / Best current point to hook in settings update process it the option page cap filter.
-	 *
-	 * @param string[] $capabilities A list of capabilities.
-	 *
-	 * @return \string[]
-	 */
-	public function filter_capabilities( $capabilities ) {
+        return $capabilities;
+    }
 
-		if ( ! check_admin_referer( Setting\PluginSettings::OPTION_GROUP . '-options' ) ) {
-			// Seems like some other page so we won't do stuff.
-			return $capabilities;
-		}
+    /**
+     * Enqueue Style
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function enqueue_style()
+    {
+        wp_register_style(
+            'translationmanager-options-page',
+            $this->plugin->url('/assets/css/settings.css'),
+            [],
+            filemtime((new Plugin())->dir('/assets/css/settings.css')),
+            'screen'
+        );
+    }
 
-		$login_data = $_REQUEST; // input var okay
+    /**
+     * Enqueue Script
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function enqueue_script()
+    {
+        wp_enqueue_script(
+            'translationmanager-options-page',
+            $this->plugin->url('/resources/js/options-page.js'),
+            ['jquery', 'jquery-ui-tabs'],
+            filemtime((new Plugin())->dir('/resources/js/options-page.js')),
+            true
+        );
+    }
 
-		// Buttons the user can press.
-		$chosen_action = array_intersect( array_keys( $login_data ), $this->actions );
+    /**
+     * Handle Support Request
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function handle_support_request_form()
+    {
+        $handler = new SupportRequest(
+            new Auth\Validator(),
+            new WpNonce('support_request')
+        );
 
-		if ( $chosen_action ) {
-			$chosen_action = current( $chosen_action ) . '_action';
-			$this->$chosen_action( $login_data );
-		}
-
-		return $capabilities;
-	}
-
-	/**
-	 * Enqueue Style
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function enqueue_style() {
-
-		wp_register_style(
-			'translationmanager-options-page',
-			$this->plugin->url( '/assets/css/settings.css' ),
-			[],
-			filemtime( ( new Plugin() )->dir( '/assets/css/settings.css' ) ),
-			'screen'
-		);
-	}
-
-	/**
-	 * Enqueue Script
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function enqueue_script() {
-
-		wp_enqueue_script(
-			'translationmanager-options-page',
-			$this->plugin->url( '/resources/js/options-page.js' ),
-			[ 'jquery', 'jquery-ui-tabs' ],
-			filemtime( ( new Plugin() )->dir( '/resources/js/options-page.js' ) ),
-			true
-		);
-	}
-
-	/**
-	 * Handle Support Request
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function handle_support_request_form() {
-
-		$handler = new SupportRequest(
-			new Auth\Validator(),
-			new WpNonce( 'support_request' )
-		);
-
-		$handler->handle();
-	}
+        $handler->handle();
+    }
 }

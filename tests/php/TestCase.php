@@ -1,21 +1,66 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Translationmanager\Tests;
+namespace TranslationmanagerTests;
 
 use PHPUnit_Framework_TestCase;
 use Brain\Monkey;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 
-class TestCase extends PHPUnit_Framework_TestCase {
+/**
+ * Class TestCase
+ * @package TranslationmanagerTests
+ */
+class TestCase extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @inheritDoc
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        Monkey\setUp();
+    }
 
-	protected function setUp() {
+    /**
+     * @inheritDoc
+     */
+    protected function tearDown()
+    {
+        Monkey\tearDown();
+        parent::tearDown();
+    }
 
-		parent::setUp();
-		Monkey\setUp();
-	}
+    /**
+     * Create Testee Instance To be Able to Tests Protected Methods
+     *
+     * @param $className
+     * @param $constructArgs
+     * @param array $methods
+     * @return array
+     * @throws ReflectionException
+     */
+    protected function createTesteeToTestProtectedMethods(
+        $className,
+        array $constructArgs,
+        array $methods
+    ) {
 
-	protected function tearDown() {
+        $reflectionClass = new ReflectionClass($className);
 
-		Monkey\tearDown();
-		parent::tearDown();
-	}
+        $testee = $constructArgs
+            ? $reflectionClass->newInstanceArgs($constructArgs)
+            : $reflectionClass->newInstanceWithoutConstructor();
+
+        foreach ($methods as $method) {
+            $methodReflection = new ReflectionMethod($className, $method);
+            $methodReflection->setAccessible(true);
+        }
+
+        return [
+            $testee,
+            $methodReflection,
+        ];
+    }
 }

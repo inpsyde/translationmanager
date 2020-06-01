@@ -8,6 +8,7 @@
 
 namespace Translationmanager\SystemStatus;
 
+use Inpsyde\SystemStatus\Assets\Styles;
 use Pimple\Container;
 use Translationmanager\Service\BootstrappableServiceProvider;
 
@@ -17,25 +18,28 @@ use Translationmanager\Service\BootstrappableServiceProvider;
  * @since   1.0.0
  * @package Translationmanager\SystemStatus
  */
-class ServiceProvider implements BootstrappableServiceProvider {
-	/**
-	 * @inheritdoc
-	 */
-	public function register( Container $container ) {
+class ServiceProvider implements BootstrappableServiceProvider
+{
+    /**
+     * @inheritdoc
+     */
+    public function register(Container $container)
+    {
+        $container['SystemStatus.Controller'] = function () {
 
-		$container['SystemStatus.Controller'] = function () {
+            return new Controller();
+        };
+    }
 
-			return new Controller();
-		};
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function boot( Container $container ) {
-
-		( new \Inpsyde\SystemStatus\Assets\Styles(
-			$container['translationmanager.plugin']->url( '/assets/css/' ), '' )
-		)->init();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function boot(Container $container)
+    {
+        (new Styles(
+            $container['translationmanager.plugin']->url('/assets/css/'),
+            ''
+        )
+        )->init();
+    }
 }

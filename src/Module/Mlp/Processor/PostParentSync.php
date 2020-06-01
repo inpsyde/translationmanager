@@ -1,45 +1,68 @@
-<?php # -*- coding: utf-8 -*-
+<?php // -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\Mlp\Processor;
 
 use Translationmanager\Module\Mlp\Adapter;
-use Translationmanager\Module\Mlp\Connector;
-use Translationmanager\TranslationData;
+use Translationmanager\Module\ModuleIntegrator;
+use Translationmanager\Module\Processor\IncomingProcessor;
+use Translationmanager\Translation;
 
-class PostParentSync implements IncomingProcessor {
+class PostParentSync implements IncomingProcessor
+{
+    /**
+     * @var Adapter
+     */
+    private $adapter;
 
-	/**
-	 * @param TranslationData $data
-	 * @param Adapter         $adapter
-	 *
-	 * @return void
-	 */
-	public function process_incoming( TranslationData $data, Adapter $adapter ) {
+    /**
+     * TaxonomiesSync constructor
+     * @param Adapter $adapter
+     */
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+    }
 
-		$source_post = $data->source_post();
+    /**
+     * @param Translation $translation
+     *
+     * @return void
+     */
+    public function processIncoming(Translation $translation)
+    {
+        $source_post = $translation->source_post();
 
-		if ( ! $source_post || ! $source_post->post_parent ) {
-			return;
-		}
+        if (!$source_post || !$source_post->post_parent) {
+            return;
+        }
 
-		$sync_on_update = true;
-		if ( $data->get_meta( PostDataBuilder::IS_UPDATE_KEY, Connector::DATA_NAMESPACE ) ) {
-			$sync_on_update = apply_filters( 'translationmanager_mlp_module_sync_post_parent_on_update', true, $data );
-		}
+        $sync_on_update = true;
+        $isUpdateKey = $translation->get_meta(
+            PostDataBuilder::IS_UPDATE_KEY,
+            ModuleIntegrator::POST_DATA_NAMESPACE
+        );
 
-		if ( ! $sync_on_update ) {
-			return;
-		}
+        if ($isUpdateKey) {
+            $sync_on_update = apply_filters(
+                'translationmanager_mlp_module_sync_post_parent_on_update',
+                true,
+                $translation
+            );
+        }
 
-		$target_site_id = $data->target_site_id();
-		$source_site_id = $data->source_site_id();
+        if (!$sync_on_update) {
+            return;
+        }
 
-		$related_parents = $adapter->relations( $source_site_id, $source_post->post_parent, 'post' );
+        $target_site_id = $translation->target_site_id();
+        $source_site_id = $translation->source_site_id();
 
-		$parent = array_key_exists( $target_site_id, $related_parents )
-			? $related_parents[ $target_site_id ]
-			: 0;
+        $related_parents = $this->adapter->relations($source_site_id, $source_post->post_parent);
 
-		$data->set_value( 'post_parent', $parent );
-	}
+        $parent = array_key_exists($target_site_id, $related_parents)
+            ? $related_parents[$target_site_id]
+            : 0;
+
+        $translation->set_value('post_parent', $parent);
+    }
 }

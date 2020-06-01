@@ -1,30 +1,48 @@
 <?php # -*- coding: utf-8 -*-
-// phpcs:disable
-namespace Translationmanager\Tests\Unit\Domain;
+
+namespace TranslationmanagerTests\Unit\Domain;
 
 use Translationmanager\Domain\Language;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
-class LanguageTest extends TestCase {
+/**
+ * Class LanguageTest
+ *
+ * @package TranslationmanagerTests\Unit\Domain
+ */
+class LanguageTest extends TestCase
+{
 
-	public function testInstance() {
+    /**
+     * Test Instance Creation
+     */
+    public function testInstance()
+    {
 
-		$testee = new Language( 'en_US', 'English' );
+        $testee = new Language('en_US', 'English');
 
-		$this->assertInstanceOf( 'Translationmanager\\Domain\\Language', $testee );
-	}
+        $this->assertInstanceOf(Language::class, $testee);
+    }
 
-	public function testGetLabel() {
+    /**
+     * Test Language get Label
+     */
+    public function testGetLabel()
+    {
 
-		$testee = new Language( 'en_US', 'English' );
+        $testee = new Language('en_US', 'English');
 
-		$this->assertSame( 'en_US', $testee->get_lang_code() );
-	}
+        $this->assertSame('en_US', $testee->get_lang_code());
+    }
 
-	public function testGetLangCode() {
+    /**
+     * Test Language get Code
+     */
+    public function testGetLangCode()
+    {
 
-		$testee = new Language( 'en_US', 'English' );
+        $testee = new Language('en_US', 'English');
 
-		$this->assertSame( 'English', $testee->get_label() );
-	}
+        $this->assertSame('English', $testee->get_label());
+    }
 }

@@ -17,24 +17,24 @@ use Translationmanager\Service\BootstrappableServiceProvider;
  * @since   1.0.0
  * @package Translationmanager\Setting
  */
-class ServiceProvider implements BootstrappableServiceProvider {
+class ServiceProvider implements BootstrappableServiceProvider
+{
+    /**
+     * @inheritdoc
+     */
+    public function register(Container $container)
+    {
+        $container['Settings.PluginSettings'] = function () {
 
-	/**
-	 * @inheritdoc
-	 */
-	public function register( Container $container ) {
+            return new PluginSettings();
+        };
+    }
 
-		$container['Settings.PluginSettings'] = function () {
-
-			return new PluginSettings();
-		};
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function boot( Container $container ) {
-
-		add_action( 'admin_init', [ $container['Settings.PluginSettings'], 'register_setting' ] );
-	}
+    /**
+     * @inheritdoc
+     */
+    public function boot(Container $container)
+    {
+        add_action('admin_init', [$container['Settings.PluginSettings'], 'register_setting']);
+    }
 }

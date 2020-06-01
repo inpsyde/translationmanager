@@ -1,161 +1,179 @@
 <?php # -*- coding: utf-8 -*-
-// phpcs:disable
 
-namespace Translationmanager\Tests\Integration\Api;
+namespace TranslationmanagerTests\Integration\Api;
 
+use Brain\Monkey\Functions;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Translationmanager\Api;
 use Translationmanager\Api\ProjectItem;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
-class ProjectItemTest extends TestCase {
+/**
+ * Class ProjectItemTest
+ *
+ * @package TranslationmanagerTests\Integration\Api
+ */
+class ProjectItemTest extends TestCase
+{
 
-	public function testThatCreateGoesWell() {
+    use MockeryPHPUnitIntegration;
 
-		\Brain\Monkey\Functions\when( 'apply_filters' )
-			->returnArg( 2 );
-		\Brain\Monkey\Functions\when( 'do_action' )
-			->justReturn( true );
+    /**
+     * Test Project Item is Created Correctly
+     */
+    public function testProjectItemCreatedCorrectly()
+    {
 
-		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
-			->once()
-			->andReturnUsing( function ( $url, $data ) {
+        Functions\when('apply_filters')
+            ->returnArg(2);
 
-				$mockedData = json_encode( [
-					[
-						'post_title'   => 'post_title',
-						'post_content' => 'post_content',
-						'post_excerpt' => '',
-					],
-				] );
+        Functions\when('do_action')
+            ->justReturn(true);
 
-				if ( 'https://sandbox.api.eurotext.de/api/v1/project/1/item.json' === $url
-				     && $data['method'] === 'POST'
-				     && empty( array_diff( $data['headers'], [
-						'X-Source'        => 'en-us',
-						'X-Target'        => 'fr-fr',
-						'X-TextType'      => 'marketing',
-						'X-System-Module' => 'post',
-						'Content-Type'    => 'application/json',
-						'public_key'      => 'b37270d25d5b3fccf137f7462774fe76',
-						'apikey'          => 'mykey',
-					] ) )
-				     && $data['body'] === $mockedData
-				) {
-					return [
-						'body'     => '{"id":1}',
-						'response' => [
-							'code'    => 200,
-							'message' => 'OK',
-						],
-					];
-				}
+        Functions\expect('wp_remote_request')
+            ->once()
+            ->andReturnUsing(function ($url, $data) {
 
-				return \Mockery::mock( 'WP_Error' );
-			} );
+                $mockedData = json_encode([
+                    [
+                        'post_title' => 'post_title',
+                        'post_content' => 'post_content',
+                        'post_excerpt' => '',
+                    ],
+                ]);
 
-		$api = new Api(
-			'mykey',
-			'b37270d25d5b3fccf137f7462774fe76',
-			'https://sandbox.api.eurotext.de/api/v1'
-		);
+                if ('https://sandbox.api.eurotext.de/api/v1/project/1/item.json' === $url
+                    && $data['method'] === 'POST'
+                    && empty(array_diff($data['headers'], [
+                        'X-Source' => 'en-us',
+                        'X-Target' => 'fr-fr',
+                        'X-TextType' => 'marketing',
+                        'X-System-Module' => 'post',
+                        'Content-Type' => 'application/json',
+                        'public_key' => 'b37270d25d5b3fccf137f7462774fe76',
+                        'apikey' => 'mykey',
+                    ]))
+                    && $data['body'] === $mockedData
+                ) {
+                    return [
+                        'body' => '{"id":1}',
+                        'response' => [
+                            'code' => 200,
+                            'message' => 'OK',
+                        ],
+                    ];
+                }
 
-		$project = new ProjectItem( $api );
+                return \Mockery::mock('WP_Error');
+            });
 
-		$response = $project->create( 1, 'post', 'fr_FR', [
-			[
-				'post_title'   => 'post_title',
-				'post_content' => 'post_content',
-				'post_excerpt' => '',
-			],
-		] );
+        $api = new Api(
+            'mykey',
+            'b37270d25d5b3fccf137f7462774fe76',
+            'https://sandbox.api.eurotext.de/api/v1'
+        );
 
-		$this->assertSame( 1, $response );
-	}
+        $project = new ProjectItem($api);
 
-	/**
-	 * Here we test with expectation to `do_action`.
-	 */
-	public function testThatInvalidResponseCallLogAction() {
+        $response = $project->create(1, 'post', 'fr_FR', [
+            [
+                'post_title' => 'post_title',
+                'post_content' => 'post_content',
+                'post_excerpt' => '',
+            ],
+        ]);
 
-		\Brain\Monkey\Functions\when( 'apply_filters' )
-			->returnArg( 2 );
+        $this->assertSame(1, $response);
+    }
 
-		\Brain\Monkey\Functions\expect( 'do_action' )
-			->once()
-			->with( 'translationmanager_log', [
-				'message' => 'Request against API failed.',
-				'context' => [
-					'headers' => [
-						'X-Source'        => 'en-us',
-						'X-Target'        => 'fr-fr',
-						'X-TextType'      => 'marketing',
-						'X-System-Module' => 'post',
-					],
-					'status'  => '',
-					'body'    => '{"id":1}',
-				],
-			] );
+    /**
+     * Here we test with expectation to `do_action`.
+     */
+    public function testThatInvalidResponseCallLogAction()
+    {
 
-		\Brain\Monkey\Functions\expect( 'wp_remote_request' )
-			->once()
-			->andReturnUsing( function ( $url, $data ) {
+        Functions\when('apply_filters')
+            ->returnArg(2);
 
-				$mockedData = json_encode( [
-					[
-						'post_title'   => 'post_title',
-						'post_content' => 'post_content',
-						'post_excerpt' => '',
-					],
-				] );
+        Functions\expect('do_action')
+            ->once()
+            ->with('translationmanager_log', [
+                'message' => 'Request against API failed.',
+                'context' => [
+                    'headers' => [
+                        'X-Source' => 'en-us',
+                        'X-Target' => 'fr-fr',
+                        'X-TextType' => 'marketing',
+                        'X-System-Module' => 'post',
+                    ],
+                    'status' => '',
+                    'body' => '{"id":1}',
+                ],
+            ]);
 
-				if ( 'https://sandbox.api.eurotext.de/api/v1/project/1/item.json' === $url
-				     && $data['method'] === 'POST'
-				     && empty( array_diff( $data['headers'], [
-						'X-Source'        => 'en-us',
-						'X-Target'        => 'fr-fr',
-						'X-TextType'      => 'marketing',
-						'X-System-Module' => 'post',
-						'Content-Type'    => 'application/json',
-						'public_key'      => 'b37270d25d5b3fccf137f7462774fe76',
-						'apikey'          => 'mykey',
-					] ) )
-				     && $data['body'] === $mockedData
-				) {
-					return [ 'body' => '{"id":1}' ];
-				}
-			} );
+        Functions\expect('wp_remote_request')
+            ->once()
+            ->andReturnUsing(function ($url, $data) {
 
-		$api = new Api(
-			'mykey',
-			'b37270d25d5b3fccf137f7462774fe76',
-			'https://sandbox.api.eurotext.de/api/v1'
-		);
+                $mockedData = json_encode([
+                    [
+                        'post_title' => 'post_title',
+                        'post_content' => 'post_content',
+                        'post_excerpt' => '',
+                    ],
+                ]);
 
-		$project = new ProjectItem( $api );
+                if ('https://sandbox.api.eurotext.de/api/v1/project/1/item.json' === $url
+                    && $data['method'] === 'POST'
+                    && empty(array_diff($data['headers'], [
+                        'X-Source' => 'en-us',
+                        'X-Target' => 'fr-fr',
+                        'X-TextType' => 'marketing',
+                        'X-System-Module' => 'post',
+                        'Content-Type' => 'application/json',
+                        'public_key' => 'b37270d25d5b3fccf137f7462774fe76',
+                        'apikey' => 'mykey',
+                    ]))
+                    && $data['body'] === $mockedData
+                ) {
+                    return ['body' => '{"id":1}'];
+                }
+            });
 
-		$response = $project->create( 1, 'post', 'fr_FR', [
-			[
-				'post_title'   => 'post_title',
-				'post_content' => 'post_content',
-				'post_excerpt' => '',
-			],
-		] );
+        $api = new Api(
+            'mykey',
+            'b37270d25d5b3fccf137f7462774fe76',
+            'https://sandbox.api.eurotext.de/api/v1'
+        );
 
-		$this->assertTrue( true );
-	}
+        $project = new ProjectItem($api);
 
-	protected function setUp() {
+        $project->create(1, 'post', 'fr_FR', [
+            [
+                'post_title' => 'post_title',
+                'post_content' => 'post_content',
+                'post_excerpt' => '',
+            ],
+        ]);
+    }
 
-		parent::setUp();
+    /**
+     * @inheritDoc
+     */
+    protected function setUp()
+    {
 
-		require_once getenv( 'TESTS_PATH' ) . '/stubs/commonStubs.php';
-		require_once getenv( 'TESTS_PATH' ) . '/stubs/wpRemoteStubs.php';
+        parent::setUp();
 
-		\Brain\Monkey\Functions\when( 'esc_html__' )
-			->returnArg( 1 );
-		\Brain\Monkey\Functions\when( 'esc_html_x' )
-			->returnArg( 1 );
-		\Brain\Monkey\Functions\when( 'Translationmanager\Functions\current_lang_code' )
-			->justReturn( 'en_US' );
-	}
+        require_once getenv('TESTS_PATH') . '/stubs/commonStubs.php';
+
+        Functions\when('esc_html__')
+            ->returnArg(1);
+
+        Functions\when('esc_html_x')
+            ->returnArg(1);
+
+        Functions\when('Translationmanager\Functions\current_lang_code')
+            ->justReturn('en_US');
+    }
 }

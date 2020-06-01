@@ -1,183 +1,223 @@
 <?php # -*- coding: utf-8 -*-
-// phpcs:disable
 
-namespace Translationmanager\Tests\unit\src;
+namespace TranslationmanagerTests\Unit;
 
+use Brain\Nonces\NonceInterface;
+use Mockery;
+use Brain\Monkey\Functions;
+use Translationmanager\Auth\Authable;
+use Translationmanager\Notice\TransientNoticeService;
+use Translationmanager\ProjectHandler;
+use Translationmanager\ProjectUpdater;
 use Translationmanager\Request\Api\AddTranslation;
-use Translationmanager\Tests\TestCase;
+use TranslationmanagerTests\TestCase;
 
-class AddTranslationTest extends TestCase {
+/**
+ * Class AddTranslationTest
+ *
+ * @package TranslationmanagerTests\unit\src
+ */
+class AddTranslationTest extends TestCase
+{
 
-	public function testHandleCreateANewProject() {
+    /**
+     * Test Handle Create a new Project
+     */
+    public function testHandleCreateANewProject()
+    {
 
-		$_POST['translationmanager_action_project_add_translation'] = true;
+        $_POST['translationmanager_action_project_add_translation'] = true;
 
-		$authMock           = \Mockery::mock( 'Translationmanager\\Auth\\Authable' );
-		$nonceMock          = \Mockery::mock( 'Brain\\Nonces\\NonceInterface' );
-		$projectUpdaterMock = \Mockery::mock( 'overload:\\Translationmanager\\ProjectUpdater' );
-		$projectHandlerMock = \Mockery::mock( 'alias:Translationmanager\\ProjectHandler' );
-		$noticeMock         = \Mockery::mock( 'alias:Translationmanager\\Notice\\TransientNoticeService' );
+        $authMock = Mockery::mock(Authable::class);
+        $nonceMock = Mockery::mock(NonceInterface::class);
+        $projectUpdaterMock = Mockery::mock('overload:' . ProjectUpdater::class);
+        $projectHandlerMock = Mockery::mock('alias:' . ProjectHandler::class);
+        $noticeMock = Mockery::mock('alias:' . TransientNoticeService::class);
 
-		$authMock->shouldReceive( 'can' )
-		         ->andReturn( true );
-		$authMock->shouldReceive( 'request_is_valid' )
-		         ->andReturn( true );
+        $authMock->shouldReceive('can')
+            ->andReturn(true);
 
-		$projectUpdaterMock
-			->shouldReceive( 'init' )
-			->once();
+        $authMock->shouldReceive('request_is_valid')
+            ->andReturn(true);
 
-		$projectHandlerMock
-			->shouldReceive( 'create_project_using_date' )
-			->once()
-			->andReturn( 1 );
-		$projectHandlerMock
-			->shouldReceive( 'add_translation' )
-			->once()
-			->with( 1, 2, '1' );
+        $projectUpdaterMock
+            ->shouldReceive('init')
+            ->once();
 
-		$noticeMock
-			->shouldReceive( 'add_notice' )
-			->once()
-			->with( 'New Translation added successfully.', 'success' );
+        $projectHandlerMock
+            ->shouldReceive('create_project_using_date')
+            ->once()
+            ->andReturn(1);
 
-		\Brain\Monkey\Functions\expect( 'Translationmanager\\Functions\\filter_input' )
-			->andReturnUsing( function () {
+        $projectHandlerMock
+            ->shouldReceive('add_translation')
+            ->once()
+            ->with(1, 2, '1');
 
-				return [
-					'post_ID'                     => 2,
-					'translationmanager_language' => [ '1' ],
-				];
-			} );
+        $noticeMock
+            ->shouldReceive('add_notice')
+            ->once()
+            ->with('New Translation added successfully.', 'success');
 
-		\Brain\Monkey\Functions\expect( 'Translationmanager\\Functions\\redirect_admin_page_network' )
-			->once()
-			->with( \Mockery::type( 'string' ), [
-				'page'                          => 'translationmanager-project',
-				'translationmanager_project_id' => 1,
-				'post_type'                     => 'project_item',
-				'updated'                       => - 1,
-			] );
+        Functions\expect('Translationmanager\\Functions\\filter_input')
+            ->andReturnUsing(function () {
 
-		\Brain\Monkey\Functions\when( 'apply_filters' )
-			->returnArg( 2 );
-		\Brain\Monkey\Functions\when( 'wp_get_current_user' )
-			->justReturn( \Mockery::mock( '\\WP_User' ) );
-		\Brain\Monkey\Functions\when( 'update_user_meta' )
-			->justReturn( true );
-		\Brain\Monkey\Functions\when( 'get_current_user_id' )
-			->justReturn( 1 );
+                return [
+                    'post_ID' => 2,
+                    'translationmanager_language' => ['1'],
+                ];
+            });
 
-		$translation = new AddTranslation( $authMock, $nonceMock, $projectHandlerMock );
+        Functions\expect('Translationmanager\\Functions\\redirect_admin_page_network')
+            ->once()
+            ->with(Mockery::type('string'), [
+                'page' => 'translationmanager-project',
+                'translationmanager_project_id' => 1,
+                'post_type' => 'project_item',
+                'updated' => -1,
+            ]);
 
-		$translation->handle();
+        Functions\when('apply_filters')
+            ->returnArg(2);
 
-		$this->assertTrue( true );
-	}
+        Functions\when('wp_get_current_user')
+            ->justReturn(Mockery::mock('\\WP_User'));
 
-	public function testHandleInsertIntoAnExistingProject() {
+        Functions\when('update_user_meta')
+            ->justReturn(true);
 
-		$_POST['translationmanager_action_project_add_translation'] = true;
+        Functions\when('get_current_user_id')
+            ->justReturn(1);
 
-		$authMock           = \Mockery::mock( 'Translationmanager\\Auth\\Authable' );
-		$nonceMock          = \Mockery::mock( 'Brain\\Nonces\\NonceInterface' );
-		$projectUpdaterMock = \Mockery::mock( 'overload:\\Translationmanager\\ProjectUpdater' );
-		$projectHandlerMock = \Mockery::mock( 'Translationmanager\\ProjectHandler' );
-		$noticeMock         = \Mockery::mock( 'alias:Translationmanager\\Notice\\TransientNoticeService' );
+        $translation = new AddTranslation($authMock, $nonceMock, $projectHandlerMock);
 
-		$authMock
-			->shouldReceive( 'can' )
-			->andReturn( true );
-		$authMock
-			->shouldReceive( 'request_is_valid' )
-			->andReturn( true );
+        $translation->handle();
 
-		$projectUpdaterMock
-			->shouldReceive( 'init' )
-			->once();
+        $this->assertTrue(true);
+    }
 
-		$projectHandlerMock
-			->shouldReceive( 'add_translation' )
-			->once()
-			->with( 1, 2, '1' );
+    /**
+     * Test Handle Insert Into an Existing Project
+     */
+    public function testHandleInsertIntoAnExistingProject()
+    {
 
-		$noticeMock
-			->shouldReceive( 'add_notice' )
-			->once()
-			->with( 'New Translation added successfully.', 'success' );
+        $_POST['translationmanager_action_project_add_translation'] = true;
 
-		\Brain\Monkey\Functions\expect( 'Translationmanager\\Functions\\filter_input' )
-			->andReturnUsing( function () {
+        $authMock = Mockery::mock(Authable::class);
+        $nonceMock = Mockery::mock(NonceInterface::class);
+        $projectUpdaterMock = Mockery::mock('overload:' . ProjectUpdater::class);
+        $projectHandlerMock = Mockery::mock(ProjectHandler::class);
+        $noticeMock = Mockery::mock('alias:' . TransientNoticeService::class);
 
-				return [
-					'translationmanager_project_id' => 1,
-					'post_ID'                       => 2,
-					'translationmanager_language'   => [ '1' ],
-				];
-			} );
+        $authMock
+            ->shouldReceive('can')
+            ->andReturn(true);
 
-		\Brain\Monkey\Functions\expect( 'Translationmanager\\Functions\\redirect_admin_page_network' )
-			->once()
-			->with( \Mockery::type( 'string' ), [
-				'page'                          => 'translationmanager-project',
-				'translationmanager_project_id' => 1,
-				'post_type'                     => 'project_item',
-				'updated'                       => - 1,
-			] );
+        $authMock
+            ->shouldReceive('request_is_valid')
+            ->andReturn(true);
 
-		\Brain\Monkey\Functions\when( 'apply_filters' )
-			->returnArg( 2 );
-		\Brain\Monkey\Functions\when( 'wp_get_current_user' )
-			->justReturn( \Mockery::mock( '\\WP_User' ) );
-		\Brain\Monkey\Functions\when( 'update_user_meta' )
-			->justReturn( true );
-		\Brain\Monkey\Functions\when( 'get_current_user_id' )
-			->justReturn( 1 );
+        $projectUpdaterMock
+            ->shouldReceive('init')
+            ->once();
 
-		$translation = new AddTranslation( $authMock, $nonceMock, $projectHandlerMock );
+        $projectHandlerMock
+            ->shouldReceive('add_translation')
+            ->once()
+            ->with(1, 2, '1');
 
-		$translation->handle();
+        $noticeMock
+            ->shouldReceive('add_notice')
+            ->once()
+            ->with('New Translation added successfully.', 'success');
 
-		$this->assertTrue( true );
-	}
+        Functions\expect('Translationmanager\\Functions\\filter_input')
+            ->andReturnUsing(function () {
 
-	public function testThatEmptyDataDoesntDoAnything() {
+                return [
+                    'translationmanager_project_id' => 1,
+                    'post_ID' => 2,
+                    'translationmanager_language' => ['1'],
+                ];
+            });
 
-		$_POST['translationmanager_action_project_add_translation'] = true;
+        Functions\expect('Translationmanager\\Functions\\redirect_admin_page_network')
+            ->once()
+            ->with(Mockery::type('string'), [
+                'page' => 'translationmanager-project',
+                'translationmanager_project_id' => 1,
+                'post_type' => 'project_item',
+                'updated' => -1,
+            ]);
 
-		$authMock           = \Mockery::mock( 'Translationmanager\\Auth\\Authable' );
-		$nonceMock          = \Mockery::mock( 'Brain\\Nonces\\NonceInterface' );
-		$projectHandlerMock = \Mockery::mock( 'Translationmanager\\ProjectHandler' );
+        Functions\when('apply_filters')
+            ->returnArg(2);
 
-		$authMock
-			->shouldReceive( 'can' )
-			->andReturn( true );
-		$authMock
-			->shouldReceive( 'request_is_valid' )
-			->andReturn( true );
+        Functions\when('wp_get_current_user')
+            ->justReturn(Mockery::mock('\\WP_User'));
 
-		\Brain\Monkey\Functions\expect( 'Translationmanager\\Functions\\filter_input' )
-			->andReturnUsing( '__return_empty_array' );
+        Functions\when('update_user_meta')
+            ->justReturn(true);
 
-		\Brain\Monkey\Functions\when( 'wp_get_current_user' )
-			->justReturn( \Mockery::mock( '\\WP_User' ) );
-		\Brain\Monkey\Functions\when( 'update_user_meta' )
-			->justReturn( true );
-		\Brain\Monkey\Functions\when( 'get_current_user_id' )
-			->justReturn( 1 );
+        Functions\when('get_current_user_id')
+            ->justReturn(1);
 
-		$translation = new AddTranslation( $authMock, $nonceMock, $projectHandlerMock );
+        $translation = new AddTranslation($authMock, $nonceMock, $projectHandlerMock);
 
-		$response = $translation->handle();
+        $translation->handle();
 
-		$this->assertSame( null, $response );
-	}
+        $this->assertTrue(true);
+    }
 
-	public function setUp() {
+    /**
+     * Test Empty Data Doesn't get Handled
+     */
+    public function testThatEmptyDataDoesntDoAnything()
+    {
 
-		parent::setUp();
+        $_POST['translationmanager_action_project_add_translation'] = true;
 
-		\Brain\Monkey\Functions\when( 'esc_html__' )
-			->returnArg( 1 );
-	}
+        $authMock = Mockery::mock(Authable::class);
+        $nonceMock = Mockery::mock(NonceInterface::class);
+        $projectHandlerMock = Mockery::mock(ProjectHandler::class);
+
+        $authMock
+            ->shouldReceive('can')
+            ->andReturn(true);
+
+        $authMock
+            ->shouldReceive('request_is_valid')
+            ->andReturn(true);
+
+        Functions\expect('Translationmanager\\Functions\\filter_input')
+            ->andReturnUsing('__return_empty_array');
+
+        Functions\when('wp_get_current_user')
+            ->justReturn(Mockery::mock('\\WP_User'));
+
+        Functions\when('update_user_meta')
+            ->justReturn(true);
+
+        Functions\when('get_current_user_id')
+            ->justReturn(1);
+
+        $translation = new AddTranslation($authMock, $nonceMock, $projectHandlerMock);
+
+        $response = $translation->handle();
+
+        $this->assertSame(null, $response);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setUp()
+    {
+
+        parent::setUp();
+
+        Functions\when('esc_html__')
+            ->returnArg(1);
+    }
 }

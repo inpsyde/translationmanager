@@ -3,9 +3,6 @@
 # Allow different local config
 /phpunit.xml
 
-# Do not lock, be flexible
-composer.lock
-
 # Ignore testing area
 /html
 /.docker
@@ -101,3 +98,6 @@ composer.phar
 
 # Node Modules
 node_modules
+
+# Static Analysis Tool and Coverage
+/coverage

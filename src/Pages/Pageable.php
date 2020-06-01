@@ -14,23 +14,22 @@ namespace Translationmanager\Pages;
  * @since   1.0.0
  * @package Translationmanager\Pages
  */
-interface Pageable {
+interface Pageable
+{
 
-	/**
-	 * Register Page
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function add_page();
+    /**
+     * Register Page
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function add_page();
 
-	/**
-	 * Render Page Template
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function render_template();
+    /**
+     * Render Page Template
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function render_template();
 }
