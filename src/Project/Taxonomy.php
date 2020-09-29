@@ -326,7 +326,7 @@ class Taxonomy
                 $orderInfo = new OrderInfo($term_id);
 
                 return sprintf(
-                    esc_html__($orderInfo->get_status_label())
+                    esc_html($orderInfo->get_status_label())
                 );
                 break;
             case static::COL_ACTIONS:
