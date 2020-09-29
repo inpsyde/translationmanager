@@ -323,9 +323,10 @@ class Taxonomy
                     return esc_html__('New', 'translationmanager');
                 }
 
+                $orderInfo = new OrderInfo($term_id);
+
                 return sprintf(
-                    esc_html__('Ordered at %s', 'translationmanager'),
-                    date('Y-m-d')
+                    esc_html__($orderInfo->get_status_label())
                 );
                 break;
             case static::COL_ACTIONS:
