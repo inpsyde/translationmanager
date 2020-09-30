@@ -291,7 +291,7 @@ final class ProjectItem extends TableList
 
             case 'translationmanager_added_by':
                 $user = new WP_User(get_post($item->ID)->post_author);
-                echo esc_html(Functions\username($user));
+                echo esc_html(esc_html(ucfirst(Functions\username($user))));
                 break;
 
             case 'translationmanager_added_at':
