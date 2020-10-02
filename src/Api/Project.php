@@ -68,7 +68,7 @@ class Project
         if (!isset($response['id'])) {
             throw new ApiException(
                 esc_html_x(
-                    'The server response without any project ID.',
+                    'The server responded without any project ID.',
                     'api-response',
                     'translationmanager'
                 )
