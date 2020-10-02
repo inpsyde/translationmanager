@@ -78,7 +78,7 @@ class OrderInfo implements Viewable
      * @return string The status for the current order.
      * @since 1.0.0
      */
-    private function get_status_label()
+    public function get_status_label()
     {
         $order_status = $this->get_order_status();
 
