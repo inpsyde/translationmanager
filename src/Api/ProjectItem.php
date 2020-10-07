@@ -169,7 +169,7 @@ class ProjectItem
                   'mk-mk' => 'mk',
                   'ms-my' => 'msa',
                   'my-mm' => 'my',
-                  'pl-pl' => 'pl',
+                  'pl-PL' => 'pl',
                   'sk-sk' => 'sk',
                   'sl-si' => 'sl',
                   'so-so' => 'som',
