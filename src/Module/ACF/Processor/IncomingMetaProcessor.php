@@ -1,0 +1,60 @@
+<?php # -*- coding: utf-8 -*-
+
+namespace Translationmanager\Module\ACF\Processor;
+
+use Translationmanager\Exception\UnexpectedEntityException;
+use Translationmanager\Module\Processor\IncomingProcessor;
+use Translationmanager\Module\TranslationEntityAwareTrait;
+use Translationmanager\Module\ACF\Integrator;
+use Translationmanager\Utils\NetworkState;
+use Translationmanager\Translation;
+
+/**
+ * Class IncomingMetaProcessor
+ *
+ * @author Guido Scialfa <dev@guidoscialfa.com>
+ */
+class IncomingMetaProcessor implements IncomingProcessor
+{
+    use TranslationEntityAwareTrait;
+
+    /**
+     * @inheritDoc
+     */
+    public function processIncoming(Translation $translation)
+    {
+        if (!$translation->is_valid()) {
+            return null;
+        }
+        $networkState = NetworkState::create();
+        $targetSiteId = $translation->target_site_id();
+
+        $networkState->switch_to($targetSiteId);
+
+
+        try {
+            $post = $this->post($translation);
+        } catch (UnexpectedEntityException $exc) {
+            $networkState->restore();
+            return;
+        }
+
+        $translatedFieldsToImport = $translation->get_value(
+            Integrator::ACF_FIELDS,
+            Integrator::_NAMESPACE
+        );
+        $notTranslatedFieldsToImport = $translation->get_meta(
+            Integrator::NOT_TRANSLATABE_ACF_FIELDS,
+            Integrator::_NAMESPACE
+        );
+        $fieldsToImport = array_merge($translatedFieldsToImport, $notTranslatedFieldsToImport);
+        if (!empty($fieldsToImport)) {
+            foreach ($fieldsToImport as $fieldKey => $fieldValue) {
+                update_post_meta($post->ID, $fieldKey, $fieldValue);
+            }
+        }
+
+        $networkState->restore();
+    }
+
+}

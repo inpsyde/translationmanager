@@ -15,6 +15,7 @@ use Translationmanager\Module\Mlp\Integrator as MultilingualPressIntegrator;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
 use Translationmanager\Module\WooCommerce\Integrator as WooCommerceIntegrator;
 use Translationmanager\Module\YoastSeo\Integrator as WordPressSeoByYoastIntegrator;
+use Translationmanager\Module\ACF\Integrator as ACFIntegrator;
 use Translationmanager\Service\IntegrableServiceProvider;
 
 /**
@@ -42,12 +43,19 @@ class ServiceProvider implements IntegrableServiceProvider
             );
         };
 
+        $container[ACFIntegrator::class] = function (Container $container) {
+            return new ACFIntegrator(
+                $container[ProcessorBusFactory::class]
+            );
+        };
+
         $container[ModulesProvider::class] = function (Container $container) {
             return new ModulesProvider([
                 'wp-seo' => $container[WordPressSeoByYoastIntegrator::class],
                 'multilingualpress' => $container[MultilingualPressIntegrator::class],
                 'multilingual-press' => $container[MultilingualPressIntegrator::class],
                 'woocommerce' => $container[WooCommerceIntegrator::class],
+                'acf' => $container[ACFIntegrator::class],
             ]);
         };
         $container['Modules'] = function (Container $container) {

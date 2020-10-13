@@ -87,6 +87,7 @@ class ImportProject implements RequestHandleable
         }
 
         $project = get_term($data['translationmanager_project_id'], 'translationmanager_project');
+
         if (!$project instanceof WP_Term) {
             TransientNoticeService::add_notice(
                 esc_html__('Invalid Project Name.', 'translationmanager'),
