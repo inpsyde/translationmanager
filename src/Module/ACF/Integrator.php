@@ -46,7 +46,6 @@ class Integrator implements Integrable
      */
     public function integrate()
     {
-
         if (!class_exists('ACF')) {
             return;
         }
@@ -70,4 +69,3 @@ class Integrator implements Integrable
         );
     }
 }
-

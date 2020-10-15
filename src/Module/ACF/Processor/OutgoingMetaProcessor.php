@@ -2,7 +2,6 @@
 
 namespace Translationmanager\Module\ACF\Processor;
 
-use Inpsyde\MultilingualPress\TranslationUi\Post\RelationshipContext;
 use Translationmanager\Module\ACF\Integrator;
 use Translationmanager\Module\Processor\OutgoingProcessor;
 use Translationmanager\Translation;
@@ -29,7 +28,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
     const FIELD_TYPE_GROUP = 'group';
     const FIELD_TYPE_REPEATER = 'repeater';
     const FIELD_TYPE_FLEXIBLE = 'flexible_content';
-    const TRANSLATABLE_FIELD_TYPES = ['text','textarea', 'wysiwyg', self::FIELD_TYPE_GROUP, self::FIELD_TYPE_REPEATER, self::FIELD_TYPE_FLEXIBLE];
+    const TRANSLATABLE_FIELD_TYPES = ['text', 'textarea', 'wysiwyg', self::FIELD_TYPE_GROUP, self::FIELD_TYPE_REPEATER, self::FIELD_TYPE_FLEXIBLE];
 
     /**
      * @inheritDoc
@@ -64,14 +63,14 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      * @param int $postID The source post id
      * @return array the array of meta keys to be synced
      *
-     * * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
-     * * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+     * phpcs:disable Generic.Metrics.NestingLevel.MaxExceeded
+     * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
      */
     protected function addACFFieldKeys(array $fields, array $keys, $postID)
     {
         // phpcs:enable
         foreach ($fields as $filedKey => $field) {
-            if (!in_array($field['type'], self::TRANSLATABLE_FIELD_TYPES)) {
+            if (!in_array($field['type'], self::TRANSLATABLE_FIELD_TYPES, true)) {
                 continue;
             }
             switch ($field['type']) {
@@ -130,7 +129,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
 
             $fieldType = $this->getFieldTypeByKey($newKey, $postID);
 
-            if ($key === self::FLEXIBLE_FIELD_LAYOUT_KEY || !in_array($fieldType, self::TRANSLATABLE_FIELD_TYPES)) {
+            if ($key === self::FLEXIBLE_FIELD_LAYOUT_KEY || !in_array($fieldType, self::TRANSLATABLE_FIELD_TYPES, true)) {
                 continue;
             }
 
@@ -150,7 +149,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return '';
         }
 
-        $acfKey = get_post_meta($postID,'_'.$key, true);
+        $acfKey = get_post_meta($postID, '_'.$key, true);
         $acfFieldObject = get_field_object($acfKey);
 
         return !empty($acfFieldObject) ? $acfFieldObject['type'] : '';

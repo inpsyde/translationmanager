@@ -63,5 +63,4 @@ class IncomingMetaProcessor implements IncomingProcessor
 
         $networkState->restore();
     }
-
 }
