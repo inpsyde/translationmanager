@@ -31,7 +31,6 @@ class IncomingMetaProcessor implements IncomingProcessor
 
         $networkState->switch_to($targetSiteId);
 
-
         try {
             $post = $this->post($translation);
         } catch (UnexpectedEntityException $exc) {
@@ -39,14 +38,22 @@ class IncomingMetaProcessor implements IncomingProcessor
             return;
         }
 
-        $translatedFieldsToImport = $translation->get_value(
-            Integrator::ACF_FIELDS,
-            Integrator::_NAMESPACE
-        );
-        $notTranslatedFieldsToImport = $translation->get_meta(
-            Integrator::NOT_TRANSLATABE_ACF_FIELDS,
-            Integrator::_NAMESPACE
-        );
+        $translatedFieldsToImport = [];
+        if ($translation->has_value(Integrator::ACF_FIELDS, Integrator::_NAMESPACE)) {
+            $translatedFieldsToImport = $translation->get_value(
+                Integrator::ACF_FIELDS,
+                Integrator::_NAMESPACE
+            );
+        }
+
+        $notTranslatedFieldsToImport = [];
+        if ($translation->has_meta(Integrator::NOT_TRANSLATABE_ACF_FIELDS, Integrator::_NAMESPACE)) {
+            $notTranslatedFieldsToImport = $translation->get_meta(
+                Integrator::NOT_TRANSLATABE_ACF_FIELDS,
+                Integrator::_NAMESPACE
+            );
+        }
+
         $fieldsToImport = array_merge($translatedFieldsToImport, $notTranslatedFieldsToImport);
         if (!empty($fieldsToImport)) {
             foreach ($fieldsToImport as $fieldKey => $fieldValue) {

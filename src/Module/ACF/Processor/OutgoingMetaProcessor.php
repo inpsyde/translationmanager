@@ -44,10 +44,15 @@ class OutgoingMetaProcessor implements OutgoingProcessor
 
         $fields = get_field_objects($sourcePostId);
         $acfFields = $this->addACFFieldKeys($fields, [], $sourcePostId);
+
         $toNotTranslate = $acfFields['to-not-translate'];
         unset($acfFields['to-not-translate']);
-        $translation->set_value(Integrator::ACF_FIELDS, $acfFields, self::_NAMESPACE);
-        $translation->set_meta(Integrator::NOT_TRANSLATABE_ACF_FIELDS, $toNotTranslate, self::_NAMESPACE);
+        if (!empty($acfFields)) {
+            $translation->set_value(Integrator::ACF_FIELDS, $acfFields, self::_NAMESPACE);
+        }
+        if (!empty($toNotTranslate)) {
+            $translation->set_meta(Integrator::NOT_TRANSLATABE_ACF_FIELDS, $toNotTranslate, self::_NAMESPACE);
+        }
     }
 
     /**
@@ -55,15 +60,14 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      * will find the appropriate meta keys depending on field type
      *
      * @param array $fields the array of advanced custom fields
-     * @param array $keys the array of meta keys
-     * where should be added the ACF field keys to be synced
-     * @param RelationshipContext $context
+     * @param array $keys the array of meta keys to translate
+     * @param int $postID The source post id
      * @return array the array of meta keys to be synced
      *
      * * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      * * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
      */
-    protected function addACFFieldKeys(array $fields, array $keys, $postID): array
+    protected function addACFFieldKeys(array $fields, array $keys, $postID)
     {
         // phpcs:enable
         foreach ($fields as $filedKey => $field) {
@@ -79,11 +83,12 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                     }
                     $foundKeys = $this->recursivelyFindLayoutFieldKeys($field['value'], $field['name'], $postID);
                     foreach ($foundKeys as $key => $value) {
-                        if (is_array($value) && array_key_exists('to-not-translate', $value)){
-                            $keys['to-not-translate'][$key] = $value['to-not-translate'];
-                        }else{
-                            $keys[$key] = $value;
+                        $fieldType = $this->getFieldTypeByKey($key, $postID);
+                        if ($fieldType === self::FIELD_TYPE_REPEATER && !empty($value)) {
+                            $keys['to-not-translate'][$key] = count($value);
+                            continue;
                         }
+                        $keys[$key] = $value;
                     }
                     if ($field['type'] === self::FIELD_TYPE_FLEXIBLE) {
                         foreach ($field['value'] as $value) {
@@ -110,9 +115,10 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      *
      * @param array $array the array of fields
      * @param string $parentKey The key of the parent field to bind with the current key
+     * @param int $postID The source post id
      * @return array the array of the generated keys
      */
-    protected function recursivelyFindLayoutFieldKeys(array $array, string $parentKey, $postID): array
+    protected function recursivelyFindLayoutFieldKeys(array $array, $parentKey, $postID)
     {
         $keys = [];
         foreach ($array as $key => $value) {
@@ -122,18 +128,31 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                 $keys = array_merge($keys, $this->recursivelyFindLayoutFieldKeys($array[$key], $newKey, $postID));
             }
 
-            if ($key !== self::FLEXIBLE_FIELD_LAYOUT_KEY && !is_array($value)) {
-                $acfKey = get_post_meta($postID,'_'.$newKey, true);
-                $acfFieldObject = get_field_object($acfKey);
-                if (in_array($acfFieldObject['type'], self::TRANSLATABLE_FIELD_TYPES)){
-                    $keys[$newKey] = $value;
-                }
+            $fieldType = $this->getFieldTypeByKey($newKey, $postID);
+
+            if ($key === self::FLEXIBLE_FIELD_LAYOUT_KEY || !in_array($fieldType, self::TRANSLATABLE_FIELD_TYPES)) {
+                continue;
             }
 
-            if (is_array($value) && is_array($value[0])) {
-                $keys[$newKey]['to-not-translate'] = count($value);
-            }
+            $keys[$newKey] = $value;
         }
         return $keys;
+    }
+
+    /**
+     * @param string $key The ACF field Key
+     * @param int $postID the source project post id
+     * @return string Field type of ACF field
+     */
+    protected function getFieldTypeByKey($key, $postID)
+    {
+        if (empty($key) || empty($postID)) {
+            return '';
+        }
+
+        $acfKey = get_post_meta($postID,'_'.$key, true);
+        $acfFieldObject = get_field_object($acfKey);
+
+        return !empty($acfFieldObject) ? $acfFieldObject['type'] : '';
     }
 }
