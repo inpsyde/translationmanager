@@ -1,18 +1,19 @@
 <?php
 
-/**
- * Class Integrator
- * @package Translationmanager\Module\ACF
- * The Class will integrate ACF with TM,
- * so the Data from ACF fields will be sent to API and the translated Data will be received
- */
-
 namespace Translationmanager\Module\ACF;
 
 use Translationmanager\Module\Integrable;
 use Translationmanager\Module\Processor\ProcessorBus;
 use Translationmanager\Translation;
 
+/**
+ * Class Integrator
+ *
+ * The Class will integrate ACF with TM,
+ * so the Data from ACF fields will be sent to API and the translated Data will be received
+ *
+ * @package Translationmanager\Module\ACF
+ */
 class Integrator implements Integrable
 {
     const _NAMESPACE = 'ACF';
