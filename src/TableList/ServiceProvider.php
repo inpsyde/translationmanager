@@ -79,5 +79,10 @@ class ServiceProvider implements BootstrappableServiceProvider
             'bulk_actions-edit-page',
             [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
         );
+
+        add_filter(
+            'bulk_actions-edit-product',
+            [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
+        );
     }
 }
