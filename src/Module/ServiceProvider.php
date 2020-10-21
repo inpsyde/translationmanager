@@ -46,12 +46,12 @@ class ServiceProvider implements IntegrableServiceProvider
         };
 
         $container[AcfIntegrator::class] = function (Container $container) {
-            return new AcfIntegrator($container['tm/ACF/processor_bus']);
+            return new AcfIntegrator($container['tm/acf/processor_bus']);
         };
 
-        $container['tm/ACF/processor_bus'] = function (Container $container) {
-            $outgoingMetaProcessor = $container['tm/ACF/outgoing_meta_processor'];
-            $incomingMetaProcessor = $container['tm/ACF/incoming_meta_processor'];
+        $container['tm/acf/processor_bus'] = function (Container $container) {
+            $outgoingMetaProcessor = $container['tm/acf/outgoing_meta_processor'];
+            $incomingMetaProcessor = $container['tm/acf/incoming_meta_processor'];
             $processorBusFactory = $container[ProcessorBusFactory::class];
             $processorBus = $processorBusFactory->create();
             $processorBus
@@ -61,11 +61,11 @@ class ServiceProvider implements IntegrableServiceProvider
             return $processorBus;
         };
 
-        $container['tm/ACF/outgoing_meta_processor'] = function () {
+        $container['tm/acf/outgoing_meta_processor'] = function () {
             return new OutgoingMetaProcessor();
         };
 
-        $container['tm/ACF/incoming_meta_processor'] = function () {
+        $container['tm/acf/incoming_meta_processor'] = function () {
             return new IncomingMetaProcessor();
         };
 

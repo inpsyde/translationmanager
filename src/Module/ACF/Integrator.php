@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Integrate
+ * Class Integrator
  *
  * @since   1.0.0
  * @package Translationmanager\Module\ACF
@@ -15,8 +15,9 @@ use Translationmanager\Translation;
 
 /**
  * Class Integrator
- *
- * @author Guido Scialfa <dev@guidoscialfa.com>
+ * @package Translationmanager\Module\ACF
+ * The Class will integrate ACF with TM,
+ * so the Data from ACF fields will be sent to API and the translated Data will be received
  */
 class Integrator implements Integrable
 {
@@ -30,8 +31,8 @@ class Integrator implements Integrable
      */
     private $processorBus;
 
+
     /**
-     * Integrator constructor
      * @param ProcessorBus $processorBus
      */
     public function __construct(ProcessorBus $processorBus)
