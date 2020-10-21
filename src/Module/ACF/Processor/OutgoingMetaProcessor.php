@@ -7,9 +7,11 @@ use Translationmanager\Module\Processor\OutgoingProcessor;
 use Translationmanager\Translation;
 
 /**
- * Class MetaProcessor
+ * Class OutgoingMetaProcessor
  *
- * @author Guido Scialfa <dev@guidoscialfa.com>
+ * Will generate the outgoing ACF Data
+ *
+ * @package Translationmanager\Module\ACF\Processor
  */
 class OutgoingMetaProcessor implements OutgoingProcessor
 {
@@ -55,6 +57,8 @@ class OutgoingMetaProcessor implements OutgoingProcessor
     }
 
     /**
+     * Find the appropriate ACF meta keys
+     *
      * This method will receive the ACF fields and
      * will find the appropriate meta keys depending on field type
      *
@@ -110,6 +114,8 @@ class OutgoingMetaProcessor implements OutgoingProcessor
     }
 
     /**
+     * Recursively loop over the layout fields
+     *
      * This Method will recursively loop over the layout fields and will generate the necessary keys
      *
      * @param array $array the array of fields
@@ -139,6 +145,8 @@ class OutgoingMetaProcessor implements OutgoingProcessor
     }
 
     /**
+     * Get post's ACF field type by field key
+     *
      * @param string $key The ACF field Key
      * @param int $postID the source project post id
      * @return string Field type of ACF field

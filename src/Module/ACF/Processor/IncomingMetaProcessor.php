@@ -12,7 +12,9 @@ use Translationmanager\Translation;
 /**
  * Class IncomingMetaProcessor
  *
- * @author Guido Scialfa <dev@guidoscialfa.com>
+ * Will receive the ACF data and will import
+ *
+ * @package Translationmanager\Module\ACF\Processor
  */
 class IncomingMetaProcessor implements IncomingProcessor
 {
