@@ -10,6 +10,8 @@ namespace Translationmanager\Module;
 
 use CachingIterator;
 use Pimple\Container;
+use Translationmanager\Module\ACF\Processor\IncomingMetaProcessor;
+use Translationmanager\Module\ACF\Processor\OutgoingMetaProcessor;
 use Translationmanager\Module\Mlp\DataProcessor;
 use Translationmanager\Module\Mlp\Integrator as MultilingualPressIntegrator;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
@@ -43,10 +45,28 @@ class ServiceProvider implements IntegrableServiceProvider
             );
         };
 
-        $container[ACFIntegrator::class] = function (Container $container) {
-            return new ACFIntegrator(
-                $container[ProcessorBusFactory::class]
-            );
+        $container[AcfIntegrator::class] = function (Container $container) {
+            return new AcfIntegrator($container['tm/ACF/processor_bus']);
+        };
+
+        $container['tm/ACF/processor_bus'] = function (Container $container) {
+            $outgoingMetaProcessor = $container['tm/ACF/outgoing_meta_processor'];
+            $incomingMetaProcessor = $container['tm/ACF/incoming_meta_processor'];
+            $processorBusFactory = $container[ProcessorBusFactory::class];
+            $processorBus = $processorBusFactory->create();
+            $processorBus
+                ->pushProcessor($outgoingMetaProcessor)
+                ->pushProcessor($incomingMetaProcessor);
+
+            return $processorBus;
+        };
+
+        $container['tm/ACF/outgoing_meta_processor'] = function () {
+            return new OutgoingMetaProcessor();
+        };
+
+        $container['tm/ACF/incoming_meta_processor'] = function () {
+            return new IncomingMetaProcessor();
         };
 
         $container[ModulesProvider::class] = function (Container $container) {

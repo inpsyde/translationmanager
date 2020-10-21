@@ -10,9 +10,7 @@
 namespace Translationmanager\Module\ACF;
 
 use Translationmanager\Module\Integrable;
-use Translationmanager\Module\Processor\ProcessorBusFactory;
-use Translationmanager\Module\ACF\Processor\IncomingMetaProcessor;
-use Translationmanager\Module\ACF\Processor\OutgoingMetaProcessor;
+use Translationmanager\Module\Processor\ProcessorBus;
 use Translationmanager\Translation;
 
 /**
@@ -28,17 +26,17 @@ class Integrator implements Integrable
     const NOT_TRANSLATABE_ACF_FIELDS = 'not_translatable_acf_fields';
 
     /**
-     * @var ProcessorBusFactory
+     * @var ProcessorBus
      */
-    private $processorBusFactory;
+    private $processorBus;
 
     /**
      * Integrator constructor
-     * @param ProcessorBusFactory $processorBusFactory
+     * @param ProcessorBus $processorBus
      */
-    public function __construct(ProcessorBusFactory $processorBusFactory)
+    public function __construct(ProcessorBus $processorBus)
     {
-        $this->processorBusFactory = $processorBusFactory;
+        $this->processorBus = $processorBus;
     }
 
     /**
@@ -50,10 +48,7 @@ class Integrator implements Integrable
             return;
         }
 
-        $processorBus = $this->processorBusFactory->create();
-        $processorBus
-            ->pushProcessor(new OutgoingMetaProcessor())
-            ->pushProcessor(new IncomingMetaProcessor());
+        $processorBus = $this->processorBus;
 
         add_action(
             'translationmanager_outgoing_data',
