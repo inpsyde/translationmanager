@@ -63,7 +63,7 @@ class Translation implements Boxable
 
         add_meta_box(
             'translationmanager_translation_box',
-            esc_html__('Inquiry for translation', 'translationmanager'),
+            esc_html__('Request translation', 'translationmanager'),
             [$this, 'render_template'],
             $box_screen,
             'side'

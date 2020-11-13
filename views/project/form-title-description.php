@@ -27,7 +27,7 @@
 				cols="40"><?php echo esc_attr( $this->project->description ) ?></textarea>
 			<p>
 				<i>
-					<?php esc_html_e( 'Note: Only plain text allowed. No markup', 'translationmanager' ); ?>
+					<?php esc_html_e( 'Note: Only plain text is allowed. No markup.', 'translationmanager' ); ?>
 				</i>
 			</p>
 		</div>

@@ -96,14 +96,14 @@ class ProjectItemBulk implements RequestHandleable
         $success = array_filter($response);
 
         $notice = [
-            'message' => esc_html__('Items removed correctly from project', 'translationmanager'),
+            'message' => esc_html__('Items correctly removed from the project.', 'translationmanager'),
             'severity' => 'success',
         ];
 
         if (count($success) !== count($response)) {
             $notice = [
                 'message' => esc_html__(
-                    'Some items cannot be removed correctly from project. Try again or remove them manually.',
+                    'Some items cannot be removed correctly from the project. Try again or remove them manually.',
                     'translationmanager'
                 ),
                 'severity' => 'error',

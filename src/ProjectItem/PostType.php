@@ -94,7 +94,7 @@ class PostType
                     /* translators: %s: post title */
                     esc_attr(
                         sprintf(
-                            __('Move &#8220;%s&#8221; to the Trash', 'translationmanager'),
+                            __('Move &#8220;%s&#8221; to Trash', 'translationmanager'),
                             $post->post_title
                         )
                     ),
@@ -136,16 +136,16 @@ class PostType
     public function filter_bulk_updated_messages(array $bulk_messages, array $bulk_counts)
     {
         $locked_msg = 1 === $bulk_counts['locked']
-            ? esc_html__('1 page not updated, somebody is editing it.', 'translationmanager')
+            ? esc_html__('1 page not updated, it is currently being edited.', 'translationmanager')
             : _n(
-                '%s page not updated, somebody is editing it.',
-                '%s pages not updated, somebody is editing them.',
+                '%s page not updated, it is currently being edited.',
+                '%s pages not updated, they are currently being edited.',
                 $bulk_counts['locked'],
                 'translationmanager'
             );
 
         $bulk_messages['project_item'] = [
-            'updated' => esc_html__('Project has been updated.', 'translationmanager'),
+            'updated' => esc_html__('The project has been updated.', 'translationmanager'),
             'locked' => $locked_msg,
             'deleted' => _n(
                 '%s translation permanently deleted.',
@@ -154,14 +154,14 @@ class PostType
                 'translationmanager'
             ),
             'trashed' => _n(
-                '%s translation moved to the Trash.',
-                '%s translations moved to the Trash.',
+                '%s translation moved to Trash.',
+                '%s translations moved to Trash.',
                 $bulk_counts['trashed'],
                 'translationmanager'
             ),
             'untrashed' => _n(
-                '%s translation restored from the Trash.',
-                '%s translations restored from the Trash.',
+                '%s translation restored from Trash.',
+                '%s translations restored from Trash.',
                 $bulk_counts['untrashed'],
                 'translationmanager'
             ),
@@ -178,7 +178,7 @@ class PostType
         $updated = filter_input(INPUT_GET, 'updated', FILTER_SANITIZE_NUMBER_INT);
         if (-1 === $updated) {
             $bulk_messages['project_item']['updated'] = esc_html__(
-                'Project has been created.',
+                'The project has been created.',
                 'translationmanager'
             );
         }

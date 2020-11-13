@@ -32,7 +32,7 @@
 						<?php if ( $this->get_ordered_at() instanceof \DateTime ) : ?>
 							<li class="translationmanager-order-info-item">
 								<span class="dashicons dashicons-calendar-alt"></span>
-								<?php esc_html_e( 'Ordered at', 'translationmanager' ) ?>:
+								<?php esc_html_e( 'Ordered on', 'translationmanager' ) ?>:
 								<b>
 									<?php echo esc_html(
 										$this->get_ordered_at()
@@ -45,7 +45,7 @@
 						<?php if ( $this->get_translated_at() instanceof \DateTime ) : ?>
 							<li class="translationmanager-order-info-item">
 								<span class="dashicons dashicons-calendar-alt"></span>
-								<?php esc_html_e( 'Translated at', 'translationmanager' ); ?>:
+								<?php esc_html_e( 'Translated on', 'translationmanager' ); ?>:
 								<b>
 									<?php echo esc_html(
 										$this->get_translated_at()
@@ -64,7 +64,7 @@
 						<?php if ( $this->get_latest_update_request_date() instanceof \DateTime ) : ?>
 							<li class="translationmanager-order-info-item">
 								<span class="dashicons dashicons-calendar-alt"></span>
-								<?php esc_html_e( 'Lastest Update at', 'translationmanager' ); ?>:
+								<?php esc_html_e( 'Latest update on', 'translationmanager' ); ?>:
 								<b>
 									<?php echo esc_html(
 										$this->get_latest_update_request_date()
@@ -88,7 +88,7 @@
 					<?php if ( ! $this->has_projects() ) {
 						printf(
 							'<p class="no-projects-found">%s</p>',
-							esc_html__( 'Please add at least one post to be able to submit the project.', 'translationmanager' )
+							esc_html__( 'Please add at least one post in order to submit the project.', 'translationmanager' )
 						);
 					}
 					?>

@@ -1,6 +1,6 @@
 <section class="support-section">
 	<h3 class="support-section__title">
-		<?php esc_html_e( 'Most asked questions', 'translationmanager' ); ?>
+		<?php esc_html_e( 'Frequently asked questions', 'translationmanager' ); ?>
 	</h3>
 
 	<ul class="support-most-asked-questions-list">
@@ -9,7 +9,7 @@
 			   href="http://help.eurotext.de/"
 			   target="_blank"
 			   rel="noopener noreferrer">
-				<?php esc_html_e( 'Which steps need to be done before setting up translationMANAGER?', 'translationmanager' ); ?>
+				<?php esc_html_e( 'What steps do I need to take before setting up translationMANAGER?', 'translationmanager' ); ?>
 			</a>
 		</li>
 		<li class="support-most-asked-questions-list__item">
@@ -17,7 +17,7 @@
 			   href="http://help.eurotext.de/"
 			   target="_blank"
 			   rel="noopener noreferrer">
-				<?php esc_html_e( 'How do I set up my connection to Eurotext?', 'translationmanager' ); ?>
+				<?php esc_html_e( 'How do I set up my connection with Eurotext?', 'translationmanager' ); ?>
 			</a>
 		</li>
 		<li class="support-most-asked-questions-list__item">
@@ -25,7 +25,7 @@
 			   href="http://help.eurotext.de/"
 			   target="_blank"
 			   rel="noopener noreferrer">
-				<?php esc_html_e( 'How do I create my first translation project?', 'translationmanager' ); ?>
+				<?php esc_html_e( 'How can I create my first translation project?', 'translationmanager' ); ?>
 			</a>
 		</li>
 		<li class="support-most-asked-questions-list__item">
@@ -41,25 +41,25 @@
 			   href="http://help.eurotext.de/"
 			   target="_blank"
 			   rel="noopener noreferrer">
-				<?php esc_html_e( 'How can I get support?', 'translationmanager' ); ?>
+				<?php esc_html_e( 'How do I request support?', 'translationmanager' ); ?>
 			</a>
 		</li>
 	</ul>
 
 	<p class="support-documentation-link">
 		<a href="https://eurotext-ecommerce.com/dokumentation/" target="_blank" rel="noopener noreferrer">
-			<?php esc_html_e( 'Open the complete documentation' ); ?>
+			<?php esc_html_e( 'Open complete documentation' ); ?>
 		</a>
 	</p>
 </section>
 
 <section class="support-section">
 	<h3 class="support-section__title">
-		<?php esc_html_e( 'Ask for Help', 'translationmanager' ); ?>
+		<?php esc_html_e( 'Ask for help', 'translationmanager' ); ?>
 	</h3>
 
 	<p class="support-section__description">
-		<?php esc_html_e( 'Please provide the specific url(s) where we can see each issue. e.g. the translation doesn\'t work on this page: domain.com/en/my-tanslated-page.', 'translationmanager' ); ?>
+		<?php esc_html_e( "Please provide the specific URL(s) where we can look at each issue, e.g. the translation doesn't work on this page: domain.com/en/my-translated-page.", 'translationmanager' ); ?>
 		<br/>
 		<?php esc_html_e( 'Please let us know how we will recognize the issue or can reproduce the issue. What is supposed to happen, and what is actually happening instead?', 'translationmanager' ); ?>
 	</p>
@@ -100,7 +100,7 @@
 				<?php endfor; ?>
 
 				<small>
-					<?php esc_html_e( 'Max file size: 5MB. Only .png, .jpeg, .jpg, .gif.', 'translationmanager' ); ?>
+					<?php esc_html_e( 'Max. file size: 5MB. Supported formats: .png, .jpeg, .jpg, .gif.', 'translationmanager' ); ?>
 				</small>
 			</span>
 		</p>
@@ -112,7 +112,7 @@
 			       required="required"/>
 			<label for="support_request_agreement">
 				<?php printf(
-					wp_kses_post( __( 'I\'ve read the %s, and I agree to allow Eurotext to automatically collect information of my WordPress installation.', 'translationmanager' ) ),
+					wp_kses_post( __( "I've read the %s, and I agree for Eurotext to automatically collect information about my WordPress installation.", 'translationmanager' ) ),
 					'<a href="https://eurotext-ecommerce.com/dokumentation/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'documentation', 'translationmanager' ) . '</a>'
 				); ?>
 			</label>
@@ -122,7 +122,7 @@
 		       name="support_request"
 		       id="support_request"
 		       class="button button-primary"
-		       value="<?php esc_attr_e( 'Submit the ticket', 'translationmanager' ); ?>"/>
+		       value="<?php esc_attr_e( 'Submit ticket', 'translationmanager' ); ?>"/>
 
 		<?php $nonce = new \Brain\Nonces\WpNonce( 'support_request' ) ?>
 		<input type="hidden"

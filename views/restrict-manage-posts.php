@@ -4,7 +4,7 @@
 		<div class="content">
 
 			<div id="translationmanager-project-wrap-div">
-				<h2><?php esc_html_e( 'Select Projects:', 'translationmanager' ); ?></h2>
+				<h2><?php esc_html_e( 'Select projects:', 'translationmanager' ); ?></h2>
 				<?php require_once \Translationmanager\Functions\get_template( '/views/type/select-projects.php' ); ?>
 			</div>
 

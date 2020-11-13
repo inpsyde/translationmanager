@@ -76,7 +76,7 @@ class UpdateProjectOrderStatus implements RequestHandleable
 
         if (!$data) {
             TransientNoticeService::add_notice(
-                esc_html__('Request is valid but no data found in it.', 'translationmanager'),
+                esc_html__('The request is valid but no data was found.', 'translationmanager'),
                 'error'
             );
 
@@ -91,7 +91,7 @@ class UpdateProjectOrderStatus implements RequestHandleable
             );
             if (!$project instanceof WP_Term) {
                 TransientNoticeService::add_notice(
-                    esc_html__('Invalid Project Name.', 'translationmanager'),
+                    esc_html__('Invalid project name.', 'translationmanager'),
                     'error'
                 );
 
@@ -110,7 +110,7 @@ class UpdateProjectOrderStatus implements RequestHandleable
             }
 
             $notice = [
-                'message' => esc_html__('Project Updated.', 'translationmanager'),
+                'message' => esc_html__('Project updated.', 'translationmanager'),
                 'severity' => 'success',
             ];
         } catch (Exception $e) {

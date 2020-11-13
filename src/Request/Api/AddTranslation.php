@@ -165,7 +165,7 @@ class AddTranslation implements RequestHandleable
 
             $notice = [
                 'message' => esc_html__(
-                    'New Translation added successfully.',
+                    'New translation added successfully.',
                     'translationmanager'
                 ),
                 'severity' => 'success',

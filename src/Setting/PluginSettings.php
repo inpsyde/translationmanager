@@ -76,7 +76,7 @@ class PluginSettings
         // Token.
         $this->add_settings_field(
             self::API_KEY,
-            esc_html__('Api Key', 'translationmanager'),
+            esc_html__('API Key', 'translationmanager'),
             [$this, 'dispatch_input_text'],
             self::OPTION_GROUP,
             self::SECTION_CREDENTIALS,
@@ -106,7 +106,7 @@ class PluginSettings
                 if (!ctype_alnum($value)) {
                     TransientNoticeService::add_notice(
                         esc_html__(
-                            'Invalid api key, only letters and numbers allowed.',
+                            'Invalid API key, only letters and numbers allowed.',
                             'translationmanager'
                         ),
                         'error'
@@ -125,7 +125,7 @@ class PluginSettings
                 if (255 < strlen($value)) {
                     TransientNoticeService::add_notice(
                         esc_html__(
-                            'Api key doesn\'t match. Please provide a valid api key.',
+                            "API key doesn't match. Please provide a valid API key.",
                             'translationmanager'
                         ),
                         'error'

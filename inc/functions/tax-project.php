@@ -46,7 +46,7 @@ function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_
 	// Do not perform anything if project hasn't been sent.
 	if ( ! $project ) {
 		TransientNoticeService::add_notice(
-			esc_html__( 'You must provide a project to be able to translate items.', 'translationmanager' ),
+			esc_html__( 'You must select a project in order to translate items.', 'translationmanager' ),
 			'warning'
 		);
 

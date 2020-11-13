@@ -107,7 +107,7 @@ class SupportRequest implements RequestHandleable
                 $this->response(
                     sprintf(
                         esc_html__(// translators: %s is the destination email address.
-                            'Sorry seems something went wrong sending your support request please, try again or contact us at %s',
+                            'Sorry, it looks like something went wrong when sending your support request. Please try again or contact us at %s',
                             'translationmanager'
                         ),
                         self::$destination
@@ -160,7 +160,7 @@ class SupportRequest implements RequestHandleable
         if (!$inputs['support_request_agreement']) {
             throw new RuntimeException(
                 esc_html__(
-                    'You must accept the terms by Eurotext before send a support request.',
+                    'You must accept the terms of Eurotext before sending a support request.',
                     'translationmanager'
                 )
             );
@@ -169,7 +169,7 @@ class SupportRequest implements RequestHandleable
         if (!$inputs['support_request_summary'] || !$inputs['support_request_description']) {
             throw new RuntimeException(
                 esc_html__(
-                    'Ops! Seems you\'ve missed to type the summary or the description. Please provide those informations.',
+                    "Oops! Looks like you forgot to enter a summary or description. Please enter this information.",
                     'translationmanager'
                 )
             );

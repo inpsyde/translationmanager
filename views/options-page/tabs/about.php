@@ -1,8 +1,8 @@
 <div class="backwpup-welcome">
 	<h3><?php esc_html_e( 'Welcome to translationMANAGER for WordPress', 'translationmanager' ); ?></h3>
 
-	<p><?php esc_html_e( 'With the translationMANAGER, exporting content from your WordPress Multisite is simple and straightforward. Select posts, pages and customized content (custom post types) with just a few clicks and send the texts to the Eurotext Translation Portal. Once translated, texts can be reimported just as quickly and then immediately published. All of this from the comfort of the WordPress admin area. Professional translations with WordPress have never been so simple!', 'translationmanager' ); ?></p>
-	<p><?php esc_html_e( 'Eurotext works together with more than 4,000 native-speaking translators working in over 50 languages. Modern translation technology and automated quality control processes allow us to offer high-quality translations at fair prices. See for yourself!', 'translationmanager' ) ?></p>
+	<p><?php esc_html_e( 'With translationMANAGER, exporting content from your WordPress Multisite is simple and straightforward. Select posts, pages and customized content (custom post types) in just a few clicks and send the texts to the Eurotext Translation Portal. After translation, texts can be reimported just as quickly and published right away, all from the comfort of the WordPress admin area. Professional translations for WordPress have never been so easy!', 'translationmanager' ); ?></p>
+	<p><?php esc_html_e( 'Eurotext collaborates with more than 4,000 native-speaking translators working in over 50 languages. Modern translation technology and automated quality control processes allow us to offer high-quality translations at fair prices. See for yourself!' ) ?></p>
 </div>
 
 <table class="eurotext-table">
@@ -29,7 +29,7 @@
 		<td class="righttd">
 			<?php esc_html_e( 'Phone:', 'translationmanager' ); ?>
 			<span>+49 (0)931 35 40 50</span></br>
-			<?php esc_html_e( 'Telefax:', 'translationmanager' ); ?>
+			<?php esc_html_e( 'Fax:', 'translationmanager' ); ?>
 			<span>+49 (0)931 35 40 580</span><br/>
 			<?php esc_html_e( 'Email:', 'translationmanager' ); ?>
 			<a href="mailto:info@eurotext.de">info@eurotext.de</a><br/>
