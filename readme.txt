@@ -118,11 +118,20 @@ Just send an email to info@eurotext.de with a request.
 3. project view
 
 == Changelog ==
-= X.X.X =
+= 1.3.1 =
+* Fix texts
+
+= 1.3.0 =
 * Fix brand typo
 * Fix missing text domains in some strings
-* Add `TRANSLATION_MANAGER_API_URL` constant to edit the API url at configuration level
+* Fix language codes from MLP/WordPress does not match the language Codes from the API
+* Fix Grammatical errors
+* Fix Wrong date in the project overview
+* Fix Missing bulk actions for products.
+* Fix Don’t ucfirst() user name in project item table
+* Add TRANSLATION_MANAGER_API_URL constant to edit the API url at configuration level
 * Add basic support for WooCommerce
+* Add support for ACF
 
 = 1.2.1 =
 * Fixing the bug where not all translations could be received
