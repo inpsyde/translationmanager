@@ -2,8 +2,8 @@
 /**
  * Plugin Name: translationMANAGER
  * Plugin URI:  https://eurotext.de/en
- * Description: Translate your contents in a WordPress Multisite and MultilingualPress.
- * Version:     1.2.1
+ * Description: Translate your content from a WordPress Multisite and MultilingualPress.
+ * Version:     1.3.1
  * Author:      Inpsyde
  * Author URI:  https://inpsyde.com/
  * Text Domain: translationmanager
@@ -72,7 +72,7 @@ $bootstrap = \Closure::bind( function () {
 
 				translationmanager_admin_notice(
 					wp_kses( sprintf( __( // phpcs:ignore
-						'TranslationMANAGER seems not configured correctly. Please set a token from %s to be able to request translations.',
+						'TranslationMANAGER seems to be configured incorrectly. Please set a token from %s in order to request translations.',
 						'translationmanager'
 					),
 						'<strong><a href="' . esc_url( menu_page_url( \Translationmanager\Pages\PageOptions::SLUG,

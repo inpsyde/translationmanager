@@ -86,7 +86,7 @@ class RestrictManagePosts
             'strings',
             [
                 'noElementsSelected' => esc_html__(
-                    'You must need to select at least one element for translate.',
+                    'You must select at least one element to translate.',
                     'translationmanager'
                 ),
             ]

@@ -87,8 +87,8 @@ final class ProjectItem extends TableList
         $columns = $this->column_project($columns);
         $columns = $this->column_languages($columns);
 
-        $columns['translationmanager_added_by'] = esc_html__('Added By', 'translationmanager');
-        $columns['translationmanager_added_at'] = esc_html__('Added At', 'translationmanager');
+        $columns['translationmanager_added_by'] = esc_html__('Added by', 'translationmanager');
+        $columns['translationmanager_added_at'] = esc_html__('Added on', 'translationmanager');
 
         return $columns;
     }
@@ -493,11 +493,11 @@ final class ProjectItem extends TableList
     private function column_languages($columns)
     {
         $columns['translationmanager_source_language_column'] = esc_html__(
-            'Source language',
+            'Source Language',
             'translationmanager'
         );
         $columns['translationmanager_target_language_column'] = esc_html__(
-            'Target language',
+            'Target Language',
             'translationmanager'
         );
 

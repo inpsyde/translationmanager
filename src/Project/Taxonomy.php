@@ -165,7 +165,7 @@ class Taxonomy
             if (is_wp_error($update)) {
                 TransientNoticeService::add_notice(
                     esc_html__(
-                        'Something went wrong. Please go back and try again.',
+                        'Something went wrong. Please try again.',
                         'translationmanager'
                     ),
                     'warning'
@@ -191,7 +191,7 @@ class Taxonomy
         if (!$project instanceof WP_Term) {
             TransientNoticeService::add_notice(
                 esc_html__(
-                    'Invalid project ID, impossible to update the info.',
+                    'Invalid project ID, the information could not be updated.',
                     'translationmanager'
                 ),
                 'warning'

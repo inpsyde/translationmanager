@@ -57,7 +57,7 @@ class AddTranslationTest extends TestCase
         $noticeMock
             ->shouldReceive('add_notice')
             ->once()
-            ->with('New Translation added successfully.', 'success');
+            ->with('New translation added successfully.', 'success');
 
         Functions\expect('Translationmanager\\Functions\\filter_input')
             ->andReturnUsing(function () {
@@ -130,7 +130,7 @@ class AddTranslationTest extends TestCase
         $noticeMock
             ->shouldReceive('add_notice')
             ->once()
-            ->with('New Translation added successfully.', 'success');
+            ->with('New translation added successfully.', 'success');
 
         Functions\expect('Translationmanager\\Functions\\filter_input')
             ->andReturnUsing(function () {

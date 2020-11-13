@@ -73,7 +73,7 @@ class OrderProject implements RequestHandleable
 
         if (!$data) {
             TransientNoticeService::add_notice(
-                esc_html__('Request is valid but no data found in it.', 'translationmanager'),
+                esc_html__('The request is valid but no data was found.', 'translationmanager'),
                 'error'
             );
 
@@ -83,7 +83,7 @@ class OrderProject implements RequestHandleable
         $project = get_term($data['translationmanager_project_id'], 'translationmanager_project');
         if (!$project instanceof WP_Term) {
             TransientNoticeService::add_notice(
-                esc_html__('Invalid Project Name.', 'translationmanager'),
+                esc_html__('Invalid project name.', 'translationmanager'),
                 'error'
             );
 

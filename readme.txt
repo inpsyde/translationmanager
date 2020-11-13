@@ -3,12 +3,12 @@ Contributors: Inpsyde, Eurotext, paddyullrich, wido
 Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
 Requires at least: 4.6
-Tested up to: 4.7.0
-Stable tag: 1.2.1
+Tested up to: 5.5.3
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-With the *TranslationMANAGER*, exporting content from your WordPress Multisite is simple and straightforward.
+With *TranslationMANAGER*, exporting content from your WordPress Multisite is easy and straightforward.
 
 == Description ==
 
@@ -105,11 +105,11 @@ This will automatically make the plugin available to all sites within the networ
 == Frequently Asked Questions ==
 = Do I need an API key? =
 
-Yes, you need an own API key to get connected to the Eurotext services.
+Yes, you need your own API key to connect with the Eurotext servers.
 
 = Where do I get my own API key? =
 
-Just send an email to info@eurotext.de and request one.
+Just send an email to info@eurotext.de with a request.
 
 == Screenshots ==
 
@@ -118,11 +118,20 @@ Just send an email to info@eurotext.de and request one.
 3. project view
 
 == Changelog ==
-= X.X.X =
+= 1.3.1 =
+* Fix texts
+
+= 1.3.0 =
 * Fix brand typo
 * Fix missing text domains in some strings
-* Add `TRANSLATION_MANAGER_API_URL` constant to edit the API url at configuration level
+* Fix language codes from MLP/WordPress does not match the language Codes from the API
+* Fix Grammatical errors
+* Fix Wrong date in the project overview
+* Fix Missing bulk actions for products.
+* Fix Don’t ucfirst() user name in project item table
+* Add TRANSLATION_MANAGER_API_URL constant to edit the API url at configuration level
 * Add basic support for WooCommerce
+* Add support for ACF
 
 = 1.2.1 =
 * Fixing the bug where not all translations could be received
@@ -134,4 +143,4 @@ Just send an email to info@eurotext.de and request one.
 * Improved settings tab
 
 = 1.0 =
-* Releasing the first version of TranslationMANAGER with basic functions.
+* First version of translationMANAGER released with basic functions.
