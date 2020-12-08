@@ -4,7 +4,7 @@ Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
 Requires at least: 4.6
 Tested up to: 5.5.3
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,9 @@ Just send an email to info@eurotext.de with a request.
 3. project view
 
 == Changelog ==
+= 1.3.2 =
+* Fix missing libraries from vendor folder
+
 = 1.3.1 =
 * Fix texts
 
