@@ -28,6 +28,9 @@ class AssertTest extends TestCase
         }
 
         Assert::semVersion($version, $expectedExceptionMessage);
+        if (!$expectedException) {
+            $this->expectNotToPerformAssertions();
+        }
     }
 
     /**

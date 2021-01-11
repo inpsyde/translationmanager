@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['7.1']
+                php-versions: ['7.1', '7.2', '7.3', '7.4']
         name: PHP ${{ matrix.php-versions }}
         steps:
             -   uses: actions/checkout@v2
@@ -33,3 +33,7 @@ jobs:
 
             -   name: Run PHPCS
                 run: vendor/bin/phpcs
+
+            -   name: Run PHPCS
+                run: vendor/bin/psalm
+                continue-on-error: true
