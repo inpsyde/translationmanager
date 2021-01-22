@@ -103,12 +103,6 @@ $bootstrap = \Closure::bind( function () {
 			return;
 		}
 
-		// Require composer autoloader if exists.
-		if ( is_readable( __DIR__ . '/vendor/autoload.php' )
-		     && ! class_exists( Plugin::class )
-		) {
-			require_once __DIR__ . '/vendor/autoload.php';
-		}
 		if ( ! class_exists( Plugin::class ) ) {
 			add_action( 'admin_notices', function () {
 
@@ -183,6 +177,13 @@ $bootstrap = \Closure::bind( function () {
 			}
 		}, 0 );
 	}
+
+    $rootDir = dirname(__FILE__);
+
+    if (file_exists("$rootDir/vendor/autoload.php")) {
+        /* @noinspection PhpIncludeInspection */
+        require_once "$rootDir/vendor/autoload.php";
+    }
 
 	add_action( 'plugins_loaded', 'bootstrap', - 1 );
 
