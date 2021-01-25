@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cdfd62786fd3e74d2f2f0fb7612d17a8",
+    "content-hash": "d65d8e3211e901fceb242c8597e8ef11",
     "packages": [
         {
             "name": "brain/nonces",
@@ -42,7 +42,7 @@
                     "inc/helpers.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
             "license": [
                 "MIT"
             ],
@@ -124,10 +124,9 @@
                 }
             ],
             "description": "A system status tables with WordPress support",
-            "homepage": "https://bitbucket.org/inpsyde/system-status",
             "support": {
-                "source": "https://bitbucket.org/inpsyde/system-status/src/86339957695dd283565d6c299d6ea874505fbd91/?at=master",
-                "issues": "https://bitbucket.org/inpsyde/system-status/issues"
+                "source": "https://github.com/inpsyde/system-status/tree/master",
+                "issues": "https://github.com/inpsyde/system-status/issues"
             },
             "time": "2018-10-04T22:27:45+00:00"
         },
@@ -169,7 +168,7 @@
                     "Pimple": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
             "license": [
                 "MIT"
             ],
@@ -221,7 +220,7 @@
                     "Psr\\Container\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3111,7 +3110,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -4325,7 +4324,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -5311,6 +5310,10 @@
                 }
             ],
             "description": "A PHP implementation of Ant's glob.",
+            "support": {
+                "issues": "https://github.com/webmozarts/glob/issues",
+                "source": "https://github.com/webmozarts/glob/tree/4.1.0"
+            },
             "time": "2015-12-29T11:14:33+00:00"
         },
         {
