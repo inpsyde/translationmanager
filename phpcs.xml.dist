@@ -31,4 +31,8 @@
         <exclude name="PHPCompatibility.Interfaces.NewInterfaces.jsonserializableFound"/>
     </rule>
 
+    <rule ref="PSR12">
+        <exclude name="PSR12.Files.OpenTag.NotAlone"/>
+    </rule>
+
 </ruleset>
