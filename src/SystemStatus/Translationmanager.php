@@ -11,13 +11,13 @@ namespace Translationmanager\SystemStatus;
 
 use Inpsyde\SystemStatus\Data\Information;
 use Inpsyde\SystemStatus\Item\Item;
+use Translationmanager\Plugin;
 
 use function Translationmanager\Functions\get_languages;
 use function Translationmanager\Functions\translationmanager_api;
 
-use Translationmanager\Plugin;
-
 /**
+
  * Class Translationmanager
  *
  * @since   1.0.0

@@ -412,6 +412,7 @@ class Translation implements ArrayAccess, JsonSerializable
         if (!$namespace && in_array($key, self::$protected_meta, true)) {
             _doing_it_wrong(
                 __METHOD__,
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                 // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
                 "Meta key {$key} is protected and can't be removed.",
                 '0.1'

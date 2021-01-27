@@ -8,12 +8,12 @@ use Translationmanager\ProjectHandler;
 use Translationmanager\ProjectUpdater;
 use Translationmanager\Request\RequestHandleable;
 use Translationmanager\Auth\Authable;
+use Translationmanager\Notice\TransientNoticeService;
 
 use function Translationmanager\Functions\redirect_admin_page_network;
 
-use Translationmanager\Notice\TransientNoticeService;
-
 /**
+
  * Class AddTranslation
  *
  * @since   1.0.0
