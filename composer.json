@@ -23,6 +23,7 @@
         },
         { "packagist.org": false }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.1",
         "ext-fileinfo": "*",
@@ -35,7 +36,7 @@
         "johnpbloch/wordpress-core": "^5.0",
         "barryvdh/composer-cleanup-plugin": "^0.2.0",
         "brain/monkey": "2.*",
-        "inpsyde/php-coding-standards": "^0.13.3",
+        "inpsyde/php-coding-standards": "^1.0",
         "phpunit/phpunit": "^6.0 | ^7.0 | ^8.0 | ^9.0",
         "vimeo/psalm": "^3.11.7",
         "oomphinc/composer-installers-extender": "^1.1",
