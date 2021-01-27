@@ -32,7 +32,7 @@ jobs:
                 run: vendor/bin/phpunit
 
             -   name: Run PHPCS
-                run: vendor/bin/phpcs
+                run: vendor/bin/phpcs -s
 
             -   name: Run Psalm
                 run: vendor/bin/psalm
