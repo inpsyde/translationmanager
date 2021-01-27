@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Modal
  *
@@ -98,7 +99,7 @@ class Modal implements Viewable
 
         $path = $this->plugin->dir('/views/modal.php');
         Closure::bind(
-            function () use ($path) {
+            static function () use ($path) {
 
                 include $path;
             },

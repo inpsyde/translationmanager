@@ -1,4 +1,4 @@
-<?php # -*- coding: utf-8 -*-
+<?php# -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\WooCommerce;
 
@@ -52,13 +52,13 @@ class Integrator implements Integrable
 
         add_action(
             'translationmanager_outgoing_data',
-            function (Translation $translation) use ($processorBus) {
+            static function (Translation $translation) use ($processorBus) {
                 $processorBus->process($translation);
             }
         );
         add_action(
             'translationmanager_updated_post',
-            function (Translation $translation) use ($processorBus) {
+            static function (Translation $translation) use ($processorBus) {
                 $processorBus->process($translation);
             }
         );

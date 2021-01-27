@@ -1,4 +1,4 @@
-<?php // -*- coding: utf-8 -*-
+<?php// -*- coding: utf-8 -*-
 
 /**
  * Bridge between the translation data and the MLP API

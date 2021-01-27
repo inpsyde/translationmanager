@@ -53,7 +53,7 @@ class Integrator implements Integrable
     {
         add_action(
             'inpsyde_mlp_loaded',
-            function (Inpsyde_Property_List_Interface $data) {
+            static function (Inpsyde_Property_List_Interface $data) {
                 $connectorBootstrap = new ConnectorBootstrap(
                     new ConnectorFactory(
                         new ProcessorBusFactory()
@@ -80,7 +80,7 @@ class Integrator implements Integrable
     {
         add_action(
             'multilingualpress.add_service_providers',
-            function (ServiceProvidersCollection $providers) {
+            static function (ServiceProvidersCollection $providers) {
                 $providers->add(new ServiceProvider());
             }
         );

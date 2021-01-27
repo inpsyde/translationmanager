@@ -26,7 +26,6 @@ class Integrator implements Integrable
      */
     private $processorBus;
 
-
     /**
      * @param ProcessorBus $processorBus
      */
@@ -48,13 +47,13 @@ class Integrator implements Integrable
 
         add_action(
             'translationmanager_outgoing_data',
-            function (Translation $translation) use ($processorBus) {
+            static function (Translation $translation) use ($processorBus) {
                 $processorBus->process($translation);
             }
         );
         add_action(
             'translationmanager_updated_post',
-            function (Translation $translation) use ($processorBus) {
+            static function (Translation $translation) use ($processorBus) {
                 $processorBus->process($translation);
             }
         );
