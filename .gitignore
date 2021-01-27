@@ -9,6 +9,10 @@
 .env
 /docker/logs
 
+# Build
+/build
+/dist
+
 ### https://raw.github.com/github/gitignore/c2abf3c412b2149e5a001e97845e13301dcb7533/Global/JetBrains.gitignore
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
