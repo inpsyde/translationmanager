@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Translation Manager Status
  *
@@ -11,10 +10,8 @@ namespace Translationmanager\SystemStatus;
 
 use Inpsyde\SystemStatus\Data\Information;
 use Inpsyde\SystemStatus\Item\Item;
-
 use function Translationmanager\Functions\get_languages;
 use function Translationmanager\Functions\translationmanager_api;
-
 use Translationmanager\Plugin;
 
 /**

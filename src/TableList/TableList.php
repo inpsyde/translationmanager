@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Base Table List
  *

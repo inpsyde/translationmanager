@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Handling the project endpoint of the API.
  *

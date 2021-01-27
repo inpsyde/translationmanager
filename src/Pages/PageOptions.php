@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Containing class that handles pixxio options page.
  *

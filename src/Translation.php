@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Containing the class translation data value object.
  *

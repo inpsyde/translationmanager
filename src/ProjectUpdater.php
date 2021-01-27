@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Project Updater
  *
@@ -58,13 +57,11 @@ class ProjectUpdater
     {
         $post = get_post($post_id);
 
-        if (
-            !$post || !apply_filters(
-                'translationmanager_force_add_parent_translations',
-                false,
-                $post
-            )
-        ) {
+        if (!$post || !apply_filters(
+            'translationmanager_force_add_parent_translations',
+            false,
+            $post
+        )) {
             return $project;
         }
 
@@ -140,8 +137,7 @@ class ProjectUpdater
      */
     public function update_project_item_title(array $data)
     {
-        if (
-            $this->append_to_title
+        if ($this->append_to_title
             & !empty($data['post_type'])
             & $data['post_type'] === 'project_item'
         ) {

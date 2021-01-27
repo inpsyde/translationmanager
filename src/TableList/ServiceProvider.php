@@ -43,7 +43,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['TableList.RestrictManagePosts'] = static function (Container $container) {
+        $container['TableList.RestrictManagePosts'] = function (Container $container) {
 
             return new RestrictManagePosts($container['translationmanager.plugin']);
         };

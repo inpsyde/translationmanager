@@ -109,7 +109,7 @@ class PluginMainPage implements Pageable
     {
         add_filter(
             'parent_file',
-            static function ($parent_file) {
+            function ($parent_file) {
 
                 $screen = get_current_screen();
 

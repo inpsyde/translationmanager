@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Restrict Manage Posts
  *

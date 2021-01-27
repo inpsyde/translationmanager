@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Project
  *
@@ -12,6 +11,7 @@ namespace Translationmanager\Project;
 use Brain\Nonces\WpNonce;
 use Closure;
 use Translationmanager\Functions;
+
 use Translationmanager\Notice\TransientNoticeService;
 use Translationmanager\View\Project\OrderInfo;
 use WP_Term;
@@ -64,7 +64,7 @@ class Taxonomy
         ];
 
         $closure = Closure::bind(
-            static function () {
+            function () {
 
                 // @todo Make it a View.
                 require Functions\get_template('/views/project/form-title-description.php');
