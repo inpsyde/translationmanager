@@ -33,6 +33,6 @@
 
     <rule ref="PSR12">
         <exclude name="PSR12.Files.OpenTag.NotAlone"/>
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
     </rule>
-
 </ruleset>
