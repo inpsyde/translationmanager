@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class ServiceProvider
  *
@@ -24,7 +25,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Settings.PluginSettings'] = function () {
+        $container['Settings.PluginSettings'] = static function () {
 
             return new PluginSettings();
         };

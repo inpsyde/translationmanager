@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class ServiceProvider
  *
@@ -25,7 +26,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['SystemStatus.Controller'] = function () {
+        $container['SystemStatus.Controller'] = static function () {
 
             return new Controller();
         };

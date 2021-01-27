@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class ServiceProvider
  *
@@ -24,7 +25,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $c)
     {
-        $c['ProjectItem.PostType'] = function ($c) {
+        $c['ProjectItem.PostType'] = static function ($c) {
 
             return new PostType($c['translationmanager.plugin']);
         };

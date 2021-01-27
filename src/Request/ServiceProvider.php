@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class ServiceProvider
  *
@@ -28,7 +29,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Request.AddTranslation'] = function () {
+        $container['Request.AddTranslation'] = static function () {
 
             return new Api\AddTranslation(
                 new Auth\Validator(),
@@ -36,21 +37,21 @@ class ServiceProvider implements BootstrappableServiceProvider
                 new ProjectHandler()
             );
         };
-        $container['Request.OrderProject'] = function () {
+        $container['Request.OrderProject'] = static function () {
 
             return new Api\OrderProject(
                 new Auth\Validator(),
                 new Nonces\WpNonce('order_project')
             );
         };
-        $container['Request.UpdateProjectOrderStatus'] = function () {
+        $container['Request.UpdateProjectOrderStatus'] = static function () {
 
             return new Api\UpdateProjectOrderStatus(
                 new Auth\Validator(),
                 new Nonces\WpNonce('update_project')
             );
         };
-        $container['Request.ImportProject'] = function () {
+        $container['Request.ImportProject'] = static function () {
 
             return new Api\ImportProject(
                 new Auth\Validator(),

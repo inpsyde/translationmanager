@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Settings
  *
@@ -101,7 +102,7 @@ class PluginSettings
         add_filter('sanitize_option_' . self::API_KEY, 'trim');
         add_filter(
             'sanitize_option_' . self::API_KEY,
-            function ($value) {
+            static function ($value) {
 
                 if (!ctype_alnum($value)) {
                     TransientNoticeService::add_notice(
@@ -120,7 +121,7 @@ class PluginSettings
         );
         add_filter(
             'sanitize_option_' . self::API_KEY,
-            function ($value) {
+            static function ($value) {
 
                 if (255 < strlen($value)) {
                     TransientNoticeService::add_notice(
