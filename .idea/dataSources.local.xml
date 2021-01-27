@@ -2,7 +2,7 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="wpdb" uuid="cb8950cd-71ba-4add-b087-074db6feb987">
-      <database-info product="MySQL" version="5.5.5-10.5.8-MariaDB-1:10.5.8+maria~focal" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-java-8.0.21 (Revision: 33f65445a1bcc544eb0120491926484da168f199)" dbms="MARIADB" exact-version="10.5.8" exact-driver-version="8.0">
+      <database-info product="MariaDB" version="10.5.8-MariaDB-1:10.5.8+maria~focal" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="2.6.0" dbms="MARIADB" exact-version="10.5.8" exact-driver-version="2.6">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
       </database-info>
