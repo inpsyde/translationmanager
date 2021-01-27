@@ -71,6 +71,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      *
      * phpcs:disable Generic.Metrics.NestingLevel.MaxExceeded
      * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.MaxExceeded
      */
     protected function addACFFieldKeys(array $fields, array $keys, $postID)
     {
