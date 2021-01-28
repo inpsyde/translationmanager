@@ -20,7 +20,6 @@ use function Translationmanager\Functions\project_update;
 use function Translationmanager\Functions\redirect_admin_page_network;
 
 /**
-
  * Class ImportProject
  *
  * @since   1.0.0

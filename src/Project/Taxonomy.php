@@ -64,7 +64,7 @@ class Taxonomy
         ];
 
         $closure = Closure::bind(
-            static function () {
+            function () {
 
                 // @todo Make it a View.
                 require Functions\get_template('/views/project/form-title-description.php');

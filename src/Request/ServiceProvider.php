@@ -29,7 +29,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Request.AddTranslation'] = static function () {
+        $container['Request.AddTranslation'] = function () {
 
             return new Api\AddTranslation(
                 new Auth\Validator(),
@@ -37,21 +37,21 @@ class ServiceProvider implements BootstrappableServiceProvider
                 new ProjectHandler()
             );
         };
-        $container['Request.OrderProject'] = static function () {
+        $container['Request.OrderProject'] = function () {
 
             return new Api\OrderProject(
                 new Auth\Validator(),
                 new Nonces\WpNonce('order_project')
             );
         };
-        $container['Request.UpdateProjectOrderStatus'] = static function () {
+        $container['Request.UpdateProjectOrderStatus'] = function () {
 
             return new Api\UpdateProjectOrderStatus(
                 new Auth\Validator(),
                 new Nonces\WpNonce('update_project')
             );
         };
-        $container['Request.ImportProject'] = static function () {
+        $container['Request.ImportProject'] = function () {
 
             return new Api\ImportProject(
                 new Auth\Validator(),

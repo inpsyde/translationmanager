@@ -25,7 +25,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Assets.Translationmanager'] = static function (Container $container) {
+        $container['Assets.Translationmanager'] = function (Container $container) {
 
             return new Translationmanager($container['translationmanager.plugin']);
         };

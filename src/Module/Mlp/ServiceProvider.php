@@ -26,7 +26,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container[Adapter::class] = static function (Container $container) {
+        $container[Adapter::class] = function (Container $container) {
             return new Adapter(
                 3,
                 $container['Inpsyde\\MultilingualPress\\Framework\\Api\\SiteRelations'],
@@ -47,7 +47,7 @@ class ServiceProvider implements BootstrappableServiceProvider
         );
         $adapter = $container[Adapter::class];
 
-        add_action('multilingualpress.bootstrapped', static function () use ($connectorBootstrap, $adapter) {
+        add_action('multilingualpress.bootstrapped', function () use ($connectorBootstrap, $adapter) {
             $connectorBootstrap->boot($adapter);
         });
     }

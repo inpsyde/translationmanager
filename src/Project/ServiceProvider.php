@@ -25,7 +25,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Project.Taxonomy'] = static function () {
+        $container['Project.Taxonomy'] = function () {
 
             return new Taxonomy();
         };

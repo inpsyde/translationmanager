@@ -17,7 +17,6 @@ use function Translationmanager\Functions\get_languages;
 use function Translationmanager\Functions\translationmanager_api;
 
 /**
-
  * Class Translationmanager
  *
  * @since   1.0.0

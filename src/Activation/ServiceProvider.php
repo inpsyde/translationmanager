@@ -25,7 +25,7 @@ class ServiceProvider implements IntegrableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Activation.Activator'] = static function (Container $container) {
+        $container['Activation.Activator'] = function (Container $container) {
 
             return new Activator($container['translationmanager.plugin']);
         };

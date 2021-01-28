@@ -13,7 +13,6 @@ use Translationmanager\Notice\TransientNoticeService;
 use function Translationmanager\Functions\redirect_admin_page_network;
 
 /**
-
  * Class AddTranslation
  *
  * @since   1.0.0

@@ -13,7 +13,6 @@ use function Translationmanager\Functions\create_project_order;
 use function Translationmanager\Functions\redirect_admin_page_network;
 
 /**
-
  * Class OrderProject
  *
  * @since   1.0.0

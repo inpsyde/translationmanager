@@ -25,7 +25,7 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Metabox.Translation'] = static function () {
+        $container['Metabox.Translation'] = function () {
 
             return new \Translationmanager\MetaBox\Translation();
         };

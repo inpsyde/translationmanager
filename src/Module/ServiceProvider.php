@@ -34,23 +34,23 @@ class ServiceProvider implements IntegrableServiceProvider
      */
     public function register(Container $container)
     {
-        $container[MultilingualPressIntegrator::class] = static function () {
+        $container[MultilingualPressIntegrator::class] = function () {
             return new MultilingualPressIntegrator();
         };
-        $container[WordPressSeoByYoastIntegrator::class] = static function () {
+        $container[WordPressSeoByYoastIntegrator::class] = function () {
             return new WordPressSeoByYoastIntegrator();
         };
-        $container[WooCommerceIntegrator::class] = static function (Container $container) {
+        $container[WooCommerceIntegrator::class] = function (Container $container) {
             return new WooCommerceIntegrator(
                 $container[ProcessorBusFactory::class]
             );
         };
 
-        $container[AcfIntegrator::class] = static function (Container $container) {
+        $container[AcfIntegrator::class] = function (Container $container) {
             return new AcfIntegrator($container['tm/acf/processor_bus']);
         };
 
-        $container['tm/acf/processor_bus'] = static function (Container $container) {
+        $container['tm/acf/processor_bus'] = function (Container $container) {
             $outgoingMetaProcessor = $container['tm/acf/outgoing_meta_processor'];
             $incomingMetaProcessor = $container['tm/acf/incoming_meta_processor'];
             $processorBusFactory = $container[ProcessorBusFactory::class];
@@ -62,15 +62,15 @@ class ServiceProvider implements IntegrableServiceProvider
             return $processorBus;
         };
 
-        $container['tm/acf/outgoing_meta_processor'] = static function () {
+        $container['tm/acf/outgoing_meta_processor'] = function () {
             return new OutgoingMetaProcessor();
         };
 
-        $container['tm/acf/incoming_meta_processor'] = static function () {
+        $container['tm/acf/incoming_meta_processor'] = function () {
             return new IncomingMetaProcessor();
         };
 
-        $container[ModulesProvider::class] = static function (Container $container) {
+        $container[ModulesProvider::class] = function (Container $container) {
             return new ModulesProvider([
                 'wp-seo' => $container[WordPressSeoByYoastIntegrator::class],
                 'multilingualpress' => $container[MultilingualPressIntegrator::class],
@@ -79,18 +79,18 @@ class ServiceProvider implements IntegrableServiceProvider
                 'acf' => $container[ACFIntegrator::class],
             ]);
         };
-        $container['Modules'] = static function (Container $container) {
+        $container['Modules'] = function (Container $container) {
             return new CachingIterator(
                 $container[ModulesProvider::class]->getIterator(),
                 CachingIterator::FULL_CACHE
             );
         };
-        $container[ModuleIntegrator::class] = static function (Container $container) {
+        $container[ModuleIntegrator::class] = function (Container $container) {
             return new ModuleIntegrator(
                 $container['Modules']
             );
         };
-        $container[ProcessorBusFactory::class] = static function () {
+        $container[ProcessorBusFactory::class] = function () {
             return new ProcessorBusFactory();
         };
     }

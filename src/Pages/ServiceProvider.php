@@ -26,15 +26,15 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['Page.Project'] = static function () {
+        $container['Page.Project'] = function () {
 
             return new \Translationmanager\Pages\Project();
         };
-        $container['Page.PluginMainPage'] = static function (Container $container) {
+        $container['Page.PluginMainPage'] = function (Container $container) {
 
             return new \Translationmanager\Pages\PluginMainPage($container['translationmanager.plugin']);
         };
-        $container['Page.PageOptions'] = static function (Container $container) {
+        $container['Page.PageOptions'] = function (Container $container) {
 
             return new \Translationmanager\Pages\PageOptions($container['translationmanager.plugin']);
         };

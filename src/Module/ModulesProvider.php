@@ -6,7 +6,6 @@ namespace Translationmanager\Module;
 
 use ArrayIterator;
 use IteratorAggregate;
-use NoRewindIterator;
 use Translationmanager\Utils\Assert;
 
 /**

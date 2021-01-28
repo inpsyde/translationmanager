@@ -116,7 +116,7 @@ final class ProjectItem extends TableList
     {
         add_action(
             'pre_get_posts',
-            static function (WP_Query &$query) {
+            function (WP_Query &$query) {
 
                 // Filter By Language.
                 $lang_id = filter_input(
@@ -365,7 +365,7 @@ final class ProjectItem extends TableList
     {
         // Retrieve all of the users that has an item.
         $userItems = array_map(
-            static function ($item) {
+            function ($item) {
 
                 return (int)$item->post_author;
             },
@@ -375,7 +375,7 @@ final class ProjectItem extends TableList
         // Filter the user that has an item associated.
         $users = array_filter(
             $users,
-            static function ($user) use ($userItems) {
+            function ($user) use ($userItems) {
 
                 return in_array($user->ID, $userItems, true);
             }

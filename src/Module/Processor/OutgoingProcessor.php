@@ -4,7 +4,6 @@
 
 namespace Translationmanager\Module\Processor;
 
-use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Translation;
 
 /**

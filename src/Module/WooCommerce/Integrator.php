@@ -54,13 +54,13 @@ class Integrator implements Integrable
 
         add_action(
             'translationmanager_outgoing_data',
-            static function (Translation $translation) use ($processorBus) {
+            function (Translation $translation) use ($processorBus) {
                 $processorBus->process($translation);
             }
         );
         add_action(
             'translationmanager_updated_post',
-            static function (Translation $translation) use ($processorBus) {
+            function (Translation $translation) use ($processorBus) {
                 $processorBus->process($translation);
             }
         );
