@@ -37,12 +37,12 @@ add_filter(
 		}
 
 		if ( false !== strpos( $file, 'translationmanager.php' ) ) {
-			$links[1] = strip_tags(
+			$links[1] = wp_kses(
 				__(
 					'By <a href="https://eurotext.de/en">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>',
 					'translationmanager'
 				),
-				'<a>'
+				'data'
 			);
 		}
 
