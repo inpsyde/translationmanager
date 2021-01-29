@@ -4,7 +4,10 @@
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "preferred-install": {
+            "inpsyde/multilingualpress": "dist"
+        }
     },
     "authors": [
         {
@@ -17,10 +20,12 @@
         {
             "type": "composer",
             "url": "https://repo.packagist.com/inpsyde/"
-        }
+        },
+        { "packagist.org": false }
     ],
+    "minimum-stability": "dev",
     "require": {
-        "php": ">=5.6",
+        "php": "^7.1",
         "ext-fileinfo": "*",
         "brain/nonces": "1.0.*",
         "inpsyde/system-status": "dev-master",
@@ -28,10 +33,14 @@
         "webmozart/assert": "^1.4"
     },
     "require-dev": {
+        "johnpbloch/wordpress-core": "^5.0",
         "barryvdh/composer-cleanup-plugin": "^0.2.0",
         "brain/monkey": "2.*",
-        "inpsyde/php-coding-standards": "^0.13.3",
-        "phpunit/phpunit": "~5"
+        "inpsyde/php-coding-standards": "^1.0",
+        "phpunit/phpunit": "^6.0 | ^7.0 | ^8.0 | ^9.0",
+        "vimeo/psalm": "^3.11.7",
+        "oomphinc/composer-installers-extender": "^1.1",
+        "inpsyde/multilingualpress": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -44,6 +53,11 @@
             "TranslationmanagerTests\\Unit\\": "tests/php/unit/src",
             "TranslationmanagerTests\\Functional\\": "tests/php/Functional/src",
             "TranslationmanagerTests\\Integration\\": "tests/php/integration/src"
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/{$vendor}/{$name}": ["type:wordpress-plugin"]
         }
     }
 }

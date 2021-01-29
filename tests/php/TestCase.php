@@ -2,7 +2,7 @@
 
 namespace TranslationmanagerTests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 use Brain\Monkey;
 use ReflectionClass;
 use ReflectionException;
@@ -12,7 +12,7 @@ use ReflectionMethod;
  * Class TestCase
  * @package TranslationmanagerTests
  */
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends PhpUnitTestCase
 {
     /**
      * @inheritDoc

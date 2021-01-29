@@ -1,4 +1,6 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
+# -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\ACF\Processor;
 
@@ -69,6 +71,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      *
      * phpcs:disable Generic.Metrics.NestingLevel.MaxExceeded
      * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.MaxExceeded
      */
     protected function addACFFieldKeys(array $fields, array $keys, $postID)
     {
@@ -157,7 +160,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return '';
         }
 
-        $acfKey = get_post_meta($postID, '_'.$key, true);
+        $acfKey = get_post_meta($postID, '_' . $key, true);
         $acfFieldObject = get_field_object($acfKey);
 
         return !empty($acfFieldObject) ? $acfFieldObject['type'] : '';

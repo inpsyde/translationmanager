@@ -1,10 +1,11 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
+# -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module;
 
 use ArrayIterator;
 use IteratorAggregate;
-use NoRewindIterator;
 use Translationmanager\Utils\Assert;
 
 /**
