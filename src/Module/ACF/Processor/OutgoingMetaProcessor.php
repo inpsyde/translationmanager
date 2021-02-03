@@ -149,7 +149,8 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                 $keys = array_merge($keys, $this->recursivelyFindLayoutFieldKeys($array[$key], $newKey, $postID));
             }
 
-            if ($key === self::FLEXIBLE_FIELD_LAYOUT_KEY ||
+            if (
+                $key === self::FLEXIBLE_FIELD_LAYOUT_KEY ||
                 !in_array($fieldType, self::TRANSLATABLE_FIELD_TYPES, true)
             ) {
                 continue;
