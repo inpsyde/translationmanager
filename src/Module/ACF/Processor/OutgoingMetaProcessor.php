@@ -38,7 +38,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         'wysiwyg',
         self::FIELD_TYPE_GROUP,
         self::FIELD_TYPE_REPEATER,
-        self::FIELD_TYPE_FLEXIBLE
+        self::FIELD_TYPE_FLEXIBLE,
     ];
 
     /**
@@ -156,7 +156,6 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             }
 
             $keys[$newKey] = $value;
-
         }
         return $keys;
     }
@@ -174,7 +173,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return '';
         }
 
-        $acfKey = get_post_meta($postID, '_'.$key, true);
+        $acfKey = get_post_meta($postID, '_' . $key, true);
         $acfFieldObject = get_field_object($acfKey);
 
         if (empty($acfFieldObject) && !empty($acfKey)) {
@@ -200,6 +199,6 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             $needle,
             $number > 1 ?
                     $this->getClonedFieldKeyPosition($key, $needle, $number - 1) + strlen($needle) : 0
-        )-1;
+        ) - 1;
     }
 }
