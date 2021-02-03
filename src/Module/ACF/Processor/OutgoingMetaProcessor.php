@@ -33,8 +33,12 @@ class OutgoingMetaProcessor implements OutgoingProcessor
     const FIELD_TYPE_REPEATER = 'repeater';
     const FIELD_TYPE_FLEXIBLE = 'flexible_content';
     const TRANSLATABLE_FIELD_TYPES = [
-        'text', 'textarea', 'wysiwyg',
-        self::FIELD_TYPE_GROUP, self::FIELD_TYPE_REPEATER, self::FIELD_TYPE_FLEXIBLE
+        'text',
+        'textarea',
+        'wysiwyg',
+        self::FIELD_TYPE_GROUP,
+        self::FIELD_TYPE_REPEATER,
+        self::FIELD_TYPE_FLEXIBLE
     ];
 
     /**
@@ -72,6 +76,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      * @return array the array of meta keys to be synced
      *
      * phpcs:disable Generic.Metrics.NestingLevel.MaxExceeded
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.MaxExceeded
      * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
      */
     protected function addACFFieldKeys(array $fields, array $keys, $postID)
@@ -144,7 +149,8 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                 $keys = array_merge($keys, $this->recursivelyFindLayoutFieldKeys($array[$key], $newKey, $postID));
             }
 
-            if ($key === self::FLEXIBLE_FIELD_LAYOUT_KEY ||
+            if (
+                $key === self::FLEXIBLE_FIELD_LAYOUT_KEY ||
                 !in_array($fieldType, self::TRANSLATABLE_FIELD_TYPES, true)
             ) {
                 continue;
