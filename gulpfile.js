@@ -326,6 +326,7 @@ function _archive({baseDir, buildDir, distDir, packageVersion, packageName}) {
                             'assets/**/*.*',
                             'resources/**/*.*',
                             '!resources/scss/**/*.*',
+                            'views/**/*.*',
                             'LICENSE',
                             'translationmanager.php',
 
