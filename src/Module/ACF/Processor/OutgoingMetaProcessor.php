@@ -1,4 +1,6 @@
-<?php # -*- coding: utf-8 -*-
+<?php
+
+# -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\ACF\Processor;
 
@@ -30,7 +32,14 @@ class OutgoingMetaProcessor implements OutgoingProcessor
     const FIELD_TYPE_GROUP = 'group';
     const FIELD_TYPE_REPEATER = 'repeater';
     const FIELD_TYPE_FLEXIBLE = 'flexible_content';
-    const TRANSLATABLE_FIELD_TYPES = ['text', 'textarea', 'wysiwyg', self::FIELD_TYPE_GROUP, self::FIELD_TYPE_REPEATER, self::FIELD_TYPE_FLEXIBLE];
+    const TRANSLATABLE_FIELD_TYPES = [
+        'text',
+        'textarea',
+        'wysiwyg',
+        self::FIELD_TYPE_GROUP,
+        self::FIELD_TYPE_REPEATER,
+        self::FIELD_TYPE_FLEXIBLE,
+    ];
 
     /**
      * @inheritDoc
@@ -45,7 +54,6 @@ class OutgoingMetaProcessor implements OutgoingProcessor
 
         $fields = get_field_objects($sourcePostId);
         $acfFields = $this->addACFFieldKeys($fields, [], $sourcePostId);
-
         $toNotTranslate = $acfFields['to-not-translate'];
         unset($acfFields['to-not-translate']);
         if (!empty($acfFields)) {
@@ -68,6 +76,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      * @return array the array of meta keys to be synced
      *
      * phpcs:disable Generic.Metrics.NestingLevel.MaxExceeded
+     * phpcs:disable Inpsyde.CodeQuality.NestingLevel.MaxExceeded
      * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
      */
     protected function addACFFieldKeys(array $fields, array $keys, $postID)
@@ -87,10 +96,16 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                     $foundKeys = $this->recursivelyFindLayoutFieldKeys($field['value'], $field['name'], $postID);
                     foreach ($foundKeys as $key => $value) {
                         $fieldType = $this->getFieldTypeByKey($key, $postID);
+                        //var_dump($fieldType, $key);
                         if ($fieldType === self::FIELD_TYPE_REPEATER && !empty($value)) {
                             $keys['to-not-translate'][$key] = count($value);
                             continue;
                         }
+
+                        if ($fieldType === self::FIELD_TYPE_GROUP) {
+                            continue;
+                        }
+
                         $keys[$key] = $value;
                     }
                     if ($field['type'] === self::FIELD_TYPE_FLEXIBLE) {
@@ -128,14 +143,16 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         $keys = [];
         foreach ($array as $key => $value) {
             $newKey = $parentKey . '_' . $key;
+            $fieldType = $this->getFieldTypeByKey($newKey, $postID);
 
             if (is_array($array[$key])) {
                 $keys = array_merge($keys, $this->recursivelyFindLayoutFieldKeys($array[$key], $newKey, $postID));
             }
 
-            $fieldType = $this->getFieldTypeByKey($newKey, $postID);
-
-            if ($key === self::FLEXIBLE_FIELD_LAYOUT_KEY || !in_array($fieldType, self::TRANSLATABLE_FIELD_TYPES, true)) {
+            if (
+                $key === self::FLEXIBLE_FIELD_LAYOUT_KEY ||
+                !in_array($fieldType, self::TRANSLATABLE_FIELD_TYPES, true)
+            ) {
                 continue;
             }
 
@@ -157,9 +174,32 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return '';
         }
 
-        $acfKey = get_post_meta($postID, '_'.$key, true);
+        $acfKey = get_post_meta($postID, '_' . $key, true);
         $acfFieldObject = get_field_object($acfKey);
 
+        if (empty($acfFieldObject) && !empty($acfKey)) {
+            $fieldKeyPosition = $this->getClonedFieldKeyPosition($acfKey, 'field_', 2);
+            $acfFieldObject = get_field_object(substr($acfKey, -$fieldKeyPosition));
+        }
+
         return !empty($acfFieldObject) ? $acfFieldObject['type'] : '';
+    }
+
+    /**
+     * Will get the cloned filed position, the real key position
+     *
+     * @param string $key The ACF field Key
+     * @param string $needle The needle to find prefix and real key
+     * @param int $number from which occurrence of needle to find the position
+     * @return false|int
+     */
+    protected function getClonedFieldKeyPosition($key, $needle, $number = 0)
+    {
+        return strpos(
+            $key,
+            $needle,
+            $number > 1 ?
+                    $this->getClonedFieldKeyPosition($key, $needle, $number - 1) + strlen($needle) : 0
+        ) - 1;
     }
 }

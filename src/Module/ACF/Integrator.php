@@ -26,7 +26,6 @@ class Integrator implements Integrable
      */
     private $processorBus;
 
-
     /**
      * @param ProcessorBus $processorBus
      */

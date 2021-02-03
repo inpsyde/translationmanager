@@ -1,8 +1,9 @@
-<?php // -*- coding: utf-8 -*-
+<?php
+
+// -*- coding: utf-8 -*-
 
 namespace Translationmanager\Module\Processor;
 
-use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Translation;
 
 /**

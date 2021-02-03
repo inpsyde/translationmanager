@@ -25,10 +25,15 @@
         <exclude name="Inpsyde.CodeQuality.FunctionLength.TooLong"/>
         <exclude name="Generic.Metrics.NestingLevel.TooHigh"/>
         <exclude name="NeutronStandard.Arrays.DisallowLongformArray.LongformArray"/>
+        <exclude name="Inpsyde.CodeQuality.StaticClosure"/>
     </rule>
 
     <rule ref="PHPCompatibility">
         <exclude name="PHPCompatibility.Interfaces.NewInterfaces.jsonserializableFound"/>
     </rule>
 
+    <rule ref="PSR12">
+        <exclude name="PSR12.Files.OpenTag.NotAlone"/>
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
+    </rule>
 </ruleset>
