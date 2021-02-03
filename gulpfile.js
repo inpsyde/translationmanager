@@ -324,6 +324,8 @@ function _archive({baseDir, buildDir, distDir, packageVersion, packageName}) {
                             'modules.local/**/*.*',
                             '!node_modules/.package.lock.json',
                             'assets/**/*.*',
+                            'resources/**/*.*',
+                            '!resources/scss/**/*.*',
                             'LICENSE',
                             'translationmanager.php',
 
