@@ -6,6 +6,7 @@
 namespace Translationmanager\Functions;
 
 use Translationmanager\Plugin;
+use Traversable;
 
 /**
  * Resolve path to template.
@@ -363,4 +364,16 @@ function version_compare( $ver1, $ver2, $constraint ) {
 	$ver2 = (string) preg_replace( '/[^0-9\.]+/', '', $ver2 );
 
 	return \version_compare( $ver1, $ver2, $constraint );
+}
+
+/**
+ * Retrieve the list of names of post types supported by translationMANAGER.
+ *
+ * @return Traversable|list<string> The list of post type names.
+ */
+function get_supported_post_types() {
+    $postTypeNames = get_post_types(['public' => true]);
+    $postTypeNames = apply_filters('translationmanager_supported_post_types', $postTypeNames);
+
+    return $postTypeNames;
 }

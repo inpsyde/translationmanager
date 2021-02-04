@@ -5,6 +5,8 @@
  * @since 1.0.0
  */
 
+use function Translationmanager\Functions\get_supported_post_types;
+
 // CPT Project.
 add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
 
@@ -12,8 +14,11 @@ add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_p
 add_action( 'translationmanager_project_pre_add_form', 'Translationmanager\\Functions\\project_hide_slug' );
 add_action( 'translationmanager_project_pre_edit_form', 'Translationmanager\\Functions\\project_hide_slug' );
 
-add_filter( 'handle_bulk_actions-edit-post', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
-add_filter( 'handle_bulk_actions-edit-page', 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
+add_action('init', function () {
+    foreach (get_supported_post_types() as $postTypeName) {
+        add_filter("handle_bulk_actions-edit-{$postTypeName}", 'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts', 10, 3 );
+    }
+}, 11);
 
 // Misc.
 add_action(
@@ -37,12 +42,12 @@ add_filter(
 		}
 
 		if ( false !== strpos( $file, 'translationmanager.php' ) ) {
-			$links[1] = strip_tags(
+			$links[1] = wp_kses(
 				__(
 					'By <a href="https://eurotext.de/en">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>',
 					'translationmanager'
 				),
-				'<a>'
+				'data'
 			);
 		}
 

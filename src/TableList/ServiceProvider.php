@@ -30,6 +30,8 @@ namespace Translationmanager\TableList;
 use Pimple\Container;
 use Translationmanager\Service\BootstrappableServiceProvider;
 
+use function Translationmanager\Functions\get_supported_post_types;
+
 /**
  * Class ServiceProvider
  *
@@ -71,18 +73,13 @@ class ServiceProvider implements BootstrappableServiceProvider
             'manage_posts_extra_tablenav',
             [$container['TableList.RestrictManagePosts'], 'restrict_manage_posts']
         );
-        add_filter(
-            'bulk_actions-edit-post',
-            [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
-        );
-        add_filter(
-            'bulk_actions-edit-page',
-            [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
-        );
-
-        add_filter(
-            'bulk_actions-edit-product',
-            [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
-        );
+        add_action('init', function () use ($container) {
+            foreach (get_supported_post_types() as $postTypeName) {
+                add_filter(
+                    "bulk_actions-edit-{$postTypeName}",
+                    [$container['TableList.RestrictManagePosts'], 'filter_bulk_action_list']
+                );
+            }
+        }, 11);
     }
 }

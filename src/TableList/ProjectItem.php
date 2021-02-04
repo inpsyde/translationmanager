@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project Item Table List
  *
@@ -543,7 +544,11 @@ final class ProjectItem extends TableList
         $project = Functions\filter_input(
             ['translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT],
             INPUT_GET
-        )['translationmanager_project_id'];
+        );
+
+        if (is_array($project) && array_key_exists('translationmanager_project_id', $project)) {
+            $project = $project['translationmanager_project_id'];
+        }
 
         if (!$project) {
             return null;
