@@ -54,7 +54,8 @@ class OutgoingMetaProcessor implements OutgoingProcessor
 
         $fields = get_field_objects($sourcePostId);
         $acfFields = $this->addACFFieldKeys($fields, [], $sourcePostId);
-        $toNotTranslate = $acfFields['to-not-translate'];
+
+        $toNotTranslate = $acfFields['to-not-translate'] ?? [];
         unset($acfFields['to-not-translate']);
         if (!empty($acfFields)) {
             $translation->set_value(Integrator::ACF_FIELDS, $acfFields, self::_NAMESPACE);
@@ -96,19 +97,19 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                     $foundKeys = $this->recursivelyFindLayoutFieldKeys($field['value'], $field['name'], $postID);
                     foreach ($foundKeys as $key => $value) {
                         $fieldType = $this->getFieldTypeByKey($key, $postID);
-                        //var_dump($fieldType, $key);
                         if ($fieldType === self::FIELD_TYPE_REPEATER && !empty($value)) {
                             $keys['to-not-translate'][$key] = count($value);
                             continue;
                         }
 
-                        if ($fieldType === self::FIELD_TYPE_GROUP) {
+                        if ($fieldType === self::FIELD_TYPE_GROUP || $fieldType === self::FIELD_TYPE_FLEXIBLE) {
                             continue;
                         }
 
                         $keys[$key] = $value;
                     }
                     if ($field['type'] === self::FIELD_TYPE_FLEXIBLE) {
+                        $layoutArr = [];
                         foreach ($field['value'] as $value) {
                             if (isset($value['acf_fc_layout'])) {
                                 $layoutArr[] = $value['acf_fc_layout'];
