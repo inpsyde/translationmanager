@@ -6,6 +6,7 @@ use BadFunctionCallException;
 use Inpsyde\MultilingualPress\Framework\Api\ContentRelations;
 use Inpsyde\MultilingualPress\Framework\Database\Exception\NonexistentTable;
 use Translationmanager\Utils\Assert;
+use function Inpsyde\MultilingualPress\siteExists;
 
 /**
  * Class Adapter
@@ -181,7 +182,13 @@ class Adapter
             self::$methods_mapper['site_relations'][__FUNCTION__][$this->version],
         ];
 
-        return $cb($site_id);
+        $relatedSites = $cb($site_id);
+
+        $activeRelatedSites = array_filter($relatedSites, function ($site) {
+            return siteExists($site);
+        });
+
+        return $activeRelatedSites;
     }
 
     /**
