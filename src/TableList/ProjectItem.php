@@ -301,7 +301,7 @@ final class ProjectItem extends TableList
                         '<span class="deactivated-site">%1$s : </span></br>
                                 <span class="deactivated-notice" style="color:#D54E21">%2$s</span>',
                         esc_html($deactivatedLanguageName),
-                        esc_html($deactivatedLanguageNotice),
+                        esc_html($deactivatedLanguageNotice)
                     );
                     break;
                 }
