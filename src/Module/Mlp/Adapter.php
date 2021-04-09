@@ -6,6 +6,7 @@ use BadFunctionCallException;
 use Inpsyde\MultilingualPress\Framework\Api\ContentRelations;
 use Inpsyde\MultilingualPress\Framework\Database\Exception\NonexistentTable;
 use Translationmanager\Utils\Assert;
+
 use function Inpsyde\MultilingualPress\siteExists;
 
 /**
