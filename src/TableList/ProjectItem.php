@@ -296,7 +296,7 @@ final class ProjectItem extends TableList
                     $orderInfo = new OrderInfo($project_id);
                     $orderStatus = $orderInfo->get_status_label();
                     $deactivatedLanguageNotice = $orderStatus === 'Ready to order'
-                        ? __('The site has been deactivated, the item will not be send for translation', 'translationmanager')
+                        ? __('The site has been deactivated, the item will not be sent for translation', 'translationmanager')
                         : __('The site has been deactivated, the item will not be imported', 'translationmanager');
                     printf(
                         '<span class="deactivated-site">%1$s : </span></br>
