@@ -143,7 +143,8 @@ $bootstrap = \Closure::bind( function () {
 			->register( new Translationmanager\Request\ServiceProvider() )
 			->register( new Translationmanager\SystemStatus\ServiceProvider() )
 			->register( new Translationmanager\Activation\ServiceProvider() )
-			->register( new Translationmanager\Module\ServiceProvider() );
+			->register( new Translationmanager\Module\ServiceProvider() )
+			->register( new Translationmanager\Xliff\ServiceProvider() );
 
 		$providers
 			->bootstrap()
