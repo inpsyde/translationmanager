@@ -43,8 +43,12 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
+        $container['Xliff'] = function (Container $container) {
+            return new Xliff();
+        };
+
         $container['Xliff.export'] = function (Container $container) {
-            return new Export($container['translationmanager.plugin']);
+            return new Export($container['translationmanager.plugin'], $container['Xliff']);
         };
     }
 

@@ -14,9 +14,10 @@ declare(strict_types=1);
 
 namespace Translationmanager\Xliff;
 
-use SimpleXMLElement;
+use Translationmanager\Functions;
 use Translationmanager\Plugin;
 use WP_Term;
+use ZipArchive;
 
 class Export
 {
@@ -30,15 +31,23 @@ class Export
     private $plugin;
 
     /**
+     * Xliff
+     *
+     * @var Xliff
+     */
+    private $xliff;
+
+    /**
      * Export XLIFF constructor
      *
      * @param Plugin $plugin The plugin instance.
      *
      * @since 1.0.0
      */
-    public function __construct(Plugin $plugin)
+    public function __construct(Plugin $plugin, Xliff $xliff)
     {
         $this->plugin = $plugin;
+        $this->xliff = $xliff;
     }
 
     /**
@@ -70,31 +79,57 @@ class Export
             wp_send_json_error('Invalid project name.');
         }
 
-        $simplexml= new SimpleXMLElement('<?xml version="1.0"?><books/>');
+        $projectItems = Functions\get_project_items($projectId);
 
-        $book1= $simplexml->addChild('book');
-        $book1->addChild("booktitle", "The Wandering Oz");
-        $book1->addChild("publicationdate", '2007');
+        $projectItemsByTargetLanguages = [];
 
-        $book2= $simplexml->addChild('book');
-        $book2->addChild("booktitle", "The Roaming Fox");
-        $book2->addChild("publicationdate", '2009');
+        foreach ($projectItems as $item) {
+            $langId = get_post_meta($item->ID, '_translationmanager_target_id', true);
+            $languages = Functions\get_languages();
 
-        $book3= $simplexml->addChild('book');
-        $book3->addChild("booktitle", "The Dominant Lion");
-        $book3->addChild("publicationdate", '2012');
+            if ($langId && isset($languages[$langId])) {
+                $language = $languages[$langId]->get_lang_code();
+                $projectItemsByTargetLanguages[$language][] = $item;
+            }
+        }
 
+        $sourceLanguage = Functions\current_language();
+        if (!$sourceLanguage) {
+            wp_send_json_error('Invalid source language.');
+        }
+
+        $xliffFiles = [];
+        $sourceLanguageCode = $sourceLanguage->get_lang_code();
         $path = $this->plugin->dir('resources/xliff-translations');
+        $projectName = sanitize_file_name($project->name);
+
+        foreach ($projectItemsByTargetLanguages as $targetLanguageCode => $projectItems) {
+            $fromTargetToSource = $sourceLanguageCode . '-' . $targetLanguageCode;
+            $xliffFIleName = 'Translation-' . $fromTargetToSource . '-For-' . $projectName . '.xlf';
+            $xliffFilePath = $path . '/' . $xliffFIleName;
+            if ($this->xliff->generateExport(
+                $projectItems,
+                $xliffFilePath,
+                $sourceLanguageCode,
+                $targetLanguageCode
+            )) {
+                $zip = new ZipArchive;
+                $xliffZipName = 'Translation-For-' . $projectName . '.zip';
+                $xliffZipPath = $path . '/' . $xliffZipName;
+
+                if ($zip->open($xliffZipPath, ZipArchive::CREATE)!==true) {
+                    wp_send_json_error("cannot open <$xliffZipPath>\n");
+                }
+                $zip->addFile($xliffFilePath, $xliffFIleName);
+                $zip->close();
+            }
+        }
+
         $url = $this->plugin->url('resources/xliff-translations');
 
-        $xliffFIleName = 'Translation-For-' . sanitize_file_name($project->name) . '.xml';
-        $xliffFilePath = $path . '/' . $xliffFIleName;
-
-        $simplexml->saveXML($xliffFilePath);
-
         $xliffFileDownloadInfo = [
-            'fileName' => $xliffFIleName,
-            'fileUrl' => $url . '/' . $xliffFIleName,
+            'fileName' => $xliffZipName,
+            'fileUrl' => $url . '/' . $xliffZipName,
         ];
 
         wp_send_json_success($xliffFileDownloadInfo);

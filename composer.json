@@ -31,7 +31,8 @@
         "inpsyde/system-status": "dev-master",
         "pimple/pimple": "^3.2",
         "webmozart/assert": "^1.4",
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+      "ext-zip": "*"
     },
     "require-dev": {
         "johnpbloch/wordpress-core": "^5.0",
