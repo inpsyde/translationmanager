@@ -44,16 +44,23 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
-        $container['tm/acf/acf'] = function () {
+        $container['tm/ACF/Acf'] = function () {
             return new Acf();
         };
 
-        $container['Xliff'] = function (Container $container) {
-            return new Xliff($container['tm/acf/acf']);
+        $container['tm/Xliff/XliffElementCreationHelper'] = function () {
+            return new XliffElementCreationHelper();
         };
 
-        $container['Xliff.export'] = function (Container $container) {
-            return new Export($container['translationmanager.plugin'], $container['Xliff']);
+        $container['tm/Xliff'] = function (Container $container) {
+            return new Xliff(
+                $container['tm/ACF/Acf'],
+                $container['tm/Xliff/XliffElementCreationHelper']
+            );
+        };
+
+        $container['tm/Xliff/Export'] = function (Container $container) {
+            return new Export($container['translationmanager.plugin'], $container['tm/Xliff']);
         };
     }
 

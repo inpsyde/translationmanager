@@ -195,11 +195,13 @@ class Export
             }
 
             $this->addFileIntoZip($xliffFilePath, $xliffFIleName, $xliffZipName);
+            unlink($this->xliffFilePath($xliffFIleName));
         }
 
         if (!file_exists($this->xliffZipPath($xliffZipName))) {
             return '';
         }
+
 
         return $xliffZipName;
     }

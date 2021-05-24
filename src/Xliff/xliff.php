@@ -14,9 +14,11 @@ declare(strict_types=1);
 
 namespace Translationmanager\Xliff;
 
+use Exception;
 use SimpleXMLElement;
 use WP_Post;
 use Translationmanager\Module\ACF\Acf;
+use WPSEO_Meta;
 
 class Xliff
 {
@@ -27,13 +29,28 @@ class Xliff
      */
     private $acf;
 
-    public function __construct($acf)
+    /**
+     * XliffElementCreationHelper
+     *
+     * @var XliffElementCreationHelper
+     */
+    private $xliffElementCreationHelper;
+
+    public function __construct(Acf $acf, XliffElementCreationHelper $xliffElementCreationHelper)
     {
         $this->acf = $acf;
+        $this->xliffElementCreationHelper = $xliffElementCreationHelper;
     }
 
     /**
-     * Handle AJAX request.
+     * Will create the XLIFF file based on the posts array passed
+     *
+     * @param array $posts Array of posts for which the XLIFF should be generated
+     * @param string $xliffFilePath The path of directory where the XLIFF should be created
+     * @param string $sourceLanguage The Source site language code
+     * @param string $targetLanguage The target site language code
+     * @return bool false if the generation of XLIFF failed and true if successful
+     * @throws Exception
      */
     public function generateExport(
         array $posts,
@@ -46,71 +63,110 @@ class Xliff
             return false;
         }
 
-        $xmlHeader = $this->xliffHeaderMarkup($sourceLanguage, $targetLanguage, $xliffFilePath);
-        $xmlFooter = "</file></xliff>";
+        $xliff = new SimpleXMLElement(
+            $this->xliffElementCreationHelper->xliffHeaderFooterMarkup(
+                $sourceLanguage,
+                $targetLanguage,
+                $xliffFilePath
+            )
+        );
 
-        $xmlBody = '';
         foreach ($posts as $post) {
             if (!$post instanceof WP_Post) {
                 return false;
             }
 
             $postId = $post->_translationmanager_post_id;
-            $realPost = get_post($postId);
-
-            $fields = get_field_objects($realPost->ID);
-            $acfFields = $this->acf->acfFieldKeys($fields, [], $realPost->ID);
-            $acfPart = "<unit id='acf_fields'>
-                            <notes>
-                                <note id='acf_fields'>The ACF fields</note>
-                            </notes>";
-            foreach ($acfFields as $key => $value) {
-                $acfPart .= "<segment id='{$key}' state='initial'>
-                                <source>{$value}</source>
-                                <target>{$value}</target>
-                            </segment>";
+            $sourcePost = get_post($postId);
+            if (!$sourcePost instanceof WP_Post) {
+                return false;
             }
-            $acfPart .= "</unit>";
 
-            $xmlBody .= "
-                <group id='{$realPost->ID}'>
-                    <unit id='post_defaults'>
-                        <notes>
-                            <note id='post_defaults'>The Post default translatable fields(title and content)</note>
-                        </notes>
-                        <segment id='post_title' state='initial'>
-                            <source>{$realPost->post_title}</source>
-                            <target>{$realPost->post_title}</target>
-                        </segment>
-                        <segment id='post_content' state='initial'>
-                            <source>{$realPost->post_content}</source>
-                            <target>{$realPost->post_content}</target>
-                        </segment>
-                    </unit>
-                    {$acfPart};
-                </group>
-            ";
-
-        }write_log($xmlBody);
-
-        $xliffStructure = $xmlHeader . $xmlBody . $xmlFooter;
-
-
-        $xliff = new SimpleXMLElement($xliffStructure);
+            $postEntity = $this->xliffElementCreationHelper->addGroup($xliff, ['id' => (string)$sourcePost->ID]);
+            $this->xliffPostDefaultTranslatableFieldsMarkup($sourcePost, $postEntity);
+            $this->xliffAcfMarkup($sourcePost->ID, $postEntity);
+            $this->xliffYoastMarkup($sourcePost->ID, $postEntity);
+        }
 
         return $xliff->saveXML($xliffFilePath);
     }
 
-    protected function xliffHeaderMarkup(
-        string $sourceLanguage,
-        string $targetLanguage,
-        string $path
-    ): string {
+    /**
+     * Will generate the XLIFF part with ACF translatable fields
+     *
+     * @param int $sourcePostId The project item source post ID
+     * @param SimpleXMLElement $group The element where the fields should be added
+     */
+    protected function xliffAcfMarkup(int $sourcePostId, SimpleXMLElement $group)
+    {
+        if (!class_exists('ACF')) {
+            return;
+        }
 
-        return "<?xml version='1.0' standalone='yes'?>
-            <xliff xmlns='urn:oasis:names:tc:xliff:document:2.0'
-            version='2.0' srcLang='{$sourceLanguage}' trgLang='{$targetLanguage}'>
-            <file>
-                <skeleton href='{$path}'/>";
+        $fields = get_field_objects($sourcePostId);
+        if (empty($fields)) {
+            return;
+        }
+
+        $acfFields = $this->acf->acfFieldKeys($fields, [], $sourcePostId);
+        if (empty($acfFields)) {
+            return;
+        }
+
+        $acfUnit= $this->xliffElementCreationHelper->addUnit($group, ['id' => 'acf_fields']);
+        $this->xliffElementCreationHelper->addNotes($acfUnit, ['acf_fields' => 'The ACF fields']);
+        foreach ($acfFields as $key => $value) {
+            if (!is_string($value)) {
+                continue;
+            }
+            $this->xliffElementCreationHelper->addSegment($acfUnit, ['id'=> $key, 'state'=>'initial'], $value);
+        }
+    }
+
+    /**
+     * Will generate the XLIFF markup part for default translatable post fields
+     *
+     * @param WP_Post $sourcePost The project item source post
+     * @param SimpleXMLElement $group The element where the fields should be added
+     */
+    protected function xliffPostDefaultTranslatableFieldsMarkup(WP_Post $sourcePost, SimpleXMLElement $group)
+    {
+        $postDefaultsUnit= $this->xliffElementCreationHelper->addUnit($group, ['id' => 'post_defaults']);
+        $notes = [
+            'post_defaults' => 'The Post default translatable fields(title and content)'
+        ];
+        $this->xliffElementCreationHelper->addNotes($postDefaultsUnit, $notes);
+        $this->xliffElementCreationHelper->addSegment(
+            $postDefaultsUnit,
+            ['id'=>'post_title', 'state'=>'initial'],
+            $sourcePost->post_title
+        );
+        $this->xliffElementCreationHelper->addSegment(
+            $postDefaultsUnit,
+            ['id'=>'post_content', 'state'=>'initial'],
+            $sourcePost->post_content
+        );
+    }
+
+    /**
+     * Will generate the XLIFF part with Yoast translatable fields
+     *
+     * @param int $sourcePostId The project item source post ID
+     * @param SimpleXMLElement $group The element where the fields should be added
+     */
+    protected function xliffYoastMarkup(int $sourcePostId, SimpleXMLElement $group)
+    {
+        if (!class_exists('WPSEO_Meta')) {
+            return;
+        }
+
+        $yoastUnit= $this->xliffElementCreationHelper->addUnit($group, ['id' => 'yoast_fields']);
+        $this->xliffElementCreationHelper->addNotes($yoastUnit, ['yoast_fields' => 'The Yoast fields']);
+
+        $translatableFields = ['title', 'metadesc', 'focuskw', 'bctitle'];
+        foreach ($translatableFields as $key) {
+            $field = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
+            $this->xliffElementCreationHelper->addSegment($yoastUnit, ['id'=> $key, 'state'=>'initial'], $field);
+        }
     }
 }
