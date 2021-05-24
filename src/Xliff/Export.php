@@ -249,7 +249,7 @@ class Export
      */
     protected function xliffZipName(string $projectName): string
     {
-        return 'Translation-For-' . $projectName . 'zip';
+        return 'Translation-For-' . $projectName . '.zip';
     }
 
     /**

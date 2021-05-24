@@ -16,12 +16,20 @@ namespace Translationmanager\Xliff;
 
 use SimpleXMLElement;
 use WP_Post;
+use Translationmanager\Module\ACF\Acf;
 
 class Xliff
 {
+    /**
+     * Acf
+     *
+     * @var Acf
+     */
+    private $acf;
 
-    public function __construct()
+    public function __construct($acf)
     {
+        $this->acf = $acf;
     }
 
     /**
@@ -47,19 +55,43 @@ class Xliff
                 return false;
             }
 
+            $postId = $post->_translationmanager_post_id;
+            $realPost = get_post($postId);
+
+            $fields = get_field_objects($realPost->ID);
+            $acfFields = $this->acf->acfFieldKeys($fields, [], $realPost->ID);
+            $acfPart = "<unit id='acf_fields'>
+                            <notes>
+                                <note id='acf_fields'>The ACF fields</note>
+                            </notes>";
+            foreach ($acfFields as $key => $value) {
+                $acfPart .= "<segment id='{$key}' state='initial'>
+                                <source>{$value}</source>
+                                <target>{$value}</target>
+                            </segment>";
+            }
+            $acfPart .= "</unit>";
+
             $xmlBody .= "
-                <unit id='{$post->ID}'>
-                    <segment id='post_title' state='initial'>
-                        <source>{$post->post_title}</source>
-                        <target>{$post->post_title}</target>
-                    </segment>
-                    <segment id='post_content' state='initial'>
-                        <source>{$post->post_content}</source>
-                        <target>{$post->post_content}</target>
-                    </segment>
-                </unit>
+                <group id='{$realPost->ID}'>
+                    <unit id='post_defaults'>
+                        <notes>
+                            <note id='post_defaults'>The Post default translatable fields(title and content)</note>
+                        </notes>
+                        <segment id='post_title' state='initial'>
+                            <source>{$realPost->post_title}</source>
+                            <target>{$realPost->post_title}</target>
+                        </segment>
+                        <segment id='post_content' state='initial'>
+                            <source>{$realPost->post_content}</source>
+                            <target>{$realPost->post_content}</target>
+                        </segment>
+                    </unit>
+                    {$acfPart};
+                </group>
             ";
-        }
+
+        }write_log($xmlBody);
 
         $xliffStructure = $xmlHeader . $xmlBody . $xmlFooter;
 

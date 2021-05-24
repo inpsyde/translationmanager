@@ -29,6 +29,7 @@ namespace Translationmanager\Xliff;
 
 use Pimple\Container;
 use Translationmanager\Service\BootstrappableServiceProvider;
+use Translationmanager\Module\ACF\Acf;
 
 /**
  * Class ServiceProvider
@@ -43,8 +44,12 @@ class ServiceProvider implements BootstrappableServiceProvider
      */
     public function register(Container $container)
     {
+        $container['tm/acf/acf'] = function () {
+            return new Acf();
+        };
+
         $container['Xliff'] = function (Container $container) {
-            return new Xliff();
+            return new Xliff($container['tm/acf/acf']);
         };
 
         $container['Xliff.export'] = function (Container $container) {
