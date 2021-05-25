@@ -101,7 +101,7 @@ class ServiceProvider implements BootstrappableServiceProvider
 
         add_action(
             'wp_ajax_' . Export::ACTION,
-            [$container['Xliff.export'], 'handle']
+            [$container['tm/Xliff/Export'], 'handle']
         );
     }
 

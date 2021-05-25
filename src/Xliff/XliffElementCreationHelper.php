@@ -33,13 +33,9 @@ class XliffElementCreationHelper
         string $path
     ): string {
 
-        return "<xliff xmlns='urn:oasis:names:tc:xliff:document:2.0'
+        return "<?xml version='1.0' encoding='UTF-8'?><xliff xmlns='urn:oasis:names:tc:xliff:document:2.0'
             version='2.0' srcLang='{$sourceLanguage}' trgLang='{$targetLanguage}'>
-                <file>
-                    <skeleton href='{$path}'/>
-                </file>
-            </xliff>
-                ";
+            <file><skeleton href='{$path}'/></file></xliff>";
     }
 
     /**
@@ -59,7 +55,8 @@ class XliffElementCreationHelper
             if (!is_string($note)) {
                 return;
             }
-            $elementNotes->addChild($noteId, $note);
+            $elementNotes->addChild('note', $note);
+            $elementNotes->addAttribute('id', (string)$noteId);
         }
     }
 
@@ -82,7 +79,27 @@ class XliffElementCreationHelper
         }
 
         $segment->addChild('source', $source ?? '');
-        $segment->addChild('target', $target ?? $source ?? '');
+        $segment->addChild('target', !empty($target) ? $target : $source);
+    }
+
+    /**
+     * Will add the XLIFF <ignorable> element
+     *
+     * @param SimpleXMLElement $element The SimpleXML Element where the <ignorable> should be added
+     * @param array $source The value of <source> element of <ignorable>
+     */
+    public function addIgnorable(SimpleXMLElement $element, array $source = [])
+    {
+        if (empty($source)) {
+            return;
+        }
+
+        $ignorableGroup = $this->addGroup($element, ['id' => 'ignorable_items']);
+        foreach ($source as $key => $value) {
+            $ignorable = $ignorableGroup->addChild('ignorable');
+            $ignorable->addAttribute('id', $key);
+            $ignorable->addChild('source', (string)$value);
+        }
     }
 
     /**

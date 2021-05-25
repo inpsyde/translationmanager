@@ -113,13 +113,20 @@ class Xliff
             return;
         }
 
-        $acfUnit= $this->xliffElementCreationHelper->addUnit($group, ['id' => 'acf_fields']);
-        $this->xliffElementCreationHelper->addNotes($acfUnit, ['acf_fields' => 'The ACF fields']);
+        $acfGroup = $this->xliffElementCreationHelper->addGroup($group, ['id' => 'acf_fields']);
+
         foreach ($acfFields as $key => $value) {
             if (!is_string($value)) {
                 continue;
             }
+            $acfUnit= $this->xliffElementCreationHelper->addUnit($acfGroup, ['id' => $key]);
+            $notes = $this->fieldNotes($sourcePostId, 'ACF fields', $key);
+            $this->xliffElementCreationHelper->addNotes($acfUnit, $notes);
             $this->xliffElementCreationHelper->addSegment($acfUnit, ['id'=> $key, 'state'=>'initial'], $value);
+        }
+
+        if (!empty($acfFields['to-not-translate'])) {
+            $this->xliffElementCreationHelper->addIgnorable($acfGroup, $acfFields['to-not-translate']);
         }
     }
 
@@ -131,21 +138,23 @@ class Xliff
      */
     protected function xliffPostDefaultTranslatableFieldsMarkup(WP_Post $sourcePost, SimpleXMLElement $group)
     {
-        $postDefaultsUnit= $this->xliffElementCreationHelper->addUnit($group, ['id' => 'post_defaults']);
-        $notes = [
-            'post_defaults' => 'The Post default translatable fields(title and content)'
-        ];
-        $this->xliffElementCreationHelper->addNotes($postDefaultsUnit, $notes);
-        $this->xliffElementCreationHelper->addSegment(
-            $postDefaultsUnit,
-            ['id'=>'post_title', 'state'=>'initial'],
-            $sourcePost->post_title
-        );
-        $this->xliffElementCreationHelper->addSegment(
-            $postDefaultsUnit,
-            ['id'=>'post_content', 'state'=>'initial'],
-            $sourcePost->post_content
-        );
+        $postDefaultsGroup = $this->xliffElementCreationHelper->addGroup($group, ['id' => 'post_defaults']);
+
+        $postDefaultFields = ['post_title', 'post_content'];
+        foreach ($postDefaultFields as $field) {
+            $postDefaultsUnit = $this->xliffElementCreationHelper->addUnit($postDefaultsGroup, ['id' => $field]);
+            $notes = $this->fieldNotes(
+                $sourcePost->ID,
+                'The Post default translatable fields(title and content)',
+                $field
+            );
+            $this->xliffElementCreationHelper->addNotes($postDefaultsUnit, $notes);
+            $this->xliffElementCreationHelper->addSegment(
+                $postDefaultsUnit,
+                ['id'=>$field, 'state'=>'initial'],
+                $sourcePost->$field
+            );
+        }
     }
 
     /**
@@ -160,13 +169,31 @@ class Xliff
             return;
         }
 
-        $yoastUnit= $this->xliffElementCreationHelper->addUnit($group, ['id' => 'yoast_fields']);
-        $this->xliffElementCreationHelper->addNotes($yoastUnit, ['yoast_fields' => 'The Yoast fields']);
-
+        $yoastGroup = $this->xliffElementCreationHelper->addGroup($group, ['id' => 'yoast_fields']);
         $translatableFields = ['title', 'metadesc', 'focuskw', 'bctitle'];
         foreach ($translatableFields as $key) {
+            $yoastUnit= $this->xliffElementCreationHelper->addUnit($yoastGroup, ['id' => $key]);
+            $notes = $this->fieldNotes($sourcePostId, 'Yoast fields', $key);
+            $this->xliffElementCreationHelper->addNotes($yoastUnit, $notes);
             $field = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
             $this->xliffElementCreationHelper->addSegment($yoastUnit, ['id'=> $key, 'state'=>'initial'], $field);
         }
+    }
+
+    /**
+     * Will create notes(description) for each group field
+     *
+     * @param int $sourcePostId The project item source post ID
+     * @param string $groupName The name of fields group (ACF, Yoast or Default fields)
+     * @param string $field The field name like post_title or post_content
+     * @return string[] array of notes
+     */
+    protected function fieldNotes(int $sourcePostId, string $groupName, string $field): array
+    {
+        return [
+            'post_id' => "From post: $sourcePostId",
+            'group_name' => "From field group: $groupName",
+            'field' => "Field: $field",
+        ];
     }
 }
