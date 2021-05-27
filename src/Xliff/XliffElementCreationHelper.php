@@ -56,7 +56,6 @@ class XliffElementCreationHelper
                 return;
             }
             $elementNotes->addChild('note', $note);
-            $elementNotes->addAttribute('id', (string)$noteId);
         }
     }
 

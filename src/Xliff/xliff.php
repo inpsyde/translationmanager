@@ -78,6 +78,7 @@ class Xliff
 
             $postId = $post->_translationmanager_post_id;
             $sourcePost = get_post($postId);
+
             if (!$sourcePost instanceof WP_Post) {
                 return false;
             }
@@ -148,6 +149,7 @@ class Xliff
                 'The Post default translatable fields(title and content)',
                 $field
             );
+
             $this->xliffElementCreationHelper->addNotes($postDefaultsUnit, $notes);
             $this->xliffElementCreationHelper->addSegment(
                 $postDefaultsUnit,
