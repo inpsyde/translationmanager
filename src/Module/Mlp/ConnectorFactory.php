@@ -49,7 +49,8 @@ class ConnectorFactory
             ->pushProcessor(new Processor\PostParentSync($adapter))
             ->pushProcessor(new Processor\PostSaver($adapter))
             ->pushProcessor(new Processor\PostThumbSync($adapter))
-            ->pushProcessor(new Processor\TaxonomiesSync($adapter));
+            ->pushProcessor(new Processor\TaxonomiesSync($adapter))
+            ->pushProcessor(new Processor\ElementorSync($adapter));
 
         return new Connector($adapter, $processorBus);
     }
