@@ -34,6 +34,16 @@ class ElementorSync implements IncomingProcessor
      */
     public function processIncoming(Translation $translation)
     {
+        if (!$this->isElementorActive()) {
+            return;
+        }
+
+        $remotePost = $translation->get_meta('POST');
+        $savedPost = !empty($remotePost['saved_post']) ? $remotePost['saved_post'] : '';
+        if (empty($remotePost) || !$savedPost) {
+            return;
+        }
+
         $sourcePost = $translation->source_post();
 
         if (!$sourcePost) {
@@ -66,7 +76,22 @@ class ElementorSync implements IncomingProcessor
             if ($meta === '_elementor_data') {
                 $sourceMeta = str_replace('\\', '\\\\', $sourceMeta);
             }
-            $translation->set_meta($meta, $sourceMeta);
+
+            switch_to_blog($translation->target_site_id());
+            update_post_meta($savedPost->ID, $meta, $sourceMeta);
+            \Elementor\Plugin::$instance->files_manager->clear_cache();
+            restore_current_blog();
         }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isElementorActive(): bool
+    {
+        if (!did_action('elementor/loaded')) {
+            return false;
+        }
+        return true;
     }
 }
