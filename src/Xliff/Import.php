@@ -96,6 +96,21 @@ class Import
             wp_send_json_error('Invalid action.');
         }
 
+        $fileToImport = $this->getFileToImport();
+        if (empty($fileToImport)) {
+            wp_send_json_error('Invalid file. Please upload the correct zip file containing XLIFF translations');
+        }
+
+
+        $z = new ZipArchive();
+        if ($z->open($fileToImport['tmp_name'])) {
+            for( $i = 0; $i < $z->numFiles; $i++ ){
+                $stat = $z->statIndex( $i );
+                $string = $z->getFromName(basename( $stat['name'] ));
+                print_r( $string . PHP_EOL );
+            }
+        }
+
         wp_send_json_success('success');
         exit;
     }
@@ -112,5 +127,20 @@ class Import
             'projectId',
             FILTER_SANITIZE_NUMBER_INT
         );
+    }
+
+    protected function getFileToImport(): array
+    {
+        if (
+            empty($_FILES) ||
+            empty($_FILES['file']) ||
+            empty($_FILES['file']['type']) ||
+            $_FILES['file']['type'] !== 'application/zip' ||
+            !$_FILES['file']['size'] > 0
+        ) {
+            return [];
+        }
+
+        return $_FILES['file'];
     }
 }

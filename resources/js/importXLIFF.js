@@ -11,35 +11,13 @@
 		 */
 		var onAjaxSuccess = function ( data ) {
 
-			if ( ! data.fileUrl ) {
-
-				onAjaxError();
-				return;
-			}
-
 		};
 
 		/**
 		 * Executes on AJAX error.
 		 */
-		var onAjaxError = function () {
-
-			alert( 'AJAX error.' );
-		};
-
-		/**
-		 * @param {number[]} ids
-		 * @return {{action, mlp_sites: *, menu: *}}
-		 */
-		var ajaxData = function () {
-			var ajaxAction = 'translationmanager_import_xliff';
-			var data = {
-				action: ajaxAction,
-				projectId: projectInfo.projectId,
-				ajaxAction
-			};
-
-			return data;
+		var onAjaxError = function (error) {
+			alert(error);
 		};
 
 		/**
@@ -48,21 +26,34 @@
 		 * @param {number[]} ids
 		 */
 		var sendRequest = function () {
+			var ajaxAction = 'translationmanager_import_xliff';
+
+			var fileToImport = $('#xliff-file').prop('files');
+			if (!fileToImport.length > 0) {
+				alert("Please select a file.");
+				return false;
+			}
+
+			var data = new FormData();
+			data.append('file', fileToImport[0] );
+			data.append('action', ajaxAction);
+			data.append('projectId', projectInfo.projectI);
 
 			$.ajax( {
 				url: ajaxurl,
 				method: 'POST',
-				dataType: 'json',
-				data: ajaxData()
+				data: data,
+				processData: false,
+				contentType: false,
 			} ).done( function ( response ) {
 				if ( response.success && response.data ) {
 					onAjaxSuccess(response.data);
-
 					return;
 				}
+				onAjaxError(response.data);
 
 			} ).fail(function(xhr, status, error) {
-				onAjaxError();
+				onAjaxError(error);
 			})
 		};
 

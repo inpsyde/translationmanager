@@ -50,8 +50,9 @@ class SettingsView
                 <form id="translationmanager-import-xliff"
                       class="translationmanager-import-xliff"
                       method="post"
-                      action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-                    <input type="file" name="xliff-file" id="xliff-file"/>
+                      enctype="multipart/form-data"
+                      action="">
+                    <input type="file" name="xliff-file" id="xliff-file" accept=".zip"/>
                     <input type="submit" id="import-XLIFF" class="button button-primary"
                            name="import-XLIFF" value="<?php esc_html_e('Import XLIFF Data', 'translationmanager'); ?>"/>
                     <?php wp_nonce_field('translationmanager_import_xliff');?>
