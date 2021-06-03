@@ -101,14 +101,24 @@ class Import
             wp_send_json_error('Invalid file. Please upload the correct zip file containing XLIFF translations');
         }
 
+        if (!$this->handleUpload($fileToImport)) {
+            wp_send_json_error('Something went wrong when uploading ZIP file, please check the ZIP file');
+        }
 
-        $z = new ZipArchive();
-        if ($z->open($fileToImport['tmp_name'])) {
-            for( $i = 0; $i < $z->numFiles; $i++ ){
-                $stat = $z->statIndex( $i );
-                $string = $z->getFromName(basename( $stat['name'] ));
-                print_r( $string . PHP_EOL );
-            }
+        $targetDirLocation = $this->plugin->dir('resources/xliff-translations') . '/' . $fileToImport['name'];
+
+        if (!$this->zip->open($targetDirLocation)) {
+            wp_send_json_error('Could not open the ZIP file');
+        }
+
+        $this->zip->extractTo($this->plugin->dir('resources/xliff-translations'). '/test');
+        $this->zip->close();
+
+        $files = array_diff(scandir($this->plugin->dir('resources/xliff-translations'). '/test'), ['..', '.']);
+        foreach ($files as $file) {
+            $path = $this->plugin->dir('resources/xliff-translations'). '/test/' . $file;
+            $data = $this->xliff->generateDataFromFile($path);
+            write_log($data);
         }
 
         wp_send_json_success('success');
@@ -135,6 +145,8 @@ class Import
             empty($_FILES) ||
             empty($_FILES['file']) ||
             empty($_FILES['file']['type']) ||
+            empty($_FILES['file']['name']) ||
+            empty($_FILES['file']['tmp_name']) ||
             $_FILES['file']['type'] !== 'application/zip' ||
             !$_FILES['file']['size'] > 0
         ) {
@@ -142,5 +154,14 @@ class Import
         }
 
         return $_FILES['file'];
+    }
+
+    protected function handleUpload(array $file):bool
+    {
+        $fileName = $file['name'];
+        $tmpName = $file['tmp_name'];
+        $targetDirLocation = $this->plugin->dir('resources/xliff-translations') . '/' . $fileName;
+
+        return move_uploaded_file($tmpName, $targetDirLocation);
     }
 }

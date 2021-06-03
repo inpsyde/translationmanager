@@ -77,8 +77,8 @@ class XliffElementCreationHelper
             }
         }
 
-        $segment->addChild('source', $source ?? '');
-        $segment->addChild('target', !empty($target) ? $target : $source);
+        $segment->addChild('source', html_entity_decode($source) ?? '');
+        $segment->addChild('target', !empty($target) ? html_entity_decode($target) : html_entity_decode($source));
     }
 
     /**
@@ -94,11 +94,8 @@ class XliffElementCreationHelper
         }
 
         $ignorableGroup = $this->addGroup($element, ['id' => 'ignorable_items']);
-        foreach ($source as $key => $value) {
-            $ignorable = $ignorableGroup->addChild('ignorable');
-            $ignorable->addAttribute('id', $key);
-            $ignorable->addChild('source', (string)$value);
-        }
+        $ignorable = $ignorableGroup->addChild('ignorable');
+        $ignorable->addChild('target', json_encode($source));
     }
 
     /**
@@ -137,5 +134,13 @@ class XliffElementCreationHelper
         }
 
         return $group;
+    }
+
+    public function getElementAttribute(SimpleXMLElement $element, string $attribute):string
+    {
+        if (!isset($element[$attribute])) {
+            return '';
+        }
+        return (string) $element[$attribute];
     }
 }

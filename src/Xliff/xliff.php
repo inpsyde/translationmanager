@@ -92,6 +92,41 @@ class Xliff
         return $xliff->saveXML($xliffFilePath);
     }
 
+    public function generateDataFromFile($file): array
+    {
+        if (!file_exists($file)) {
+            return [];
+        }
+
+        $xliffData = simplexml_load_file($file);
+        if (!$xliffData) {
+            return[];
+        }
+
+        $postsToImport = [
+            'languageInfo' => [
+                'sourceLanguage' => $this->xliffElementCreationHelper->getElementAttribute($xliffData, 'srcLang'),
+                'targetLanguage' => $this->xliffElementCreationHelper->getElementAttribute($xliffData, 'trgLang')
+            ]
+        ];
+
+        foreach ($xliffData->children() as $child) {
+            $sourcePostId = $this->xliffElementCreationHelper->getElementAttribute($child, 'id');
+            if (!$sourcePostId) {
+                continue;
+            }
+            foreach ($child->children() as $postEntities) {
+                $postEntity = $this->xliffElementCreationHelper->getElementAttribute($postEntities, 'id');
+                foreach ($postEntities->children() as $unit) {
+                    $unitName = $this->xliffElementCreationHelper->getElementAttribute($unit, 'id');
+                    $postsToImport['posts'][$sourcePostId][$postEntity][$unitName] = (string)$unit->segment->target;
+                }
+            }
+        }
+
+        return $postsToImport;
+    }
+
     /**
      * Will generate the XLIFF part with ACF translatable fields
      *
@@ -123,7 +158,11 @@ class Xliff
             $acfUnit= $this->xliffElementCreationHelper->addUnit($acfGroup, ['id' => $key]);
             $notes = $this->fieldNotes($sourcePostId, 'ACF fields', $key);
             $this->xliffElementCreationHelper->addNotes($acfUnit, $notes);
-            $this->xliffElementCreationHelper->addSegment($acfUnit, ['id'=> $key, 'state'=>'initial'], $value);
+            $this->xliffElementCreationHelper->addSegment(
+                $acfUnit,
+                ['id'=> $key, 'state'=>'initial'],
+                $value
+            );
         }
 
         if (!empty($acfFields['to-not-translate'])) {
@@ -178,7 +217,11 @@ class Xliff
             $notes = $this->fieldNotes($sourcePostId, 'Yoast fields', $key);
             $this->xliffElementCreationHelper->addNotes($yoastUnit, $notes);
             $field = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
-            $this->xliffElementCreationHelper->addSegment($yoastUnit, ['id'=> $key, 'state'=>'initial'], $field);
+            $this->xliffElementCreationHelper->addSegment(
+                $yoastUnit,
+                ['id'=> $key, 'state'=>'initial'],
+                $field
+            );
         }
     }
 
