@@ -83,7 +83,7 @@ class Xliff
                 return false;
             }
 
-            $postEntity = $this->xliffElementCreationHelper->addGroup($xliff, ['id' => (string)$sourcePost->ID]);
+            $postEntity = $this->xliffElementCreationHelper->addGroup($xliff->file, ['id' => (string)$sourcePost->ID]);
             $this->xliffPostDefaultTranslatableFieldsMarkup($sourcePost, $postEntity);
             $this->xliffAcfMarkup($sourcePost->ID, $postEntity);
             $this->xliffYoastMarkup($sourcePost->ID, $postEntity);
@@ -149,13 +149,19 @@ class Xliff
             return;
         }
 
-        $acfGroup = $this->xliffElementCreationHelper->addGroup($group, ['id' => 'acf_fields']);
+        $acfGroup = $this->xliffElementCreationHelper->addGroup(
+            $group,
+            $this->elementId((string)$sourcePostId, 'acf_fields')
+        );
 
         foreach ($acfFields as $key => $value) {
             if (!is_string($value)) {
                 continue;
             }
-            $acfUnit= $this->xliffElementCreationHelper->addUnit($acfGroup, ['id' => $key]);
+            $acfUnit= $this->xliffElementCreationHelper->addUnit(
+                $acfGroup,
+                $this->elementId((string)$sourcePostId, $key)
+            );
             $notes = $this->fieldNotes($sourcePostId, 'ACF fields', $key);
             $this->xliffElementCreationHelper->addNotes($acfUnit, $notes);
             $this->xliffElementCreationHelper->addSegment(
@@ -166,7 +172,11 @@ class Xliff
         }
 
         if (!empty($acfFields['to-not-translate'])) {
-            $this->xliffElementCreationHelper->addIgnorable($acfGroup, $acfFields['to-not-translate']);
+            $this->xliffElementCreationHelper->addIgnorable(
+                $acfGroup,
+                $acfFields['to-not-translate'],
+                $this->elementId((string)$sourcePostId, 'ignorable_items')
+            );
         }
     }
 
@@ -178,11 +188,17 @@ class Xliff
      */
     protected function xliffPostDefaultTranslatableFieldsMarkup(WP_Post $sourcePost, SimpleXMLElement $group)
     {
-        $postDefaultsGroup = $this->xliffElementCreationHelper->addGroup($group, ['id' => 'post_defaults']);
+        $postDefaultsGroup = $this->xliffElementCreationHelper->addGroup(
+            $group,
+            $this->elementId((string)$sourcePost->ID, 'post_defaults')
+        );
 
         $postDefaultFields = ['post_title', 'post_content'];
         foreach ($postDefaultFields as $field) {
-            $postDefaultsUnit = $this->xliffElementCreationHelper->addUnit($postDefaultsGroup, ['id' => $field]);
+            $postDefaultsUnit = $this->xliffElementCreationHelper->addUnit(
+                $postDefaultsGroup,
+                $this->elementId((string)$sourcePost->ID, $field)
+            );
             $notes = $this->fieldNotes(
                 $sourcePost->ID,
                 'The Post default translatable fields(title and content)',
@@ -210,10 +226,13 @@ class Xliff
             return;
         }
 
-        $yoastGroup = $this->xliffElementCreationHelper->addGroup($group, ['id' => 'yoast_fields']);
+        $yoastGroup = $this->xliffElementCreationHelper->addGroup($group, ['id' => $sourcePostId . '-yoast_fields']);
         $translatableFields = ['title', 'metadesc', 'focuskw', 'bctitle'];
         foreach ($translatableFields as $key) {
-            $yoastUnit= $this->xliffElementCreationHelper->addUnit($yoastGroup, ['id' => $key]);
+            $yoastUnit= $this->xliffElementCreationHelper->addUnit(
+                $yoastGroup,
+                $this->elementId((string)$sourcePostId, $key)
+            );
             $notes = $this->fieldNotes($sourcePostId, 'Yoast fields', $key);
             $this->xliffElementCreationHelper->addNotes($yoastUnit, $notes);
             $field = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
@@ -240,5 +259,10 @@ class Xliff
             'group_name' => "From field group: $groupName",
             'field' => "Field: $field",
         ];
+    }
+
+    protected function elementId(string $prefix, string $name): array
+    {
+        return ['id' => $prefix . '-' . $name];
     }
 }
