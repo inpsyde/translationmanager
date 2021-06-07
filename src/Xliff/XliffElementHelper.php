@@ -16,7 +16,7 @@ namespace Translationmanager\Xliff;
 
 use SimpleXMLElement;
 
-class XliffElementCreationHelper
+class XliffElementHelper
 {
 
     /**
@@ -136,11 +136,14 @@ class XliffElementCreationHelper
         return $group;
     }
 
-    public function getElementAttribute(SimpleXMLElement $element, string $attribute):string
+    public function getElementAttribute(SimpleXMLElement $element, string $attribute, bool $removeIntPart = false):string
     {
         if (!isset($element[$attribute])) {
             return '';
         }
-        return (string) $element[$attribute];
+
+        $attribute = (string) $element[$attribute];
+
+        return $removeIntPart ? substr($attribute, strpos($attribute, "-") + 1): $attribute;
     }
 }

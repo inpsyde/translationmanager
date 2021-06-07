@@ -53,23 +53,27 @@ class ServiceProvider implements BootstrappableServiceProvider
             return new Acf();
         };
 
-        $container['tm/Xliff/XliffElementCreationHelper'] = function () {
-            return new XliffElementCreationHelper();
+        $container['tm/Xliff/xliffElementHelper'] = function () {
+            return new xliffElementHelper();
         };
 
-        $container['tm/Xliff'] = function (Container $container) {
+        $container['tm/Xliff/Xliff'] = function (Container $container) {
             return new Xliff(
                 $container['tm/ACF/Acf'],
-                $container['tm/Xliff/XliffElementCreationHelper']
+                $container['tm/Xliff/xliffElementHelper']
             );
         };
 
         $container['tm/Xliff/Export'] = function (Container $container) {
-            return new Export($container['translationmanager.plugin'], $container['tm/Xliff']);
+            return new Export($container['translationmanager.plugin'], $container['tm/Xliff/Xliff']);
         };
 
         $container['tm/Xliff/Import'] = function (Container $container) {
-            return new Import($container['translationmanager.plugin'], $container['tm/Xliff'], new Validator());
+            return new Import(
+                $container['translationmanager.plugin'],
+                $container['tm/Xliff/Xliff'],
+                new Validator()
+            );
         };
     }
 

@@ -183,7 +183,7 @@ class Export
         foreach ($projectItemsByTargetLanguages as $targetLanguageCode => $projectItems) {
             $xliffFIleName = $this->xliffFIleName($sourceLanguageCode, $targetLanguageCode, $projectName);
             $xliffFilePath = $this->xliffFilePath($xliffFIleName);
-            $isExportGenerated = $this->xliff->generateExport(
+            $isExportGenerated = $this->xliff->saveDataToFile(
                 $projectItems,
                 $xliffFilePath,
                 $sourceLanguageCode,
