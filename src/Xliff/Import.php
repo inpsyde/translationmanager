@@ -18,7 +18,6 @@ use Inpsyde\MultilingualPress\Framework\Api\ContentRelations;
 use Inpsyde\MultilingualPress\Framework\Database\Exception\NonexistentTable;
 use stdClass;
 use Translationmanager\Auth\Authable;
-use Translationmanager\Plugin;
 use Translationmanager\Utils\NetworkState;
 use WP_Post;
 use WPSEO_Meta;

@@ -17,6 +17,7 @@ namespace Translationmanager\Xliff\PostTranslatableParts;
 use SimpleXMLElement;
 use Translationmanager\Xliff\xliffElementHelper;
 use WP_Post;
+use WPSEO_Meta;
 
 class YoastFields
 {
