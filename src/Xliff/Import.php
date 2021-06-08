@@ -32,13 +32,6 @@ class Import
     const ACTION = 'translationmanager_import_xliff';
 
     /**
-     * Plugin
-     *
-     * @var Plugin
-     */
-    private $plugin;
-
-    /**
      * Xliff
      *
      * @var Xliff
@@ -73,13 +66,13 @@ class Import
     /**
      * Export XLIFF constructor
      *
-     * @param Plugin $plugin The plugin instance.
+     * @param Xliff $xliff The xliff instance.
+     * @param Authable $auth The auth instance.
      *
      * @since 1.0.0
      */
-    public function __construct(Plugin $plugin, Xliff $xliff, Authable $auth)
+    public function __construct(Xliff $xliff, Authable $auth)
     {
-        $this->plugin = $plugin;
         $this->xliff = $xliff;
         $this->auth = $auth;
         $this->zip = new ZipArchive;

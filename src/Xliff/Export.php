@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Translationmanager\Xliff;
 
 use Translationmanager\Functions;
-use Translationmanager\Plugin;
 use WP_Post;
 use WP_Term;
 use ZipArchive;
@@ -23,13 +22,6 @@ use ZipArchive;
 class Export
 {
     const ACTION = 'translationmanager_export_xliff';
-
-    /**
-     * Plugin
-     *
-     * @var Plugin
-     */
-    private $plugin;
 
     /**
      * Xliff
@@ -48,13 +40,12 @@ class Export
     /**
      * Export XLIFF constructor
      *
-     * @param Plugin $plugin The plugin instance.
+     * @param Xliff $xliff The xliff instance.
      *
      * @since 1.0.0
      */
-    public function __construct(Plugin $plugin, Xliff $xliff)
+    public function __construct(Xliff $xliff)
     {
-        $this->plugin = $plugin;
         $this->xliff = $xliff;
         $this->zip = new ZipArchive;
     }
