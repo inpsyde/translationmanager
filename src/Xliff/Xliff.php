@@ -16,6 +16,7 @@ namespace Translationmanager\Xliff;
 
 use Exception;
 use SimpleXMLElement;
+use Translationmanager\Plugin;
 use WP_Post;
 use Translationmanager\Module\ACF\Acf;
 use Translationmanager\Xliff\PostTranslatableParts\GeneralFields;
@@ -38,10 +39,18 @@ class Xliff
      */
     private $xliffElementHelper;
 
-    public function __construct(Acf $acf, XliffElementHelper $xliffElementHelper)
+    /**
+     * Plugin
+     *
+     * @var Plugin
+     */
+    private $plugin;
+
+    public function __construct(Acf $acf, XliffElementHelper $xliffElementHelper, Plugin $plugin)
     {
         $this->acf = $acf;
         $this->xliffElementHelper = $xliffElementHelper;
+        $this->plugin = $plugin;
     }
 
     /**
@@ -94,7 +103,13 @@ class Xliff
         return $xliff->saveXML($xliffFilePath);
     }
 
-    public function generateDataFromFile($file): array
+    /**
+     * Will generate the Post data from the XLIFF file
+     *
+     * @param string $file from which to extract the post data
+     * @return array|array[] The generated posts array to import
+     */
+    public function generateDataFromFile(string $file): array
     {
         if (!file_exists($file)) {
             return [];
@@ -128,5 +143,75 @@ class Xliff
         }
 
         return $postsToImport;
+    }
+
+    /**
+     * Generate the XLIFF file Name
+     *
+     * @param string $sourceLanguage Source site language code
+     * @param string $targetLanguage Target site language code
+     * @param string $projectName The Current Project name is needed to generate the XLIFF file name
+     * @return string The XLIFF file Name
+     */
+    public function xliffFIleName(string $sourceLanguage, string $targetLanguage, string $projectName): string
+    {
+        $fromTargetToSource = $sourceLanguage . '-' . $targetLanguage;
+        return 'Translation-' . $fromTargetToSource . '-For-' . $projectName . '.xlf';
+    }
+
+    /**
+     * Path to translations dir
+     *
+     * @return string path to translations dir
+     */
+    public function translationsDir(bool $url = false): string
+    {
+        return $url
+            ? $this->plugin->url('resources/xliff-translations') . '/'
+            : $this->plugin->dir('resources/xliff-translations') . '/';
+    }
+
+    /**
+     * Generate the zip archive name
+     *
+     * @param string $projectName The Current Project name is needed to generate the zip archive
+     * @return string The zip archive name
+     */
+    public function xliffZipName(string $projectName): string
+    {
+        return 'Translation-For-' . $projectName . '.zip';
+    }
+
+    /**
+     * Get the XLIFF file path
+     *
+     * @param string $xliffFIleName The XLIFF file Name for which the path should be returned
+     * @return string The XLIFF file path
+     */
+    public function xliffFilePath(string $xliffFIleName): string
+    {
+        return $this->translationsDir() . $xliffFIleName;
+    }
+
+    /**
+     * Get the zip archive URL by zip archive name
+     *
+     * @param string $xliffZipName The name of zip archive to get it's url
+     * @return string the zip archive URL
+     */
+    public function xliffZipUrl(string $xliffZipName): string
+    {
+        return $this->translationsDir(true) . $xliffZipName;
+    }
+
+    /**
+     * Get the zip path by zip archive name
+     *
+     * @param string $xliffZipName The name of zip archive to get it's path
+     * @return string the zip archive path
+     */
+    public function xliffZipPath(string $xliffZipName): string
+    {
+        return $this->translationsDir() . $xliffZipName;
     }
 }

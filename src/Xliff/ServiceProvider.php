@@ -58,10 +58,7 @@ class ServiceProvider implements BootstrappableServiceProvider
         };
 
         $container['tm/Xliff/Xliff'] = function (Container $container) {
-            return new Xliff(
-                $container['tm/ACF/Acf'],
-                $container['tm/Xliff/xliffElementHelper']
-            );
+            return new Xliff($container['tm/ACF/Acf'], $container['tm/Xliff/xliffElementHelper']);
         };
 
         $container['tm/Xliff/Export'] = function (Container $container) {
@@ -69,11 +66,7 @@ class ServiceProvider implements BootstrappableServiceProvider
         };
 
         $container['tm/Xliff/Import'] = function (Container $container) {
-            return new Import(
-                $container['translationmanager.plugin'],
-                $container['tm/Xliff/Xliff'],
-                new Validator()
-            );
+            return new Import($container['translationmanager.plugin'], $container['tm/Xliff/Xliff'], new Validator());
         };
     }
 

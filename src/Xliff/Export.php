@@ -106,7 +106,7 @@ class Export
 
         $xliffFileDownloadInfo = [
             'fileName' => $xliffZipName,
-            'fileUrl' => $this->xliffZipUrl($xliffZipName),
+            'fileUrl' => $this->xliff->xliffZipUrl($xliffZipName),
         ];
 
         wp_send_json_success($xliffFileDownloadInfo);
@@ -179,10 +179,10 @@ class Export
         string $projectName
     ): string {
 
-        $xliffZipName = $this->xliffZipName($projectName);
+        $xliffZipName = $this->xliff->xliffZipName($projectName);
         foreach ($projectItemsByTargetLanguages as $targetLanguageCode => $projectItems) {
-            $xliffFIleName = $this->xliffFIleName($sourceLanguageCode, $targetLanguageCode, $projectName);
-            $xliffFilePath = $this->xliffFilePath($xliffFIleName);
+            $xliffFIleName = $this->xliff->xliffFIleName($sourceLanguageCode, $targetLanguageCode, $projectName);
+            $xliffFilePath = $this->xliff->xliffFilePath($xliffFIleName);
             $isExportGenerated = $this->xliff->saveDataToFile(
                 $projectItems,
                 $xliffFilePath,
@@ -195,10 +195,10 @@ class Export
             }
 
             $this->addFileIntoZip($xliffFilePath, $xliffFIleName, $xliffZipName);
-            unlink($this->xliffFilePath($xliffFIleName));
+            unlink($this->xliff->xliffFilePath($xliffFIleName));
         }
 
-        if (!file_exists($this->xliffZipPath($xliffZipName))) {
+        if (!file_exists($this->xliff->xliffZipPath($xliffZipName))) {
             return '';
         }
 
@@ -219,7 +219,7 @@ class Export
         string $xliffZipName
     ) {
 
-        $xliffZipPath = $this->xliffZipPath($xliffZipName);
+        $xliffZipPath = $this->xliff->xliffZipPath($xliffZipName);
 
         if ($this->zip->open($xliffZipPath, ZipArchive::CREATE)!==true) {
             return;
@@ -227,63 +227,5 @@ class Export
 
         $this->zip->addFile($xliffFilePath, $xliffFIleName);
         $this->zip->close();
-    }
-
-    /**
-     * Generate the XLIFF file Name
-     *
-     * @param string $sourceLanguage Source site language code
-     * @param string $targetLanguage Target site language code
-     * @param string $projectName The Current Project name is needed to generate the XLIFF file name
-     * @return string The XLIFF file Name
-     */
-    protected function xliffFIleName(string $sourceLanguage, string $targetLanguage, string $projectName): string
-    {
-        $fromTargetToSource = $sourceLanguage . '-' . $targetLanguage;
-        return 'Translation-' . $fromTargetToSource . '-For-' . $projectName . '.xlf';
-    }
-
-    /**
-     * Generate the zip archive name
-     *
-     * @param string $projectName The Current Project name is needed to generate the zip archive
-     * @return string The zip archive name
-     */
-    protected function xliffZipName(string $projectName): string
-    {
-        return 'Translation-For-' . $projectName . '.zip';
-    }
-
-    /**
-     * Get the XLIFF file path
-     *
-     * @param string $xliffFIleName The XLIFF file Name for which the path should be returned
-     * @return string The XLIFF file path
-     */
-    protected function xliffFilePath(string $xliffFIleName): string
-    {
-        return $this->plugin->dir('resources/xliff-translations') . '/' . $xliffFIleName;
-    }
-
-    /**
-     * Get the zip archive URL by zip archive name
-     *
-     * @param string $xliffZipName The name of zip archive to get it's url
-     * @return string the zip archive URL
-     */
-    protected function xliffZipUrl(string $xliffZipName): string
-    {
-        return $this->plugin->url('resources/xliff-translations') . '/' . $xliffZipName;
-    }
-
-    /**
-     * Get the zip path by zip archive name
-     *
-     * @param string $xliffZipName The name of zip archive to get it's path
-     * @return string the zip archive path
-     */
-    protected function xliffZipPath(string $xliffZipName): string
-    {
-        return $this->plugin->dir('resources/xliff-translations'). '/' . $xliffZipName;
     }
 }

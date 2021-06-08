@@ -15,14 +15,12 @@ declare(strict_types=1);
 namespace Translationmanager\Xliff;
 
 use Inpsyde\MultilingualPress\Framework\Api\ContentRelations;
+use Inpsyde\MultilingualPress\Framework\Database\Exception\NonexistentTable;
 use stdClass;
 use Translationmanager\Auth\Authable;
-use Translationmanager\Functions;
-use Translationmanager\Module\Mlp\Adapter;
 use Translationmanager\Plugin;
 use Translationmanager\Utils\NetworkState;
 use WP_Post;
-use WP_Term;
 use WPSEO_Meta;
 use ZipArchive;
 use function Inpsyde\MultilingualPress\assignedLanguageTags;
@@ -95,6 +93,7 @@ class Import
         if (!$this->auth->can(wp_get_current_user(), self::$capability)) {
             wp_send_json_error('Invalid capability.');
         }
+        $this->deleteFiles();
 
         if (!wp_doing_ajax()) {
             return;
@@ -113,104 +112,14 @@ class Import
             wp_send_json_error('Something went wrong when uploading ZIP file, please check the ZIP file');
         }
 
-        $targetDirLocation = $this->plugin->dir('resources/xliff-translations') . '/' . $fileToImport['name'];
-
-        if (!$this->zip->open($targetDirLocation)) {
-            wp_send_json_error('Could not open the ZIP file');
+        if (!$this->extractZipFile($this->xliff->xliffZipPath($fileToImport['name']))) {
+            wp_send_json_error('Could not extract the ZIP file');
         }
 
-        $this->zip->extractTo($this->plugin->dir('resources/xliff-translations'));
-        $this->zip->close();
+        $files = array_diff(scandir($this->xliff->translationsDir()), ['..', '.']);
+        $this->handleImport($files);
+        $this->deleteFiles();
 
-        $files = array_diff(scandir($this->plugin->dir('resources/xliff-translations') . '/'), ['..', '.']);
-        foreach ($files as $file) {
-            $fileParts = pathinfo($file);
-            if (empty($fileParts['extension']) || $fileParts['extension'] !== 'zip') {
-                continue;
-            }
-
-            $path = $this->plugin->dir('resources/xliff-translations'). '/' . $file;
-            $importData = $this->xliff->generateDataFromFile($path);
-            $sourceLanguage = $importData['languageInfo']['sourceLanguage'] ?? '';
-            $targetLanguage = $importData['languageInfo']['targetLanguage'] ?? '';
-
-            if (empty($importData['languageInfo']) || empty($sourceLanguage) || empty($targetLanguage)) {
-                continue;
-            }
-
-            $allLanguageSites = assignedLanguageTags(false);
-            if (!in_array($targetLanguage, $allLanguageSites)) {
-                continue;
-            }
-
-
-            foreach ($importData['posts'] as $postId => $posts) {
-                $postVars = get_object_vars(new WP_Post(new stdClass()));
-                $postData = [];
-                foreach ($postVars as $key => $value) {
-                    if (array_key_exists($key, $posts['post_defaults'])) {
-                        $postData[$key] = $posts['post_defaults'][$key];
-                    }
-                }
-                $sourceSiteId = array_search($sourceLanguage, $allLanguageSites);
-                $targetSiteId = array_search($targetLanguage, $allLanguageSites);
-                $relatedPost = translationIds($postId, 'post', $sourceSiteId);
-
-                $networkState = NetworkState::create();
-                $networkState->switch_to($targetSiteId);
-
-                $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
-                $targetPostId = wp_insert_post($postData, true);
-
-                $targetPost = $targetPostId ? get_post($targetPostId) : null;
-
-                if ($targetPost && !empty($posts['acf_fields'])) {
-                    $ignorableFields = $posts['acf_fields']['ignorable_items'] ?? [];
-                    unset($posts['acf_fields']['ignorable_items']);
-                    $fieldsToImport = array_merge($posts['acf_fields'], (array)json_decode($ignorableFields));
-                    if (!empty($fieldsToImport)) {
-                        foreach ($fieldsToImport as $fieldKey => $fieldValue) {
-                            update_post_meta($targetPost->ID, $fieldKey, $fieldValue);
-                        }
-                    }
-                }
-
-                if ($targetPost && !empty($posts['yoast_fields'])) {
-                    $yoastIgnorableFieldKeys = ['meta-robots-noindex', 'meta-robots-nofollow', 'meta-robots-adv'];
-                    $yoastIgnorableFields = [];
-                    foreach ($yoastIgnorableFieldKeys as $key) {
-                        $yoastIgnorableFields[$key] = get_post_meta($postId, WPSEO_Meta::$meta_prefix . $key, true);
-                    }
-                    $fieldsToImport = array_filter(array_merge($posts['yoast_fields'], $yoastIgnorableFields));
-                    if (!empty($fieldsToImport)) {
-                        foreach ($fieldsToImport as $fieldKey => $fieldValue) {
-                            update_post_meta($targetPost->ID, WPSEO_Meta::$meta_prefix . $fieldKey, $fieldValue);
-                        }
-                    }
-                }
-
-                $networkState->restore();
-
-                if (!$targetPost) {
-                    continue;
-                }
-
-                $api = resolve(ContentRelations::class);
-
-                if (!$postData['ID'] === 0) {
-                    continue;
-                }
-
-                $contentIds = [
-                    $sourceSiteId => $postId,
-                    $targetSiteId => $targetPost->ID,
-                ];
-
-                $api->createRelationship($contentIds, 'post');
-            }
-        }
-
-        array_map('unlink', array_filter((array) glob($this->plugin->dir('resources/xliff-translations')."/*")));
         wp_send_json_success('success');
         exit;
     }
@@ -229,6 +138,11 @@ class Import
         );
     }
 
+    /**
+     * return zip file to import
+     *
+     * @return array zip file to import
+     */
     protected function getFileToImport(): array
     {
         if (
@@ -246,12 +160,207 @@ class Import
         return $_FILES['file'];
     }
 
+    /**
+     * Will upload the zip file
+     *
+     * @param array $file data to upload
+     * @return bool true or false if uploaded or not
+     */
     protected function uploadZipFile(array $file):bool
     {
         $fileName = $file['name'];
         $tmpName = $file['tmp_name'];
-        $targetDirLocation = $this->plugin->dir('resources/xliff-translations') . '/' . $fileName;
 
-        return move_uploaded_file($tmpName, $targetDirLocation);
+        return move_uploaded_file($tmpName, $this->xliff->xliffZipPath($fileName));
+    }
+
+    /**
+     * Will extract the zip file
+     *
+     * @param string $targetDirLocation the path where to extract
+     * @return bool true or false if the zip is extracted or not
+     */
+    protected function extractZipFile(string $targetDirLocation):bool
+    {
+        if (!$this->zip->open($targetDirLocation)) {
+            return false;
+        }
+
+        if (!$this->zip->extractTo($this->xliff->translationsDir())) {
+            return false;
+        }
+
+        $this->zip->close();
+        return true;
+    }
+
+    /**
+     * Will get the generated data from XLIFF file and will import into target site
+     *
+     * @param array $files from which to get the data
+     */
+    protected function handleImport(array $files)
+    {
+        if (empty($files)) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            $fileParts = pathinfo($file);
+            if (empty($fileParts['extension']) || $fileParts['extension'] !== 'zip') {
+                continue;
+            }
+
+            $importData = $this->xliff->generateDataFromFile($this->xliff->xliffFilePath($file));
+            $sourceSiteId = $this->siteIdFromLocale($importData['languageInfo']['sourceLanguage'] ?? '');
+            $targetSiteId = $this->siteIdFromLocale($importData['languageInfo']['targetLanguage'] ?? '');
+            if (!$sourceSiteId || !$targetSiteId || empty($importData['posts'])) {
+                continue;
+            }
+
+            foreach ($importData['posts'] as $postId => $posts) {
+                $postVars = get_object_vars(new WP_Post(new stdClass()));
+                $postData = [];
+                foreach ($postVars as $key => $value) {
+                    if (array_key_exists($key, $posts['post_defaults'])) {
+                        $postData[$key] = $posts['post_defaults'][$key];
+                    }
+                }
+
+                $targetPost = $this->importPost($sourceSiteId, $postId, $targetSiteId, $postData);
+                if (!$targetPost) {
+                    continue;
+                }
+
+                $this->maybeConnectContent(
+                    [$sourceSiteId => $postId, $targetSiteId => $targetPost->ID],
+                    $postData['ID'] == 0
+                );
+            }
+        }
+    }
+
+    /**
+     * Will Import the post data
+     *
+     * @param int $sourceSiteId the site id from which the data is taken
+     * @param int $sourcePostId the post id from which the data is taken
+     * @param int $targetSiteId the site id where the data should be imported
+     * @param array $postData the post data to import
+     * @return false|WP_Post false if the post is not inserted otherwise inserted post object
+     * @throws NonexistentTable
+     */
+    protected function importPost(int $sourceSiteId, int $sourcePostId, int $targetSiteId, array $postData)
+    {
+        $relatedPost = translationIds($sourcePostId, 'post', $sourceSiteId);
+        $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
+
+        $networkState = NetworkState::create();
+        $networkState->switch_to($targetSiteId);
+
+        $targetPostId = wp_insert_post($postData, true);
+        $targetPost = $targetPostId ? get_post($targetPostId) : null;
+
+        if (!$targetPost) {
+            return false;
+        }
+
+        $this->importAcfFields($targetPost, $posts['acf_fields'] ?? []);
+        $this->importYoastFields($targetPost, $posts['yoast_fields'] ?? [], $sourcePostId);
+
+        $networkState->restore();
+
+        return $targetPost;
+    }
+
+    /**
+     * will update target post meta for ACF fields
+     *
+     * @param WP_Post $targetPost the target post object for which to update the meta
+     * @param array $acfFieldKeys the ACF field keys to update
+     */
+    protected function importAcfFields(WP_Post $targetPost, array $acfFieldKeys)
+    {
+        if (!$targetPost || empty($acfFieldKeys)) {
+            return;
+        }
+
+        $ignorableFields = $acfFieldKeys['ignorable_items'] ?? [];
+        unset($acfFieldKeys['ignorable_items']);
+
+        $fieldsToImport = array_merge($acfFieldKeys, (array)json_decode($ignorableFields));
+        if (empty($fieldsToImport)) {
+            return;
+        }
+
+        foreach ($fieldsToImport as $fieldKey => $fieldValue) {
+            update_post_meta($targetPost->ID, $fieldKey, $fieldValue);
+        }
+    }
+
+    /**
+     * will update target post meta for YOAST fields
+     *
+     * @param WP_Post $targetPost the target post object for which to update the meta
+     * @param array $yoastFieldKeys the YOAST field keys to update
+     * @param int $sourcePostId the source post id from which the data is generated to get ignorable YOAST field keys
+     */
+    protected function importYoastFields(WP_Post $targetPost, array $yoastFieldKeys, int $sourcePostId)
+    {
+        if (!$targetPost || empty($yoastFieldKeys)) {
+            return;
+        }
+
+        $yoastIgnorableFieldKeys = ['meta-robots-noindex', 'meta-robots-nofollow', 'meta-robots-adv'];
+        $yoastIgnorableFields = [];
+        foreach ($yoastIgnorableFieldKeys as $key) {
+            $yoastIgnorableFields[$key] = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
+        }
+
+        $fieldsToImport = array_filter(array_merge($sourcePostId['yoast_fields'], $yoastIgnorableFields));
+        if (empty($fieldsToImport)) {
+            return;
+        }
+
+        foreach ($fieldsToImport as $fieldKey => $fieldValue) {
+            update_post_meta($targetPost->ID, WPSEO_Meta::$meta_prefix . $fieldKey, $fieldValue);
+        }
+    }
+
+    /**
+     * If the target post wasn't existed and was created then we need to connect it with the source post
+     *
+     * @param array $contentIds The content ids to connect ['siteId' => 'postId', 'targetSiteId' => 'targetPostId']
+     * @param bool $targetPostIsNew should be true if the target post was created, false if was updated
+     */
+    protected function maybeConnectContent(array $contentIds, bool $targetPostIsNew)
+    {
+        if (empty($contentIds) || !$targetPostIsNew) {
+            return;
+        }
+
+        $api = resolve(ContentRelations::class);
+        $api->createRelationship($contentIds, 'post');
+    }
+
+    /**
+     * Will get the Site Id from locale
+     *
+     * @param string $locale the locale for which to get the site Id
+     * @return false|int false if it doesn't exist, otherwise the site id
+     * @throws NonexistentTable
+     */
+    protected function siteIdFromLocale(string $locale)
+    {
+        return array_search($locale, assignedLanguageTags(false));
+    }
+
+    /**
+     * We need to delete the files if the import was successful or even not,
+     * That's why this method should be called before doing the import and after import is done.
+     */
+    protected function deleteFiles()
+    {
+        array_map('unlink', array_filter((array) glob($this->xliff->translationsDir() . "*")));
     }
 }

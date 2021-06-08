@@ -32,6 +32,9 @@ namespace Translationmanager\Xliff;
  */
 class SettingsView
 {
+    /**
+     * Will add the import button in project edit screen
+     */
     public function renderExportButton()
     {
         ?>
@@ -41,6 +44,9 @@ class SettingsView
         <?php
     }
 
+    /**
+     * Will add the import view in project edit screen
+     */
     public function renderImportOptions()
     {
         ?>
