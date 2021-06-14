@@ -74,6 +74,10 @@ class ElementorSync implements IncomingProcessor
                 continue;
             }
             if ($meta === '_elementor_data') {
+                ini_set('xdebug.var_display_max_depth', 10);
+                ini_set('xdebug.var_display_max_children', 256);
+                ini_set('xdebug.var_display_max_data', 1024);
+                var_dump($translation->get_value('post_content'), json_decode($sourceMeta));die;
                 $sourceMeta = str_replace('\\', '\\\\', $sourceMeta);
             }
 
