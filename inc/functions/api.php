@@ -91,10 +91,6 @@ function project_update(WP_Term $project)
              * @param Translation $translation Translation data built from data received from API
              */
             do_action('translationmanager_incoming_data', $translation);
-            ini_set('xdebug.var_display_max_depth', 10);
-            ini_set('xdebug.var_display_max_children', 256);
-            ini_set('xdebug.var_display_max_data', 1024);
-            //var_dump($translation);die;
 
             /**
              * Filters the updater that executed have to return the updated post

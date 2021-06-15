@@ -66,6 +66,7 @@ class IncomingMetaProcessor implements IncomingProcessor
         if (!$translation->is_valid()) {
             return null;
         }
+        
         $networkState = NetworkState::create();
         $targetSiteId = $translation->target_site_id();
 
@@ -111,7 +112,14 @@ class IncomingMetaProcessor implements IncomingProcessor
 
         $networkState->restore();
     }
-
+    
+    /**
+     * Will replace the translation data within _elementor_data meta
+     *
+     * @param array $sourceData the data from _elementor_data meta
+     * @param array $translationData the incoming data which should replace
+     * @return array replaced data
+     */
     protected function replaceTranslations(array $sourceData, array $translationData): array
     {
         foreach ($sourceData as $data) {
