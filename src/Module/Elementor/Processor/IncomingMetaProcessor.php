@@ -139,12 +139,12 @@ class IncomingMetaProcessor implements IncomingProcessor
                     }
                     $id = 'id-'. $data->id;
                     if (key_exists($id, $translationData)) {
-                        $data->settings = $translationData[$id];
+                        $data->settings = array_merge((array)$data->settings, $translationData[$id]);
                     }
                 }
             }
         }
-
+        
         return $sourceData;
     }
 }
