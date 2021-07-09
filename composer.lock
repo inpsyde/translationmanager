@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58876125ebb9437b75e16f02882d2f3d",
+    "content-hash": "f8026c51c8360616e7ff65e3273f2d0e",
     "packages": [
         {
             "name": "brain/nonces",
@@ -5587,7 +5587,8 @@
     "platform": {
         "php": "^7.1",
         "ext-fileinfo": "*",
-        "ext-simplexml": "*"
+        "ext-simplexml": "*",
+        "ext-zip": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"
