@@ -10,8 +10,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
 namespace Translationmanager\Xliff;
 
 use SimpleXMLElement;
@@ -31,7 +29,7 @@ class XliffElementHelper
         string $sourceLanguage,
         string $targetLanguage,
         string $path
-    ): string {
+    ) {
 
         return "<?xml version='1.0' encoding='UTF-8'?><xliff xmlns='urn:oasis:names:tc:xliff:document:2.0'
             version='2.0' srcLang='{$sourceLanguage}' trgLang='{$targetLanguage}'>

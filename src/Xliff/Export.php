@@ -10,8 +10,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
 namespace Translationmanager\Xliff;
 
 use Translationmanager\Functions;
@@ -109,7 +107,7 @@ class Export
      *
      * @return int Current project id
      */
-    protected function projectIdFromRequest(): int
+    protected function projectIdFromRequest()
     {
         return (int)filter_input(
             INPUT_POST,
@@ -168,7 +166,7 @@ class Export
         array $projectItemsByTargetLanguages,
         string $sourceLanguageCode,
         string $projectName
-    ): string {
+    ) {
 
         $xliffZipName = $this->xliff->xliffZipName($projectName);
         foreach ($projectItemsByTargetLanguages as $targetLanguageCode => $projectItems) {

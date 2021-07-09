@@ -50,7 +50,7 @@ class Acf
      * phpcs:disable Inpsyde.CodeQuality.NestingLevel.MaxExceeded
      * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
      */
-    public function acfFieldKeys(array $fields, array $keys, int $postID): array
+    public function acfFieldKeys(array $fields, array $keys, int $postID)
     {
         // phpcs:enable
         foreach ($fields as $filedKey => $field) {
@@ -109,7 +109,7 @@ class Acf
      * @param int $postID The source post id
      * @return array the array of the generated keys
      */
-    protected function recursivelyFindLayoutFieldKeys(array $array, string $parentKey, int $postID): array
+    protected function recursivelyFindLayoutFieldKeys(array $array, string $parentKey, int $postID)
     {
         $keys = [];
         foreach ($array as $key => $value) {
@@ -138,7 +138,7 @@ class Acf
      * @param int $postID the source project post id
      * @return string Field type of ACF field
      */
-    protected function getFieldTypeByKey(string $key, int $postID): string
+    protected function getFieldTypeByKey(string $key, int $postID)
     {
         if (empty($key) || empty($postID)) {
             return '';
