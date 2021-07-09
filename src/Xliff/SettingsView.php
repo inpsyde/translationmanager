@@ -60,12 +60,11 @@ class SettingsView
                       action="">
                     <input type="file" name="xliff-file" id="xliff-file" accept=".zip"/>
                     <input type="submit" id="import-XLIFF" class="button button-primary"
-                           name="import-XLIFF" value="<?php esc_html_e('Import XLIFF Data', 'translationmanager'); ?>"/>
+                           name="import-XLIFF" value="<?php esc_attr('Import XLIFF Data'); ?>"/>
                     <?php wp_nonce_field('translationmanager_import_xliff');?>
                 </form>
             </div>
         </div>
         <?php
     }
-
 }

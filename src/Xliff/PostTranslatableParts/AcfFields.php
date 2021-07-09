@@ -62,7 +62,7 @@ class AcfFields
                 continue;
             }
 
-            $acfUnit= $xliffElementHelper->addUnit(
+            $acfUnit = $xliffElementHelper->addUnit(
                 $acfGroup,
                 $this->elementId((string)$sourcePostId, $key)
             );
@@ -76,7 +76,7 @@ class AcfFields
 
             $xliffElementHelper->addSegment(
                 $acfUnit,
-                ['id'=> $key, 'state'=>'initial'],
+                ['id' => $key, 'state' => 'initial'],
                 $value
             );
         }
@@ -90,7 +90,7 @@ class AcfFields
         }
     }
 
-    protected function elementId(string $prefix, string $name)
+    protected function elementId($prefix, $name)
     {
         return ['id' => $prefix . '-' . $name];
     }

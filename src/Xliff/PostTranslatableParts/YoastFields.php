@@ -59,13 +59,13 @@ class YoastFields
             $field = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
             $xliffElementHelper->addSegment(
                 $yoastUnit,
-                ['id'=> $key, 'state'=>'initial'],
+                ['id' => $key, 'state' => 'initial'],
                 $field
             );
         }
     }
 
-    protected function elementId(string $prefix, string $name)
+    protected function elementId($prefix, $name)
     {
         return ['id' => $prefix . '-' . $name];
     }
