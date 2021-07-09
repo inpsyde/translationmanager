@@ -135,6 +135,8 @@ class Import
      * return zip file to import
      *
      * @return array zip file to import
+     *
+     * phpcs:disable
      */
     protected function getFileToImport(): array
     {
@@ -145,12 +147,14 @@ class Import
             empty($_FILES['file']['name']) ||
             empty($_FILES['file']['tmp_name']) ||
             $_FILES['file']['type'] !== 'application/zip' ||
+            empty($_FILES['file']['size']) ||
             !$_FILES['file']['size'] > 0
         ) {
             return [];
         }
 
         return $_FILES['file'];
+        // phpcs:enable
     }
 
     /**
@@ -220,14 +224,14 @@ class Import
                     }
                 }
 
-                $targetPost = $this->importPost($sourceSiteId, $postId, $targetSiteId, $postData);
+                $targetPost = $this->importPost($sourceSiteId, $postId, $targetSiteId, $postData, $posts);
                 if (!$targetPost) {
                     continue;
                 }
 
                 $this->maybeConnectContent(
                     [$sourceSiteId => $postId, $targetSiteId => $targetPost->ID],
-                    $postData['ID'] == 0
+                    $postData['ID'] === 0
                 );
             }
         }
@@ -240,11 +244,17 @@ class Import
      * @param int $sourcePostId the post id from which the data is taken
      * @param int $targetSiteId the site id where the data should be imported
      * @param array $postData the post data to import
+     * @param array $posts The xliff data
      * @return false|WP_Post false if the post is not inserted otherwise inserted post object
      * @throws NonexistentTable
      */
-    protected function importPost(int $sourceSiteId, int $sourcePostId, int $targetSiteId, array $postData)
-    {
+    protected function importPost(
+        int $sourceSiteId,
+        int $sourcePostId,
+        int $targetSiteId,
+        array $postData,
+        array $posts
+    ) {
         $relatedPost = translationIds($sourcePostId, 'post', $sourceSiteId);
         $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
 

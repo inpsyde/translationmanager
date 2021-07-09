@@ -124,7 +124,7 @@ class Xliff
             'languageInfo' => [
                 'sourceLanguage' => $this->xliffElementHelper->getElementAttribute($xliffData, 'srcLang'),
                 'targetLanguage' => $this->xliffElementHelper->getElementAttribute($xliffData, 'trgLang'),
-            ]
+            ],
         ];
 
         foreach ($xliffData->file->children() as $child) {
