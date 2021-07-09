@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Translationmanager\Xliff\PostTranslatableParts;
 
 use SimpleXMLElement;
@@ -60,7 +62,7 @@ class GeneralFields
         }
     }
 
-    protected function elementId(string $prefix, string $name)
+    protected function elementId(string $prefix, string $name): array
     {
         return ['id' => $prefix . '-' . $name];
     }

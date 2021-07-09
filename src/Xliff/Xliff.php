@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Translationmanager\Xliff;
 
 use Exception;
@@ -107,7 +109,7 @@ class Xliff
      * @param string $file from which to extract the post data
      * @return array|array[] The generated posts array to import
      */
-    public function generateDataFromFile(string $file)
+    public function generateDataFromFile(string $file): array
     {
         if (!file_exists($file)) {
             return [];
@@ -151,7 +153,7 @@ class Xliff
      * @param string $projectName The Current Project name is needed to generate the XLIFF file name
      * @return string The XLIFF file Name
      */
-    public function xliffFIleName(string $sourceLanguage, string $targetLanguage, string $projectName)
+    public function xliffFIleName(string $sourceLanguage, string $targetLanguage, string $projectName): string
     {
         $fromTargetToSource = $sourceLanguage . '-' . $targetLanguage;
         return 'Translation-' . $fromTargetToSource . '-For-' . $projectName . '.xlf';
@@ -162,7 +164,7 @@ class Xliff
      *
      * @return string path to translations dir
      */
-    public function translationsDir(bool $url = false)
+    public function translationsDir(bool $url = false): string
     {
         return $url
             ? $this->plugin->url('resources/xliff-translations') . '/'
@@ -175,7 +177,7 @@ class Xliff
      * @param string $projectName The Current Project name is needed to generate the zip archive
      * @return string The zip archive name
      */
-    public function xliffZipName(string $projectName)
+    public function xliffZipName(string $projectName): string
     {
         return 'Translation-For-' . $projectName . '.zip';
     }
@@ -186,7 +188,7 @@ class Xliff
      * @param string $xliffFIleName The XLIFF file Name for which the path should be returned
      * @return string The XLIFF file path
      */
-    public function xliffFilePath(string $xliffFIleName)
+    public function xliffFilePath(string $xliffFIleName): string
     {
         return $this->translationsDir() . $xliffFIleName;
     }
@@ -197,7 +199,7 @@ class Xliff
      * @param string $xliffZipName The name of zip archive to get it's url
      * @return string the zip archive URL
      */
-    public function xliffZipUrl(string $xliffZipName)
+    public function xliffZipUrl(string $xliffZipName): string
     {
         return $this->translationsDir(true) . $xliffZipName;
     }
@@ -208,7 +210,7 @@ class Xliff
      * @param string $xliffZipName The name of zip archive to get it's path
      * @return string the zip archive path
      */
-    public function xliffZipPath(string $xliffZipName)
+    public function xliffZipPath(string $xliffZipName): string
     {
         return $this->translationsDir() . $xliffZipName;
     }

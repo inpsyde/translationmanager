@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Translationmanager\Xliff;
 
 use Inpsyde\MultilingualPress\Framework\Api\ContentRelations;
@@ -119,7 +121,7 @@ class Import
      *
      * @return int Current project id
      */
-    protected function projectIdFromRequest()
+    protected function projectIdFromRequest(): int
     {
         return (int)filter_input(
             INPUT_POST,
@@ -133,7 +135,7 @@ class Import
      *
      * @return array zip file to import
      */
-    protected function getFileToImport()
+    protected function getFileToImport(): array
     {
         if (
             empty($_FILES) ||
