@@ -17,7 +17,7 @@ class TestCase extends PhpUnitTestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         Monkey\setUp();
