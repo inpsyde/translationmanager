@@ -148,6 +148,6 @@ class XliffElementHelper
 
         $attribute = (string) $element[$attribute];
 
-        return $removeIntPart ? substr($attribute, strpos($attribute, "-") + 1): $attribute;
+        return $removeIntPart ? substr($attribute, strpos($attribute, "-") + 1) : $attribute;
     }
 }

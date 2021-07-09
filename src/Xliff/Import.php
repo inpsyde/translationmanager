@@ -163,7 +163,7 @@ class Import
      * @param array $file data to upload
      * @return bool true or false if uploaded or not
      */
-    protected function uploadZipFile(array $file):bool
+    protected function uploadZipFile(array $file): bool
     {
         $fileName = $file['name'];
         $tmpName = $file['tmp_name'];
@@ -177,7 +177,7 @@ class Import
      * @param string $targetDirLocation the path where to extract
      * @return bool true or false if the zip is extracted or not
      */
-    protected function extractZipFile(string $targetDirLocation):bool
+    protected function extractZipFile(string $targetDirLocation): bool
     {
         if (!$this->zip->open($targetDirLocation)) {
             return false;
