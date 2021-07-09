@@ -64,7 +64,7 @@ class AcfFields
                 continue;
             }
 
-            $acfUnit= $xliffElementHelper->addUnit(
+            $acfUnit = $xliffElementHelper->addUnit(
                 $acfGroup,
                 $this->elementId((string)$sourcePostId, $key)
             );
@@ -78,7 +78,7 @@ class AcfFields
 
             $xliffElementHelper->addSegment(
                 $acfUnit,
-                ['id'=> $key, 'state'=>'initial'],
+                ['id' => $key, 'state' => 'initial'],
                 $value
             );
         }

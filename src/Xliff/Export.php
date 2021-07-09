@@ -47,7 +47,7 @@ class Export
     public function __construct(Xliff $xliff)
     {
         $this->xliff = $xliff;
-        $this->zip = new ZipArchive;
+        $this->zip = new ZipArchive();
     }
 
     /**
@@ -126,7 +126,7 @@ class Export
      * @param int $projectId Current project id
      * @return array of project items based on target language
      */
-    protected function projectItemsByTargetLanguages(int $projectId):array
+    protected function projectItemsByTargetLanguages(int $projectId): array
     {
         $projectItems = Functions\get_project_items($projectId);
         $projectItemsByTargetLanguages = [];
@@ -193,7 +193,6 @@ class Export
             return '';
         }
 
-
         return $xliffZipName;
     }
 
@@ -212,7 +211,7 @@ class Export
 
         $xliffZipPath = $this->xliff->xliffZipPath($xliffZipName);
 
-        if ($this->zip->open($xliffZipPath, ZipArchive::CREATE)!==true) {
+        if ($this->zip->open($xliffZipPath, ZipArchive::CREATE) !== true) {
             return;
         }
 

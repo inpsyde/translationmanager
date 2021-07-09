@@ -123,7 +123,7 @@ class Xliff
         $postsToImport = [
             'languageInfo' => [
                 'sourceLanguage' => $this->xliffElementHelper->getElementAttribute($xliffData, 'srcLang'),
-                'targetLanguage' => $this->xliffElementHelper->getElementAttribute($xliffData, 'trgLang')
+                'targetLanguage' => $this->xliffElementHelper->getElementAttribute($xliffData, 'trgLang'),
             ]
         ];
 

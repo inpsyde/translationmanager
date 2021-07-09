@@ -102,9 +102,7 @@ class ServiceProvider implements BootstrappableServiceProvider
                 wp_localize_script(
                     'translationmanager-export-XLIFF',
                     'projectInfo',
-                    [
-                        'projectId' => $projectId
-                    ]
+                    ['projectId' => $projectId]
                 );
                 wp_enqueue_script('translationmanager-export-XLIFF');
 
@@ -118,9 +116,7 @@ class ServiceProvider implements BootstrappableServiceProvider
                 wp_localize_script(
                     'translationmanager-import-XLIFF',
                     'projectInfo',
-                    [
-                        'projectId' => $projectId
-                    ]
+                    ['projectId' => $projectId]
                 );
                 wp_enqueue_script('translationmanager-import-XLIFF');
             }

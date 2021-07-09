@@ -22,6 +22,7 @@ use Translationmanager\Utils\NetworkState;
 use WP_Post;
 use WPSEO_Meta;
 use ZipArchive;
+
 use function Inpsyde\MultilingualPress\assignedLanguageTags;
 use function Inpsyde\MultilingualPress\resolve;
 use function Inpsyde\MultilingualPress\translationIds;
@@ -74,7 +75,7 @@ class Import
     {
         $this->xliff = $xliff;
         $this->auth = $auth;
-        $this->zip = new ZipArchive;
+        $this->zip = new ZipArchive();
     }
 
     /**

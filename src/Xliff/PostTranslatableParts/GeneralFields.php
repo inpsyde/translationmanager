@@ -56,7 +56,7 @@ class GeneralFields
             $xliffElementHelper->addNotes($postDefaultsUnit, $notes);
             $xliffElementHelper->addSegment(
                 $postDefaultsUnit,
-                ['id'=>$field, 'state'=>'initial'],
+                ['id' => $field, 'state' => 'initial'],
                 $post->$field
             );
         }

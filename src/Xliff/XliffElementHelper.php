@@ -136,8 +136,12 @@ class XliffElementHelper
         return $group;
     }
 
-    public function getElementAttribute(SimpleXMLElement $element, string $attribute, bool $removeIntPart = false):string
-    {
+    public function getElementAttribute(
+        SimpleXMLElement $element,
+        string $attribute,
+        bool $removeIntPart = false
+    ): string {
+
         if (!isset($element[$attribute])) {
             return '';
         }
