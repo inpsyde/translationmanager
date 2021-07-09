@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee060b877c1977c41092347d0de8e2ad",
+    "content-hash": "8c58b5a802a2abafb459c7588314bc7e",
     "packages": [
         {
             "name": "brain/nonces",
@@ -743,7 +743,7 @@
                 "shasum": "",
                 "mirrors": [
                     {
-                        "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/%reference%.%type%",
+                        "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
                         "preferred": true
                     }
                 ]
@@ -5533,7 +5533,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.2",
+        "php": "^7.3",
         "ext-fileinfo": "*",
         "ext-simplexml": "*",
         "ext-zip": "*"
