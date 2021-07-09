@@ -29,8 +29,8 @@
         "ext-fileinfo": "*",
         "brain/nonces": "1.0.*",
         "inpsyde/system-status": "dev-master",
-        "pimple/pimple": "^3.2",
-        "webmozart/assert": "^1.4",
+        "pimple/pimple": "3.2",
+        "webmozart/assert": "1.4",
         "ext-simplexml": "*",
         "ext-zip": "*"
     },
