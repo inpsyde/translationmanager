@@ -31,7 +31,7 @@ class WordPressSeo
         $to_translate = [
             'title',
             'metadesc',
-            'metakeywords',
+            'focuskw',
             'bctitle',
         ];
 
