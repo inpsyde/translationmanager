@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Translationmanager\Xliff\PostTranslatableParts;
 
 use SimpleXMLElement;
@@ -59,13 +61,13 @@ class YoastFields
             $field = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
             $xliffElementHelper->addSegment(
                 $yoastUnit,
-                ['id' => $key, 'state' => 'initial'],
+                ['id'=> $key, 'state'=>'initial'],
                 $field
             );
         }
     }
 
-    protected function elementId($prefix, $name)
+    protected function elementId(string $prefix, string $name): array
     {
         return ['id' => $prefix . '-' . $name];
     }

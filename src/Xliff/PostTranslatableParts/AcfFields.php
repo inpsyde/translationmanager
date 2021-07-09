@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Translationmanager\Xliff\PostTranslatableParts;
 
 use SimpleXMLElement;
@@ -62,7 +64,7 @@ class AcfFields
                 continue;
             }
 
-            $acfUnit = $xliffElementHelper->addUnit(
+            $acfUnit= $xliffElementHelper->addUnit(
                 $acfGroup,
                 $this->elementId((string)$sourcePostId, $key)
             );
@@ -76,7 +78,7 @@ class AcfFields
 
             $xliffElementHelper->addSegment(
                 $acfUnit,
-                ['id' => $key, 'state' => 'initial'],
+                ['id'=> $key, 'state'=>'initial'],
                 $value
             );
         }
@@ -90,7 +92,7 @@ class AcfFields
         }
     }
 
-    protected function elementId($prefix, $name)
+    protected function elementId(string $prefix, string $name): array
     {
         return ['id' => $prefix . '-' . $name];
     }

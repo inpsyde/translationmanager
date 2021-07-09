@@ -26,7 +26,7 @@ class TestCase extends PhpUnitTestCase
     /**
      * @inheritDoc
      */
-    protected function tearDown(): void
+    protected function tearDown()
     {
         Monkey\tearDown();
         parent::tearDown();

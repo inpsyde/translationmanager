@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Translationmanager\Xliff;
 
 use Translationmanager\Functions;
@@ -45,7 +47,7 @@ class Export
     public function __construct(Xliff $xliff)
     {
         $this->xliff = $xliff;
-        $this->zip = new ZipArchive();
+        $this->zip = new ZipArchive;
     }
 
     /**
@@ -107,7 +109,7 @@ class Export
      *
      * @return int Current project id
      */
-    protected function projectIdFromRequest()
+    protected function projectIdFromRequest(): int
     {
         return (int)filter_input(
             INPUT_POST,
@@ -124,7 +126,7 @@ class Export
      * @param int $projectId Current project id
      * @return array of project items based on target language
      */
-    protected function projectItemsByTargetLanguages($projectId)
+    protected function projectItemsByTargetLanguages(int $projectId):array
     {
         $projectItems = Functions\get_project_items($projectId);
         $projectItemsByTargetLanguages = [];
@@ -162,8 +164,12 @@ class Export
      * @param string $projectName The Current Project name is needed to generate the name of zip archive and XLIFF files
      * @return string generated ZIP archive name
      */
-    protected function handleExport($projectItemsByTargetLanguages, $sourceLanguageCode, $projectName)
-    {
+    protected function handleExport(
+        array $projectItemsByTargetLanguages,
+        string $sourceLanguageCode,
+        string $projectName
+    ): string {
+
         $xliffZipName = $this->xliff->xliffZipName($projectName);
         foreach ($projectItemsByTargetLanguages as $targetLanguageCode => $projectItems) {
             $xliffFIleName = $this->xliff->xliffFIleName($sourceLanguageCode, $targetLanguageCode, $projectName);
@@ -198,11 +204,15 @@ class Export
      * @param string $xliffFIleName The name of XLIFF file which should be added into the zip archive
      * @param string $xliffZipName The name of zip archive to generate
      */
-    protected function addFileIntoZip($xliffFilePath, $xliffFIleName, $xliffZipName )
-    {
+    protected function addFileIntoZip(
+        string $xliffFilePath,
+        string $xliffFIleName,
+        string $xliffZipName
+    ) {
+
         $xliffZipPath = $this->xliff->xliffZipPath($xliffZipName);
 
-        if ($this->zip->open($xliffZipPath, ZipArchive::CREATE) !== true) {
+        if ($this->zip->open($xliffZipPath, ZipArchive::CREATE)!==true) {
             return;
         }
 

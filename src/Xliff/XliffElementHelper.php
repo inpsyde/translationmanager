@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Translationmanager\Xliff;
 
 use SimpleXMLElement;
@@ -25,8 +27,12 @@ class XliffElementHelper
      * @param string $path The path to the dir where the file will be generated
      * @return string Xliff header markup
      */
-    public function xliffHeaderFooterMarkup($sourceLanguage, $targetLanguage, $path)
-    {
+    public function xliffHeaderFooterMarkup(
+        string $sourceLanguage,
+        string $targetLanguage,
+        string $path
+    ): string {
+
         return "<?xml version='1.0' encoding='UTF-8'?><xliff xmlns='urn:oasis:names:tc:xliff:document:2.0'
             version='2.0' srcLang='{$sourceLanguage}' trgLang='{$targetLanguage}'>
             <file id='f1'><skeleton href='{$path}'/></file></xliff>";
@@ -38,7 +44,7 @@ class XliffElementHelper
      * @param SimpleXMLElement $element The SimpleXML Element where the notes should be added
      * @param array $notes The array of note id and note value
      */
-    public function addNotes(SimpleXMLElement $element, $notes)
+    public function addNotes(SimpleXMLElement $element, array $notes)
     {
         if (empty($notes)) {
             return;
@@ -61,7 +67,7 @@ class XliffElementHelper
      * @param string $source The value of <source> element of <segment>
      * @param string $target The value of <target> element of <segment>
      */
-    public function addSegment(SimpleXMLElement $element, $atts = [], $source = '', $target = '')
+    public function addSegment(SimpleXMLElement $element, array $atts = [], string $source = '', string $target = '')
     {
         $segment = $element->addChild('segment');
 
@@ -81,7 +87,7 @@ class XliffElementHelper
      * @param SimpleXMLElement $element The SimpleXML Element where the <ignorable> should be added
      * @param array $target The value of <target> element of <ignorable>
      */
-    public function addIgnorable(SimpleXMLElement $element, $target, $id)
+    public function addIgnorable(SimpleXMLElement $element, array $target, array $id)
     {
         if (empty($target)) {
             return;
@@ -99,7 +105,7 @@ class XliffElementHelper
      * @param array $attributes The array of <unit> attributes
      * @return SimpleXMLElement created <unit> element
      */
-    public function addUnit(SimpleXMLElement $element, $attributes = []): SimpleXMLElement
+    public function addUnit(SimpleXMLElement $element, array $attributes = []): SimpleXMLElement
     {
         $unit = $element->addChild('unit');
         if (!empty($attributes)) {
@@ -118,7 +124,7 @@ class XliffElementHelper
      * @param array $attributes The array of <group> attributes
      * @return SimpleXMLElement created <group> element
      */
-    public function addGroup(SimpleXMLElement $element, $attributes = []): SimpleXMLElement
+    public function addGroup(SimpleXMLElement $element, array $attributes = []): SimpleXMLElement
     {
         $group = $element->addChild('group');
         if (!empty($attributes)) {
@@ -130,7 +136,7 @@ class XliffElementHelper
         return $group;
     }
 
-    public function getElementAttribute(SimpleXMLElement $element, $attribute, $removeIntPart = false)
+    public function getElementAttribute(SimpleXMLElement $element, string $attribute, bool $removeIntPart = false):string
     {
         if (!isset($element[$attribute])) {
             return '';
