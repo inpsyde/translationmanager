@@ -89,7 +89,6 @@
       <path value="$PROJECT_DIR$/vendor/automattic/vipwpcs" />
       <path value="/usr/local/Cellar/php@7.3/7.3.19/share/php@7.3/pear" />
       <path value="$PROJECT_DIR$/../../.." />
-      <path value="$PROJECT_DIR$/vendor/sebastian/type" />
       <path value="$PROJECT_DIR$/vendor/symfony/string" />
       <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
