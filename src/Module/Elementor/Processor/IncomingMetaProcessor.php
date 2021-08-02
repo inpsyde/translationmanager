@@ -66,7 +66,7 @@ class IncomingMetaProcessor implements IncomingProcessor
         if (!$translation->is_valid()) {
             return null;
         }
-        
+
         $networkState = NetworkState::create();
         $targetSiteId = $translation->target_site_id();
 
@@ -95,7 +95,6 @@ class IncomingMetaProcessor implements IncomingProcessor
             );
         }
 
-
         if (empty($notTranslatedFieldsToImport) || empty($translatedFieldsToImport)) {
             return;
         }
@@ -112,7 +111,7 @@ class IncomingMetaProcessor implements IncomingProcessor
 
         $networkState->restore();
     }
-    
+
     /**
      * Will replace the translation data within _elementor_data meta
      *
@@ -137,14 +136,14 @@ class IncomingMetaProcessor implements IncomingProcessor
                     if (!in_array($key, self::TRANSLATABLE_SETTINGS)) {
                         continue;
                     }
-                    $id = 'id-'. $data->id;
+                    $id = 'id-' . $data->id;
                     if (key_exists($id, $translationData)) {
                         $data->settings = array_merge((array)$data->settings, $translationData[$id]);
                     }
                 }
             }
         }
-        
+
         return $sourceData;
     }
 }
