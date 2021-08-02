@@ -9,6 +9,7 @@
  * Text Domain: translationmanager
  * License:     GPLv2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Requires at least: 5.0
  * Requires PHP: 7.2
  * Domain Path: /languages
  *

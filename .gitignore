@@ -21,6 +21,10 @@
 # User-specific stuff:
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/dataSources
+.idea/dataSources.local.xml
+.idea/sshConfigs.xml
+.idea/webServers.xml
 
 # Sensitive or high-churn files:
 I.idea/codestream.xml
