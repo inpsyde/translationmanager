@@ -37,7 +37,7 @@
         "barryvdh/composer-cleanup-plugin": "^0.2.0",
         "brain/monkey": "2.*",
         "inpsyde/php-coding-standards": "^1.0",
-        "phpunit/phpunit": "^8.0",
+        "phpunit/phpunit": "^7.5",
         "vimeo/psalm": "^3.11.7",
         "oomphinc/composer-installers-extender": "^1.1",
         "inpsyde/multilingualpress": "^3.0"
