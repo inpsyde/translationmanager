@@ -53,6 +53,10 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         $sourcePostId = $translation->source_post_id();
 
         $fields = get_field_objects($sourcePostId);
+        if (!$fields) {
+            return;
+        }
+
         $acfFields = $this->addACFFieldKeys($fields, [], $sourcePostId);
 
         !empty($acfFields['to-not-translate']) ? $toNotTranslate = $acfFields['to-not-translate'] : [];
