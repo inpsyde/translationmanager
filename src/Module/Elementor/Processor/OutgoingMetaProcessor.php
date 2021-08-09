@@ -57,7 +57,6 @@ class OutgoingMetaProcessor implements OutgoingProcessor
 
     const _NAMESPACE = 'Elementor';
 
-
     /**
      * @inheritDoc
      */
@@ -111,7 +110,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                     if (!in_array($key, self::TRANSLATABLE_SETTINGS)) {
                         continue;
                     }
-                    $translatableElementsKey = 'id-'. $data->id;
+                    $translatableElementsKey = 'id-' . $data->id;
                     $translatableElements[$translatableElementsKey][$key] = $setting;
                 }
             }

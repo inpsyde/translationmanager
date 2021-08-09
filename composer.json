@@ -25,7 +25,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-fileinfo": "*",
         "brain/nonces": "1.0.*",
         "inpsyde/system-status": "dev-master",
@@ -35,9 +35,9 @@
     "require-dev": {
         "johnpbloch/wordpress-core": "^5.0",
         "barryvdh/composer-cleanup-plugin": "^0.2.0",
-        "brain/monkey": "2.*",
+        "brain/monkey": "~2.3",
         "inpsyde/php-coding-standards": "^1.0",
-        "phpunit/phpunit": "^6.0 | ^7.0 | ^8.0 | ^9.0",
+        "phpunit/phpunit": "^7.5",
         "vimeo/psalm": "^3.11.7",
         "oomphinc/composer-installers-extender": "^1.1",
         "inpsyde/multilingualpress": "^3.0"
