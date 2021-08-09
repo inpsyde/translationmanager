@@ -10,6 +10,8 @@ use Translationmanager\Module\TranslationEntityAwareTrait;
 use Translationmanager\Module\ACF\Integrator;
 use Translationmanager\Utils\NetworkState;
 use Translationmanager\Translation;
+use WP_Error;
+use WP_Term;
 
 /**
  * Class IncomingMetaProcessor
@@ -28,8 +30,21 @@ class IncomingMetaProcessor implements IncomingProcessor
     public function processIncoming(Translation $translation)
     {
         if (!$translation->is_valid()) {
-            return null;
+            return;
         }
+
+        $project = $this->getProject();
+
+        if (!$project instanceof WP_Term) {
+            return;
+        }
+
+        $notTranslatedFieldsToImport = get_term_meta(
+            $project->term_id,
+            Integrator::NOT_TRANSLATABE_ACF_FIELDS,
+            true
+        ) ?? [];
+
         $networkState = NetworkState::create();
         $targetSiteId = $translation->target_site_id();
 
@@ -50,14 +65,6 @@ class IncomingMetaProcessor implements IncomingProcessor
             );
         }
 
-        $notTranslatedFieldsToImport = [];
-        if ($translation->has_meta(Integrator::NOT_TRANSLATABE_ACF_FIELDS, Integrator::_NAMESPACE)) {
-            $notTranslatedFieldsToImport = $translation->get_meta(
-                Integrator::NOT_TRANSLATABE_ACF_FIELDS,
-                Integrator::_NAMESPACE
-            );
-        }
-
         $fieldsToImport = array_merge($translatedFieldsToImport, $notTranslatedFieldsToImport);
         if (!empty($fieldsToImport)) {
             foreach ($fieldsToImport as $fieldKey => $fieldValue) {
@@ -66,5 +73,21 @@ class IncomingMetaProcessor implements IncomingProcessor
         }
 
         $networkState->restore();
+    }
+
+    /**
+     * Get the project info
+     *
+     * @return array|WP_Error|WP_Term|null
+     */
+    protected function getProject()
+    {
+        $projectId = (int)filter_input(
+            INPUT_POST,
+            'translationmanager_project_id',
+            FILTER_SANITIZE_NUMBER_INT
+        );
+
+        return get_term($projectId, 'translationmanager_project');
     }
 }
