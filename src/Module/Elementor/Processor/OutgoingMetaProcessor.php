@@ -7,6 +7,8 @@ namespace Translationmanager\Module\Elementor\Processor;
 use Translationmanager\Module\Elementor\Integrator;
 use Translationmanager\Module\Processor\OutgoingProcessor;
 use Translationmanager\Translation;
+use WP_Term;
+use WP_Error;
 
 /**
  * Class OutgoingMetaProcessor
@@ -57,6 +59,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
 
     const _NAMESPACE = 'Elementor';
 
+
     /**
      * @inheritDoc
      */
@@ -66,7 +69,12 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return;
         }
 
+        $project = $this->getProject();
         $sourcePostId = $translation->source_post_id();
+
+        if (!$project instanceof WP_Term || !$sourcePostId) {
+            return;
+        }
 
         $untranslatableData = $translatableElements = [];
         foreach (self::KEYS_TO_SYNC as $meta) {
@@ -86,7 +94,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         }
 
         $translation->set_value(Integrator::ELEMENTOR_FIELDS, $translatableElements, self::_NAMESPACE);
-        $translation->set_meta(Integrator::NOT_TRANSLATABE_DATA, $untranslatableData, self::_NAMESPACE);
+        update_term_meta($project->term_id, Integrator::NOT_TRANSLATABE_DATA, $untranslatableData);
     }
 
     protected function findTranslatableValues(array $elementorData): array
@@ -117,5 +125,21 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         }
 
         return $translatableElements;
+    }
+
+    /**
+     * Get the project info
+     *
+     * @return array|WP_Error|WP_Term|null
+     */
+    protected function getProject()
+    {
+        $projectId = (int)filter_input(
+            INPUT_POST,
+            'translationmanager_project_id',
+            FILTER_SANITIZE_NUMBER_INT
+        );
+
+        return get_term($projectId, 'translationmanager_project');
     }
 }

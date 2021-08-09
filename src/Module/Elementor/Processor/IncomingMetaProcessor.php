@@ -10,6 +10,8 @@ use Translationmanager\Module\TranslationEntityAwareTrait;
 use Translationmanager\Module\Elementor\Integrator;
 use Translationmanager\Utils\NetworkState;
 use Translationmanager\Translation;
+use WP_Error;
+use WP_Term;
 
 /**
  * Class IncomingMetaProcessor
@@ -67,6 +69,14 @@ class IncomingMetaProcessor implements IncomingProcessor
             return null;
         }
 
+        $project = $this->getProject();
+
+        if (!$project instanceof WP_Term) {
+            return;
+        }
+
+        $notTranslatedFieldsToImport = get_term_meta($project->term_id, Integrator::NOT_TRANSLATABE_DATA, true);
+
         $networkState = NetworkState::create();
         $targetSiteId = $translation->target_site_id();
 
@@ -83,14 +93,6 @@ class IncomingMetaProcessor implements IncomingProcessor
         if ($translation->has_value(Integrator::ELEMENTOR_FIELDS, Integrator::_NAMESPACE)) {
             $translatedFieldsToImport = $translation->get_value(
                 Integrator::ELEMENTOR_FIELDS,
-                Integrator::_NAMESPACE
-            );
-        }
-
-        $notTranslatedFieldsToImport = [];
-        if ($translation->has_meta(Integrator::NOT_TRANSLATABE_DATA, Integrator::_NAMESPACE)) {
-            $notTranslatedFieldsToImport = $translation->get_meta(
-                Integrator::NOT_TRANSLATABE_DATA,
                 Integrator::_NAMESPACE
             );
         }
@@ -145,5 +147,21 @@ class IncomingMetaProcessor implements IncomingProcessor
         }
 
         return $sourceData;
+    }
+
+    /**
+     * Get the project info
+     *
+     * @return array|WP_Error|WP_Term|null
+     */
+    protected function getProject()
+    {
+        $projectId = (int)filter_input(
+            INPUT_POST,
+            'translationmanager_project_id',
+            FILTER_SANITIZE_NUMBER_INT
+        );
+
+        return get_term($projectId, 'translationmanager_project');
     }
 }
