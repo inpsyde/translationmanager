@@ -6,6 +6,8 @@ use Translationmanager\Exception\UnexpectedEntityException;
 use Translationmanager\Module\TranslationEntityAwareTrait;
 use Translationmanager\Utils\NetworkState;
 use Translationmanager\Translation;
+use WP_Error;
+use WP_Term;
 use WPSEO_Meta;
 
 class WordPressSeo
@@ -26,7 +28,12 @@ class WordPressSeo
             return;
         }
 
+        $project = $this->getProject();
         $source_post_id = $translation->source_post_id();
+
+        if (!$project instanceof WP_Term || !$source_post_id) {
+            return;
+        }
 
         $to_translate = [
             'title',
@@ -46,10 +53,12 @@ class WordPressSeo
             $translation->set_value($key, $field, self::_NAMESPACE);
         }
 
+        $projectMeta = [];
         foreach ($to_not_translate as $key) {
-            $field = get_post_meta($source_post_id, WPSEO_Meta::$meta_prefix . $key, true);
-            $translation->set_meta($key, $field, self::_NAMESPACE);
+            $projectMeta[$key] = get_post_meta($source_post_id, WPSEO_Meta::$meta_prefix . $key, true);
         }
+
+        update_term_meta($project->term_id, self::_NAMESPACE, $projectMeta);
     }
 
     /**
@@ -66,6 +75,14 @@ class WordPressSeo
             return;
         }
 
+        $project = $this->getProject();
+
+        if (!$project instanceof WP_Term) {
+            return;
+        }
+
+        $not_translated = get_term_meta($project->term_id, self::_NAMESPACE, true);
+
         $networkState = NetworkState::create();
 
         $networkState->switch_to($translation->target_site_id());
@@ -77,7 +94,6 @@ class WordPressSeo
             return;
         }
 
-        $not_translated = $translation->get_meta(self::_NAMESPACE);
         $translated = $translation->get_value(self::_NAMESPACE);
         $all_meta = array_filter(array_merge($not_translated, $translated));
 
@@ -90,5 +106,21 @@ class WordPressSeo
         }
 
         $networkState->restore();
+    }
+
+    /**
+     * Get the project info
+     *
+     * @return array|WP_Error|WP_Term|null
+     */
+    protected function getProject()
+    {
+        $projectId = (int)filter_input(
+            INPUT_POST,
+            'translationmanager_project_id',
+            FILTER_SANITIZE_NUMBER_INT
+        );
+
+        return get_term($projectId, 'translationmanager_project');
     }
 }
