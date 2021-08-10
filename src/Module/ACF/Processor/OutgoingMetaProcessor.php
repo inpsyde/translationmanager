@@ -7,8 +7,6 @@ namespace Translationmanager\Module\ACF\Processor;
 use Translationmanager\Module\ACF\Integrator;
 use Translationmanager\Module\Processor\OutgoingProcessor;
 use Translationmanager\Translation;
-use WP_Error;
-use WP_Term;
 
 /**
  * Class OutgoingMetaProcessor
@@ -52,10 +50,10 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return;
         }
 
-        $project = $this->getProject();
+        $projectItemId = $translation->get_meta('project_item_id');
         $sourcePostId = $translation->source_post_id();
 
-        if (!$project instanceof WP_Term || !$sourcePostId) {
+        if (!$sourcePostId) {
             return;
         }
 
@@ -72,7 +70,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             $translation->set_value(Integrator::ACF_FIELDS, $acfFields, self::_NAMESPACE);
         }
         if (!empty($toNotTranslate)) {
-            update_term_meta($project->term_id, Integrator::NOT_TRANSLATABE_ACF_FIELDS, $toNotTranslate);
+            update_post_meta($projectItemId, Integrator::NOT_TRANSLATABE_ACF_FIELDS, $toNotTranslate);
         }
     }
 
@@ -213,21 +211,5 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             $number > 1 ?
                     $this->getClonedFieldKeyPosition($key, $needle, $number - 1) + strlen($needle) : 0
         ) - 1;
-    }
-
-    /**
-     * Get the project info
-     *
-     * @return array|WP_Error|WP_Term|null
-     */
-    protected function getProject()
-    {
-        $projectId = (int)filter_input(
-            INPUT_POST,
-            'translationmanager_project_id',
-            FILTER_SANITIZE_NUMBER_INT
-        );
-
-        return get_term($projectId, 'translationmanager_project');
     }
 }

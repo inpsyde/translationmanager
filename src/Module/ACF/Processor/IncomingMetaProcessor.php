@@ -10,8 +10,6 @@ use Translationmanager\Module\TranslationEntityAwareTrait;
 use Translationmanager\Module\ACF\Integrator;
 use Translationmanager\Utils\NetworkState;
 use Translationmanager\Translation;
-use WP_Error;
-use WP_Term;
 
 /**
  * Class IncomingMetaProcessor
@@ -33,14 +31,10 @@ class IncomingMetaProcessor implements IncomingProcessor
             return;
         }
 
-        $project = $this->getProject();
+        $projectItemId = $translation->get_meta('project_item_id');
 
-        if (!$project instanceof WP_Term) {
-            return;
-        }
-
-        $notTranslatedFieldsToImport = get_term_meta(
-            $project->term_id,
+        $notTranslatedFieldsToImport = get_post_meta(
+            $projectItemId,
             Integrator::NOT_TRANSLATABE_ACF_FIELDS,
             true
         ) ?? [];
@@ -73,21 +67,5 @@ class IncomingMetaProcessor implements IncomingProcessor
         }
 
         $networkState->restore();
-    }
-
-    /**
-     * Get the project info
-     *
-     * @return array|WP_Error|WP_Term|null
-     */
-    protected function getProject()
-    {
-        $projectId = (int)filter_input(
-            INPUT_POST,
-            'translationmanager_project_id',
-            FILTER_SANITIZE_NUMBER_INT
-        );
-
-        return get_term($projectId, 'translationmanager_project');
     }
 }
