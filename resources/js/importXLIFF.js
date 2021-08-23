@@ -4,16 +4,6 @@
 		var init = false;
 
 		/**
-		 * Executes on AJAX success and append the menu markup received via AJAX, which is passed as parameter,
-		 * to the current menu.
-		 *
-		 * @param {jQuery} $copyMenuSettingsMarkup
-		 */
-		var onAjaxSuccess = function ( data ) {
-
-		};
-
-		/**
 		 * Executes on AJAX error.
 		 */
 		var onAjaxError = function (error) {
@@ -21,9 +11,7 @@
 		};
 
 		/**
-		 * Send the AJAX request to update the menu for the given languages ids.
-		 *
-		 * @param {number[]} ids
+		 * Send the AJAX request to import the Xliff data
 		 */
 		var sendRequest = function () {
 			var ajaxAction = 'translationmanager_import_xliff';
@@ -46,11 +34,9 @@
 				processData: false,
 				contentType: false,
 			} ).done( function ( response ) {
-				if ( response.success && response.data ) {
-					onAjaxSuccess(response.data);
-					return;
+				if ( !response.success || !response.data ) {
+					onAjaxError(response.data);
 				}
-				onAjaxError(response.data);
 
 			} ).fail(function(xhr, status, error) {
 				onAjaxError(error);
@@ -59,8 +45,6 @@
 
 		/**
 		 * Init the class by setting events callbacks on the jQuery element.
-		 *
-		 * @return {MultilingualPress.NewSiteLanguage}
 		 */
 		var initiate = function () {
 			if ( ! init ) {

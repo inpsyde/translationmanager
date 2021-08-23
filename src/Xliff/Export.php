@@ -53,7 +53,7 @@ class Export
     /**
      * Handle AJAX request.
      */
-    public function handle()
+    public function handle(): void
     {
         if (!wp_doing_ajax()) {
             return;
@@ -197,7 +197,7 @@ class Export
     }
 
     /**
-     * WIll adda file into zip archive
+     * WIll add a file into zip archive
      *
      * @param string $xliffFilePath The path of XLIFF file which should be added into the zip archive
      * @param string $xliffFIleName The name of XLIFF file which should be added into the zip archive
@@ -207,7 +207,7 @@ class Export
         string $xliffFilePath,
         string $xliffFIleName,
         string $xliffZipName
-    ) {
+    ): void {
 
         $xliffZipPath = $this->xliff->xliffZipPath($xliffZipName);
 

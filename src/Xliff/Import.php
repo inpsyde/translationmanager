@@ -81,7 +81,7 @@ class Import
     /**
      * Handle AJAX request.
      */
-    public function handle()
+    public function handle(): void
     {
         if (!$this->auth->can(wp_get_current_user(), self::$capability)) {
             wp_send_json_error('Invalid capability.');
@@ -148,7 +148,7 @@ class Import
             empty($_FILES['file']['tmp_name']) ||
             $_FILES['file']['type'] !== 'application/zip' ||
             empty($_FILES['file']['size']) ||
-            !$_FILES['file']['size'] > 0
+            $_FILES['file']['size'] === 0
         ) {
             return [];
         }
@@ -196,7 +196,7 @@ class Import
      *
      * @param array $files from which to get the data
      */
-    protected function handleImport(array $files)
+    protected function handleImport(array $files): void
     {
         if (empty($files)) {
             return;
@@ -279,10 +279,10 @@ class Import
     /**
      * will update target post meta for ACF fields
      *
-     * @param WP_Post $targetPost the target post object for which to update the meta
+     * @param WP_Post|null $targetPost the target post object for which to update the meta
      * @param array $acfFieldKeys the ACF field keys to update
      */
-    protected function importAcfFields(WP_Post $targetPost, array $acfFieldKeys)
+    protected function importAcfFields(?WP_Post $targetPost, array $acfFieldKeys): void
     {
         if (!$targetPost || empty($acfFieldKeys)) {
             return;
@@ -304,11 +304,11 @@ class Import
     /**
      * will update target post meta for YOAST fields
      *
-     * @param WP_Post $targetPost the target post object for which to update the meta
+     * @param WP_Post|null $targetPost the target post object for which to update the meta
      * @param array $yoastFieldKeys the YOAST field keys to update
      * @param int $sourcePostId the source post id from which the data is generated to get ignorable YOAST field keys
      */
-    protected function importYoastFields(WP_Post $targetPost, array $yoastFieldKeys, int $sourcePostId)
+    protected function importYoastFields(?WP_Post $targetPost, array $yoastFieldKeys, int $sourcePostId): void
     {
         if (!$targetPost || empty($yoastFieldKeys)) {
             return;
@@ -320,7 +320,7 @@ class Import
             $yoastIgnorableFields[$key] = get_post_meta($sourcePostId, WPSEO_Meta::$meta_prefix . $key, true);
         }
 
-        $fieldsToImport = array_filter(array_merge($sourcePostId['yoast_fields'], $yoastIgnorableFields));
+        $fieldsToImport = array_filter(array_merge($yoastFieldKeys, $yoastIgnorableFields));
         if (empty($fieldsToImport)) {
             return;
         }
@@ -336,7 +336,7 @@ class Import
      * @param array $contentIds The content ids to connect ['siteId' => 'postId', 'targetSiteId' => 'targetPostId']
      * @param bool $targetPostIsNew should be true if the target post was created, false if was updated
      */
-    protected function maybeConnectContent(array $contentIds, bool $targetPostIsNew)
+    protected function maybeConnectContent(array $contentIds, bool $targetPostIsNew): void
     {
         if (empty($contentIds) || !$targetPostIsNew) {
             return;
@@ -362,7 +362,7 @@ class Import
      * We need to delete the files if the import was successful or even not,
      * That's why this method should be called before doing the import and after import is done.
      */
-    protected function deleteFiles()
+    protected function deleteFiles(): void
     {
         array_map('unlink', array_filter((array) glob($this->xliff->translationsDir() . "*")));
     }

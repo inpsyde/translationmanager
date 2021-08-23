@@ -44,7 +44,7 @@ class XliffElementHelper
      * @param SimpleXMLElement $element The SimpleXML Element where the notes should be added
      * @param array $notes The array of note id and note value
      */
-    public function addNotes(SimpleXMLElement $element, array $notes)
+    public function addNotes(SimpleXMLElement $element, array $notes): void
     {
         if (empty($notes)) {
             return;
@@ -67,8 +67,12 @@ class XliffElementHelper
      * @param string $source The value of <source> element of <segment>
      * @param string $target The value of <target> element of <segment>
      */
-    public function addSegment(SimpleXMLElement $element, array $atts = [], string $source = '', string $target = '')
-    {
+    public function addSegment(
+        SimpleXMLElement $element,
+        array $atts = [],
+        string $source = '',
+        string $target = ''
+    ): void {
         $segment = $element->addChild('segment');
 
         if (!empty($atts)) {
@@ -87,7 +91,7 @@ class XliffElementHelper
      * @param SimpleXMLElement $element The SimpleXML Element where the <ignorable> should be added
      * @param array $target The value of <target> element of <ignorable>
      */
-    public function addIgnorable(SimpleXMLElement $element, array $target, array $id)
+    public function addIgnorable(SimpleXMLElement $element, array $target, array $id): void
     {
         if (empty($target)) {
             return;

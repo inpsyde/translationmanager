@@ -28,7 +28,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
      */
     private $acf;
 
-    public function __construct($acf)
+    public function __construct(Acf $acf)
     {
         $this->acf = $acf;
     }

@@ -4,10 +4,9 @@
 		var init = false;
 
 		/**
-		 * Executes on AJAX success and append the menu markup received via AJAX, which is passed as parameter,
-		 * to the current menu.
+		 * Executes on AJAX success and downloads the Xliff file
 		 *
-		 * @param {jQuery} $copyMenuSettingsMarkup
+		 * @param data
 		 */
 		var onAjaxSuccess = function ( data ) {
 
@@ -21,10 +20,10 @@
 		};
 
 		var download = function (url, filename) {
-			fetch(url).then(function (t) {
-				return t.blob().then((b) => {
+			fetch(url).then(function (response) {
+				return response.blob().then((blob) => {
 						var a = document.createElement("a");
-						a.href = URL.createObjectURL(b);
+						a.href = URL.createObjectURL(blob);
 						a.setAttribute("download", filename);
 						a.click();
 					}
@@ -40,10 +39,6 @@
 			alert( 'AJAX error.' );
 		};
 
-		/**
-		 * @param {number[]} ids
-		 * @return {{action, mlp_sites: *, menu: *}}
-		 */
 		var ajaxData = function () {
 			var ajaxAction = 'translationmanager_export_xliff';
 			var data = {
@@ -55,9 +50,7 @@
 		};
 
 		/**
-		 * Send the AJAX request to update the menu for the given languages ids.
-		 *
-		 * @param {number[]} ids
+		 * Send the AJAX request to generate the Xliff file and download it
 		 */
 		var sendRequest = function () {
 
@@ -80,8 +73,6 @@
 
 		/**
 		 * Init the class by setting events callbacks on the jQuery element.
-		 *
-		 * @return {MultilingualPress.NewSiteLanguage}
 		 */
 		var initiate = function () {
 			if ( ! init ) {
