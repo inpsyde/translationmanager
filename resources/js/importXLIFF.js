@@ -11,6 +11,14 @@
 		};
 
 		/**
+		 * Executes on AJAX success
+		 */
+		var onAjaxSuccess = function () {
+			alert('translations are imported');
+			$('#xliff-file').val('');
+		};
+
+		/**
 		 * Send the AJAX request to import the Xliff data
 		 */
 		var sendRequest = function () {
@@ -34,9 +42,11 @@
 				processData: false,
 				contentType: false,
 			} ).done( function ( response ) {
-				if ( !response.success || !response.data ) {
-					onAjaxError(response.data);
+				if ( response.success && response.data ) {
+					onAjaxSuccess(response.data);
+					return;
 				}
+				onAjaxError(response.data);
 
 			} ).fail(function(xhr, status, error) {
 				onAjaxError(error);
