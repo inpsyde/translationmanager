@@ -67,6 +67,10 @@ class IncomingMetaProcessor implements IncomingProcessor
             return null;
         }
 
+        $projectItemId = $translation->get_meta('project_item_id');
+
+        $notTranslatedFieldsToImport = get_post_meta($projectItemId, Integrator::NOT_TRANSLATABE_DATA, true);
+
         $networkState = NetworkState::create();
         $targetSiteId = $translation->target_site_id();
 
@@ -83,14 +87,6 @@ class IncomingMetaProcessor implements IncomingProcessor
         if ($translation->has_value(Integrator::ELEMENTOR_FIELDS, Integrator::_NAMESPACE)) {
             $translatedFieldsToImport = $translation->get_value(
                 Integrator::ELEMENTOR_FIELDS,
-                Integrator::_NAMESPACE
-            );
-        }
-
-        $notTranslatedFieldsToImport = [];
-        if ($translation->has_meta(Integrator::NOT_TRANSLATABE_DATA, Integrator::_NAMESPACE)) {
-            $notTranslatedFieldsToImport = $translation->get_meta(
-                Integrator::NOT_TRANSLATABE_DATA,
                 Integrator::_NAMESPACE
             );
         }

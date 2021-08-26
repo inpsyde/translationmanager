@@ -28,8 +28,17 @@ class IncomingMetaProcessor implements IncomingProcessor
     public function processIncoming(Translation $translation)
     {
         if (!$translation->is_valid()) {
-            return null;
+            return;
         }
+
+        $projectItemId = $translation->get_meta('project_item_id');
+
+        $notTranslatedFieldsToImport = get_post_meta(
+            $projectItemId,
+            Integrator::NOT_TRANSLATABE_ACF_FIELDS,
+            true
+        ) ?? [];
+
         $networkState = NetworkState::create();
         $targetSiteId = $translation->target_site_id();
 
@@ -46,14 +55,6 @@ class IncomingMetaProcessor implements IncomingProcessor
         if ($translation->has_value(Integrator::ACF_FIELDS, Integrator::_NAMESPACE)) {
             $translatedFieldsToImport = $translation->get_value(
                 Integrator::ACF_FIELDS,
-                Integrator::_NAMESPACE
-            );
-        }
-
-        $notTranslatedFieldsToImport = [];
-        if ($translation->has_meta(Integrator::NOT_TRANSLATABE_ACF_FIELDS, Integrator::_NAMESPACE)) {
-            $notTranslatedFieldsToImport = $translation->get_meta(
-                Integrator::NOT_TRANSLATABE_ACF_FIELDS,
                 Integrator::_NAMESPACE
             );
         }

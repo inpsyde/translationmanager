@@ -57,6 +57,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
 
     const _NAMESPACE = 'Elementor';
 
+
     /**
      * @inheritDoc
      */
@@ -66,7 +67,12 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return;
         }
 
+        $projectItemId = $translation->get_meta('project_item_id');
         $sourcePostId = $translation->source_post_id();
+
+        if (!$projectItemId || !$sourcePostId) {
+            return;
+        }
 
         $untranslatableData = $translatableElements = [];
         foreach (self::KEYS_TO_SYNC as $meta) {
@@ -86,7 +92,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         }
 
         $translation->set_value(Integrator::ELEMENTOR_FIELDS, $translatableElements, self::_NAMESPACE);
-        $translation->set_meta(Integrator::NOT_TRANSLATABE_DATA, $untranslatableData, self::_NAMESPACE);
+        update_post_meta($projectItemId, Integrator::NOT_TRANSLATABE_DATA, $untranslatableData);
     }
 
     protected function findTranslatableValues(array $elementorData): array
