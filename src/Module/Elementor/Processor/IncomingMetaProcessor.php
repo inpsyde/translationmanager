@@ -38,6 +38,7 @@ class IncomingMetaProcessor implements IncomingProcessor
         'alert_description',
         'html',
         'link_text',
+        'slides',
     ];
     const TRANSLATABLE_WIDGETS = [
         'heading',
@@ -56,6 +57,7 @@ class IncomingMetaProcessor implements IncomingProcessor
         'html',
         'read-more',
         'text-path',
+        'slides',
     ];
 
     /**
