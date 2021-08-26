@@ -35,7 +35,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         'alert_description',
         'html',
         'link_text',
-        'slides'
+        'slides',
     ];
     const TRANSLATABLE_WIDGETS = [
         'heading',
@@ -54,7 +54,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         'html',
         'read-more',
         'text-path',
-        'slides'
+        'slides',
     ];
 
     const _NAMESPACE = 'Elementor';
