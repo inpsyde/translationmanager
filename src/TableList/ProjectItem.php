@@ -235,6 +235,8 @@ final class ProjectItem extends TableList
                         ['id' => 'post-query-submit']
                     );
                 }
+
+                do_action('after_filter_options', $which);
             }
             ?>
         </div>

@@ -110,4 +110,5 @@
 			</form>
 		</div>
 	</div>
+    <?php do_action('after_order_info');?>
 </div>

@@ -112,3 +112,7 @@ node_modules
 
 # Static Analysis Tool and Coverage
 /coverage
+
+# cliff translations folder
+/resources/xliff-translations/*
+

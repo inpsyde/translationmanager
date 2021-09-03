@@ -55,7 +55,7 @@ class VersionCompareTest extends TestCase
     /**
      * @inheritDoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
 
         require_once getenv('LIBRARY_PATH') . '/inc/functions/commons.php';

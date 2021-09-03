@@ -26,7 +26,7 @@ function translationmanager_api()
 {
     static $api = null;
 
-    $url = 'https://stage.api.eurotext.de/api/v1';
+    $url = 'http://stage.api.eurotext.de/api/v1';
 
     if (defined('TRANSLATION_MANAGER_API_URL') && TRANSLATION_MANAGER_API_URL) {
         $url = TRANSLATION_MANAGER_API_URL;
@@ -85,6 +85,7 @@ function project_update(WP_Term $project)
 
         foreach ($item['data'] as $incoming_translation) {
             $translation = Translation::for_incoming((array)$incoming_translation);
+
             /**
              * Fires for each item or translation received from the API.
              *
@@ -228,7 +229,6 @@ function create_project_order(WP_Term $project_term)
             $post->ID,
             $languages[$post->_translationmanager_target_id]->get_lang_code()
         );
-
 
         /**
          * Fires before translation data is transfered to the API.

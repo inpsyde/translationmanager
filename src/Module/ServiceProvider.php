@@ -13,6 +13,7 @@ use CachingIterator;
 use Pimple\Container;
 use Translationmanager\Module\ACF\Processor\IncomingMetaProcessor;
 use Translationmanager\Module\ACF\Processor\OutgoingMetaProcessor;
+use Translationmanager\Module\ACF\Acf;
 use Translationmanager\Module\Mlp\Integrator as MultilingualPressIntegrator;
 use Translationmanager\Module\Processor\ProcessorBusFactory;
 use Translationmanager\Module\WooCommerce\Integrator as WooCommerceIntegrator;
@@ -68,8 +69,12 @@ class ServiceProvider implements IntegrableServiceProvider
             return $processorBus;
         };
 
-        $container['tm/acf/outgoing_meta_processor'] = function () {
-            return new OutgoingMetaProcessor();
+        $container['tm/acf/outgoing_meta_processor'] = function (Container $container) {
+            return new OutgoingMetaProcessor($container['tm/acf/acf']);
+        };
+
+        $container['tm/acf/acf'] = function () {
+            return new Acf();
         };
 
         $container['tm/acf/incoming_meta_processor'] = function () {
