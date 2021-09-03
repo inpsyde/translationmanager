@@ -38,6 +38,7 @@ class IncomingMetaProcessor implements IncomingProcessor
         'alert_description',
         'html',
         'link_text',
+        'slides',
     ];
     const TRANSLATABLE_WIDGETS = [
         'heading',
@@ -56,6 +57,7 @@ class IncomingMetaProcessor implements IncomingProcessor
         'html',
         'read-more',
         'text-path',
+        'slides',
     ];
 
     /**
@@ -66,6 +68,10 @@ class IncomingMetaProcessor implements IncomingProcessor
         if (!$translation->is_valid()) {
             return null;
         }
+
+        $projectItemId = $translation->get_meta('project_item_id');
+
+        $notTranslatedFieldsToImport = get_post_meta($projectItemId, Integrator::NOT_TRANSLATABE_DATA, true);
 
         $networkState = NetworkState::create();
         $targetSiteId = $translation->target_site_id();
@@ -83,14 +89,6 @@ class IncomingMetaProcessor implements IncomingProcessor
         if ($translation->has_value(Integrator::ELEMENTOR_FIELDS, Integrator::_NAMESPACE)) {
             $translatedFieldsToImport = $translation->get_value(
                 Integrator::ELEMENTOR_FIELDS,
-                Integrator::_NAMESPACE
-            );
-        }
-
-        $notTranslatedFieldsToImport = [];
-        if ($translation->has_meta(Integrator::NOT_TRANSLATABE_DATA, Integrator::_NAMESPACE)) {
-            $notTranslatedFieldsToImport = $translation->get_meta(
-                Integrator::NOT_TRANSLATABE_DATA,
                 Integrator::_NAMESPACE
             );
         }
@@ -121,6 +119,7 @@ class IncomingMetaProcessor implements IncomingProcessor
      */
     protected function replaceTranslations(array $sourceData, array $translationData): array
     {
+
         foreach ($sourceData as $data) {
             if (!empty($data->elements)) {
                 $this->replaceTranslations($data->elements, $translationData);
@@ -133,7 +132,11 @@ class IncomingMetaProcessor implements IncomingProcessor
                 !empty($data->settings)
             ) {
                 foreach ((array)$data->settings as $key => $setting) {
-                    if (!in_array($key, self::TRANSLATABLE_SETTINGS)) {
+                    if (
+                        !in_array($key, self::TRANSLATABLE_SETTINGS)
+                        && !is_array($setting)
+                        && !in_array(str_replace('_', '-', $key), self::TRANSLATABLE_WIDGETS)
+                    ) {
                         continue;
                     }
                     $id = 'id-' . $data->id;

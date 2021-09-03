@@ -42,7 +42,12 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return;
         }
 
+        $projectItemId = $translation->get_meta('project_item_id');
         $sourcePostId = $translation->source_post_id();
+
+        if (!$sourcePostId) {
+            return;
+        }
 
         $fields = get_field_objects($sourcePostId);
         if (!$fields) {
@@ -57,7 +62,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             $translation->set_value(Integrator::ACF_FIELDS, $acfFields, self::_NAMESPACE);
         }
         if (!empty($toNotTranslate)) {
-            $translation->set_meta(Integrator::NOT_TRANSLATABE_ACF_FIELDS, $toNotTranslate, self::_NAMESPACE);
+            update_post_meta($projectItemId, Integrator::NOT_TRANSLATABE_ACF_FIELDS, $toNotTranslate);
         }
     }
 }

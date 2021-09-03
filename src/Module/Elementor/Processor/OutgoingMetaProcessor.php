@@ -35,6 +35,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         'alert_description',
         'html',
         'link_text',
+        'slides',
     ];
     const TRANSLATABLE_WIDGETS = [
         'heading',
@@ -53,9 +54,11 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         'html',
         'read-more',
         'text-path',
+        'slides',
     ];
 
     const _NAMESPACE = 'Elementor';
+
 
     /**
      * @inheritDoc
@@ -66,7 +69,12 @@ class OutgoingMetaProcessor implements OutgoingProcessor
             return;
         }
 
+        $projectItemId = $translation->get_meta('project_item_id');
         $sourcePostId = $translation->source_post_id();
+
+        if (!$projectItemId || !$sourcePostId) {
+            return;
+        }
 
         $untranslatableData = $translatableElements = [];
         foreach (self::KEYS_TO_SYNC as $meta) {
@@ -86,7 +94,7 @@ class OutgoingMetaProcessor implements OutgoingProcessor
         }
 
         $translation->set_value(Integrator::ELEMENTOR_FIELDS, $translatableElements, self::_NAMESPACE);
-        $translation->set_meta(Integrator::NOT_TRANSLATABE_DATA, $untranslatableData, self::_NAMESPACE);
+        update_post_meta($projectItemId, Integrator::NOT_TRANSLATABE_DATA, wp_slash($untranslatableData));
     }
 
     protected function findTranslatableValues(array $elementorData): array
@@ -107,7 +115,11 @@ class OutgoingMetaProcessor implements OutgoingProcessor
                 !empty($data->settings)
             ) {
                 foreach ((array)$data->settings as $key => $setting) {
-                    if (!in_array($key, self::TRANSLATABLE_SETTINGS)) {
+                    if (
+                        !in_array($key, self::TRANSLATABLE_SETTINGS)
+                        && !is_array($setting)
+                        && !in_array(str_replace('_', '-', $key), self::TRANSLATABLE_WIDGETS)
+                    ) {
                         continue;
                     }
                     $translatableElementsKey = 'id-' . $data->id;
