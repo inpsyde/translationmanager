@@ -33,7 +33,7 @@
 			var data = new FormData();
 			data.append('file', fileToImport[0] );
 			data.append('action', ajaxAction);
-			data.append('projectId', projectInfo.projectI);
+			data.append('projectId', projectInfo.projectId);
 
 			$.ajax( {
 				url: ajaxurl,
