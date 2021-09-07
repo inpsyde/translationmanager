@@ -26,12 +26,17 @@ class WordPressSeo
             return;
         }
 
+        $projectItemId = $translation->get_meta('project_item_id');
         $source_post_id = $translation->source_post_id();
+
+        if (!$source_post_id) {
+            return;
+        }
 
         $to_translate = [
             'title',
             'metadesc',
-            'metakeywords',
+            'focuskw',
             'bctitle',
         ];
 
@@ -46,10 +51,12 @@ class WordPressSeo
             $translation->set_value($key, $field, self::_NAMESPACE);
         }
 
+        $projectMeta = [];
         foreach ($to_not_translate as $key) {
-            $field = get_post_meta($source_post_id, WPSEO_Meta::$meta_prefix . $key, true);
-            $translation->set_meta($key, $field, self::_NAMESPACE);
+            $projectMeta[$key] = get_post_meta($source_post_id, WPSEO_Meta::$meta_prefix . $key, true);
         }
+
+        update_post_meta($projectItemId, self::_NAMESPACE, $projectMeta);
     }
 
     /**
@@ -66,6 +73,10 @@ class WordPressSeo
             return;
         }
 
+        $projectItemId = $translation->get_meta('project_item_id');
+
+        $not_translated = get_post_meta($projectItemId, self::_NAMESPACE, true);
+
         $networkState = NetworkState::create();
 
         $networkState->switch_to($translation->target_site_id());
@@ -77,7 +88,6 @@ class WordPressSeo
             return;
         }
 
-        $not_translated = $translation->get_meta(self::_NAMESPACE);
         $translated = $translation->get_value(self::_NAMESPACE);
         $all_meta = array_filter(array_merge($not_translated, $translated));
 

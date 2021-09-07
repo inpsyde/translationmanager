@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="www.weclapp.com" id="cba8ca12-f9dc-492c-bcbf-c0422c025016" port="22" nameFormat="DESCRIPTIVE" username="ext-wpmlp" />
+    </configs>
+  </component>
+</project>

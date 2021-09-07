@@ -71,7 +71,7 @@ class TranslationTest extends TestCase
         Functions\when('get_post')
             ->justReturn($post);
 
-        $outgoing = Translation::for_outgoing($post, 1, 2, 'de', []);
+        $outgoing = Translation::for_outgoing($post, 1, 2, 3, 'de', []);
 
         static::assertFalse($outgoing->is_incoming());
         static::assertTrue($outgoing->is_outgoing());

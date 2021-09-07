@@ -173,6 +173,7 @@ class Api
     private function request($method, $path, $data = [], $headers = [])
     {
         $url = $this->get_url($path);
+
         $context = [
             // Add headers early to context to keep api key out of it.
             'headers' => $headers,

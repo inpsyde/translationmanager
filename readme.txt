@@ -2,9 +2,9 @@
 Contributors: Inpsyde, Eurotext, paddyullrich, wido
 Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
-Requires at least: 4.6
-Tested up to: 5.5.3
-Stable tag: 1.3.4
+Requires at least: 5.0
+Tested up to: 5.8
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,14 @@ Just send an email to info@eurotext.de with a request.
 3. project view
 
 == Changelog ==
+= 1.4.0 =
+* Fix Yoast SEO meta keys are not translatable
+* Fix Deleting a Project in the projects overview deletes all translations
+* Add Deactivated sites should not be displayed for translations
+* Add XLIFF support
+* Add Elementor support
+* Add PHP minimum required version is now 7.2 and WordPress required minimum version is 5.0
+
 = 1.3.4 =
 * Fix bugs with ACF fields
 

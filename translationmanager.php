@@ -3,13 +3,14 @@
  * Plugin Name: translationMANAGER
  * Plugin URI:  https://eurotext.de/en
  * Description: Translate your content from a WordPress Multisite and MultilingualPress.
- * Version:     1.3.4
+ * Version:     1.4.0
  * Author:      Inpsyde
  * Author URI:  https://inpsyde.com/
  * Text Domain: translationmanager
  * License:     GPLv2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Requires PHP: 5.6
+ * Requires at least: 5.0
+ * Requires PHP: 7.2
  * Domain Path: /languages
  *
  * @package TranslationManager
@@ -143,7 +144,8 @@ $bootstrap = \Closure::bind( function () {
 			->register( new Translationmanager\Request\ServiceProvider() )
 			->register( new Translationmanager\SystemStatus\ServiceProvider() )
 			->register( new Translationmanager\Activation\ServiceProvider() )
-			->register( new Translationmanager\Module\ServiceProvider() );
+			->register( new Translationmanager\Module\ServiceProvider() )
+			->register( new Translationmanager\Xliff\ServiceProvider() );
 
 		$providers
 			->bootstrap()

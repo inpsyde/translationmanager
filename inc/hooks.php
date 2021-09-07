@@ -7,9 +7,6 @@
 
 use function Translationmanager\Functions\get_supported_post_types;
 
-// CPT Project.
-add_action( 'delete_term_taxonomy', 'Translationmanager\\Functions\\delete_all_projects_posts_based_on_project_taxonomy_term' );
-
 // Projects Taxonomy.
 add_action( 'translationmanager_project_pre_add_form', 'Translationmanager\\Functions\\project_hide_slug' );
 add_action( 'translationmanager_project_pre_edit_form', 'Translationmanager\\Functions\\project_hide_slug' );

@@ -12,9 +12,13 @@ namespace Translationmanager\TableList;
 use Translationmanager\Exception\UnexpectedEntityException;
 use Translationmanager\Functions;
 use Translationmanager\Request;
+use Translationmanager\View\Project\OrderInfo;
 use WP_Query;
 use WP_Term;
 use WP_User;
+
+use function Inpsyde\MultilingualPress\siteExists;
+use function Inpsyde\MultilingualPress\siteLanguageName;
 
 /**
  * Class ProjectItem
@@ -231,6 +235,8 @@ final class ProjectItem extends TableList
                         ['id' => 'post-query-submit']
                     );
                 }
+
+                do_action('after_filter_options', $which);
             }
             ?>
         </div>
@@ -282,6 +288,23 @@ final class ProjectItem extends TableList
                         '<a href="%1$s">%2$s</a>',
                         esc_url(get_blog_details(intval($lang_id))->siteurl),
                         esc_html($languages[$lang_id]->get_label())
+                    );
+                    break;
+                }
+
+                $deactivatedLanguageName = siteLanguageName($lang_id);
+                if ($deactivatedLanguageName !== '' && !siteExists($lang_id)) {
+                    $project_id = $this->project_id_by_request()->term_id;
+                    $orderInfo = new OrderInfo($project_id);
+                    $orderStatus = $orderInfo->get_status_label();
+                    $deactivatedLanguageNotice = $orderStatus === 'Ready to order'
+                        ? __('The site has been deactivated, the item will not be sent for translation', 'translationmanager')
+                        : __('The site has been deactivated, the item will not be imported', 'translationmanager');
+                    printf(
+                        '<span class="deactivated-site">%1$s : </span></br>
+                                <span class="deactivated-notice" style="color:#D54E21">%2$s</span>',
+                        esc_html($deactivatedLanguageName),
+                        esc_html($deactivatedLanguageNotice)
                     );
                     break;
                 }

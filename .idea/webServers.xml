@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="7e145cfd-0517-487e-b058-8511efda5093" name="WecLapp">
+        <fileTransfer accessType="SFTP" host="www.weclapp.com" port="22" sshConfigId="cba8ca12-f9dc-492c-bcbf-c0422c025016" sshConfig="ext-wpmlp@www.weclapp.com:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

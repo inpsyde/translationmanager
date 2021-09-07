@@ -26,6 +26,7 @@ class Translation implements ArrayAccess, JsonSerializable
     const SOURCE_SITE_KEY = 'source_site_id';
     const TARGET_SITE_KEY = 'target_site_id';
     const TARGET_LANG_KEY = 'target_language';
+    const PROJECT_ITEM_KEY = 'project_item_id';
     const INCOMING = 'incoming';
     const OUTGOING = 'outgoing';
 
@@ -51,21 +52,10 @@ class Translation implements ArrayAccess, JsonSerializable
     ];
 
     /**
-     * @var string
-     */
-    private $direction = '';
-
-    /**
-     * Disabled on purpose, use named constructor.
-     */
-    private function __construct()
-    {
-    }
-
-    /**
      * @param WP_Post $source_post
      * @param int $source_site_id
      * @param int $target_site_id
+     * @param int $projectItemID
      * @param string $target_language
      * @param array $outgoing_data
      *
@@ -76,6 +66,7 @@ class Translation implements ArrayAccess, JsonSerializable
         WP_Post $source_post,
         $source_site_id,
         $target_site_id,
+        $projectItemID,
         $target_language,
         array $outgoing_data = []
     ) {
@@ -88,6 +79,7 @@ class Translation implements ArrayAccess, JsonSerializable
             self::SOURCE_POST_ID_KEY => (int)$source_post->ID,
             self::SOURCE_SITE_KEY => (int)$source_site_id,
             self::TARGET_SITE_KEY => (int)$target_site_id,
+            self::PROJECT_ITEM_KEY => (int)$projectItemID,
             self::TARGET_LANG_KEY => (string)$target_language,
         ];
 
@@ -110,6 +102,18 @@ class Translation implements ArrayAccess, JsonSerializable
         ];
 
         return $instance;
+    }
+
+    /**
+     * @var string
+     */
+    private $direction = '';
+
+    /**
+     * Disabled on purpose, use named constructor.
+     */
+    private function __construct()
+    {
     }
 
     /**

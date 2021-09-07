@@ -26,7 +26,7 @@ function translationmanager_api()
 {
     static $api = null;
 
-    $url = 'http://api.eurotext.de/api/v1';
+    $url = 'https://api.eurotext.de/api/v1';
 
     if (defined('TRANSLATION_MANAGER_API_URL') && TRANSLATION_MANAGER_API_URL) {
         $url = TRANSLATION_MANAGER_API_URL;
@@ -222,11 +222,11 @@ function create_project_order(WP_Term $project_term)
         }
 
         $source_site_id = get_current_blog_id();
-
         $data = Translation::for_outgoing(
             $source_post,
             $source_site_id,
             $post->_translationmanager_target_id,
+            $post->ID,
             $languages[$post->_translationmanager_target_id]->get_lang_code()
         );
 
@@ -242,7 +242,6 @@ function create_project_order(WP_Term $project_term)
         do_action_ref_array('translationmanager_outgoing_data', [$data]);
 
         $post_types[$languages[$post->_translationmanager_target_id]->get_lang_code()][$source_post->post_type][] = $data->to_array();
-
     }
 
     foreach ($post_types as $post_type_target_language => $post_types_data) {
