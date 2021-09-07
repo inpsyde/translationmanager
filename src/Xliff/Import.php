@@ -204,7 +204,7 @@ class Import
 
         foreach ($files as $file) {
             $fileParts = pathinfo($file);
-            if (empty($fileParts['extension']) || $fileParts['extension'] !== 'zip') {
+            if (empty($fileParts['extension']) || $fileParts['extension'] === 'zip') {
                 continue;
             }
 
