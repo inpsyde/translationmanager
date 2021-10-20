@@ -54,7 +54,7 @@ class ServiceProvider implements BootstrappableServiceProvider
         };
 
         $container['tm/Xliff/xliffElementHelper'] = function () {
-            return new xliffElementHelper();
+            return new XliffElementHelper();
         };
 
         $container['tm/Xliff/Xliff'] = function (Container $container) {
