@@ -48,22 +48,22 @@ Afterward, the status button can be used to get updates on the translations and 
 
 A project can have different statuses.
 
-*Pending*
+***Pending***
 We have received your request for quotation.
 
-*Feedback*
+***Feedback***
 You have received the price, timeline and scope of the project. The quote is ready for approval by you.
 
-*Rejected*
+***Rejected***
 You have rejected the quote.
 
-*In progress*
+***In progress***
 We are working on your project.
 
-*Finished*
+***Finished***
 Your project has been completed and is ready for download.
 
-*Imported*
+***Imported***
 The translations have been successfully imported into your system.
 
 The initial status, when you have collected the content you want to translate and before you place the order, is: Ready to order.
@@ -99,11 +99,11 @@ As this is a network installation, the plugin can be activated for the entire ne
 This will automatically make the plugin available to all sites within the network.
 
 ## Frequently Asked Questions
-= Do I need an API key? =
+**Do I need an API key?**
 
 Yes, you need your own API key to connect with the Eurotext servers.
 
-= Where do I get my own API key? =
+**Where do I get my own API key?**
 
 Just send an email to info@eurotext.de with a request.
 
