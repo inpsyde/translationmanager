@@ -115,6 +115,6 @@ Yes, you need your own API key to connect with the Eurotext servers.
 Just send an email to info@eurotext.de with a request.
 
 ## License
-Copyright (c) 2018 Inpsyde GmbH
+Copyright (c) 2021 Inpsyde GmbH
 
 This code is licensed under the  [GPLv2+ License](https://github.com/inpsyde/multilingualpress/blob/develop/LICENSE).
