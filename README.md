@@ -93,6 +93,13 @@ This is not a problem because it does not affect the existing content. However, 
 
 ## Installation
 
+### Requirements
+
+-   WordPress 5.0 or higher.
+-   PHP 7.2 or higher.
+
+### Installation
+
 To install the TranslationMANAGER plugin after installing MLP, go to Network Admin > Plugins > Add New and search for TranslationMANAGER.
 
 As this is a network installation, the plugin can be activated for the entire network.
