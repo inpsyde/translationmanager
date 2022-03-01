@@ -1,10 +1,10 @@
 
 # TranslationMANAGER for WordPress
-With *TranslationMANAGER*, exporting content from your WordPress Multisite is easy and straightforward.
+With TranslationMANAGER, it is easy and straightforward to export content from your WordPress Multisite to be translated by Inpsyde's trusted partner [Eurotext](https://eurotext.de/en/).
 
 ## Description
 
-TranslationMANAGER is a plugin that allows a user with the correct roles to request a translation of one or multiple articles, pages etc.  However, TranslationMANAGER cannot import the content into the correct location because it does not have any information in relation to this. A Multilingual plugin is required for this purpose. 
+TranslationMANAGER is a WordPress plugin that allows a user with the correct roles to request a translation of one or multiple articles, pages etc.  However, TranslationMANAGER cannot import the content into the correct location because it does not have any information in relation to this. A Multilingual plugin is required for this purpose. 
 
 TranslationMANAGER currently supports WPML and MultilingualPress 2 and 3.
 We strongly suggest using TranslationMANAGER with [MultilingualPress3](https://multilingualpress.org/), which is a better solution in terms of page speed and maintainability.
@@ -48,23 +48,14 @@ Afterward, the status button can be used to get updates on the translations and 
 
 A project can have different statuses.
 
-***Pending***
-We have received your request for quotation.
-
-***Feedback***
-You have received the price, timeline and scope of the project. The quote is ready for approval by you.
-
-***Rejected***
-You have rejected the quote.
-
-***In progress***
-We are working on your project.
-
-***Finished***
-Your project has been completed and is ready for download.
-
-***Imported***
-The translations have been successfully imported into your system.
+| Status | What does it mean? |
+| --- | --- |
+| ***Pending*** | We have received your request for quotation. |
+| ***Feedback*** | You have received the price, timeline and scope of the project. The quote is ready for approval by you. |
+| ***Rejected*** | You have rejected the quote. |
+| ***In progress*** | We are working on your project. |
+| ***Finished*** | Your project has been completed and is ready for download. |
+| ***Imported*** | The translations have been successfully imported into your system. |
 
 The initial status, when you have collected the content you want to translate and before you place the order, is: Ready to order.
 
@@ -108,7 +99,7 @@ This will automatically make the plugin available to all sites within the networ
 ## Frequently Asked Questions
 **Do I need an API key?**
 
-Yes, you need your own API key to connect with the Eurotext servers.
+Yes, you need your own API key to connect with the Eurotext servers. For more information, see https://eurotext.de/en/documentation/wordpress/
 
 **Where do I get my own API key?**
 
