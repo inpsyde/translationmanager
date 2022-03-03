@@ -1,11 +1,10 @@
-# TRANSLATIONMANAGER
+# Developers
 
-## Big mess
+This is a guide for software engineers who wish to take part in the development of this product.
 
-### Folder structure
+## Folder structure
 
-This plugin is a big mess you might say.
-Well it follows only a few of simple rules
+This plugin follows only a few of simple rules
 besides those that WordPress gave us:
 
 - "admin/" contains partials/templates/js/css for the backend.
@@ -15,7 +14,7 @@ besides those that WordPress gave us:
   - "includes/translationmanager" contains all classes (loaded via class loader).
 - "public/" contains partials/templates/js/css for the frontend.
 
-### Procedural copy of classes
+## Procedural copy of classes
 
 Furthermore you'll find classes/methods (like `...\Admin\Setup::plugin_activate`)
 and (proxy-)functions just calling them (like `..._admin_plugin_activate()`) which seems odd.
