@@ -1,6 +1,6 @@
 {
     "name": "eurotext/translationmanager",
-    "description": "WordPress Plugin to connect to the Eurotext REST API.",
+    "description": "WordPress plugin for translating content from your WordPress Multisite via Eurotext.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "config": {
@@ -13,7 +13,7 @@
         {
             "name": "Inpsyde GmbH",
             "email": "info@inpsyde.com",
-            "homepage": "https://inpsyde.com/en/"
+            "homepage": "https://inpsyde.com/"
         }
     ],
     "repositories": [
