@@ -2,6 +2,61 @@
 
 This is a guide for software engineers who wish to take part in the development of this product.
 
+## Environment setup
+
+You can use the Docker environment provided with this project which includes WP, WC and all developments tools.
+
+To set up the Docker environment, follow these steps:
+
+0. Install Docker and Docker Compose.
+1. Copy `.env.example` to `.env`, and change configuration if necessary.
+2. Build the docker containers.
+    ```
+    docker-compose build
+    ```
+3. Install dependencies with Composer.
+    ```
+    docker-compose run --rm composer composer install
+    ```
+4. Install JS dependencies.
+    ```
+    docker-compose run --rm build npm install
+    ```
+5. Start the web server.
+    ```
+    docker-compose up -d
+    ```
+
+In some cases you may need to rebuild the Docker containers,
+such as after changing the PHP version.
+You can do that by running `docker-compose down -v` (will destroy all data in WP) and step 2.
+
+Running tests and linters:
+
+```
+docker-compose run --rm test vendor/bin/phpunit
+```
+
+```
+docker-compose run --rm test vendor/bin/phpcs
+```
+
+```
+docker-compose run --rm test vendor/bin/psalm
+```
+
+## Building a package
+
+To build the plugin into a distributable WP-compatible archive, follow these steps.
+
+1. Follow steps 1, 2, 4 from "Environment setup".
+
+2. Run the following command, replacing `VERSION` as required:
+    ```
+     docker-compose run --rm build node_modules/gulp/bin/gulp.js dist --packageVersion=VERSION
+    ```
+3. Find the built archive in the `dist` directory of your project.
+
 ## Writing modules
 
 Sometimes modules for 3rd party plugins are needed.
