@@ -9,7 +9,6 @@
     "devDependencies": {
         "date-and-time": "^0.14.0",
         "del": "^3.0.0",
-        "eslint": "^4.17.0",
         "eslint-config-inpsyde": "^2.2.0",
         "gulp": "^4.0.0",
         "gulp-help-doc": "^1.1.1",

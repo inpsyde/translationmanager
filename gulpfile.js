@@ -267,14 +267,6 @@ function _installPhp({buildDir, depsVersionPhp}) {
     }
 }
 
-function _installPhar({buildDir}) {
-    return function installPhar(done) {
-        chain([
-            (done) => { return exec('phive', ['install', '--force-accept-unsigned', '--copy'], {cwd: buildDir}, done)},
-        ], done);
-    }
-}
-
 function _installJs({buildDir}) {
     return function installJs(done) {
         chain([
@@ -394,10 +386,6 @@ exports.installPhp = series(
     _installPhp(options),
 )
 
-exports.installPhar = series(
-    _installPhar(options),
-)
-
 exports.installJs = series(
     _installJs(options),
 )
@@ -422,7 +410,6 @@ exports.archive = series(
 exports.install = parallel(
     exports.installJs,
     exports.installPhp,
-    exports.installPhar,
 )
 
 exports.process = series(
