@@ -17,7 +17,6 @@ namespace Translationmanager\Notice;
  */
 interface Noticeable
 {
-
     /**
      * Show Messages
      *

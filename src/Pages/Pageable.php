@@ -17,7 +17,6 @@ namespace Translationmanager\Pages;
  */
 interface Pageable
 {
-
     /**
      * Register Page
      *

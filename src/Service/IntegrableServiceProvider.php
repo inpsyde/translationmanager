@@ -20,7 +20,6 @@ use Pimple\ServiceProviderInterface;
  */
 interface IntegrableServiceProvider extends ServiceProviderInterface
 {
-
     /**
      * Integrate service into plugin
      *

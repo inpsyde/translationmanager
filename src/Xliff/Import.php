@@ -255,6 +255,7 @@ class Import
         array $postData,
         array $posts
     ) {
+
         $relatedPost = translationIds($sourcePostId, 'post', $sourceSiteId);
         $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
 

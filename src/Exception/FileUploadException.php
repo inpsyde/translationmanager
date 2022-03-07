@@ -19,5 +19,4 @@ use DomainException;
  */
 class FileUploadException extends DomainException
 {
-
 }
