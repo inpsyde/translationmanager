@@ -39,7 +39,7 @@ const options = {
                 langDir: 'languages',
                 translationsApiUrl: 'https://translate.inpsyde.com/products/api/translations/translationmanager',
                 q: false,
-                depsVersionPhp: '7.1.30',
+                depsVersionPhp: '7.2',
             },
         }
     )
