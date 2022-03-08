@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <psalm
-        totallyTyped="false"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        reportMixedIssues="false"
         useDocblockTypes="true"
         usePhpDocMethodsWithoutMagicCall="false"
         strictBinaryOperands="true"
-        requireVoidReturnType="true"
-        useAssertForType="false"
         rememberPropertyAssignmentsAfterCall="true"
-        allowPhpStormGenerics="true"
         allowStringToStandInForClass="false"
         memoizeMethodCallResults="false"
         hoistConstants="false"
@@ -19,7 +20,7 @@
         throwExceptionOnError="false"
         hideExternalErrors="true"
         allowFileIncludes="true"
-        autoloader="./.psalm/psalm-autoloader.php"
+        errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="src"/>
@@ -27,10 +28,9 @@
         <file name="translationmanager.php"/>
     </projectFiles>
 
-    <extraFiles>
-        <directory name="vendor/johnpbloch/wordpress-core/wp-includes" />
-        <directory name="vendor/johnpbloch/wordpress-core/wp-admin/includes" />
-    </extraFiles>
+    <stubs>
+		<file name="vendor/php-stubs/wordpress-stubs/wordpress-stubs.php"/>
+    </stubs>
 
     <issueHandlers>
         <ConflictingReferenceConstraint errorLevel="error"/>
@@ -82,7 +82,6 @@
         <InvalidScalarArgument errorLevel="error"/>
         <InvalidScope errorLevel="error"/>
         <InvalidStaticInvocation errorLevel="error"/>
-        <MisplacedRequiredParam errorLevel="error"/>
         <MissingConstructor errorLevel="error"/>
         <MissingDependency errorLevel="error"/>
         <MissingFile errorLevel="error"/>
@@ -146,7 +145,8 @@
         <MixedPropertyTypeCoercion errorLevel="info"/>
         <MixedReturnStatement errorLevel="info"/>
         <MixedReturnTypeCoercion errorLevel="info"/>
-        <MixedStringOffsetAssignment errorLevel="info"/>
-        <UnresolvableInclude errorLevel="info"/>
+		<MixedStringOffsetAssignment errorLevel="info"/>
+		<ParamNameMismatch errorLevel="info"/>
+		<RedundantCastGivenDocblockType errorLevel="info"/>
     </issueHandlers>
 </psalm>
