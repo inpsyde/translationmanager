@@ -19,5 +19,4 @@ use RuntimeException;
  */
 class BootstrappedException extends RuntimeException
 {
-
 }

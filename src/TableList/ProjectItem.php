@@ -28,7 +28,6 @@ use function Inpsyde\MultilingualPress\siteLanguageName;
  */
 final class ProjectItem extends TableList
 {
-
     /**
      * ProjectItem constructor
      *

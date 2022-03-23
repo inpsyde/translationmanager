@@ -18,7 +18,6 @@ use SimpleXMLElement;
 
 class XliffElementHelper
 {
-
     /**
      * Will generate the Header part of XLIFF markup
      *
@@ -73,6 +72,7 @@ class XliffElementHelper
         string $source = '',
         string $target = ''
     ): void {
+
         $segment = $element->addChild('segment');
 
         if (!empty($atts)) {

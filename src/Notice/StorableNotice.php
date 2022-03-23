@@ -17,7 +17,6 @@ namespace Translationmanager\Notice;
  */
 interface StorableNotice extends Noticeable
 {
-
     /**
      * Store Notice
      *

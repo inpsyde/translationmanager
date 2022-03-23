@@ -10,7 +10,6 @@ namespace Translationmanager\Request;
  */
 interface RequestHandleable
 {
-
     /**
      * Handle Request Request
      *

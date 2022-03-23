@@ -11,7 +11,6 @@ namespace Translationmanager\Module\ACF;
  */
 class Acf
 {
-
     /**
      * ACF flexible field's layout key
      * It is used to exclude the key from sync keys

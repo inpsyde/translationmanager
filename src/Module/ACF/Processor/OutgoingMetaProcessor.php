@@ -18,7 +18,6 @@ use Translationmanager\Module\ACF\Acf;
  */
 class OutgoingMetaProcessor implements OutgoingProcessor
 {
-
     const _NAMESPACE = 'ACF';
 
     /**

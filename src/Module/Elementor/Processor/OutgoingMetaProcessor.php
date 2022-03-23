@@ -17,7 +17,6 @@ use Translationmanager\Translation;
  */
 class OutgoingMetaProcessor implements OutgoingProcessor
 {
-
     const KEYS_TO_SYNC = ['_elementor_data', '_elementor_controls_usage', '_elementor_css', '_elementor_edit_mode'];
     const TRANSLATABLE_SETTINGS = [
         'title',
@@ -58,7 +57,6 @@ class OutgoingMetaProcessor implements OutgoingProcessor
     ];
 
     const _NAMESPACE = 'Elementor';
-
 
     /**
      * @inheritDoc

@@ -17,7 +17,6 @@ namespace Translationmanager\View;
  */
 interface Viewable
 {
-
     /**
      * Render Template
      *

@@ -11,5 +11,4 @@ namespace Translationmanager\Module\Processor;
  */
 interface Processor
 {
-
 }

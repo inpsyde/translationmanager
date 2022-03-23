@@ -1,20 +1,20 @@
 {
     "name": "translationmanager",
-    "version": "1.2.1",
-    "description": "Translate your contents in a WordPress Multisite and MultilingualPress.",
+    "version": "1.4.0",
+    "description": "WordPress plugin for translating content from your WordPress Multisite via Eurotext.",
     "main": "index.js",
-    "author": "Inpsyde",
+    "author": {
+        "name": "Inpsyde GmbH",
+        "email": "hello@inpsyde.com",
+        "url": "https://inpsyde.com/"
+    },
     "license": "GPL-2.0-or-later",
-    "homepage": "https://bitbucket.org/inpsyde/translationmanager#readme",
+    "homepage": "https://github.com/inpsyde/translationmanager",
     "devDependencies": {
         "date-and-time": "^0.14.0",
         "del": "^3.0.0",
-        "eslint": "^4.17.0",
-        "eslint-config-inpsyde": "^2.2.0",
         "gulp": "^4.0.0",
         "gulp-help-doc": "^1.1.1",
-        "gulp-phpcs": "^2.2.0",
-        "gulp-phpunit": "^0.26.0",
         "gulp-rename": "^2.0",
         "gulp-replace": "^1.0.0",
         "gulp-unzip": "^1.1.0",
@@ -31,6 +31,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@bitbucket.org/inpsyde/translationmanager.git"
+        "url": "git+ssh://git@github.com:inpsyde/translationmanager.git"
     }
 }
