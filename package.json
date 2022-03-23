@@ -19,7 +19,7 @@
         "gulp-replace": "^1.0.0",
         "gulp-unzip": "^1.1.0",
         "gulp-zip": "^4.2.0",
-        "minimist": "^1.2.0",
+        "minimist": "^1.2.6",
         "node-fetch": "^2.6.1",
         "pump": "^3.0.0",
         "semver": "^6.1.0",
