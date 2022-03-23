@@ -9,8 +9,6 @@
 
 namespace Translationmanager\SystemStatus;
 
-use Inpsyde\SystemStatus\Builder;
-
 /**
  * Class Controller
  *
@@ -37,7 +35,7 @@ class Controller
     /**
      * Create the System Status instance with information
      *
-     * @return \Inpsyde\SystemStatus\Builder
+     * @return Builder
      * @since 1.0.0
      */
     public function system_status()

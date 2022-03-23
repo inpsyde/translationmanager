@@ -9,8 +9,8 @@
 
 namespace Translationmanager\SystemStatus;
 
-use Inpsyde\SystemStatus\Data\Information;
-use Inpsyde\SystemStatus\Item\Item;
+use Translationmanager\SystemStatus\Data\Information;
+use Translationmanager\SystemStatus\Item\Item;
 use Translationmanager\Plugin;
 
 use function Translationmanager\Functions\get_languages;
