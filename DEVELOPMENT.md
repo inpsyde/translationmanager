@@ -45,6 +45,21 @@ docker-compose run --rm test vendor/bin/phpcs
 docker-compose run --rm test vendor/bin/psalm
 ```
 
+### MultilingualPress 3
+
+This plugin is usually used together with [MultilingualPress 3](https://multilingualpress.org/) plugin.
+
+If you have access to a MultilingualPress package, you can install it into the Docker environment like this:
+
+```
+docker-compose cp PATH/ON/YOUR/COMPUTER/multilingualpress-3.9.1-en.zip wp_dev:/var/www/html/wp-content/plugins/
+docker-compose run --rm wp_dev unzip /var/www/html/wp-content/plugins/multilingualpress-3.9.1-en.zip -d /var/www/html/wp-content/plugins/
+docker-compose run --rm wp_dev wp plugin activate multilingualpress --network --allow-root
+```
+
+Or by uploading via the WordPress admin UI (http://tm-eurotext.myhost/wp-admin/network/plugin-install.php),
+but you may encounter permission errors in some cases during the installation.
+
 ## Building a package
 
 To build the plugin into a distributable WP-compatible archive, follow these steps.
