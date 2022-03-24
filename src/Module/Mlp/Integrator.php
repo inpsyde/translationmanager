@@ -81,6 +81,7 @@ class Integrator implements Integrable
         add_action(
             'multilingualpress.add_service_providers',
             function (ServiceProvidersCollection $providers) {
+                /** @psalm-suppress InvalidArgument */
                 $providers->add(new ServiceProvider());
             }
         );
