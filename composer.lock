@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f0a44670617ebdd2102a2ba67ad2e8e",
+    "content-hash": "19d2c842cd4c3bacc918d4e1acfc9ffc",
     "packages": [
         {
             "name": "brain/nonces",
@@ -42,7 +42,7 @@
                     "inc/helpers.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
             "license": [
                 "MIT"
             ],
@@ -61,74 +61,6 @@
                 "wordpress nonce"
             ],
             "time": "2016-11-17T13:04:21+00:00"
-        },
-        {
-            "name": "inpsyde/system-status",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:inpsyde/system-status.git",
-                "reference": "86339957695dd283565d6c299d6ea874505fbd91"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/inpsyde/system-status/zipball/86339957695dd283565d6c299d6ea874505fbd91",
-                "reference": "86339957695dd283565d6c299d6ea874505fbd91",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://repo.packagist.com/inpsyde/dists/%package%/%version%/r%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require-dev": {
-                "brain/monkey": "^2.0@dev",
-                "inpsyde/php-coding-standards": "^0.10.0@dev",
-                "php": ">=5.6",
-                "phpunit/phpunit": "^5.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Inpsyde\\SystemStatus\\": "src/"
-                },
-                "files": [
-                    "includes/functions/utils.php"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Inpsyde\\SystemStatus\\Tests\\": "tests/src/",
-                    "Inpsyde\\SystemStatus\\Tests\\Unit\\": "tests/src/php/unit"
-                }
-            },
-            "notification-url": "https://repo.packagist.com/inpsyde/downloads/",
-            "license": [
-                "GPL-2.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Inpsyde GmbH",
-                    "email": "info@inpsyde.com",
-                    "homepage": "https://inpsyde.com/en/"
-                },
-                {
-                    "name": "Guido Scialfa",
-                    "email": "g.scialfa@inpsyde.com"
-                }
-            ],
-            "description": "A system status tables with WordPress support",
-            "support": {
-                "source": "https://github.com/inpsyde/system-status/tree/master",
-                "issues": "https://github.com/inpsyde/system-status/issues"
-            },
-            "time": "2018-10-04T22:27:45+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -1184,16 +1116,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.2.9",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "a951f614bd64dcd26137bc9b7b2637ddcfc57649"
+                "reference": "5d8e574bb0e69188786b8ef77d43341222a41a71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/a951f614bd64dcd26137bc9b7b2637ddcfc57649",
-                "reference": "a951f614bd64dcd26137bc9b7b2637ddcfc57649",
+                "url": "https://api.github.com/repos/composer/semver/zipball/5d8e574bb0e69188786b8ef77d43341222a41a71",
+                "reference": "5d8e574bb0e69188786b8ef77d43341222a41a71",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1251,7 +1183,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.2.9"
+                "source": "https://github.com/composer/semver/tree/3.3.1"
             },
             "funding": [
                 {
@@ -1267,7 +1199,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-04T13:58:43+00:00"
+            "time": "2022-03-16T11:22:07+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -1834,16 +1766,16 @@
         },
         {
             "name": "inpsyde/multilingualpress-site-flags",
-            "version": "2.0.4-alpha1",
+            "version": "2.0.3-alpha4",
             "source": {
                 "type": "git",
                 "url": "git@github.com:inpsyde/multilingualpress-site-flags.git",
-                "reference": "7b6f149dacc7d5a133a8344c7877b053db3a8fd7"
+                "reference": "b5c49bff7167e355006a9775efd8f3bc27370d0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inpsyde/multilingualpress-site-flags/zipball/7b6f149dacc7d5a133a8344c7877b053db3a8fd7",
-                "reference": "7b6f149dacc7d5a133a8344c7877b053db3a8fd7",
+                "url": "https://api.github.com/repos/inpsyde/multilingualpress-site-flags/zipball/b5c49bff7167e355006a9775efd8f3bc27370d0f",
+                "reference": "b5c49bff7167e355006a9775efd8f3bc27370d0f",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1893,9 +1825,9 @@
             ],
             "description": "An external module to add additional functionality to MultilingualPress. The module will enable displaying flags in the language switcher, it can be activated from MultilingualPress settings",
             "support": {
-                "source": "https://github.com/inpsyde/multilingualpress-site-flags/tree/2.0.4-alpha1"
+                "source": "https://github.com/inpsyde/multilingualpress-site-flags/tree/2.0.3-alpha4"
             },
-            "time": "2022-02-02T11:05:31+00:00"
+            "time": "2022-03-10T14:58:27+00:00"
         },
         {
             "name": "inpsyde/multilingualpress-woocommerce-brands",
@@ -5238,7 +5170,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "inpsyde/system-status": 20,
         "php-stubs/wordpress-stubs": 0
     },
     "prefer-stable": true,

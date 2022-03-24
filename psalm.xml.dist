@@ -26,6 +26,10 @@
         <directory name="src"/>
         <directory name="inc"/>
         <file name="translationmanager.php"/>
+
+        <ignoreFiles>
+            <directory name="src/SystemStatus/views" />
+        </ignoreFiles>
     </projectFiles>
 
     <stubs>

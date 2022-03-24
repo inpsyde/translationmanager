@@ -9,8 +9,6 @@
 
 namespace Translationmanager\SystemStatus;
 
-use Inpsyde\SystemStatus\Builder;
-
 /**
  * Class Controller
  *
@@ -27,17 +25,17 @@ class Controller
      * @var array The list of the information we want to show to the user.
      */
     private static $informations = [
-        '\\Inpsyde\\SystemStatus\\Data\\Php',
+        '\\Translationmanager\\SystemStatus\\Data\\Php',
         '\\Translationmanager\\SystemStatus\\Translationmanager',
-        '\\Inpsyde\\SystemStatus\\Data\\Wordpress',
-        '\\Inpsyde\\SystemStatus\\Data\\Database',
-        '\\Inpsyde\\SystemStatus\\Data\\Plugins',
+        '\\Translationmanager\\SystemStatus\\Data\\WordPress',
+        '\\Translationmanager\\SystemStatus\\Data\\Database',
+        '\\Translationmanager\\SystemStatus\\Data\\Plugins',
     ];
 
     /**
      * Create the System Status instance with information
      *
-     * @return \Inpsyde\SystemStatus\Builder
+     * @return Builder
      * @since 1.0.0
      */
     public function system_status()
