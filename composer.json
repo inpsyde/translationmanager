@@ -16,13 +16,6 @@
             "homepage": "https://inpsyde.com/"
         }
     ],
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://repo.packagist.com/inpsyde/"
-        },
-        { "packagist.org": false }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
@@ -41,8 +34,7 @@
         "inpsyde/php-coding-standards": "^1.0",
         "phpunit/phpunit": "^7.5",
         "vimeo/psalm": "^4.0",
-        "oomphinc/composer-installers-extender": "^1.1",
-        "inpsyde/multilingualpress": "^3.0"
+        "oomphinc/composer-installers-extender": "^1.1"
     },
     "autoload": {
         "psr-4": {
