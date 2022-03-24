@@ -26,6 +26,7 @@ To set up the Docker environment, follow these steps:
     ```
     docker-compose up -d
     ```
+6. Add `127.0.0.1 wc-pp.myhost` to your `hosts` file and open http://tm-eurotext.myhost (the default value of `WP_DOMAIN` in `.env`). 
 
 In some cases you may need to rebuild the Docker containers,
 such as after changing the PHP version.
