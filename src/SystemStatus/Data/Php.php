@@ -6,26 +6,32 @@ use Translationmanager\SystemStatus\Item\Item;
 
 class Php implements Information
 {
+    /**
+     * @var array
+     */
     private $collection = [];
 
+    /**
+     * @var string
+     */
     private $title;
 
     public function __construct()
     {
-        $this->title = esc_html__('PHP Environment', 'systemstatus');
+        $this->title = esc_html__('PHP Environment', 'translationmanager');
     }
 
-    public function title()
+    public function title(): string
     {
         return $this->title;
     }
 
-    public function collection()
+    public function collection(): array
     {
         return $this->collection;
     }
 
-    public function serverSoftware()
+    public function serverSoftware(): void
     {
         $serverInfo = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : ''; // phpcs:ignore
 
@@ -34,47 +40,47 @@ class Php implements Information
         }
 
         $this->collection['server_info'] = new Item(
-            esc_html__('Server Info', 'systemstatus'),
+            esc_html__('Server Info', 'translationmanager'),
             sanitize_text_field($serverInfo)
         );
     }
 
-    public function phpVersion()
+    public function phpVersion(): void
     {
         $this->collection['php_version'] = new Item(
-            esc_html__('PHP Version', 'systemstatus'),
+            esc_html__('PHP Version', 'translationmanager'),
             PHP_VERSION
         );
     }
 
-    public function maxExecutionTime()
+    public function maxExecutionTime(): void
     {
         $this->collection['max_execution_time'] = new Item(
-            esc_html__('Max Execution Time', 'systemstatus'),
-            ini_get('max_execution_time')
+            esc_html__('Max Execution Time', 'translationmanager'),
+            (string) ini_get('max_execution_time')
         );
     }
 
-    public function maxInputVars()
+    public function maxInputVars(): void
     {
         $this->collection['max_input_vars'] = new Item(
-            esc_html__('Max Input Vars', 'systemstatus'),
-            ini_get('max_input_vars')
+            esc_html__('Max Input Vars', 'translationmanager'),
+            (string) ini_get('max_input_vars')
         );
     }
 
-    public function postMaxSize()
+    public function postMaxSize(): void
     {
         $this->collection['post_max_size'] = new Item(
-            esc_html__('Post Max Size', 'systemstatus'),
-            ini_get('post_max_size')
+            esc_html__('Post Max Size', 'translationmanager'),
+            (string) ini_get('post_max_size')
         );
     }
 
-    public function loadedExtentions()
+    public function loadedExtentions(): void
     {
         $this->collection['loaded_extentions'] = new Item(
-            esc_html__('Php Loaded Extentions', 'systemstatus'),
+            esc_html__('Php Loaded Extentions', 'translationmanager'),
             trim(implode(', ', get_loaded_extensions()))
         );
     }

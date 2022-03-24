@@ -26,7 +26,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @return array The entire data list
      */
-    public function asArray()
+    public function asArray(): array
     {
         return $this->list;
     }
@@ -34,7 +34,7 @@ class Collection implements ArrayAccess, Iterator, Countable
     /**
      * @inheritDoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->list[$offset]);
     }
@@ -78,7 +78,7 @@ class Collection implements ArrayAccess, Iterator, Countable
      */
     public function next()
     {
-        return next($this->list);
+        next($this->list);
     }
 
     /**

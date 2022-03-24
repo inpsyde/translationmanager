@@ -36,7 +36,7 @@ final class Item implements Informative
     /**
      * @inheritdoc
      */
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }
@@ -44,7 +44,7 @@ final class Item implements Informative
     /**
      * @inheritdoc
      */
-    public function info()
+    public function info(): string
     {
         return $this->info;
     }
@@ -52,7 +52,7 @@ final class Item implements Informative
     /**
      * @inheritdoc
      */
-    public function shortDescription()
+    public function shortDescription(): string
     {
         return $this->shortDescription;
     }

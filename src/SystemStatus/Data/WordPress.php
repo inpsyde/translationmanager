@@ -4,28 +4,34 @@ namespace Translationmanager\SystemStatus\Data;
 
 use Translationmanager\SystemStatus\Item\Item;
 
-class Wordpress implements Information
+class WordPress implements Information
 {
+    /**
+     * @var array
+     */
     private $collection = [];
 
+    /**
+     * @var string
+     */
     private $title;
 
     public function __construct()
     {
-        $this->title = esc_html__('WordPress', 'systemstatus');
+        $this->title = esc_html__('WordPress', 'translationmanager');
     }
 
-    public function title()
+    public function title(): string
     {
         return $this->title;
     }
 
-    public function collection()
+    public function collection(): array
     {
         return $this->collection;
     }
 
-    public function wpVersion()
+    public function wpVersion(): void
     {
         global $wp_version;
 
@@ -36,7 +42,7 @@ class Wordpress implements Information
         $this->collection['wp_version'] = new Item('WordPress Version', $wp_version);
     }
 
-    public function isActiveNetwork()
+    public function isActiveNetwork(): void
     {
         $active = false;
 
@@ -45,20 +51,20 @@ class Wordpress implements Information
         }
 
         $this->collection['is_multisite'] = new Item(
-            esc_html__('WP Multisite active', 'systemstatus'),
+            esc_html__('WP Multisite active', 'translationmanager'),
             ucfirst($this->boolToString($active))
         );
     }
 
-    public function language()
+    public function language(): void
     {
-        $language = esc_html__('English (en_US)', 'systemstatus');
+        $language = esc_html__('English (en_US)', 'translationmanager');
         $locale = get_locale();
         $languages = get_available_languages();
 
-        // The en_US doesn't exists in the list.
+        // The en_US doesn't exist in the list.
         if (isset($languages[$locale])) {
-            $language = $language[$locale] . ' (' . $locale . ')';
+            $language = $languages[$locale] . ' (' . $locale . ')';
         }
 
         $this->collection['wp_language'] = new Item(
@@ -66,7 +72,7 @@ class Wordpress implements Information
             $language
         );
     }
-    
+
     private function boolToString(bool $bool): string
     {
         return true === $bool ? 'yes' : 'no';

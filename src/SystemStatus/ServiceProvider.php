@@ -38,8 +38,7 @@ class ServiceProvider implements BootstrappableServiceProvider
     public function boot(Container $container)
     {
         (new Styles(
-            $container['translationmanager.plugin']->url('/assets/css/'),
-            ''
+            $container['translationmanager.plugin']->url('/assets/css/')
         )
         )->init();
     }

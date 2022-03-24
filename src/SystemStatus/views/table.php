@@ -1,4 +1,6 @@
 <?php
+// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+// phpcs:disable PSR12.Files.FileHeader
 
 foreach ($this as $information) :
     ?>
@@ -93,5 +95,5 @@ foreach ($this as $information) :
 
     </table>
 
-<?php
+    <?php
 endforeach;

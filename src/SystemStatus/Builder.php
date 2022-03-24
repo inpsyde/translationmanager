@@ -4,22 +4,29 @@ namespace Translationmanager\SystemStatus;
 
 use Translationmanager\SystemStatus\Data\Information;
 use Translationmanager\SystemStatus\View\TemplateLoader;
+use Translationmanager\SystemStatus\View\Viewable;
 
 class Builder
 {
-    const FILTER_DATA_METHODS = 'system_status.data_methods';
+    public const FILTER_DATA_METHODS = 'system_status.data_methods';
 
+    /**
+     * @var array
+     */
     private $list;
 
+    /**
+     * @var string
+     */
     private $viewableName;
 
-    public function __construct(array $list, $viewableName)
+    public function __construct(array $list, string $viewableName)
     {
         $this->list = $list;
         $this->viewableName = $viewableName;
     }
 
-    public function build()
+    public function build(): TemplateLoader
     {
         return new TemplateLoader(
             $this->viewable(
@@ -28,7 +35,7 @@ class Builder
         );
     }
 
-    private function buildTheCollection()
+    private function buildTheCollection(): Collection
     {
         $dataList = [];
 
@@ -43,6 +50,7 @@ class Builder
 
             $key = $this->sanitizeKey($item);
             $data = new $className();
+            assert($data instanceof Information);
             $dataList[$key] = $data;
 
             $this->initializeData($data);
@@ -51,7 +59,7 @@ class Builder
         return new Collection($dataList);
     }
 
-    private function initializeData(Information $data)
+    private function initializeData(Information $data): void
     {
         $methods = get_class_methods($data);
 
@@ -65,7 +73,7 @@ class Builder
         if ($interfaces) {
             foreach ($interfaces as $interface) {
                 $interfaceMethods = get_class_methods($interface);
-                $methods = array_diff($methods, array_filter((array)$interfaceMethods));
+                $methods = array_diff($methods, array_filter($interfaceMethods));
             }
         }
 
@@ -94,6 +102,8 @@ class Builder
          * @param array $methods The methods to call to set the data for the collection.
          * @param Information $data Information class from which the methods should be called.
          * @param array $interfaces The interfaces implemented by the $data instance.
+         *
+         * @psalm-suppress TooManyArguments
          */
         $methods = apply_filters(self::FILTER_DATA_METHODS, $methods, $data, $interfaces);
 
@@ -103,7 +113,7 @@ class Builder
         }
     }
 
-    private function viewable(Collection $collection)
+    private function viewable(Collection $collection): Viewable
     {
         $className = __NAMESPACE__ . '\\View\\' . $this->normalizeClassName($this->viewableName);
 
@@ -113,19 +123,21 @@ class Builder
             );
         }
 
-        return new $className($collection);
+        $obj = new $className($collection);
+        assert($obj instanceof Viewable);
+        return $obj;
     }
 
-    private function sanitizeKey($item)
+    private function sanitizeKey($item): string
     {
         $key = strtolower($item);
-        $key = preg_replace('/[^a-z0-9_\-]/', '', $key);
+        $key = (string) preg_replace('/[^a-z0-9_\-]/', '', $key);
 
         return $key;
     }
 
-    private function normalizeClassName($key)
+    private function normalizeClassName(string $key): string
     {
-        return preg_replace('/\s/', '', ucwords(str_replace(['_', '-'], ' ', $key)));
+        return (string) preg_replace('/\s/', '', ucwords(str_replace(['_', '-'], ' ', $key)));
     }
 }

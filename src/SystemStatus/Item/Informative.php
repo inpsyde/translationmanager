@@ -4,9 +4,9 @@ namespace Translationmanager\SystemStatus\Item;
 
 interface Informative
 {
-    public function name();
+    public function name(): string;
 
-    public function info();
+    public function info(): string;
 
-    public function shortDescription();
+    public function shortDescription(): string;
 }

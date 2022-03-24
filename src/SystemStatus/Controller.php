@@ -25,11 +25,11 @@ class Controller
      * @var array The list of the information we want to show to the user.
      */
     private static $informations = [
-        '\\Inpsyde\\SystemStatus\\Data\\Php',
+        '\\Translationmanager\\SystemStatus\\Data\\Php',
         '\\Translationmanager\\SystemStatus\\Translationmanager',
-        '\\Inpsyde\\SystemStatus\\Data\\Wordpress',
-        '\\Inpsyde\\SystemStatus\\Data\\Database',
-        '\\Inpsyde\\SystemStatus\\Data\\Plugins',
+        '\\Translationmanager\\SystemStatus\\Data\\WordPress',
+        '\\Translationmanager\\SystemStatus\\Data\\Database',
+        '\\Translationmanager\\SystemStatus\\Data\\Plugins',
     ];
 
     /**
