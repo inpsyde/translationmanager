@@ -12,8 +12,9 @@
     "authors": [
         {
             "name": "Inpsyde GmbH",
-            "email": "info@inpsyde.com",
-            "homepage": "https://inpsyde.com/"
+            "homepage": "https://inpsyde.com/",
+            "email": "hello@inpsyde.com",
+            "role": "Company"
         }
     ],
     "minimum-stability": "dev",
