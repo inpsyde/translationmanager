@@ -221,10 +221,13 @@ class Import
                 foreach ($postVars as $key => $value) {
                     if (array_key_exists($key, $posts['post_defaults'])) {
                         $postData[$key] = $posts['post_defaults'][$key];
+                        $relatedPost = translationIds($postId, 'post', $sourceSiteId);
+                        $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
                     }
                 }
 
-                $targetPost = $this->importPost($sourceSiteId, $postId, $targetSiteId, $postData, $posts);
+                $targetPost = $this->importPost($postId, $targetSiteId, $postData, $posts);
+
                 if (!$targetPost) {
                     continue;
                 }
@@ -240,7 +243,6 @@ class Import
     /**
      * Will Import the post data
      *
-     * @param int $sourceSiteId the site id from which the data is taken
      * @param int $sourcePostId the post id from which the data is taken
      * @param int $targetSiteId the site id where the data should be imported
      * @param array $postData the post data to import
@@ -249,19 +251,18 @@ class Import
      * @throws NonexistentTable
      */
     protected function importPost(
-        int $sourceSiteId,
         int $sourcePostId,
         int $targetSiteId,
         array $postData,
         array $posts
     ) {
-
-        $relatedPost = translationIds($sourcePostId, 'post', $sourceSiteId);
-        $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
-
         $networkState = NetworkState::create();
         $networkState->switch_to($targetSiteId);
 
+        $targetPost = get_post($postData['ID']) ?? false;
+        if ($targetPost) {
+            $postData = array_merge((array)$targetPost, $postData);
+        }
         $targetPostId = wp_insert_post($postData, true);
         $targetPost = $targetPostId ? get_post($targetPostId) : null;
 
@@ -344,7 +345,14 @@ class Import
         }
 
         $api = resolve(ContentRelations::class);
-        $api->createRelationship($contentIds, 'post');
+        $relationshipId = $api->relationshipId(
+            $contentIds,
+            'post',
+            true
+        );
+        foreach ($contentIds as $siteId => $contentId) {
+            $api->saveRelation($relationshipId, $siteId, $contentId);
+        }
     }
 
     /**
