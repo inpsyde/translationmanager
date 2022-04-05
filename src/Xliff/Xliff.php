@@ -137,9 +137,8 @@ class Xliff
                 $postEntity = $this->xliffElementHelper->getElementAttribute($postEntities, 'id', true);
                 foreach ($postEntities->children() as $unit) {
                     $unitName = $this->xliffElementHelper->getElementAttribute($unit, 'id', true);
-                    $entity = $postsToImport['posts'][$sourcePostId][$postEntity];
-                    $entity[$unitName] = (string)$unit->segment->target;
-                    $entity['post_type'] = get_post_type((int)$sourcePostId);
+                    $postsToImport['posts'][$sourcePostId][$postEntity][$unitName] = (string)$unit->segment->target;
+                    $postsToImport['posts'][$sourcePostId][$postEntity]['post_type'] = get_post_type((int)$sourcePostId);
                 }
             }
         }
