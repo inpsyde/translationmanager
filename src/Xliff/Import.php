@@ -195,6 +195,7 @@ class Import
      * Will get the generated data from XLIFF file and will import into target site
      *
      * @param array $files from which to get the data
+     * @throws NonexistentTable
      */
     protected function handleImport(array $files): void
     {
@@ -221,9 +222,10 @@ class Import
                 foreach ($postVars as $key => $value) {
                     if (array_key_exists($key, $posts['post_defaults'])) {
                         $postData[$key] = $posts['post_defaults'][$key];
-                        $relatedPost = translationIds($postId, 'post', $sourceSiteId);
-                        $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
                     }
+                    /** @psalm-suppress UndefinedFunction **/
+                    $relatedPost = translationIds($postId, 'post', $sourceSiteId);
+                    $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
                 }
 
                 $targetPost = $this->importPost($postId, $targetSiteId, $postData, $posts);
