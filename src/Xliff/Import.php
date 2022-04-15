@@ -223,7 +223,6 @@ class Import
                     if (array_key_exists($key, $posts['post_defaults'])) {
                         $postData[$key] = $posts['post_defaults'][$key];
                     }
-                    /** @psalm-suppress UndefinedFunction **/
                     $relatedPost = translationIds($postId, 'post', $sourceSiteId);
                     $postData['ID'] = $relatedPost[$targetSiteId] ?? 0;
                 }
