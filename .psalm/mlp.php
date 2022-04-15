@@ -405,3 +405,15 @@ namespace Inpsyde\MultilingualPress\Framework\Service {
         public function bootstrap(Container $container);
     }
 }
+
+namespace Inpsyde\MultilingualPress {
+    /**
+     * Returns the content IDs of all translations for the given content element data.
+     *
+     * @return int[]
+     * @throws NonexistentTable
+     */
+    function translationIds(int $contentId = 0, string $type = 'post', int $siteId = 0): array
+    {
+    }
+}
