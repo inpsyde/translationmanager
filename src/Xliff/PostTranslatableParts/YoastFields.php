@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Translationmanager\Xliff\PostTranslatableParts;
 
 use SimpleXMLElement;
-use Translationmanager\Xliff\xliffElementHelper;
+use Translationmanager\Xliff\XliffElementHelper;
 use WP_Post;
 use WPSEO_Meta;
 
@@ -29,12 +29,12 @@ class YoastFields
      *
      * @param WP_Post $post The project item source post
      * @param SimpleXMLElement $element The element where the fields should be added
-     * @param xliffElementHelper $xliffElementHelper Helper to manage XLIFF elements
+     * @param XliffElementHelper $xliffElementHelper Helper to manage XLIFF elements
      */
     public function __construct(
         WP_Post $post,
         SimpleXMLElement $element,
-        xliffElementHelper $xliffElementHelper
+        XliffElementHelper $xliffElementHelper
     ) {
 
         if (!class_exists('WPSEO_Meta')) {

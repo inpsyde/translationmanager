@@ -53,14 +53,14 @@ class ServiceProvider implements BootstrappableServiceProvider
             return new Acf();
         };
 
-        $container['tm/Xliff/xliffElementHelper'] = function () {
+        $container['tm/Xliff/XliffElementHelper'] = function () {
             return new XliffElementHelper();
         };
 
         $container['tm/Xliff/Xliff'] = function (Container $container) {
             return new Xliff(
                 $container['tm/ACF/Acf'],
-                $container['tm/Xliff/xliffElementHelper'],
+                $container['tm/Xliff/XliffElementHelper'],
                 $container['translationmanager.plugin']
             );
         };

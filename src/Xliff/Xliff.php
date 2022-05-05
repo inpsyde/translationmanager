@@ -33,7 +33,7 @@ class Xliff
     private $acf;
 
     /**
-     * xliffElementHelper
+     * XliffElementHelper
      *
      * @var XliffElementHelper
      */
