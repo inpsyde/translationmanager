@@ -22,14 +22,15 @@ RUN apt-get install -y \
     curl \
     git \
     # These are for extensions
+    libzip-dev \
     zlib1g-dev \
     libicu-dev
 
 RUN mkdir -p ~/.ssh
 RUN ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
-RUN docker-php-ext-install intl json && \
-    docker-php-ext-enable intl json
+RUN docker-php-ext-install intl json zip && \
+    docker-php-ext-enable intl json zip
 
 WORKDIR ${BUILD_ROOT_PATH}
 
@@ -56,7 +57,7 @@ RUN apt-get install -y \
     git \
     yarn \
     # These are for extensions
-    zlib1g-dev \
+    libzip-dev \
     libicu-dev \
     g++ \
     # For installing things from URL
@@ -69,21 +70,12 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 RUN mkdir -p ~/.ssh
 RUN ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
-RUN docker-php-ext-install intl json && \
-    docker-php-ext-enable intl json
+RUN docker-php-ext-install intl json zip && \
+    docker-php-ext-enable intl json zip
 
 # Install Node
-RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
-
-# Install Phive
-RUN wget -O phive.phar "https://phar.io/releases/phive.phar"
-RUN wget -O phive.phar.asc "https://phar.io/releases/phive.phar.asc"
-RUN gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys 0x9D8A98B29B2D5D79
-RUN gpg --verify phive.phar.asc phive.phar
-RUN rm phive.phar.asc && \
-    chmod +x phive.phar && \
-    mv phive.phar /usr/local/bin/phive
 
 WORKDIR ${BUILD_ROOT_PATH}
 COPY . ./
@@ -97,11 +89,12 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN apt-get update
 RUN apt-get install -y \
     # These are for extensions
-    zlib1g-dev \
+    libzip-dev \
     libicu-dev \
     g++
 RUN pecl install xdebug-2.9.8
-RUN docker-php-ext-install pcntl posix intl json
+RUN docker-php-ext-install pcntl posix intl json zip
+RUN  docker-php-ext-enable xdebug
 
 WORKDIR ${BUILD_ROOT_PATH}
 COPY --from=build ${BUILD_ROOT_PATH} ${BUILD_ROOT_PATH}
@@ -144,15 +137,15 @@ RUN apt-get install -y \
     unzip \
     curl \
     # These are for extensions
-    zlib1g-dev \
+    libzip-dev \
     libicu-dev \
     g++
 
-RUN docker-php-ext-install pcntl posix intl json
+RUN docker-php-ext-install pcntl posix intl json zip
 
 RUN apt-get remove -y \
     # These are for extensions
-    zlib1g-dev \
+    libzip-dev \
     libicu-dev \
     g++
 

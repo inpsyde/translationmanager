@@ -9,8 +9,8 @@
 
 namespace Translationmanager\SystemStatus;
 
-use Inpsyde\SystemStatus\Data\Information;
-use Inpsyde\SystemStatus\Item\Item;
+use Translationmanager\SystemStatus\Data\Information;
+use Translationmanager\SystemStatus\Item\Item;
 use Translationmanager\Plugin;
 
 use function Translationmanager\Functions\get_languages;
@@ -58,7 +58,7 @@ class Translationmanager implements Information
      * @return string
      * @since 1.0.0
      */
-    public function title()
+    public function title(): string
     {
         return $this->title;
     }
@@ -68,7 +68,7 @@ class Translationmanager implements Information
      *
      * @return array The collection of information
      */
-    public function collection()
+    public function collection(): array
     {
         return $this->collection;
     }

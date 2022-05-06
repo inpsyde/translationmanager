@@ -13,7 +13,6 @@ use WP_User;
  */
 interface Authable
 {
-
     /**
      * Check Against User Capability
      *

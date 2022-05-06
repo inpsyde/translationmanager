@@ -19,7 +19,6 @@ use Pimple\ServiceProviderInterface;
  */
 interface BootstrappableServiceProvider extends ServiceProviderInterface
 {
-
     /**
      * Boot
      *

@@ -21,7 +21,6 @@ use Translationmanager\Service\Exception\BootstrappedException;
  */
 final class ServiceProviders
 {
-
     /**
      * Container
      *

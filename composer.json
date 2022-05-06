@@ -1,6 +1,6 @@
 {
     "name": "eurotext/translationmanager",
-    "description": "WordPress Plugin to connect to the Eurotext REST API.",
+    "description": "WordPress plugin for translating content from your WordPress Multisite via Eurotext.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "config": {
@@ -12,37 +12,30 @@
     "authors": [
         {
             "name": "Inpsyde GmbH",
-            "email": "info@inpsyde.com",
-            "homepage": "https://inpsyde.com/en/"
+            "homepage": "https://inpsyde.com/",
+            "email": "hello@inpsyde.com",
+            "role": "Company"
         }
     ],
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://repo.packagist.com/inpsyde/"
-        },
-        { "packagist.org": false }
-    ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": "^7.2",
         "ext-fileinfo": "*",
         "brain/nonces": "1.0.*",
-        "inpsyde/system-status": "dev-master",
         "pimple/pimple": "^3.2",
         "webmozart/assert": "^1.4",
         "ext-simplexml": "*",
         "ext-zip": "*"
     },
     "require-dev": {
-        "johnpbloch/wordpress-core": "^5.0",
+        "php-stubs/wordpress-stubs": "^5.0@stable",
         "barryvdh/composer-cleanup-plugin": "^0.2.0",
         "brain/monkey": "~2.3",
         "inpsyde/php-coding-standards": "^1.0",
         "phpunit/phpunit": "^7.5",
-        "vimeo/psalm": "^3.11.7",
-        "oomphinc/composer-installers-extender": "^1.1",
-        "inpsyde/multilingualpress": "^3.0"
+        "vimeo/psalm": "^4.0",
+        "oomphinc/composer-installers-extender": "^1.1"
     },
     "autoload": {
         "psr-4": {

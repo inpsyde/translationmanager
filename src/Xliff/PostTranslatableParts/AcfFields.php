@@ -16,7 +16,7 @@ namespace Translationmanager\Xliff\PostTranslatableParts;
 
 use SimpleXMLElement;
 use Translationmanager\Module\ACF\Acf;
-use Translationmanager\Xliff\xliffElementHelper;
+use Translationmanager\Xliff\XliffElementHelper;
 use WP_Post;
 
 class AcfFields
@@ -28,13 +28,13 @@ class AcfFields
      *
      * @param WP_Post $post The project item source post
      * @param SimpleXMLElement $element The element where the fields should be added
-     * @param xliffElementHelper $xliffElementHelper Helper to manage XLIFF elements
+     * @param XliffElementHelper $xliffElementHelper Helper to manage XLIFF elements
      * @param Acf $acf The ACF field key generation class
      */
     public function __construct(
         WP_Post $post,
         SimpleXMLElement $element,
-        xliffElementHelper $xliffElementHelper,
+        XliffElementHelper $xliffElementHelper,
         Acf $acf
     ) {
 

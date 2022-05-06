@@ -4,7 +4,7 @@ Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
 Requires at least: 5.0
 Tested up to: 5.8
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,11 +12,11 @@ With *TranslationMANAGER*, exporting content from your WordPress Multisite is ea
 
 == Description ==
 
-TranslationMANAGER is a plugin that allows a user with the correct roles to request a translation of one or multiple articles, pages etc.  However, TranslationMANAGER cannot import the content into the correct location because it does not have any information in relation to this. A Multilingual plugin is required for this purpose.  
-TranslationMANAGER currently supports WPML and MultilingualPress 2 and 3.
-We strongly suggest using TranslationMANAGER with MultilingualPress3, which is a better solution in terms of page speed and maintainability.
+TranslationMANAGER is a WordPress plugin that allows a user with the correct roles to request a translation of one or multiple articles, pages etc.  However, TranslationMANAGER cannot import the content into the correct location because it does not have any information in relation to this. A Multilingual plugin is required for this purpose.
 
-MultilingualPress requires some setup and our documentation provides information on how to connect sites and content.
+TranslationMANAGER works on sites with MultilingualPress 3 (https://multilingualpress.org/), Inpsyde’s solution for multilingual WordPress sites.
+
+MultilingualPress requires some setup and our documentation (https://multilingualpress.org/docs-category/multilingualpress-3-getting-started/) provides information on how to connect sites and content.
 
 Knowledge of how to connect content is not required, because the MLP module which is included in Translation Manager will carry out this task.
 
@@ -24,7 +24,8 @@ Basically, when you request a translation and import it afterwards, the MLP modu
 
 === Setting up TranslationMANAGER ===
 
-For TranslationMANAGER to work correctly, the API key has to be set. 
+For TranslationMANAGER to work correctly, the API key has to be set.
+
 Every site has its own settings and it is possible to have different API keys for each site or to use one API key for all sites.
 To add the API key, go to TranslationMANAGER > Settings > Connection from within a site.
 
@@ -97,6 +98,10 @@ This is not a problem because it does not affect the existing content. However, 
 
 == Installation ==
 
+*Requirements*
+-   WordPress 5.0 or higher.
+-   PHP 7.2 or higher.
+
 To install the TranslationMANAGER plugin after installing MLP, go to Network Admin > Plugins > Add New and search for TranslationMANAGER.
 
 As this is a network installation, the plugin can be activated for the entire network.
@@ -105,7 +110,7 @@ This will automatically make the plugin available to all sites within the networ
 == Frequently Asked Questions ==
 = Do I need an API key? =
 
-Yes, you need your own API key to connect with the Eurotext servers.
+Yes, you need your own API key to connect with the Eurotext servers. For more information, see https://eurotext.de/en/documentation/wordpress/
 
 = Where do I get my own API key? =
 
@@ -118,6 +123,10 @@ Just send an email to info@eurotext.de with a request.
 3. project view
 
 == Changelog ==
+= 1.4.1 =
+* Fix the name of XliffElementHelper is not used correctly
+* Fix Xliff import missing post type, status and relationship
+
 = 1.4.0 =
 * Fix Yoast SEO meta keys are not translatable
 * Fix Deleting a Project in the projects overview deletes all translations

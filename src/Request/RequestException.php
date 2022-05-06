@@ -12,5 +12,4 @@ use RuntimeException;
  */
 class RequestException extends RuntimeException
 {
-
 }

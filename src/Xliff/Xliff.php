@@ -33,7 +33,7 @@ class Xliff
     private $acf;
 
     /**
-     * xliffElementHelper
+     * XliffElementHelper
      *
      * @var XliffElementHelper
      */
@@ -138,6 +138,7 @@ class Xliff
                 foreach ($postEntities->children() as $unit) {
                     $unitName = $this->xliffElementHelper->getElementAttribute($unit, 'id', true);
                     $postsToImport['posts'][$sourcePostId][$postEntity][$unitName] = (string)$unit->segment->target;
+                    $postsToImport['posts'][$sourcePostId][$postEntity]['post_type'] = get_post_type((int)$sourcePostId);
                 }
             }
         }

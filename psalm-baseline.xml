@@ -1,0 +1,957 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
+  <file src="inc/functions/api.php">
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$source_post</code>
+    </PossiblyInvalidArgument>
+    <PossiblyInvalidPropertyFetch occurrences="1">
+      <code>$source_post-&gt;post_type</code>
+    </PossiblyInvalidPropertyFetch>
+    <PossiblyNullArgument occurrences="2">
+      <code>$project_id</code>
+      <code>$project_id</code>
+    </PossiblyNullArgument>
+    <TooManyArguments occurrences="1">
+      <code>apply_filters('translationmanager_post_updater', null, $translation)</code>
+    </TooManyArguments>
+    <UndefinedFunction occurrences="4">
+      <code>get_languages()</code>
+      <code>get_project_items($project_term-&gt;term_id)</code>
+      <code>set_unique_term_meta($project_term, '_translationmanager_order_id', $project_id)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="inc/functions/commons.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$constraint</code>
+    </ArgumentTypeCoercion>
+    <MissingReturnType occurrences="1">
+      <code>redirect_admin_page_network</code>
+    </MissingReturnType>
+    <TooManyArguments occurrences="1">
+      <code>apply_filters( 'translationmanager_get_template', ( new Plugin() )-&gt;dir( $name ), $name )</code>
+    </TooManyArguments>
+  </file>
+  <file src="inc/functions/cpt-project.php">
+    <PossiblyInvalidPropertyFetch occurrences="2">
+      <code>$post-&gt;ID</code>
+      <code>$term-&gt;taxonomy</code>
+    </PossiblyInvalidPropertyFetch>
+    <PossiblyNullPropertyFetch occurrences="1">
+      <code>$term-&gt;taxonomy</code>
+    </PossiblyNullPropertyFetch>
+    <UndefinedPropertyFetch occurrences="1">
+      <code>$term-&gt;taxonomy</code>
+    </UndefinedPropertyFetch>
+  </file>
+  <file src="inc/functions/language.php">
+    <NullArgument occurrences="1">
+      <code>null</code>
+    </NullArgument>
+    <TooManyArguments occurrences="2">
+      <code>apply_filters( 'translation_manager_languages_by_site_id', [], $site_id )</code>
+      <code>apply_filters( 'translationmanager_languages', [], get_current_blog_id() )</code>
+    </TooManyArguments>
+    <UndefinedMethod occurrences="2">
+      <code>$language</code>
+      <code>$language</code>
+    </UndefinedMethod>
+  </file>
+  <file src="inc/functions/tax-project.php">
+    <FalsableReturnStatement occurrences="2">
+      <code>wp_get_referer()</code>
+      <code>wp_get_referer()</code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType occurrences="1">
+      <code>string</code>
+    </InvalidFalsableReturnType>
+    <PossibleRawObjectIteration occurrences="1">
+      <code>$terms</code>
+    </PossibleRawObjectIteration>
+    <PossiblyFalseArgument occurrences="1">
+      <code>$languages</code>
+    </PossiblyFalseArgument>
+    <PossiblyInvalidIterator occurrences="1">
+      <code>$terms</code>
+    </PossiblyInvalidIterator>
+  </file>
+  <file src="inc/hooks.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$admin_footer_text</code>
+      <code>$file</code>
+    </MissingClosureParamType>
+    <PossiblyFalseArgument occurrences="1">
+      <code>$page</code>
+    </PossiblyFalseArgument>
+    <UndefinedFunction occurrences="4">
+      <code>'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts'</code>
+      <code>'Translationmanager\\Functions\\project_hide_slug'</code>
+      <code>'Translationmanager\\Functions\\project_hide_slug'</code>
+      <code>get_supported_post_types()</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Activation/Activator.php">
+    <MissingReturnType occurrences="1">
+      <code>store_version</code>
+    </MissingReturnType>
+    <PossiblyFalseArgument occurrences="3">
+      <code>$file_version</code>
+      <code>$file_version</code>
+      <code>$setup_files</code>
+    </PossiblyFalseArgument>
+    <UnresolvableInclude occurrences="1">
+      <code>require_once $setup_script</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Activation/ServiceProvider.php">
+    <MissingClosureReturnType occurrences="1">
+      <code>function (Container $container) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Api.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$response-&gt;get_error_code()</code>
+    </InvalidScalarArgument>
+    <PossiblyInvalidMethodCall occurrences="2">
+      <code>get_error_code</code>
+      <code>get_error_message</code>
+    </PossiblyInvalidMethodCall>
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>$project</code>
+      <code>$project_item</code>
+    </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Api/Project.php">
+    <InvalidOperand occurrences="2">
+      <code>$project_id</code>
+      <code>(int)$project_id</code>
+    </InvalidOperand>
+  </file>
+  <file src="src/Api/ProjectItem.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$project_id</code>
+    </InvalidScalarArgument>
+    <TooManyArguments occurrences="1"/>
+    <UndefinedFunction occurrences="1">
+      <code>Functions\current_lang_code()</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Assets/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function (Container $container) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Assets/Translationmanager.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>filemtime($this-&gt;plugin-&gt;dir('/assets/css/translationmanager.css'))</code>
+    </InvalidScalarArgument>
+  </file>
+  <file src="src/MetaBox/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function () {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/MetaBox/Translation.php">
+    <UndefinedFunction occurrences="2">
+      <code>Functions\get_template('views/meta-box/translation/layout.php')</code>
+      <code>Functions\projects()</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>require $template</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Module/ACF/Acf.php">
+    <InvalidOperand occurrences="1">
+      <code>$key</code>
+    </InvalidOperand>
+    <PossiblyFalseOperand occurrences="2">
+      <code>$this-&gt;getClonedFieldKeyPosition($key, $needle, $number - 1)</code>
+    </PossiblyFalseOperand>
+    <UndefinedFunction occurrences="2">
+      <code>get_field_object($acfKey)</code>
+      <code>get_field_object(substr($acfKey, -$fieldKeyPosition))</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Module/ACF/Processor/OutgoingMetaProcessor.php">
+    <UndefinedFunction occurrences="1">
+      <code>get_field_objects($sourcePostId)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Module/Elementor/Processor/IncomingMetaProcessor.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>null</code>
+    </InvalidReturnStatement>
+    <PossiblyFalseArgument occurrences="1">
+      <code>json_encode($metaValue)</code>
+    </PossiblyFalseArgument>
+    <UndefinedClass occurrences="1">
+      <code>\Elementor\Plugin</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Module/Mlp/Adapter.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>'Inpsyde\MultilingualPress\Framework\Language\Language'</code>
+    </ArgumentTypeCoercion>
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$pluginVersion</code>
+    </InvalidPropertyAssignmentValue>
+    <MissingClosureParamType occurrences="1">
+      <code>$site</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($site) {</code>
+    </MissingClosureReturnType>
+    <UndefinedFunction occurrences="1">
+      <code>siteExists($site)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Module/Mlp/Connector.php">
+    <MissingPropertyType occurrences="1">
+      <code>$utils</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="1">
+      <code>prepare_outgoing</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Module/Mlp/ConnectorBootstrap.php">
+    <MissingReturnType occurrences="1">
+      <code>boot</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Module/Mlp/Integrator.php">
+    <UndefinedClass occurrences="1">
+      <code>Inpsyde_Property_List_Interface</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Module/Mlp/Processor/PostDataBuilder.php">
+    <PossiblyInvalidMethodCall occurrences="1">
+      <code>to_array</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyInvalidPropertyFetch occurrences="1">
+      <code>$linkedPost-&gt;ID</code>
+    </PossiblyInvalidPropertyFetch>
+  </file>
+  <file src="src/Module/Mlp/Processor/PostParentSync.php">
+    <TooManyArguments occurrences="1"/>
+  </file>
+  <file src="src/Module/Mlp/Processor/PostSaver.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$post_data</code>
+    </ArgumentTypeCoercion>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$target_post_id</code>
+    </PossiblyInvalidArgument>
+    <PossiblyInvalidCast occurrences="1">
+      <code>$target_post_id</code>
+    </PossiblyInvalidCast>
+    <PossiblyInvalidMethodCall occurrences="1">
+      <code>get_error_message</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyInvalidPropertyFetch occurrences="1">
+      <code>$target_post-&gt;ID</code>
+    </PossiblyInvalidPropertyFetch>
+    <TooManyArguments occurrences="1"/>
+  </file>
+  <file src="src/Module/Mlp/Processor/PostThumbSync.php">
+    <TooManyArguments occurrences="1"/>
+  </file>
+  <file src="src/Module/Mlp/Processor/TaxonomiesSync.php">
+    <InvalidArgument occurrences="1">
+      <code>$this-&gt;relate_new_terms($target_post_new_terms, $translation)</code>
+    </InvalidArgument>
+    <InvalidReturnStatement occurrences="2">
+      <code>$terms</code>
+      <code>array_filter($target_terms)</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="2">
+      <code>int[]</code>
+      <code>int[]</code>
+    </InvalidReturnType>
+    <MissingReturnType occurrences="1">
+      <code>sync_target_terms</code>
+    </MissingReturnType>
+    <TooManyArguments occurrences="4"/>
+  </file>
+  <file src="src/Module/Mlp/ServiceProvider.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>3</code>
+    </InvalidScalarArgument>
+    <MissingClosureReturnType occurrences="1">
+      <code>function (Container $container) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="2">
+      <code>bootstrap</code>
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Module/Mlp/Utils/ImageCopier.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$attachment_id</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>int</code>
+    </InvalidReturnType>
+    <PossiblyFalseArgument occurrences="2">
+      <code>$linked_file</code>
+      <code>$source_file</code>
+    </PossiblyFalseArgument>
+    <PossiblyInvalidArgument occurrences="3">
+      <code>$attachment</code>
+      <code>$attachment_id</code>
+      <code>$attachment_id</code>
+    </PossiblyInvalidArgument>
+    <PossiblyInvalidPropertyFetch occurrences="1">
+      <code>$attachment-&gt;post_type</code>
+    </PossiblyInvalidPropertyFetch>
+    <PossiblyNullArgument occurrences="1">
+      <code>$linked_file</code>
+    </PossiblyNullArgument>
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>$target_site_id</code>
+      <code>$target_site_id</code>
+    </RedundantConditionGivenDocblockType>
+    <UndefinedConstant occurrences="1">
+      <code>ABSPATH</code>
+    </UndefinedConstant>
+    <UnresolvableInclude occurrences="1">
+      <code>require_once ABSPATH . 'wp-admin/includes/image.php'</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Module/Mlp/Utils/Registry.php">
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;services[__FUNCTION__][$id]</code>
+    </NullableReturnStatement>
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;services[__FUNCTION__]</code>
+    </PossiblyNullArgument>
+    <PossiblyNullArrayAccess occurrences="1">
+      <code>$this-&gt;services[__FUNCTION__][$id]</code>
+    </PossiblyNullArrayAccess>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>$this-&gt;services[__FUNCTION__]</code>
+    </PossiblyUndefinedArrayOffset>
+  </file>
+  <file src="src/Module/ModuleIntegrator.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$modulesProvider</code>
+    </InvalidPropertyAssignmentValue>
+    <MissingReturnType occurrences="1">
+      <code>integrate</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Module/Processor/ProcessorBus.php">
+    <FalseOperand occurrences="1">
+      <code>is_a($processor, $target)</code>
+    </FalseOperand>
+    <MissingReturnType occurrences="1">
+      <code>process</code>
+    </MissingReturnType>
+    <TooManyArguments occurrences="1"/>
+    <TypeDoesNotContainType occurrences="2">
+      <code>!$this-&gt;queue</code>
+      <code>$this-&gt;queue</code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Module/ServiceProvider.php">
+    <MissingClosureReturnType occurrences="14">
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Module/TranslationEntityAwareTrait.php">
+    <UndefinedClass occurrences="1">
+      <code>WC_Product</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="1">
+      <code>WC_Product</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Module/WooCommerce/Processor/IncomingMetaProcessor.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>null</code>
+    </InvalidReturnStatement>
+    <UndefinedClass occurrences="2">
+      <code>$product</code>
+      <code>WC_Product</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Module/WooCommerce/Processor/OutgoingMetaProcessor.php">
+    <UndefinedFunction occurrences="1">
+      <code>wc_get_product($translation-&gt;source_post_id())</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Module/YoastSeo/WordPressSeo.php">
+    <MissingReturnType occurrences="2">
+      <code>prepare_outgoing</code>
+      <code>update_translation</code>
+    </MissingReturnType>
+    <UndefinedClass occurrences="4">
+      <code>WPSEO_Meta</code>
+      <code>WPSEO_Meta</code>
+      <code>WPSEO_Meta</code>
+      <code>WPSEO_Meta</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Notice/StandardNotice.php">
+    <UndefinedFunction occurrences="1">
+      <code>\Translationmanager\Functions\get_template('/views/notice/standard.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>include \Translationmanager\Functions\get_template('/views/notice/standard.php')</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Notice/TransientNotice.php">
+    <UndefinedFunction occurrences="1">
+      <code>\Translationmanager\Functions\get_template('/views/notice/list.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>include \Translationmanager\Functions\get_template('/views/notice/list.php')</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Pages/PageOptions.php">
+    <InvalidOperand occurrences="1">
+      <code>current($chosen_action)</code>
+    </InvalidOperand>
+    <InvalidScalarArgument occurrences="2">
+      <code>filemtime((new Plugin())-&gt;dir('/assets/css/settings.css'))</code>
+      <code>filemtime((new Plugin())-&gt;dir('/resources/js/options-page.js'))</code>
+    </InvalidScalarArgument>
+    <PossiblyFalseOperand occurrences="1">
+      <code>current($chosen_action)</code>
+    </PossiblyFalseOperand>
+    <UndefinedFunction occurrences="1">
+      <code>Functions\get_template('/views/options-page/layout.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>require_once Functions\get_template('/views/options-page/layout.php')</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Pages/PluginMainPage.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$parent_file</code>
+      <code>$submenu_file</code>
+    </MissingClosureParamType>
+    <PossiblyNullPropertyFetch occurrences="2">
+      <code>$screen-&gt;id</code>
+      <code>$screen-&gt;id</code>
+    </PossiblyNullPropertyFetch>
+  </file>
+  <file src="src/Pages/Project.php">
+    <NullArgument occurrences="1">
+      <code>null</code>
+    </NullArgument>
+    <PossiblyNullPropertyFetch occurrences="1">
+      <code>get_current_screen()-&gt;post_type</code>
+    </PossiblyNullPropertyFetch>
+    <UndefinedConstant occurrences="1">
+      <code>ABSPATH</code>
+    </UndefinedConstant>
+    <UndefinedFunction occurrences="1">
+      <code>\Translationmanager\Functions\get_template('/views/project/page-layout.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="2">
+      <code>require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php'</code>
+      <code>require_once \Translationmanager\Functions\get_template('/views/project/page-layout.php')</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Pages/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="3">
+      <code>function () {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Project/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function () {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Project/Taxonomy.php">
+    <InvalidArgument occurrences="1"/>
+    <MissingReturnType occurrences="1">
+      <code>register_post_status</code>
+    </MissingReturnType>
+    <PossiblyFalseArgument occurrences="4">
+      <code>$project</code>
+      <code>$project</code>
+      <code>wp_get_referer()</code>
+    </PossiblyFalseArgument>
+    <PossiblyInvalidFunctionCall occurrences="1">
+      <code>$closure()</code>
+    </PossiblyInvalidFunctionCall>
+    <PossiblyInvalidOperand occurrences="1"/>
+    <UndefinedFunction occurrences="1">
+      <code>Functions\get_template('/views/project/form-title-description.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>require Functions\get_template('/views/project/form-title-description.php')</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/ProjectHandler.php">
+    <MissingReturnType occurrences="1">
+      <code>add_translation</code>
+    </MissingReturnType>
+    <PossiblyFalseArgument occurrences="1">
+      <code>get_post_type($post_id)</code>
+    </PossiblyFalseArgument>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$translation_id</code>
+    </PossiblyInvalidArgument>
+    <PossiblyInvalidMethodCall occurrences="1">
+      <code>get_error_message</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyNullArgument occurrences="1">
+      <code>get_post_type_object(get_post_type($post_id))</code>
+    </PossiblyNullArgument>
+    <PossiblyUndefinedMethod occurrences="1">
+      <code>$ids</code>
+    </PossiblyUndefinedMethod>
+  </file>
+  <file src="src/ProjectItem/PostType.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>get_delete_post_link($post-&gt;ID)</code>
+    </PossiblyNullArgument>
+    <PossiblyNullPropertyFetch occurrences="1">
+      <code>get_current_screen()-&gt;post_type</code>
+    </PossiblyNullPropertyFetch>
+  </file>
+  <file src="src/ProjectItem/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureParamType occurrences="1">
+      <code>$c</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($c) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/ProjectUpdater.php">
+    <InvalidArgument occurrences="2">
+      <code>$already_in_project[$lang_id][$ancestor_id]</code>
+      <code>$lang_id</code>
+    </InvalidArgument>
+    <InvalidArrayOffset occurrences="4">
+      <code>$already_in_project[$lang]</code>
+      <code>$already_in_project[$lang]</code>
+      <code>$already_in_project[$lang]</code>
+      <code>$already_in_project[$lang_id]</code>
+    </InvalidArrayOffset>
+    <InvalidOperand occurrences="2">
+      <code>$data['post_type'] === 'project_item'</code>
+      <code>$this-&gt;append_to_title</code>
+    </InvalidOperand>
+    <MissingReturnType occurrences="1">
+      <code>init</code>
+    </MissingReturnType>
+    <PossiblyInvalidArgument occurrences="4">
+      <code>$post</code>
+      <code>$post</code>
+      <code>$project_item_id</code>
+      <code>$project_item_id</code>
+    </PossiblyInvalidArgument>
+    <TooManyArguments occurrences="1">
+      <code>apply_filters('translationmanager_force_add_parent_translations', false, $post)</code>
+    </TooManyArguments>
+  </file>
+  <file src="src/Request/Api/AddTranslation.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$project</code>
+    </InvalidScalarArgument>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$project</code>
+    </PossiblyUndefinedVariable>
+    <TooManyArguments occurrences="1"/>
+    <UndefinedFunction occurrences="2"/>
+  </file>
+  <file src="src/Request/Api/ImportProject.php">
+    <FalsableReturnStatement occurrences="1"/>
+    <UndefinedFunction occurrences="2">
+      <code>project_update($project)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Request/Api/OrderProject.php">
+    <FalsableReturnStatement occurrences="1"/>
+    <UndefinedFunction occurrences="2">
+      <code>create_project_order($project)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Request/Api/UpdateProjectOrderStatus.php">
+    <FalsableReturnStatement occurrences="1"/>
+    <PossiblyUndefinedVariable occurrences="2">
+      <code>$project</code>
+      <code>$status</code>
+    </PossiblyUndefinedVariable>
+    <UndefinedFunction occurrences="5">
+      <code>project_global_status($project)</code>
+      <code>set_unique_term_meta($project, '_translationmanager_order_status', $status)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Request/ProjectItemBulk.php">
+    <FalsableReturnStatement occurrences="1"/>
+  </file>
+  <file src="src/Request/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="4">
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function () {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Request/SupportRequest.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>null</code>
+    </InvalidReturnStatement>
+    <PossiblyFalseOperand occurrences="1">
+      <code>$inputs</code>
+    </PossiblyFalseOperand>
+    <UndefinedConstant occurrences="1">
+      <code>MB_IN_BYTES</code>
+    </UndefinedConstant>
+    <UndefinedFunction occurrences="1">
+      <code>Functions\username($user)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Setting/PluginSettings.php">
+    <MissingClosureParamType occurrences="2">
+      <code>$value</code>
+      <code>$value</code>
+    </MissingClosureParamType>
+    <MissingReturnType occurrences="2">
+      <code>add_settings_field</code>
+      <code>dispatch_input_text</code>
+    </MissingReturnType>
+    <UndefinedFunction occurrences="1">
+      <code>Functions\get_template('views/type/default.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>require Functions\get_template('views/type/default.php')</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Setting/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="1">
+      <code>static function () {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/SystemStatus/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function () {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/SystemStatus/Translationmanager.php">
+    <InvalidOperand occurrences="1">
+      <code>(int)$test['code']</code>
+    </InvalidOperand>
+    <UndefinedFunction occurrences="2">
+      <code>get_languages()</code>
+      <code>translationmanager_api()</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/TableList/RestrictManagePosts.php">
+    <InvalidScalarArgument occurrences="2">
+      <code>filemtime($this-&gt;plugin-&gt;dir('/assets/css/restrict-manage-posts.css'))</code>
+      <code>filemtime($this-&gt;plugin-&gt;dir('/resources/js/restrict-manage-posts.js'))</code>
+    </InvalidScalarArgument>
+    <UndefinedFunction occurrences="1">
+      <code>\Translationmanager\Functions\get_template('/views/restrict-manage-posts.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>require_once \Translationmanager\Functions\get_template('/views/restrict-manage-posts.php')</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/TableList/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function (Container $container) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+    <UndefinedFunction occurrences="1">
+      <code>get_supported_post_types()</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Translation.php">
+    <MissingPropertyType occurrences="1">
+      <code>$protected_meta</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="17">
+      <code>get_meta</code>
+      <code>get_value</code>
+      <code>has_meta</code>
+      <code>has_value</code>
+      <code>is_incoming</code>
+      <code>is_outgoing</code>
+      <code>is_valid</code>
+      <code>remove_meta</code>
+      <code>remove_value</code>
+      <code>set_meta</code>
+      <code>set_value</code>
+      <code>source_post</code>
+      <code>source_post_id</code>
+      <code>source_site_id</code>
+      <code>target_language</code>
+      <code>target_site_id</code>
+      <code>to_array</code>
+    </MissingReturnType>
+    <UnsafeInstantiation occurrences="2">
+      <code>new static()</code>
+      <code>new static()</code>
+    </UnsafeInstantiation>
+  </file>
+  <file src="src/Utils/Assert.php">
+    <MissingReturnType occurrences="1">
+      <code>semVersion</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Utils/NetworkState.php">
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>$site_id</code>
+      <code>$stack</code>
+    </PropertyNotSetInConstructor>
+    <UnsafeInstantiation occurrences="1">
+      <code>new static()</code>
+    </UnsafeInstantiation>
+  </file>
+  <file src="src/Utils/TimeZone.php">
+    <InvalidOperand occurrences="1">
+      <code>$option</code>
+    </InvalidOperand>
+  </file>
+  <file src="src/View/Modal.php">
+    <InvalidScalarArgument occurrences="2">
+      <code>filemtime($this-&gt;plugin-&gt;dir('/assets/css/modal.css'))</code>
+      <code>filemtime($this-&gt;plugin-&gt;dir('/resources/js/modal.js'))</code>
+    </InvalidScalarArgument>
+    <MissingReturnType occurrences="1">
+      <code>modal_trigger</code>
+    </MissingReturnType>
+    <PossiblyInvalidFunctionCall occurrences="1"/>
+    <UnresolvableInclude occurrences="1">
+      <code>include $path</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/View/Project/OrderInfo.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>\DateTime</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>null</code>
+    </NullableReturnStatement>
+    <TooManyArguments occurrences="1">
+      <code>apply_filters('translationmanager_order_status', $order_status, $this)</code>
+    </TooManyArguments>
+    <UndefinedFunction occurrences="3">
+      <code>Functions\get_project_items($this-&gt;projects_term_id)</code>
+      <code>Functions\get_project_items($this-&gt;projects_term_id)</code>
+      <code>Functions\get_template('views/project/order-info.php')</code>
+    </UndefinedFunction>
+    <UnresolvableInclude occurrences="1">
+      <code>require $template</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Xliff/Export.php">
+    <PossiblyInvalidPropertyFetch occurrences="1">
+      <code>$project-&gt;name</code>
+    </PossiblyInvalidPropertyFetch>
+    <PossiblyNullArgument occurrences="1">
+      <code>$project-&gt;name</code>
+    </PossiblyNullArgument>
+    <PossiblyNullPropertyFetch occurrences="1">
+      <code>$project-&gt;name</code>
+    </PossiblyNullPropertyFetch>
+    <UndefinedFunction occurrences="3">
+      <code>Functions\current_language()</code>
+      <code>Functions\get_languages()</code>
+      <code>Functions\get_project_items($projectId)</code>
+    </UndefinedFunction>
+    <UndefinedPropertyFetch occurrences="1">
+      <code>$project-&gt;name</code>
+    </UndefinedPropertyFetch>
+  </file>
+  <file src="src/Xliff/Import.php">
+    <InvalidReturnStatement occurrences="2">
+      <code>$_FILES['file']</code>
+      <code>$targetPost</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="2">
+      <code>array</code>
+      <code>false|WP_Post</code>
+    </InvalidReturnType>
+    <PossibleRawObjectIteration occurrences="1">
+      <code>$importData['posts']</code>
+    </PossibleRawObjectIteration>
+    <PossiblyFalseArgument occurrences="1">
+      <code>scandir($this-&gt;xliff-&gt;translationsDir())</code>
+    </PossiblyFalseArgument>
+    <PossiblyInvalidArgument occurrences="4">
+      <code>$ignorableFields</code>
+      <code>$targetPost</code>
+      <code>$targetPost</code>
+      <code>$targetPostId</code>
+    </PossiblyInvalidArgument>
+    <UndefinedClass occurrences="2">
+      <code>WPSEO_Meta</code>
+      <code>WPSEO_Meta</code>
+    </UndefinedClass>
+    <UndefinedFunction occurrences="3">
+      <code>assignedLanguageTags(false)</code>
+      <code>resolve(ContentRelations::class)</code>
+      <code>translationIds($sourcePostId, 'post', $sourceSiteId)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Xliff/PostTranslatableParts/AcfFields.php">
+    <InvalidClass occurrences="1">
+      <code>xliffElementHelper</code>
+    </InvalidClass>
+    <UndefinedFunction occurrences="1">
+      <code>get_field_objects($sourcePostId)</code>
+    </UndefinedFunction>
+  </file>
+  <file src="src/Xliff/PostTranslatableParts/GeneralFields.php">
+    <InvalidClass occurrences="1">
+      <code>xliffElementHelper</code>
+    </InvalidClass>
+  </file>
+  <file src="src/Xliff/PostTranslatableParts/YoastFields.php">
+    <InvalidClass occurrences="1">
+      <code>xliffElementHelper</code>
+    </InvalidClass>
+    <InvalidOperand occurrences="1">
+      <code>$sourcePostId</code>
+    </InvalidOperand>
+  </file>
+  <file src="src/Xliff/ServiceProvider.php">
+    <InvalidReturnType occurrences="1">
+      <code>boot</code>
+    </InvalidReturnType>
+    <InvalidScalarArgument occurrences="2">
+      <code>filemtime($plugin-&gt;dir('/resources/js/exportXLIFF.js'))</code>
+      <code>filemtime($plugin-&gt;dir('/resources/js/importXLIFF.js'))</code>
+    </InvalidScalarArgument>
+    <MissingClosureReturnType occurrences="6">
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function () {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+      <code>function (Container $container) {</code>
+    </MissingClosureReturnType>
+    <MissingReturnType occurrences="1">
+      <code>register</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Xliff/SettingsView.php">
+    <MissingReturnType occurrences="2">
+      <code>renderExportButton</code>
+      <code>renderImportOptions</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/Xliff/Xliff.php">
+    <UndefinedMagicPropertyFetch occurrences="1">
+      <code>$post-&gt;_translationmanager_post_id</code>
+    </UndefinedMagicPropertyFetch>
+  </file>
+  <file src="src/Xliff/XliffElementHelper.php">
+    <FalsableReturnStatement occurrences="1">
+      <code>$removeIntPart ? substr($attribute, strpos($attribute, "-") + 1) : $attribute</code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType occurrences="1">
+      <code>string</code>
+    </InvalidFalsableReturnType>
+    <PossiblyFalseArgument occurrences="1">
+      <code>json_encode($target)</code>
+    </PossiblyFalseArgument>
+    <PossiblyFalseOperand occurrences="1">
+      <code>strpos($attribute, "-")</code>
+    </PossiblyFalseOperand>
+    <RedundantCondition occurrences="1">
+      <code>html_entity_decode($source)</code>
+    </RedundantCondition>
+    <TypeDoesNotContainNull occurrences="1">
+      <code>''</code>
+    </TypeDoesNotContainNull>
+  </file>
+  <file src="translationmanager.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$plugin</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function () {</code>
+    </MissingClosureReturnType>
+    <PossiblyFalseIterator occurrences="1">
+      <code>glob( __DIR__ . '/inc/functions/*.php' )</code>
+    </PossiblyFalseIterator>
+    <PossiblyInvalidFunctionCall occurrences="1">
+      <code>$bootstrap()</code>
+    </PossiblyInvalidFunctionCall>
+    <UnresolvableInclude occurrences="2">
+      <code>require_once "$rootDir/vendor/autoload.php"</code>
+      <code>require_once $file</code>
+    </UnresolvableInclude>
+  </file>
+</files>
