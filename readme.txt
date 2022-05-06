@@ -123,6 +123,10 @@ Just send an email to info@eurotext.de with a request.
 3. project view
 
 == Changelog ==
+= 1.4.1 =
+* Fix the name of XliffElementHelper is not used correctly
+* Fix Xliff import missing post type, status and relationship
+
 = 1.4.0 =
 * Fix Yoast SEO meta keys are not translatable
 * Fix Deleting a Project in the projects overview deletes all translations
