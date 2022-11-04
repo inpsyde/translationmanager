@@ -242,7 +242,7 @@ function post_type_name_by_request() {
 		return $current_screen->post_type;
 	}
 
-	$post_type = \filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+    $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
 
 	return ( $post_type ?: '' );
 }

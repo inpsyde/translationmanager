@@ -38,8 +38,7 @@ function project_hide_slug() {
  * @return string The redirect_to value
  */
 function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_ids ) {
-
-	$languages = \filter_input( INPUT_GET, 'translationmanager_bulk_languages', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+    $languages = sanitize_text_field( wp_unslash( $_GET['translationmanager_bulk_languages'] ) );
 	$project   = \filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
 	$handler   = new \Translationmanager\ProjectHandler();
 

@@ -421,11 +421,7 @@ final class ProjectItem extends TableList
             'options' => [
                     'all' => esc_html__('All Languages', 'translationmanager'),
                 ] + $this->languages(),
-            'current_value' => (int)filter_input(
-                INPUT_POST,
-                'translationmanager_target_language_filter',
-                FILTER_SANITIZE_STRING
-            ),
+            'current_value' => (int)sanitize_text_field( wp_unslash( $_POST['translationmanager_target_language_filter'] ) ),
         ];
 
         include Functions\get_template('/views/type/select.php');
@@ -449,11 +445,7 @@ final class ProjectItem extends TableList
             'class_attribute' => 'added-by-filter',
             'name_attribute' => 'translationmanager_added_by_filter',
             'options' => ['all' => esc_html__('All Users', 'translationmanager')] + $users,
-            'current_value' => (int)filter_input(
-                INPUT_POST,
-                'translationmanager_added_by_filter',
-                FILTER_SANITIZE_STRING
-            ),
+            'current_value' => (int)sanitize_text_field( wp_unslash( $_POST['translationmanager_added_by_filter'] ) ),
         ];
         unset($users);
 
@@ -475,11 +467,7 @@ final class ProjectItem extends TableList
         if (null === $request) {
             $request = $_GET; // phpcs:ignore
             foreach ($request as $key => $val) {
-                $request[$key] = sanitize_text_field(filter_input(
-                    INPUT_GET,
-                    $key,
-                    FILTER_SANITIZE_STRING
-                ));
+                $request[$key] = sanitize_text_field( wp_unslash( $_GET[$key] ) );
             }
 
             $request = wp_parse_args(

@@ -152,8 +152,8 @@ class SupportRequest implements RequestHandleable
         $inputs = filter_input_array(
             INPUT_POST,
             [
-                'support_request_summary' => FILTER_SANITIZE_STRING,
-                'support_request_description' => FILTER_SANITIZE_STRING,
+                'support_request_summary' => FILTER_UNSAFE_RAW,
+                'support_request_description' => FILTER_UNSAFE_RAW,
                 'support_request_agreement' => FILTER_VALIDATE_BOOLEAN,
             ]
         );

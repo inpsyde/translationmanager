@@ -214,7 +214,7 @@ class AddTranslation implements RequestHandleable
                 'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
                 'post_ID' => FILTER_SANITIZE_NUMBER_INT,
                 'translationmanager_language' => [
-                    'filter' => FILTER_SANITIZE_STRING,
+                    'filter' => FILTER_UNSAFE_RAW,
                     'flags' => FILTER_FORCE_ARRAY,
                 ],
             ],

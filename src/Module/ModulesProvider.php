@@ -7,6 +7,7 @@ namespace Translationmanager\Module;
 use ArrayIterator;
 use IteratorAggregate;
 use Translationmanager\Utils\Assert;
+use Traversable;
 
 /**
  * Class ModuleProvider
@@ -36,7 +37,7 @@ class ModulesProvider implements IteratorAggregate
     /**
      * @inheritDoc
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         $availableModules = [];
 
