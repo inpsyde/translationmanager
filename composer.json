@@ -20,13 +20,14 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.2",
+        "php": ">7.2",
         "ext-fileinfo": "*",
         "brain/nonces": "1.0.*",
         "pimple/pimple": "^3.2",
         "webmozart/assert": "^1.4",
         "ext-simplexml": "*",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "composer/installers": "^1.0 || ^2.0"
     },
     "require-dev": {
         "php-stubs/wordpress-stubs": "^5.0@stable",
@@ -35,7 +36,7 @@
         "inpsyde/php-coding-standards": "^1.0",
         "phpunit/phpunit": "^7.5",
         "vimeo/psalm": "^4.0",
-        "oomphinc/composer-installers-extender": "^1.1"
+        "oomphinc/composer-installers-extender": "^2"
     },
     "autoload": {
         "psr-4": {
