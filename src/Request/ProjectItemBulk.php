@@ -30,6 +30,8 @@ class ProjectItemBulk implements RequestHandleable
 
     /**
      * @inheritdoc
+     *
+     * phpcs:disable WordPress.Security.NonceVerification
      */
     public function handle()
     {
@@ -37,7 +39,7 @@ class ProjectItemBulk implements RequestHandleable
             return;
         }
 
-        $action = sanitize_text_field( wp_unslash( $_POST['action'] ) );
+        $action = sanitize_text_field(wp_unslash($_POST['action'] ?? ''));
 
         switch ($action) {
             case 'trash':
