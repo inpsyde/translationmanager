@@ -26,7 +26,7 @@ function translationmanager_api()
 {
     static $api = null;
 
-    $url = 'https://api.eurotext.de/api/v1';
+    $url = 'https://stage.api.eurotext.de/api/v1';
 
     if (defined('TRANSLATION_MANAGER_API_URL') && TRANSLATION_MANAGER_API_URL) {
         $url = TRANSLATION_MANAGER_API_URL;
