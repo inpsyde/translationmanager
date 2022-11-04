@@ -27,16 +27,12 @@
     <MissingReturnType occurrences="1">
       <code>redirect_admin_page_network</code>
     </MissingReturnType>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>wp_unslash( $_GET['post_type'] )</code>
-    </PossiblyInvalidArgument>
+    <PossiblyInvalidArgument occurrences="1"/>
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$_SERVER['HTTP_HOST']</code>
       <code>$_SERVER['REQUEST_URI']</code>
     </PossiblyUndefinedArrayOffset>
-    <TooManyArguments occurrences="1">
-      <code>apply_filters( 'translationmanager_get_template', ( new Plugin() )-&gt;dir( $name ), $name )</code>
-    </TooManyArguments>
+    <TooManyArguments occurrences="1"/>
   </file>
   <file src="inc/functions/cpt-project.php">
     <InvalidArgument occurrences="1"/>
@@ -78,9 +74,7 @@
     <PossibleRawObjectIteration occurrences="1">
       <code>$terms</code>
     </PossibleRawObjectIteration>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>wp_unslash( $_GET['translationmanager_bulk_languages'] )</code>
-    </PossiblyInvalidArgument>
+    <PossiblyInvalidArgument occurrences="1"/>
     <PossiblyInvalidIterator occurrences="1">
       <code>$terms</code>
     </PossiblyInvalidIterator>
@@ -90,9 +84,7 @@
       <code>$admin_footer_text</code>
       <code>$file</code>
     </MissingClosureParamType>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>wp_unslash( $_GET['page'] )</code>
-    </PossiblyInvalidArgument>
+    <PossiblyInvalidArgument occurrences="1"/>
     <UndefinedFunction occurrences="4">
       <code>'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts'</code>
       <code>'Translationmanager\\Functions\\project_hide_slug'</code>

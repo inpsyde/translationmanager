@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Common Functions
  */
@@ -22,17 +23,18 @@ use Traversable;
  *
  * @return string Absolute path to the template.
  */
-function get_template( $name ) {
+function get_template($name)
+{
 
-	/**
-	 * Get Template
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $path The path of the template.
-	 * @param string $name The file name of the template.
-	 */
-	return apply_filters( 'translationmanager_get_template', ( new Plugin() )->dir( $name ), $name );
+    /**
+     * Get Template
+     *
+     * @since 1.0.0
+     *
+     * @param string $path The path of the template.
+     * @param string $name The file name of the template.
+     */
+    return apply_filters('translationmanager_get_template', ( new Plugin() )->dir($name), $name);
 }
 
 /**
@@ -45,11 +47,12 @@ function get_template( $name ) {
  * @param int    $blog_id The ID of the blog. Optional.
  * @param int    $status  The status to set for the request.
  */
-function redirect_admin_page_network( $page, $args, $blog_id = null, $status = 302 ) {
+function redirect_admin_page_network($page, $args, $blog_id = null, $status = 302)
+{
 
-	wp_safe_redirect( get_admin_url( $blog_id, add_query_arg( $args, $page ) ), $status );
+    wp_safe_redirect(get_admin_url($blog_id, add_query_arg($args, $page)), $status);
 
-	die;
+    die;
 }
 
 /**
@@ -66,116 +69,117 @@ function redirect_admin_page_network( $page, $args, $blog_id = null, $status = 3
  *
  * @return string Filtered post content with allowed HTML tags and attributes.
  */
-function kses_post( $data, array $extra_attrs = [] ) {
+function kses_post($data, array $extra_attrs = [])
+{
 
-	global $allowedposttags;
+    global $allowedposttags;
 
-	$tags_input_included = array_merge(
-		$allowedposttags,
-		[
-			'input'    => [
-				'accept'       => true,
-				'autocomplete' => true,
-				'autofocus'    => true,
-				'checked'      => true,
-				'class'        => true,
-				'disabled'     => true,
-				'id'           => true,
-				'height'       => true,
-				'min'          => true,
-				'max'          => true,
-				'minlenght'    => true,
-				'maxlength'    => true,
-				'name'         => true,
-				'pattern'      => true,
-				'placeholder'  => true,
-				'readony'      => true,
-				'required'     => true,
-				'size'         => true,
-				'src'          => true,
-				'step'         => true,
-				'type'         => true,
-				'value'        => true,
-				'width'        => true,
-			],
-			'select'   => [
-				'autofocus' => true,
-				'class'     => true,
-				'id'        => true,
-				'disabled'  => true,
-				'form'      => true,
-				'multiple'  => true,
-				'name'      => true,
-				'required'  => true,
-				'size'      => true,
-			],
-			'option'   => [
-				'disabled' => true,
-				'label'    => true,
-				'selected' => true,
-				'value'    => true,
-			],
-			'optgroup' => [
-				'disabled' => true,
-				'label'    => true,
-			],
-			'textarea' => [
-				'placeholder' => true,
-				'cols'        => true,
-				'rows'        => true,
-				'disabled'    => true,
-				'name'        => true,
-				'id'          => true,
-				'readonly'    => true,
-				'required'    => true,
-				'autofocus'   => true,
-				'form'        => true,
-				'wrap'        => true,
-			],
-			'picture'  => true,
-			'source'   => [
-				'sizes'  => true,
-				'src'    => true,
-				'srcset' => true,
-				'type'   => true,
-				'media'  => true,
-			],
-		]
-	);
+    $tags_input_included = array_merge(
+        $allowedposttags,
+        [
+            'input' => [
+                'accept' => true,
+                'autocomplete' => true,
+                'autofocus' => true,
+                'checked' => true,
+                'class' => true,
+                'disabled' => true,
+                'id' => true,
+                'height' => true,
+                'min' => true,
+                'max' => true,
+                'minlenght' => true,
+                'maxlength' => true,
+                'name' => true,
+                'pattern' => true,
+                'placeholder' => true,
+                'readony' => true,
+                'required' => true,
+                'size' => true,
+                'src' => true,
+                'step' => true,
+                'type' => true,
+                'value' => true,
+                'width' => true,
+            ],
+            'select' => [
+                'autofocus' => true,
+                'class' => true,
+                'id' => true,
+                'disabled' => true,
+                'form' => true,
+                'multiple' => true,
+                'name' => true,
+                'required' => true,
+                'size' => true,
+            ],
+            'option' => [
+                'disabled' => true,
+                'label' => true,
+                'selected' => true,
+                'value' => true,
+            ],
+            'optgroup' => [
+                'disabled' => true,
+                'label' => true,
+            ],
+            'textarea' => [
+                'placeholder' => true,
+                'cols' => true,
+                'rows' => true,
+                'disabled' => true,
+                'name' => true,
+                'id' => true,
+                'readonly' => true,
+                'required' => true,
+                'autofocus' => true,
+                'form' => true,
+                'wrap' => true,
+            ],
+            'picture' => true,
+            'source' => [
+                'sizes' => true,
+                'src' => true,
+                'srcset' => true,
+                'type' => true,
+                'media' => true,
+            ],
+        ]
+    );
 
-	if ( $extra_attrs ) {
-		// Extract the key for comparison.
-		$extra_attrs_keys = array_keys( $extra_attrs );
+    if ($extra_attrs) {
+        // Extract the key for comparison.
+        $extra_attrs_keys = array_keys($extra_attrs);
 
-		foreach ( $tags_input_included as $tag => $attrs ) {
-			// It is a tag where we want to insert additional attributes?
-			if ( in_array( $tag, $extra_attrs_keys, true ) ) {
-				// If so, include the extra attributes list within the main tags input list.
-				$tags_input_included[ $tag ] = array_merge( $tags_input_included[ $tag ], $extra_attrs[ $tag ] );
-			}
-		}
-	}
+        foreach ($tags_input_included as $tag => $attrs) {
+            // It is a tag where we want to insert additional attributes?
+            if (in_array($tag, $extra_attrs_keys, true)) {
+                // If so, include the extra attributes list within the main tags input list.
+                $tags_input_included[ $tag ] = array_merge($tags_input_included[ $tag ], $extra_attrs[ $tag ]);
+            }
+        }
+    }
 
-	// WordPress 5.x removed the form.
-	if ( ! isset( $tags_input_included['form'] ) ) {
-		$tags_input_included['form'] = [];
-	}
+    // WordPress 5.x removed the form.
+    if (! isset($tags_input_included['form'])) {
+        $tags_input_included['form'] = [];
+    }
 
-	// Form attributes.
-	$tags_input_included['form'] = array_merge( $tags_input_included['form'], [ 'novalidate' => true ] );
-	// Fieldset attributes.
-	// WordPress have an empty array.
-	$tags_input_included['fieldset'] = array_merge(
-		$tags_input_included['fieldset'],
-		[
-			'id'    => true,
-			'class' => true,
-			'form'  => true,
-			'name'  => true,
-		]
-	);
+    // Form attributes.
+    $tags_input_included['form'] = array_merge($tags_input_included['form'], [ 'novalidate' => true ]);
+    // Fieldset attributes.
+    // WordPress have an empty array.
+    $tags_input_included['fieldset'] = array_merge(
+        $tags_input_included['fieldset'],
+        [
+            'id' => true,
+            'class' => true,
+            'form' => true,
+            'name' => true,
+        ]
+    );
 
-	return wp_kses( $data, $tags_input_included );
+    return wp_kses($data, $tags_input_included);
 }
 
 /**
@@ -195,28 +199,29 @@ function kses_post( $data, array $extra_attrs = [] ) {
  *
  * @return string The sanitize class or classes list
  */
-function sanitize_html_class( $class, $fallback = '', $glue = '' ) {
+function sanitize_html_class($class, $fallback = '', $glue = '')
+{
 
-	// Default to space.
-	$glue = $glue ?: ' ';
+    // Default to space.
+    $glue = $glue ?: ' ';
 
-	// If is a list and is represented as a string.
-	if ( is_string( $class ) && false !== strpos( $class, $glue ) ) {
-		$class = explode( $glue, $class );
-	}
+    // If is a list and is represented as a string.
+    if (is_string($class) && false !== strpos($class, $glue)) {
+        $class = explode($glue, $class);
+    }
 
-	if ( is_array( $class ) ) {
-		$new_class = $class;
-		$class     = '';
+    if (is_array($class)) {
+        $new_class = $class;
+        $class = '';
 
-		foreach ( $new_class as $c ) {
-			$class .= ' ' . sanitize_html_class( $c, $fallback );
-		}
-	} else {
-		$class = \sanitize_html_class( $class, $fallback );
-	}
+        foreach ($new_class as $c) {
+            $class .= ' ' . sanitize_html_class($c, $fallback);
+        }
+    } else {
+        $class = \sanitize_html_class($class, $fallback);
+    }
 
-	return trim( $class, ' ' );
+    return trim($class, ' ');
 }
 
 /**
@@ -226,25 +231,26 @@ function sanitize_html_class( $class, $fallback = '', $glue = '' ) {
  *
  * @return string The post type from $_REQUEST or empty string if not set.
  */
-function post_type_name_by_request() {
+function post_type_name_by_request()
+{
 
-	global $post, $typenow, $current_screen;
+    global $post, $typenow, $current_screen;
 
-	if ( $post && $post->post_type ) {
-		return $post->post_type;
-	}
+    if ($post && $post->post_type) {
+        return $post->post_type;
+    }
 
-	if ( $typenow ) {
-		return $typenow;
-	}
+    if ($typenow) {
+        return $typenow;
+    }
 
-	if ( $current_screen && $current_screen->post_type ) {
-		return $current_screen->post_type;
-	}
+    if ($current_screen && $current_screen->post_type) {
+        return $current_screen->post_type;
+    }
 
-    $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ?? '' ) );
+    $post_type = sanitize_text_field(wp_unslash($_GET['post_type'] ?? ''));
 
-	return ( $post_type ?: '' );
+    return ( $post_type ?: '' );
 }
 
 /**
@@ -261,13 +267,14 @@ function post_type_name_by_request() {
  *
  * @return mixed Whatever the *_term_meta function returns
  */
-function set_unique_term_meta( \WP_Term $term, $meta, $value ) {
+function set_unique_term_meta(\WP_Term $term, $meta, $value)
+{
 
-	if ( ! get_term_meta( $term->term_id, $meta ) ) {
-		return add_term_meta( $term->term_id, $meta, $value, true );
-	}
+    if (! get_term_meta($term->term_id, $meta)) {
+        return add_term_meta($term->term_id, $meta, $value, true);
+    }
 
-	return update_term_meta( $term->term_id, $meta, $value );
+    return update_term_meta($term->term_id, $meta, $value);
 }
 
 /**
@@ -279,22 +286,23 @@ function set_unique_term_meta( \WP_Term $term, $meta, $value ) {
  *
  * @return string The username
  */
-function username( \WP_User $user ) {
+function username(\WP_User $user)
+{
 
-	$firstname = $user->first_name ?: '';
-	$lastname  = $user->last_name ?: '';
+    $firstname = $user->first_name ?: '';
+    $lastname = $user->last_name ?: '';
 
-	if ( $firstname && $lastname ) {
-		return $firstname . ' ' . $lastname;
-	}
+    if ($firstname && $lastname) {
+        return $firstname . ' ' . $lastname;
+    }
 
-	$username = $user->display_name ?: '';
+    $username = $user->display_name ?: '';
 
-	if ( ! $username ) {
-		$username = $user->user_nicename ?: '';
-	}
+    if (! $username) {
+        $username = $user->user_nicename ?: '';
+    }
 
-	return $username;
+    return $username;
 }
 
 /**
@@ -306,16 +314,17 @@ function username( \WP_User $user ) {
  *
  * @return string The current url
  */
-function current_url( array $args = [] ) {
+function current_url(array $args = [])
+{
 
 	$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); // phpcs:ignore
-	$current_url = remove_query_arg( 'paged', $current_url );
+    $current_url = remove_query_arg('paged', $current_url);
 
-	if ( $args ) {
-		$current_url = add_query_arg( $args, $current_url );
-	}
+    if ($args) {
+        $current_url = add_query_arg($args, $current_url);
+    }
 
-	return $current_url;
+    return $current_url;
 }
 
 /**
@@ -333,13 +342,14 @@ function current_url( array $args = [] ) {
  *               is not set. Or if the flag FILTER_NULL_ON_FAILURE is used, it returns FALSE if the
  *               variable is not set and NULL if the filter
  */
-function filter_input( array $request, $method ) {
+function filter_input(array $request, $method)
+{
 
-	if ( ! is_int( $method ) ) {
-		throw new \DomainException( 'Method to filter input must be an integer.' );
-	}
+    if (! is_int($method)) {
+        throw new \DomainException('Method to filter input must be an integer.');
+    }
 
-	return filter_input_array( $method, $request );
+    return filter_input_array($method, $request);
 }
 
 /**
@@ -358,12 +368,13 @@ function filter_input( array $request, $method ) {
  *
  * @return mixed
  */
-function version_compare( $ver1, $ver2, $constraint ) {
+function version_compare($ver1, $ver2, $constraint)
+{
 
-	$ver1 = (string) preg_replace( '/[^0-9\.]+/', '', $ver1 );
-	$ver2 = (string) preg_replace( '/[^0-9\.]+/', '', $ver2 );
+    $ver1 = (string) preg_replace('/[^0-9\.]+/', '', $ver1);
+    $ver2 = (string) preg_replace('/[^0-9\.]+/', '', $ver2);
 
-	return \version_compare( $ver1, $ver2, $constraint );
+    return \version_compare($ver1, $ver2, $constraint);
 }
 
 /**
@@ -371,7 +382,9 @@ function version_compare( $ver1, $ver2, $constraint ) {
  *
  * @return Traversable|list<string> The list of post type names.
  */
-function get_supported_post_types() {
+function get_supported_post_types()
+{
+
     $postTypeNames = get_post_types(['public' => true]);
     $postTypeNames = apply_filters('translationmanager_supported_post_types', $postTypeNames);
 
