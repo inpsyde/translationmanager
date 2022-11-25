@@ -164,7 +164,8 @@ class Translation implements ArrayAccess, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function offsetGet($offset): mixed
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
     {
         return $this->get_value($offset);
     }
@@ -188,7 +189,8 @@ class Translation implements ArrayAccess, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function jsonSerialize(): mixed
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return $this->to_array();
     }
