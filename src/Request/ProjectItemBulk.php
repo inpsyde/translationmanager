@@ -30,6 +30,8 @@ class ProjectItemBulk implements RequestHandleable
 
     /**
      * @inheritdoc
+     *
+     * phpcs:disable WordPress.Security.NonceVerification
      */
     public function handle()
     {
@@ -37,7 +39,7 @@ class ProjectItemBulk implements RequestHandleable
             return;
         }
 
-        $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
+        $action = sanitize_text_field(wp_unslash($_POST['action'] ?? ''));
 
         switch ($action) {
             case 'trash':
@@ -69,7 +71,7 @@ class ProjectItemBulk implements RequestHandleable
                 'translationmanager_project_id' => FILTER_SANITIZE_NUMBER_INT,
                 'post_ID' => FILTER_SANITIZE_NUMBER_INT,
                 'translationmanager_language' => [
-                    'filter' => FILTER_SANITIZE_STRING,
+                    'filter' => FILTER_UNSAFE_RAW,
                     'flags' => FILTER_FORCE_ARRAY,
                 ],
             ]

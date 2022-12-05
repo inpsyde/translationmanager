@@ -156,7 +156,7 @@ class Translation implements ArrayAccess, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has_value($offset);
     }
@@ -164,6 +164,7 @@ class Translation implements ArrayAccess, JsonSerializable
     /**
      * @inheritdoc
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->get_value($offset);
@@ -172,7 +173,7 @@ class Translation implements ArrayAccess, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->set_value($offset, $value);
     }
@@ -180,7 +181,7 @@ class Translation implements ArrayAccess, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->remove_value($offset);
     }
@@ -188,6 +189,7 @@ class Translation implements ArrayAccess, JsonSerializable
     /**
      * @inheritdoc
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->to_array();

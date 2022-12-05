@@ -257,6 +257,7 @@ class Import
         array $postData,
         array $posts
     ) {
+
         $networkState = NetworkState::create();
         $networkState->switch_to($targetSiteId);
 

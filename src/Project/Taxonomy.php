@@ -122,11 +122,13 @@ class Taxonomy
      *
      * @return void
      * @since 1.0.0
+     *
+     * phpcs:disable WordPress.Security.NonceVerification
      */
     public function project_info_save()
     {
         // Check Action and auth.
-        $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
+        $action = sanitize_text_field(wp_unslash($_POST['action'] ?? ''));
         if ('translationmanager_project_info_save' !== $action) {
             return;
         }
@@ -147,18 +149,8 @@ class Taxonomy
                 $project->term_id,
                 'translationmanager_project',
                 [
-                    'name' => sanitize_text_field(
-                        filter_input(
-                            INPUT_POST,
-                            'tag-name',
-                            FILTER_SANITIZE_STRING
-                        )
-                    ),
-                    'description' => filter_input(
-                        INPUT_POST,
-                        'description',
-                        FILTER_SANITIZE_STRING
-                    ),
+                    'name' => sanitize_text_field(wp_unslash($_POST['tag-name'] ?? '')),
+                    'description' => sanitize_text_field(wp_unslash($_POST['description'] ?? '')),
                 ]
             );
 

@@ -58,7 +58,7 @@ add_filter(
 	function ( $admin_footer_text ) {
 
 		$default_text = $admin_footer_text;
-		$page         = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$page         = sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) );
 
 		if ( false !== strstr( $page, \Translationmanager\Pages\PageOptions::SLUG ) ) {
 			$admin_footer_text = '<a href="http://inpsyde.com" class="inpsyde-logo-translationmanager" title="Inpsyde GmbH" class="screen-reader-text">Inpsyde GmbH</a></br>'

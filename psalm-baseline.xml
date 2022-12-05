@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
+<files psalm-version="4.29.0@7ec5ffbd5f68ae03782d7fd33fff0c45a69f95b3">
   <file src="inc/functions/api.php">
     <PossiblyInvalidArgument occurrences="1">
       <code>$source_post</code>
@@ -27,11 +27,15 @@
     <MissingReturnType occurrences="1">
       <code>redirect_admin_page_network</code>
     </MissingReturnType>
-    <TooManyArguments occurrences="1">
-      <code>apply_filters( 'translationmanager_get_template', ( new Plugin() )-&gt;dir( $name ), $name )</code>
-    </TooManyArguments>
+    <PossiblyInvalidArgument occurrences="1"/>
+    <PossiblyUndefinedArrayOffset occurrences="2">
+      <code>$_SERVER['HTTP_HOST']</code>
+      <code>$_SERVER['REQUEST_URI']</code>
+    </PossiblyUndefinedArrayOffset>
+    <TooManyArguments occurrences="1"/>
   </file>
   <file src="inc/functions/cpt-project.php">
+    <InvalidArgument occurrences="1"/>
     <PossiblyInvalidPropertyFetch occurrences="2">
       <code>$post-&gt;ID</code>
       <code>$term-&gt;taxonomy</code>
@@ -61,15 +65,16 @@
       <code>wp_get_referer()</code>
       <code>wp_get_referer()</code>
     </FalsableReturnStatement>
+    <InvalidArgument occurrences="1">
+      <code>$languages</code>
+    </InvalidArgument>
     <InvalidFalsableReturnType occurrences="1">
       <code>string</code>
     </InvalidFalsableReturnType>
     <PossibleRawObjectIteration occurrences="1">
       <code>$terms</code>
     </PossibleRawObjectIteration>
-    <PossiblyFalseArgument occurrences="1">
-      <code>$languages</code>
-    </PossiblyFalseArgument>
+    <PossiblyInvalidArgument occurrences="1"/>
     <PossiblyInvalidIterator occurrences="1">
       <code>$terms</code>
     </PossiblyInvalidIterator>
@@ -79,9 +84,7 @@
       <code>$admin_footer_text</code>
       <code>$file</code>
     </MissingClosureParamType>
-    <PossiblyFalseArgument occurrences="1">
-      <code>$page</code>
-    </PossiblyFalseArgument>
+    <PossiblyInvalidArgument occurrences="1"/>
     <UndefinedFunction occurrences="4">
       <code>'Translationmanager\\Functions\\bulk_translate_projects_by_request_posts'</code>
       <code>'Translationmanager\\Functions\\project_hide_slug'</code>
@@ -111,13 +114,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Api.php">
-    <InvalidScalarArgument occurrences="1">
-      <code>$response-&gt;get_error_code()</code>
-    </InvalidScalarArgument>
-    <PossiblyInvalidMethodCall occurrences="2">
-      <code>get_error_code</code>
-      <code>get_error_message</code>
-    </PossiblyInvalidMethodCall>
     <PropertyNotSetInConstructor occurrences="2">
       <code>$project</code>
       <code>$project_item</code>
@@ -286,18 +282,6 @@
     </MissingReturnType>
     <TooManyArguments occurrences="4"/>
   </file>
-  <file src="src/Module/Mlp/ServiceProvider.php">
-    <InvalidScalarArgument occurrences="1">
-      <code>3</code>
-    </InvalidScalarArgument>
-    <MissingClosureReturnType occurrences="1">
-      <code>function (Container $container) {</code>
-    </MissingClosureReturnType>
-    <MissingReturnType occurrences="2">
-      <code>bootstrap</code>
-      <code>register</code>
-    </MissingReturnType>
-  </file>
   <file src="src/Module/Mlp/Utils/ImageCopier.php">
     <InvalidReturnStatement occurrences="1">
       <code>$attachment_id</code>
@@ -438,9 +422,6 @@
     </UnresolvableInclude>
   </file>
   <file src="src/Pages/PageOptions.php">
-    <InvalidOperand occurrences="1">
-      <code>current($chosen_action)</code>
-    </InvalidOperand>
     <InvalidScalarArgument occurrences="2">
       <code>filemtime((new Plugin())-&gt;dir('/assets/css/settings.css'))</code>
       <code>filemtime((new Plugin())-&gt;dir('/resources/js/options-page.js'))</code>
@@ -448,6 +429,9 @@
     <PossiblyFalseOperand occurrences="1">
       <code>current($chosen_action)</code>
     </PossiblyFalseOperand>
+    <PossiblyInvalidOperand occurrences="1">
+      <code>current($chosen_action)</code>
+    </PossiblyInvalidOperand>
     <UndefinedFunction occurrences="1">
       <code>Functions\get_template('/views/options-page/layout.php')</code>
     </UndefinedFunction>
@@ -508,15 +492,19 @@
     </MissingReturnType>
   </file>
   <file src="src/Project/Taxonomy.php">
-    <InvalidArgument occurrences="1"/>
     <MissingReturnType occurrences="1">
       <code>register_post_status</code>
     </MissingReturnType>
-    <PossiblyFalseArgument occurrences="4">
+    <PossiblyFalseArgument occurrences="3">
       <code>$project</code>
       <code>$project</code>
       <code>wp_get_referer()</code>
     </PossiblyFalseArgument>
+    <PossiblyInvalidArgument occurrences="3">
+      <code>wp_unslash($_POST['action'] ?? '')</code>
+      <code>wp_unslash($_POST['description'] ?? '')</code>
+      <code>wp_unslash($_POST['tag-name'] ?? '')</code>
+    </PossiblyInvalidArgument>
     <PossiblyInvalidFunctionCall occurrences="1">
       <code>$closure()</code>
     </PossiblyInvalidFunctionCall>
@@ -633,6 +621,9 @@
   </file>
   <file src="src/Request/ProjectItemBulk.php">
     <FalsableReturnStatement occurrences="1"/>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>wp_unslash($_POST['action'] ?? '')</code>
+    </PossiblyInvalidArgument>
   </file>
   <file src="src/Request/ServiceProvider.php">
     <InvalidReturnType occurrences="1">
@@ -655,6 +646,16 @@
     <PossiblyFalseOperand occurrences="1">
       <code>$inputs</code>
     </PossiblyFalseOperand>
+    <PossiblyInvalidArrayAccess occurrences="3">
+      <code>$_FILES['support_request_upload']['name']</code>
+      <code>$_FILES['support_request_upload']['size']</code>
+      <code>$_FILES['support_request_upload']['tmp_name']</code>
+    </PossiblyInvalidArrayAccess>
+    <PossiblyInvalidArrayOffset occurrences="3">
+      <code>$_FILES['support_request_upload']['name']</code>
+      <code>$_FILES['support_request_upload']['size']</code>
+      <code>$_FILES['support_request_upload']['tmp_name']</code>
+    </PossiblyInvalidArrayOffset>
     <UndefinedConstant occurrences="1">
       <code>MB_IN_BYTES</code>
     </UndefinedConstant>
@@ -688,6 +689,11 @@
     <MissingReturnType occurrences="1">
       <code>register</code>
     </MissingReturnType>
+  </file>
+  <file src="src/SystemStatus/Collection.php">
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;list</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/SystemStatus/ServiceProvider.php">
     <InvalidReturnType occurrences="1">
@@ -758,6 +764,10 @@
       <code>target_site_id</code>
       <code>to_array</code>
     </MissingReturnType>
+    <ReservedWord occurrences="2">
+      <code>mixed</code>
+      <code>mixed</code>
+    </ReservedWord>
     <UnsafeInstantiation occurrences="2">
       <code>new static()</code>
       <code>new static()</code>
@@ -834,12 +844,10 @@
     </UndefinedPropertyFetch>
   </file>
   <file src="src/Xliff/Import.php">
-    <InvalidReturnStatement occurrences="2">
-      <code>$_FILES['file']</code>
+    <InvalidReturnStatement occurrences="1">
       <code>$targetPost</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="2">
-      <code>array</code>
+    <InvalidReturnType occurrences="1">
       <code>false|WP_Post</code>
     </InvalidReturnType>
     <PossibleRawObjectIteration occurrences="1">
@@ -858,29 +866,17 @@
       <code>WPSEO_Meta</code>
       <code>WPSEO_Meta</code>
     </UndefinedClass>
-    <UndefinedFunction occurrences="3">
+    <UndefinedFunction occurrences="2">
       <code>assignedLanguageTags(false)</code>
       <code>resolve(ContentRelations::class)</code>
-      <code>translationIds($sourcePostId, 'post', $sourceSiteId)</code>
     </UndefinedFunction>
   </file>
   <file src="src/Xliff/PostTranslatableParts/AcfFields.php">
-    <InvalidClass occurrences="1">
-      <code>xliffElementHelper</code>
-    </InvalidClass>
     <UndefinedFunction occurrences="1">
       <code>get_field_objects($sourcePostId)</code>
     </UndefinedFunction>
   </file>
-  <file src="src/Xliff/PostTranslatableParts/GeneralFields.php">
-    <InvalidClass occurrences="1">
-      <code>xliffElementHelper</code>
-    </InvalidClass>
-  </file>
   <file src="src/Xliff/PostTranslatableParts/YoastFields.php">
-    <InvalidClass occurrences="1">
-      <code>xliffElementHelper</code>
-    </InvalidClass>
     <InvalidOperand occurrences="1">
       <code>$sourcePostId</code>
     </InvalidOperand>
