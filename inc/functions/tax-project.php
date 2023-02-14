@@ -39,7 +39,7 @@ function project_hide_slug() {
  */
 function bulk_translate_projects_by_request_posts( $redirect_to, $action, $post_ids ) {
     /** @var array<array-key, mixed> $languages */
-    $languages = \filter_input( INPUT_GET, 'translationmanager_bulk_languages', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY );
+    $languages = \filter_input( INPUT_GET, 'translationmanager_bulk_languages', FILTER_SANITIZE_NUMBER_INT, FILTER_REQUIRE_ARRAY );
 	$project   = \filter_input( INPUT_GET, 'translationmanager_project_id', FILTER_SANITIZE_NUMBER_INT );
 	$handler   = new \Translationmanager\ProjectHandler();
 
