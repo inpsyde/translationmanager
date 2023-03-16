@@ -238,6 +238,7 @@ class Adapter
             $contentRelations = $this->contentRelations;
             $relationship_id = $contentRelations->relationshipId(
                 [
+                    $source_site_id => $source_content_id,
                     $target_site_id => $target_content_id,
                 ],
                 $type

@@ -3,8 +3,8 @@ Contributors: Inpsyde, Eurotext, paddyullrich, wido
 Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
 Requires at least: 5.0
-Tested up to: 5.8
-Stable tag: 1.4.1
+Tested up to: 6.1
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,6 +123,14 @@ Just send an email to info@eurotext.de with a request.
 3. project view
 
 == Changelog ==
+= 1.5.0 =
+* Added: Support for PHP 8
+* Fixed: Notices for PHP 8.1
+* Fixed: The name of XliffElementHelper is not used correctly.
+* Fixed: Xliff import missing post type, status and relationship.
+* Fixed: While importing project just single relationship is created.
+* Fixed: Fatal error while bulk translations on PHP 8.0
+
 = 1.4.1 =
 * Fix the name of XliffElementHelper is not used correctly
 * Fix Xliff import missing post type, status and relationship
