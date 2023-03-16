@@ -123,6 +123,14 @@ Just send an email to info@eurotext.de with a request.
 3. project view
 
 == Changelog ==
+= 1.5.0 =
+* Added: Support for PHP 8
+* Fixed: Notices for PHP 8.1
+* Fixed: The name of XliffElementHelper is not used correctly.
+* Fixed: Xliff import missing post type, status and relationship.
+* Fixed: While importing project just single relationship is created.
+* Fixed: Fatal error while bulk translations on PHP 8.0
+
 = 1.4.1 =
 * Fix the name of XliffElementHelper is not used correctly
 * Fix Xliff import missing post type, status and relationship
