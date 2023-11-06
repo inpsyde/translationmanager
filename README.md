@@ -118,7 +118,7 @@ On the Spanish version of the site, the same "Text-Section" block is assigned th
 
 *Identifying Reusable Blocks:*
 
-To identify reusable blocks in the database, look for the following markup: *<!-- wp:block {"ref":1429} /-->*
+To identify reusable blocks in the database, look for the following markup: `<!-- wp:block {"ref":1429} /-->`
 
 ## License
 Copyright (c) 2021 Inpsyde GmbH
