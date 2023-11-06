@@ -104,6 +104,22 @@ Yes, you need your own API key to connect with the Eurotext servers. For more in
 
 Just send an email to info@eurotext.de with a request.
 
+**Issue with References in Reusable Blocks.**
+
+In instances where Gutenberg's reusable blocks are utilized, there may be discrepancies in the references within imported posts. This can result in missing or inaccurate references to the corresponding reusable blocks.
+
+Specifically, the issue arises when the imported posts receive different IDs compared to the original posts, causing the references to become mismatched.
+
+*Illustrative Example:*
+
+For instance, let's consider a reusable block named "Text-Section" with the ID 1429. This block is utilized on the main page, and in the database, it is referenced as Ref: 1429, allowing it to be displayed.
+
+On the Spanish version of the site, the same "Text-Section" block is assigned the ID 189. However, in the database, the main page continues to search for the reusable block with the reference 1429, which no longer exists. Consequently, WordPress encounters difficulty in displaying the block.
+
+*Identifying Reusable Blocks:*
+
+To identify reusable blocks in the database, look for the following markup: `<!-- wp:block {"ref":1429} /-->`
+
 ## License
 Copyright (c) 2021 Inpsyde GmbH
 
