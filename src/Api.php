@@ -212,7 +212,7 @@ class Api
         );
 
         if (is_wp_error($response)) {
-            throw new ApiException($response->get_error_message(), $response->get_error_code());
+            throw new ApiException($response->get_error_message(), (int)$response->get_error_code());
         }
 
         $response_code = wp_remote_retrieve_response_code($response);

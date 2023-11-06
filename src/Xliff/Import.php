@@ -266,7 +266,7 @@ class Import
             $postData = array_merge((array)$targetPost, $postData);
         }
         $targetPostId = wp_insert_post($postData, true);
-        $targetPost = $targetPostId ? get_post($targetPostId) : null;
+        $targetPost = !is_wp_error($targetPostId) ? get_post($targetPostId) : null;
 
         if (!$targetPost) {
             return false;
