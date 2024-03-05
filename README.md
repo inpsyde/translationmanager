@@ -121,6 +121,4 @@ On the Spanish version of the site, the same "Text-Section" block is assigned th
 To identify reusable blocks in the database, look for the following markup: `<!-- wp:block {"ref":1429} /-->`
 
 ## License
-Copyright (c) 2021 Inpsyde GmbH
-
-This code is licensed under the  [GPLv2+ License](https://github.com/inpsyde/multilingualpress/blob/develop/LICENSE).
+This repository is a free software, and is released under the terms of the GNU General Public License version 2 or (at your option) any later version. See [LICENSE](./LICENSE) for complete license.
