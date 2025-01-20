@@ -41,7 +41,7 @@ add_filter(
 		if ( false !== strpos( $file, 'translationmanager.php' ) ) {
 			$links[1] = wp_kses(
 				__(
-					'By <a href="https://eurotext.de/en">Eurotext AG</a> & <a href="https://inpsyde.com/">Inpsyde GmbH</a>',
+					'By <a href="https://eurotext.de/en">Eurotext AG</a> & <a href="https://syde.com/">Syde GmbH</a>',
 					'translationmanager'
 				),
 				'data'
@@ -61,7 +61,7 @@ add_filter(
 		$page         = sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) );
 
 		if ( false !== strstr( $page, \Translationmanager\Pages\PageOptions::SLUG ) ) {
-			$admin_footer_text = '<a href="http://inpsyde.com" class="inpsyde-logo-translationmanager" title="Inpsyde GmbH" class="screen-reader-text">Inpsyde GmbH</a></br>'
+			$admin_footer_text = '<a href="http://syde.com" class="inpsyde-logo-translationmanager" title="Syde GmbH" class="screen-reader-text">Syde GmbH</a></br>'
 							 . $default_text;
 		}
 
