@@ -24,7 +24,7 @@ class ServiceProvider implements BootstrappableServiceProvider
     /**
      * @inheritdoc
      */
-    public function register(Container $container)
+    public function register(Container $container): void
     {
         $container[Adapter::class] = function (Container $container) {
             return new Adapter(
@@ -38,7 +38,7 @@ class ServiceProvider implements BootstrappableServiceProvider
     /**
      * @inheritdoc
      */
-    public function bootstrap(Container $container)
+    public function bootstrap(Container $container): void
     {
         $connectorBootstrap = new ConnectorBootstrap(
             new ConnectorFactory(
