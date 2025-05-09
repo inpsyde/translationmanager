@@ -4,11 +4,9 @@
  * Plugin URI:  https://eurotext.de/en
  * Description: Translate your content from a WordPress Multisite and MultilingualPress.
  * Version:     1.5.0
- * Author:      Inpsyde
- * Author URI:  https://inpsyde.com/
+ * Author:      Syde GmbH
+ * Author URI:  https://syde.com/
  * Text Domain: translationmanager
- * License:     GPLv2+
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Requires at least: 5.0
  * Requires PHP: 7.2
  * Domain Path: /languages

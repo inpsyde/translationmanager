@@ -1,12 +1,12 @@
 
 # TranslationMANAGER for WordPress
-With TranslationMANAGER, it is easy and straightforward to export content from your WordPress Multisite to be translated by Inpsyde's trusted partner [Eurotext](https://eurotext.de/en/).
+With TranslationMANAGER, it is easy and straightforward to export content from your WordPress Multisite to be translated by Syde's trusted partner [Eurotext](https://eurotext.de/en/).
 
 ## Description
 
 TranslationMANAGER is a WordPress plugin that allows a user with the correct roles to request a translation of one or multiple articles, pages etc.  However, TranslationMANAGER cannot import the content into the correct location because it does not have any information in relation to this. A Multilingual plugin is required for this purpose. 
 
-TranslationMANAGER works on sites with [MultilingualPress 3](https://multilingualpress.org/), Inpsyde’s solution for multilingual WordPress sites.
+TranslationMANAGER works on sites with [MultilingualPress 3](https://multilingualpress.org/), Syde’s solution for multilingual WordPress sites.
 
 MultilingualPress requires some setup and our [documentation](https://multilingualpress.org/docs-category/multilingualpress-3-getting-started/) provides information on how to connect sites and content.
 
@@ -120,5 +120,7 @@ On the Spanish version of the site, the same "Text-Section" block is assigned th
 
 To identify reusable blocks in the database, look for the following markup: `<!-- wp:block {"ref":1429} /-->`
 
-## License
-This repository is a free software, and is released under the terms of the GNU General Public License version 2 or (at your option) any later version. See [LICENSE](./LICENSE) for complete license.
+## Copyright and License
+
+This package is [free software](https://www.gnu.org/philosophy/free-sw.en.html) distributed under the terms of the GNU General Public License version 2 or (at your option) any later version. For the full license, see [LICENSE](./LICENSE).
+

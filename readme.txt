@@ -1,5 +1,5 @@
 === TranslationMANAGER for WordPress ===
-Contributors: Inpsyde, Eurotext, paddyullrich, wido
+Contributors: Syde, Eurotext, paddyullrich, wido
 Tags: translation, api, I18N
 Donate link: https://eurotext-ecommerce.com
 Requires at least: 5.0
@@ -14,7 +14,7 @@ With *TranslationMANAGER*, exporting content from your WordPress Multisite is ea
 
 TranslationMANAGER is a WordPress plugin that allows a user with the correct roles to request a translation of one or multiple articles, pages etc.  However, TranslationMANAGER cannot import the content into the correct location because it does not have any information in relation to this. A Multilingual plugin is required for this purpose.
 
-TranslationMANAGER works on sites with MultilingualPress 3 (https://multilingualpress.org/), Inpsyde’s solution for multilingual WordPress sites.
+TranslationMANAGER works on sites with MultilingualPress 3 (https://multilingualpress.org/), Syde’s solution for multilingual WordPress sites.
 
 MultilingualPress requires some setup and our documentation (https://multilingualpress.org/docs-category/multilingualpress-3-getting-started/) provides information on how to connect sites and content.
 

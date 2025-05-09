@@ -4,12 +4,12 @@
     "description": "WordPress plugin for translating content from your WordPress Multisite via Eurotext.",
     "main": "index.js",
     "author": {
-        "name": "Inpsyde GmbH",
-        "email": "hello@inpsyde.com",
-        "url": "https://inpsyde.com/"
+        "name": "Syde GmbH",
+        "email": "hello@syde.com",
+        "url": "https://syde.com/"
     },
     "license": "GPL-2.0-or-later",
-    "homepage": "https://github.com/inpsyde/translationmanager",
+    "homepage": "https://syde.com",
     "devDependencies": {
         "date-and-time": "^0.14.0",
         "del": "^3.0.0",
